@@ -1,0 +1,108 @@
+import { request } from '../plugins/axios';
+import type { AxiosResponse } from '../plugins/axios';
+
+/**
+ * 判断用户名或者账号是否存在
+ */
+export function accountExists(params: any) {
+  const url = '/oneid/account/exists';
+
+  return request
+    .get(url, { global: true, $doException: true, params })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 发送验证码
+ */
+export function sendCodeV3(params: any) {
+  const url = '/oneid/v3/sendCode';
+
+  return request
+    .get(url, { global: true, params })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 邮箱或者手机号注册
+ */
+export function accountRegister(params: any) {
+  const url = '/oneid/register';
+
+  return request
+    .get(url, { global: true, params })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 邮箱或者手机号登录
+ */
+export function accountLogin(params: any) {
+  const url = '/oneid/login';
+
+  return request
+    .get(url, { global: true, params })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 获取授权的相关回调链接
+ */
+export function queryCourse(params: object) {
+  const url = '/oneid/user/permission';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
+ * 获取授权token链接
+ */
+export function queryToken(params: object) {
+  const url = '/oneid/token/apply';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
+ * 获取idtoken用于退出
+ */
+export function queryIDToken() {
+  const url = '/oneid/logout';
+  return request.get(url).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 获取验证图片  以及token
+ */
+export function reqGet(data: any) {
+  const url = '/oneid/captcha/get';
+  return request.post(url, data).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 滑动或者点选验证
+ */
+export function reqCheck(data: any) {
+  const url = '/oneid/captcha/check';
+  return request.post(url, data).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 校验传入url参数
+ */
+export function appVerify(params: any) {
+  const url = '/oneid/app/verify';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 校验传入url参数
+ */
+export function authorizeOidc(params: any) {
+  const url = '/oneid/oidc/auth';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
