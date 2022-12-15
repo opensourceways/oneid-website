@@ -1,0 +1,151 @@
+import { request } from '../plugins/axios';
+import type { AxiosResponse } from '../plugins/axios';
+
+/**
+ * 获取用户信息
+ */
+export function queryUser() {
+  const url = '/oneid/personal/center/user';
+
+  return request
+    .get(url, { global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 修改用户信息
+ */
+export function modifyUser(params: any) {
+  const url = '/oneid/update/baseInfo';
+
+  return request
+    .post(url, params, { global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 修改用户信息
+ */
+export function modifyPhoto(params: any) {
+  const url = '/oneid/update/photo';
+
+  return request
+    .post(url, params, {
+      global: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 发送验证码
+ */
+export function sendCode(params: any) {
+  const url = '/oneid/sendcode';
+
+  return request
+    .get(url, { global: true, params })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 发送解绑验证码
+ */
+export function sendUnbindCode(params: any) {
+  const url = '/oneid/sendcode/unbind';
+
+  return request
+    .get(url, {
+      global: true,
+      params: {
+        account_type: params.account_type,
+        account: params.account,
+      },
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 修改绑定邮箱或手机号
+ */
+export function modifyAccount(params: any) {
+  const url = '/oneid/update/account';
+
+  return request
+    .get(url, { global: true, params })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 绑定手机号或者邮箱
+ */
+export function bindAccount(params: any) {
+  const url = '/oneid/bind/account';
+
+  return request
+    .get(url, {
+      global: true,
+      params: {
+        account_type: params.account_type,
+        account: params.account,
+        code: params.code,
+      },
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 解绑手机号或者邮箱
+ */
+export function unbindAccount(params: any) {
+  const url = '/oneid/unbind/account';
+
+  return request
+    .get(url, {
+      global: true,
+      params: {
+        account_type: params.account_type,
+        account: params.account,
+        code: params.code,
+      },
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 绑定第三方账号
+ */
+export function linkAccount() {
+  const url = '/oneid/conn/list';
+
+  return request
+    .get(url, {
+      global: true,
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
+ * 解绑第三方账号
+ */
+export function unlinkAccount(params: any) {
+  const url = '/oneid/unlink/account';
+
+  return request
+    .get(url, {
+      global: true,
+      params,
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
+ * 删除账号
+ */
+export function deleteAccount() {
+  const url = '/oneid/delete/user';
+
+  return request
+    .get(url, { global: true })
+    .then((res: AxiosResponse) => res.data);
+}
