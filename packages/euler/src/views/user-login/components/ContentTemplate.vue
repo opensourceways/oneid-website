@@ -31,7 +31,7 @@
   background-position: left;
 }
 .main {
-  max-width: 450px;
+  width: 420px;
   margin: 0 auto;
   padding: var(--o-spacing-h2);
   background-color: var(--o-color-text2);

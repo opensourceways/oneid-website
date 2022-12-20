@@ -1,19 +1,13 @@
 <script setup lang="ts">
-import IconGithub from '~icons/app/icon-github.svg';
-import IconGitee from '~icons/app/icon-gitee.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { onMounted, onUnmounted, PropType, reactive, ref, toRefs } from 'vue';
+import { PropType, reactive, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { formValidator, doValidatorForm, asyncBlur } from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
 import Verify from '@/verifition/Verify.vue';
-import {
-  callBackErrMessage,
-  getUrlByParams,
-  getUsernammeRules,
-} from 'shared/utils/utils';
+import { callBackErrMessage, getUsernammeRules } from 'shared/utils/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 
@@ -29,14 +23,7 @@ const emit = defineEmits(['submit', 'threePartLogin']);
 
 const { type } = toRefs(props);
 const i18n = useI18n();
-const { lang, loginParams } = useCommonData();
-onMounted(() => {
-  listenerThreePartsLogin();
-});
-onUnmounted(() => {
-  // 移除监听
-  window.removeEventListener('message', loginFun);
-});
+const { lang } = useCommonData();
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
@@ -82,23 +69,6 @@ const verifySuccess = (data: any) => {
   });
 };
 
-const icons = [
-  {
-    key: 'Gitee',
-    icon: IconGitee,
-    onClick: (formEl: FormInstance | undefined) => {
-      threePartsLogin(formEl, 'Gitee');
-    },
-  },
-  {
-    key: 'GitHub',
-    icon: IconGithub,
-    onClick: (formEl: FormInstance | undefined) => {
-      threePartsLogin(formEl, 'GitHub');
-    },
-  },
-];
-
 const changeCheckBox = (formEl: FormInstance | undefined) => {
   if (form.policy.length) {
     form.policy = [];
@@ -106,59 +76,6 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
     form.policy.push('1');
   }
   doValidatorForm(formEl, 'policy');
-};
-
-// 三方登录
-const redirect_uri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
-const threePartsLogin = (formEl: FormInstance | undefined, type: string) => {
-  const url = 'https://api.authing.cn/api/v3/signin-by-extidp';
-  const params = {
-    client_id: loginParams.value.client_id,
-    response_type: loginParams.value.response_type,
-    redirect_uri,
-    scope: 'openid profile username email',
-    state: loginParams.value.state,
-    nonce: loginParams.value.nonce,
-    lang: lang.value === 'zh' ? 'zh-CN' : 'en-US',
-    response_mode: 'web_message',
-  };
-  const ext_idp_conn_id: any = {
-    Gitee: '6226d91103d81d8654673f1b',
-    GitHub: '6226db30c8e30db1518cc4aa',
-  };
-  Object.assign(params, { ext_idp_conn_id: ext_idp_conn_id[type] });
-  formValidator(formEl, ['policy']).subscribe((valid) => {
-    if (valid) {
-      window.open(
-        getUrlByParams(url, params),
-        '_blank',
-        `width=500,height=700,left=${(screen.width - 500) / 2},top=${
-          (screen.height - 700) / 2
-        }`
-      );
-    } else {
-      return false;
-    }
-  });
-};
-
-// 监听三方登录结果
-const listenerThreePartsLogin = () => {
-  window.addEventListener('message', loginFun);
-};
-const loginFun = (e: MessageEvent) => {
-  const { type, response } = e.data;
-  if (type !== 'authorization_response') {
-    return;
-  }
-  const { code, state } = response;
-  if (code && state) {
-    const param = {
-      code,
-      redirect_uri,
-    };
-    emit('threePartLogin', param);
-  }
 };
 
 // 手机或邮箱合法校验
