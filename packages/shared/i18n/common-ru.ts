@@ -56,6 +56,7 @@ export default {
   MODIFY: 'Modify',
   BIND: 'Bind',
   NOT_EMPTY: 'Can not be empty',
+  ENTER_VAILD_PHONE: 'Enter your vaild mobile number',
   ENTER_VAILD_EMAIL: 'Enter your vaild email',
   ENTER_NEW_EMAIL: 'Enter your new vaild email',
   ENTER_EMAIL_CODE: 'Enter your new Email Verification Code',

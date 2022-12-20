@@ -55,6 +55,7 @@ export default {
   MODIFY: '修改',
   BIND: '绑定',
   NOT_EMPTY: '输入不能为空',
+  ENTER_VAILD_PHONE: '请输入正确的手机号',
   ENTER_VAILD_EMAIL: '请输入正确的邮箱格式',
   ENTER_NEW_EMAIL: '请输入新的邮箱地址',
   ENTER_EMAIL_CODE: '请输入邮件中的验证码',
