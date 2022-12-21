@@ -9,7 +9,7 @@ export function haveLoggedIn() {
       getOidcUri(loginParams.value);
       break;
     default:
-      location.href = loginParams.value.redirect_uri;
+      location.href = loginParams.value.redirect_uri || '';
   }
 }
 

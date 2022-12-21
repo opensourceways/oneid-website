@@ -5,7 +5,7 @@ import ContentBox from './ContentBox.vue';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import { modifyUser } from 'shared/api/api-center';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { getUsernammeRules } from 'shared/utils/utils';
+import { getUsernammeRules } from '@/shared/utils';
 import { Observable } from 'rxjs';
 import { IObject } from 'shared/@types/interface';
 const formRef1 = ref<FormInstance[]>();

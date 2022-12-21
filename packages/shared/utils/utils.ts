@@ -1,10 +1,7 @@
-import { accountExists } from '../api/api-login';
-import { useI18nStr } from '../i18n';
 import { useCommon } from '../stores/common';
-import { FormInstance, FormItemRule } from 'element-plus';
+import { FormInstance } from 'element-plus';
 import { from, Observable, reduce, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { USERNAME_REG } from '../const/common.const';
 
 // iframe的刷新回调
 export function iframeRefreshCallback() {
@@ -30,46 +27,6 @@ export function callBackErrMessage(err: any) {
     }
   }
   return _msg;
-}
-
-// 用户名重名校验
-export function validatorSameName(rule: any, value: any): void | Promise<void> {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      accountExists({ userName: value })
-        .then(() => {
-          resolve();
-        })
-        .catch((err: any) => {
-          reject(callBackErrMessage(err));
-        });
-    });
-  }
-}
-
-export function getUsernammeRules(): FormItemRule[] {
-  return [
-    {
-      required: true,
-      message: useI18nStr('NOT_EMPTY') as unknown as string,
-      trigger: 'blur',
-    },
-    {
-      min: 3,
-      max: 20,
-      message: useI18nStr('CONTAIN_CHARACTER') as unknown as string,
-      trigger: 'blur',
-    },
-    {
-      pattern: USERNAME_REG,
-      message: useI18nStr('USERNAME_VAILD') as unknown as string,
-      trigger: 'blur',
-    },
-    {
-      asyncValidator: validatorSameName,
-      trigger: 'none',
-    },
-  ];
 }
 
 type TO_STRING_TYPE =

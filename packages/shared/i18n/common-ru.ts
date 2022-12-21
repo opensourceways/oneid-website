@@ -32,6 +32,7 @@ export default {
   BIND_FAILED: 'Bind Failed',
   UNBIND_FAILED: 'Unbind Failed',
   CONFIRM_BIND_EMAIL: 'Please bind email first',
+  CONFIRM_BIND_PHONE: 'Please bind phone number first',
   BIND_EMAIL: 'Bind Email',
   EMAIL_CODE: 'Email Code',
   MODIFY_EMAIL: 'Modify Email',

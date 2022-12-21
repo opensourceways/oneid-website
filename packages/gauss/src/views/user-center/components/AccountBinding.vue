@@ -29,14 +29,14 @@ const accountData = ref([
     key: 'email',
     icon: IconMail,
     label: useI18nStr('EMAIL'),
-    operate: [],
+    operate: ['unbind'],
     value: '',
   },
   {
     key: 'phone',
     icon: IconPhone,
     label: useI18nStr('PHONE'),
-    operate: ['unbind'],
+    operate: [],
     value: '',
   },
 ]);
@@ -113,14 +113,14 @@ const vilible = ref(false);
 const operateKey = ref('bind_email' as AccountOperateKey);
 // 各个弹窗配置
 const config: AllAccountDialogConfig = {
-  confirm_bind_email: {
-    key: 'confirm_bind_email',
-    account_type: 'email',
+  confirm_bind_phone: {
+    key: 'confirm_bind_phone',
+    account_type: 'phone',
     field: 'change',
-    header: 'BIND_EMAIL',
-    content: 'CONFIRM_BIND_EMAIL',
+    header: 'BIND_PHONE',
+    content: 'CONFIRM_BIND_PHONE',
     confirm: () => {
-      operateKey.value = 'bind_email';
+      operateKey.value = 'bind_phone';
       vilible.value = true;
     },
   },
@@ -238,9 +238,9 @@ const config: AllAccountDialogConfig = {
   },
 };
 const showDialog = (str: string, key: string) => {
-  if (!userInfo.value.email && str === 'unbind') {
-    // 未绑定邮箱解绑操作时，应先绑定邮箱
-    operateKey.value = 'confirm_bind_email';
+  if (!userInfo.value.phone && str === 'unbind') {
+    // 未绑定手机解绑操作时，应先绑定手机号
+    operateKey.value = 'confirm_bind_phone';
   } else {
     const _key = `${str}_${key}` as AccountOperateKey;
     operateKey.value = _key;

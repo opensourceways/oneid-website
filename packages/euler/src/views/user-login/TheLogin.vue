@@ -7,10 +7,10 @@ import { EMAIL_REG } from 'shared/const/common.const';
 import { isLogined, saveUserAuth } from 'shared/utils/login';
 import {
   callBackErrMessage,
-  getUsernammeRules,
   formValidator,
   asyncBlur,
 } from 'shared/utils/utils';
+import { getUsernammeRules } from '@/shared/utils';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { mergeMap, Observable, of, zip, map } from 'rxjs';
 import { onMounted, reactive, ref } from 'vue';
@@ -47,13 +47,9 @@ const login = (form: any) => {
     account: form.account,
     code: form.code,
   };
-  accountLogin(param)
-    .then((data: any) => {
-      loginSuccess(data?.data);
-    })
-    .catch(() => {
-      loginTemplate.value?.resetFormDrag();
-    });
+  accountLogin(param).then((data: any) => {
+    loginSuccess(data?.data);
+  });
 };
 const threePartLogin = (res: any) => {
   const { code, redirect_uri } = res;
@@ -63,13 +59,9 @@ const threePartLogin = (res: any) => {
     community: 'openeuler',
     redirect: redirect_uri,
   };
-  queryToken(param)
-    .then((data: any) => {
-      loginSuccess(data?.data);
-    })
-    .catch(() => {
-      loginTemplate.value?.resetFormDrag();
-    });
+  queryToken(param).then((data: any) => {
+    loginSuccess(data?.data);
+  });
 };
 // 表单值
 const form = reactive({

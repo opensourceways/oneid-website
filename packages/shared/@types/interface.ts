@@ -3,8 +3,8 @@ export interface IObject<T = any> {
 }
 
 export interface LoginParams {
-  client_id: string;
-  redirect_uri: string;
+  client_id?: string;
+  redirect_uri?: string;
   response_type?: string;
   scope?: string;
   state?: number;

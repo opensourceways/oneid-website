@@ -9,11 +9,8 @@ import { useI18n } from 'shared/i18n';
 import { formValidator, doValidatorForm, asyncBlur } from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
 import Verify from '@/verifition/Verify.vue';
-import {
-  callBackErrMessage,
-  getUrlByParams,
-  getUsernammeRules,
-} from 'shared/utils/utils';
+import { callBackErrMessage, getUrlByParams } from 'shared/utils/utils';
+import { getUsernammeRules } from '@/shared/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 
@@ -43,14 +40,8 @@ const form = reactive({
   userName: '',
   account: '',
   code: '',
-  drag: false,
   policy: [],
 } as any);
-
-const resetFormDrag = () => {
-  form.drag = false;
-};
-defineExpose({ resetFormDrag });
 
 // 验证码限制重发
 const disableCode = ref(false);
