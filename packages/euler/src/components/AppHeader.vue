@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, onUnmounted } from 'vue';
-import { useCommon, useCommonData } from 'shared/stores/common';
-import { useI18n } from 'shared/i18n';
-import {
-  showGuard,
-  logout,
-  useStoreData,
-  getUserAuth,
-} from 'shared/utils/login';
-import AppTheme from 'shared/components/AppTheme.vue';
-import AppLanguage from 'shared/components/AppLanguage.vue';
+import { computed, onMounted, ref, onUnmounted } from "vue";
+import { useCommon, useCommonData } from "shared/stores/common";
+import { useI18n } from "shared/i18n";
+import { showGuard, logout, useStoreData, getUserAuth } from "shared/utils/login";
+import AppTheme from "shared/components/AppTheme.vue";
+import AppLanguage from "shared/components/AppLanguage.vue";
 
-import logo_light from '@/assets/logo.svg';
-import logo_dark from '@/assets/logo_dark.svg';
+import logo_light from "@/assets/logo.svg";
+import logo_dark from "@/assets/logo_dark.svg";
 
-import IconCancel from '~icons/app/icon-cancel.svg';
-import IconMenu from '~icons/app/icon-menu.svg';
-import IconLogin from '~icons/app/icon-login.svg';
+import IconCancel from "~icons/app/icon-cancel.svg";
+import IconMenu from "~icons/app/icon-menu.svg";
+import IconLogin from "~icons/app/icon-login.svg";
+import { testIsPhone } from "shared/utils/helper";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 interface NavItem {
   NAME: string;
@@ -36,9 +34,7 @@ const i18n = useI18n();
 const commonStore = useCommon();
 const documentElement = document.documentElement;
 
-const logo = computed(() =>
-  commonStore.theme === 'light' ? logo_light : logo_dark
-);
+const logo = computed(() => (commonStore.theme === "light" ? logo_light : logo_dark));
 
 // 移动菜单事件
 const mobileMenuIcon = ref(false);
@@ -49,20 +45,20 @@ const mobileMenuPanel = () => {
   toBody.value = true;
   setTimeout(() => {
     mobileMenuIcon.value = !mobileMenuIcon.value;
-    documentElement.classList.toggle('overflow');
+    documentElement.classList.toggle("overflow");
   }, 200);
 };
 
 const handleMenuLayer = (e: any) => {
-  if (e.target.className !== 'mobile-menu-side') {
+  if (e.target.className !== "mobile-menu-side") {
     if (mobileChildMenu.value.length === 0) {
       mobileMenuIcon.value = false;
-      documentElement.classList.remove('overflow');
+      documentElement.classList.remove("overflow");
     }
   }
 };
 
-const langShow = ref(['zh', 'en'] as any);
+const langShow = ref(["zh", "en"] as any);
 
 const toBody = ref(false);
 onMounted(() => {
@@ -77,6 +73,17 @@ const goHome = () => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
   location.href = `${origin}/${lang.value}/`;
 };
+
+// 判断移动端
+const isMobile = () => {
+  if (testIsPhone()) {
+    const Lang = lang.value === "zh" ? "/zh/mobile/profile" : "/en/mobile/profile";
+    if (!window.location.pathname.includes(Lang)) {
+      router.push(Lang);
+    }
+  }
+};
+isMobile();
 </script>
 
 <template>
@@ -87,9 +94,7 @@ const goHome = () => {
         <OIcon v-if="!mobileMenuIcon" class="icon" @click="mobileMenuPanel">
           <IconMenu />
         </OIcon>
-        <OIcon v-else class="icon" @click="mobileMenuPanel"
-          ><IconCancel
-        /></OIcon>
+        <OIcon v-else class="icon" @click="mobileMenuPanel"><IconCancel /></OIcon>
       </div>
       <img class="logo" alt="openEuler logo" :src="logo" @click="goHome" />
       <div
@@ -101,10 +106,7 @@ const goHome = () => {
         <div class="mobile-menu-side">
           <div class="mobile-tools">
             <AppTheme />
-            <AppLanguage
-              :show="langShow"
-              @language-click="mobileMenuIcon = false"
-            />
+            <AppLanguage :show="langShow" @language-click="mobileMenuIcon = false" />
           </div>
         </div>
       </div>
@@ -119,11 +121,7 @@ const goHome = () => {
       <div class="opt-user">
         <div v-if="token">
           <div class="el-dropdown-link opt-info">
-            <img
-              v-if="guardAuthClient.photo"
-              :src="guardAuthClient.photo"
-              class="img"
-            />
+            <img v-if="guardAuthClient.photo" :src="guardAuthClient.photo" class="img" />
             <div v-else class="img"></div>
             <p class="opt-name">{{ guardAuthClient.username }}</p>
           </div>
