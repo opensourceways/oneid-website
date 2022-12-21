@@ -1,29 +1,14 @@
-import { WEB_COMMUNITY } from './const';
-import { useCommonData } from 'shared/stores/common';
-import { accountExists } from 'shared/api/api-login';
-import { callBackErrMessage } from 'shared/utils/utils';
 import { FormItemRule } from 'element-plus';
-import { useI18nStr } from 'shared/i18n';
+import { accountExists } from 'shared/api/api-login';
 import { USERNAME_REG } from 'shared/const/common.const';
-
-export function getCommunityParams(more = false) {
-  const param = {
-    community: WEB_COMMUNITY,
-  };
-  if (more) {
-    const { loginParams } = useCommonData();
-    Object.assign(param, {
-      client_id: loginParams.value.client_id,
-    });
-  }
-  return param;
-}
+import { useI18nStr } from 'shared/i18n';
+import { callBackErrMessage } from 'shared/utils/utils';
 
 // 用户名重名校验
 export function validatorSameName(rule: any, value: any): void | Promise<void> {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ userName: value, ...getCommunityParams(true) })
+      accountExists({ userName: value })
         .then(() => {
           resolve();
         })

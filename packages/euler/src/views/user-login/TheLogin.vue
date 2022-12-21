@@ -7,10 +7,10 @@ import { EMAIL_REG } from 'shared/const/common.const';
 import { isLogined, saveUserAuth } from 'shared/utils/login';
 import {
   callBackErrMessage,
-  getUsernammeRules,
   formValidator,
   asyncBlur,
 } from 'shared/utils/utils';
+import { getUsernammeRules } from '@/shared/utils';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { mergeMap, Observable, of, zip, map } from 'rxjs';
 import { onMounted, reactive, ref } from 'vue';
