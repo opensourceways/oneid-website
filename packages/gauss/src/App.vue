@@ -1,18 +1,8 @@
 <script setup lang="ts">
-import { watch } from 'vue';
 import { useCommon } from 'shared/stores/common';
-
-const props = defineProps({
-  lang: {
-    type: String,
-    default: 'zh',
-  },
-});
-const store = useCommon();
-watch(
-  () => props.lang,
-  () => store.changeLang(props.lang)
-);
+const { saveLoginParams } = useCommon();
+// 设置全局的默认client_id
+saveLoginParams({ client_id: '90aa315f895544359209920da32ff75a' });
 </script>
 
 <template>

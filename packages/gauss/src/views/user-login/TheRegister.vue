@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
+import { getCommunityParams } from '@/shared/utils';
 const loginTemplate = ref<any>(null);
 const router = useRouter();
 const route = useRoute();
@@ -17,21 +18,19 @@ const goLogin = () => {
 };
 const register = (form: any) => {
   const param = {
+    ...getCommunityParams(true),
     userName: form.userName,
     account: form.account,
     code: form.code,
+    company: form.company,
   };
-  accountRegister(param)
-    .then(() => {
-      ElMessage.success({
-        showClose: true,
-        message: i18n.value.REGISTER_SUCCESS,
-      });
-      goLogin();
-    })
-    .catch(() => {
-      loginTemplate.value?.resetFormDrag();
+  accountRegister(param).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.REGISTER_SUCCESS,
     });
+    goLogin();
+  });
 };
 </script>
 <template>

@@ -43,14 +43,8 @@ const form = reactive({
   userName: '',
   account: '',
   code: '',
-  drag: false,
   policy: [],
 } as any);
-
-const resetFormDrag = () => {
-  form.drag = false;
-};
-defineExpose({ resetFormDrag });
 
 // 验证码限制重发
 const disableCode = ref(false);

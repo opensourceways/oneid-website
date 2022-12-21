@@ -31,6 +31,7 @@ export default {
   BIND_FAILED: '绑定失败',
   UNBIND_FAILED: '解绑失败',
   CONFIRM_BIND_EMAIL: '请先绑定邮箱',
+  CONFIRM_BIND_PHONE: '请先绑定手机号',
   BIND_EMAIL: '绑定邮箱',
   EMAIL_CODE: '邮箱验证码',
   MODIFY_EMAIL: '修改邮箱',

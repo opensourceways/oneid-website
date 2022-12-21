@@ -21,17 +21,13 @@ const register = (form: any) => {
     account: form.account,
     code: form.code,
   };
-  accountRegister(param)
-    .then(() => {
-      ElMessage.success({
-        showClose: true,
-        message: i18n.value.REGISTER_SUCCESS,
-      });
-      goLogin();
-    })
-    .catch(() => {
-      loginTemplate.value?.resetFormDrag();
+  accountRegister(param).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.REGISTER_SUCCESS,
     });
+    goLogin();
+  });
 };
 </script>
 <template>

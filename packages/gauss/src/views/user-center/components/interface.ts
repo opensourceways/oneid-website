@@ -1,7 +1,7 @@
 export type SelectTabKey = 'userinfo' | 'binding' | 'security';
 
 export type AccountOperateKey =
-  | 'confirm_bind_email'
+  | 'confirm_bind_phone'
   | 'bind_email'
   | 'modify_email'
   | 'unbind_email'

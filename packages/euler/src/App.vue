@@ -1,19 +1,4 @@
-<script setup lang="ts">
-import { watch } from 'vue';
-import { useCommon } from 'shared/stores/common';
-
-const props = defineProps({
-  lang: {
-    type: String,
-    default: 'zh',
-  },
-});
-const store = useCommon();
-watch(
-  () => props.lang,
-  () => store.changeLang(props.lang)
-);
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <router-view />

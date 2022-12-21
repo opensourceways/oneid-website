@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { bindAccount, modifyUser, sendCode } from 'shared/api/api-center';
-import { accountExists, accountLogin, queryToken } from 'shared/api/api-login';
-import CountdownButton from 'shared/components/CountdownButton.vue';
+import { accountExists, accountLogin } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import { EMAIL_REG } from 'shared/const/common.const';
 import { isLogined, saveUserAuth } from 'shared/utils/login';
@@ -17,6 +16,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
+import { WEB_COMMUNITY } from '@/shared/const';
 
 const formRef = ref<FormInstance>();
 const i18n = useI18n();
@@ -39,34 +39,14 @@ onMounted(() => {
 });
 const login = (form: any) => {
   const param = {
-    community: 'openeuler',
+    community: WEB_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
     code: form.code,
   };
-  accountLogin(param)
-    .then((data: any) => {
-      loginSuccess(data?.data);
-    })
-    .catch(() => {
-      loginTemplate.value?.resetFormDrag();
-    });
-};
-const threePartLogin = (res: any) => {
-  const { code, redirect_uri } = res;
-  const param = {
-    code: code,
-    permission: 'sigRead',
-    community: 'openeuler',
-    redirect: redirect_uri,
-  };
-  queryToken(param)
-    .then((data: any) => {
-      loginSuccess(data?.data);
-    })
-    .catch(() => {
-      loginTemplate.value?.resetFormDrag();
-    });
+  accountLogin(param).then((data: any) => {
+    loginSuccess(data?.data);
+  });
 };
 // 表单值
 const form = reactive({
@@ -211,11 +191,10 @@ const padUserinfo = reactive({
 
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  const { token, username, email_exist } = data || {};
+  const { token, username } = data || {};
   saveUserAuth(token);
-  if (!username || !email_exist) {
+  if (!username) {
     padUserinfo.username = username;
-    padUserinfo.email_exist = email_exist;
     visible.value = true;
     return;
   }
@@ -231,11 +210,7 @@ const doSuccess = () => {
 };
 </script>
 <template>
-  <LoginTemplate
-    ref="loginTemplate"
-    @submit="login"
-    @three-part-login="threePartLogin"
-  >
+  <LoginTemplate ref="loginTemplate" @submit="login">
     <template #switch>
       {{ i18n.NO_ACCOUNT }}
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
@@ -265,28 +240,6 @@ const doSuccess = () => {
           :placeholder="i18n.ENTER_USERNAME"
           @blur="asyncBlur(formRef, 'userName')"
         />
-      </el-form-item>
-      <el-form-item
-        v-if="!padUserinfo.email_exist"
-        prop="email"
-        :rules="emailRules"
-      >
-        <OInput
-          v-model="form.email"
-          :placeholder="i18n.ENTER_YOUR_EMAIL"
-          @blur="asyncBlur(formRef, 'email')"
-        />
-      </el-form-item>
-      <el-form-item v-if="!padUserinfo.email_exist" prop="code" :rules="rules">
-        <div class="code">
-          <OInput v-model="form.code" :placeholder="i18n.ENTER_RECEIVED_CODE" />
-          <CountdownButton
-            v-model="disableCode"
-            class="btn"
-            size="small"
-            @click="getcode(formRef)"
-          />
-        </div>
       </el-form-item>
     </el-form>
     <template #footer>

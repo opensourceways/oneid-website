@@ -10,6 +10,7 @@ import Verify from '@/verifition/Verify.vue';
 import { callBackErrMessage, getUsernammeRules } from 'shared/utils/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
+import { getCommunityParams } from '@/shared/utils';
 
 type TYPE = 'login' | 'register';
 const props = defineProps({
@@ -19,7 +20,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['submit', 'threePartLogin']);
+const emit = defineEmits(['submit']);
 
 const { type } = toRefs(props);
 const i18n = useI18n();
@@ -30,14 +31,9 @@ const form = reactive({
   userName: '',
   account: '',
   code: '',
-  drag: false,
+  company: '',
   policy: [],
 } as any);
-
-const resetFormDrag = () => {
-  form.drag = false;
-};
-defineExpose({ resetFormDrag });
 
 // 验证码限制重发
 const disableCode = ref(false);
@@ -56,6 +52,7 @@ const getcode = (formEl: FormInstance | undefined) => {
 
 const verifySuccess = (data: any) => {
   const param = {
+    ...getCommunityParams(),
     channel: type.value === 'login' ? 'CHANNEL_LOGIN' : 'CHANNEL_REGISTER',
     account: form.account,
     captchaVerification: data.captchaVerification,
@@ -82,10 +79,10 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
     if (type.value === 'register') {
-      if (EMAIL_REG.test(value)) {
+      if (PHONE_REG.test(value)) {
         callback();
       } else {
-        callback(i18n.value.ENTER_VAILD_EMAIL);
+        callback(i18n.value.ENTER_VAILD_PHONE);
       }
       return;
     }
@@ -100,7 +97,7 @@ const validatorAccount = (rule: any, value: any, callback: any) => {
 const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ account: value })
+      accountExists({ account: value, ...getCommunityParams(true) })
         .then(() => {
           resolve();
         })
@@ -114,7 +111,7 @@ const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
 const validatorExistAccount = (rule: any, value: any): void | Promise<void> => {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ account: value })
+      accountExists({ account: value, ...getCommunityParams(true) })
         .then(() => {
           reject(i18n.value.ACCOUNT_NOT_EXIST);
         })
@@ -240,31 +237,29 @@ const goToOtherPage = (type: string) => {
             <OInput v-model="form.company" :placeholder="i18n.ENTER_COMPANY" />
           </el-form-item>
         </span>
-        <el-form-item prop="account" :rules="accountRules">
-          <OInput
-            v-model="form.account"
-            :placeholder="
-              type === 'register'
-                ? i18n.ENTER_YOUR_EMAIL
-                : i18n.ENTER_YOUR_EMAIL_OR_PHONE
-            "
-            @blur="blur(formRef, 'account')"
-          />
-        </el-form-item>
-        <el-form-item prop="code" :rules="rules">
-          <div class="code">
+        <span v-else>
+          <el-form-item prop="account" :rules="accountRules">
             <OInput
-              v-model="form.code"
-              :placeholder="i18n.ENTER_RECEIVED_CODE"
+              v-model="form.account"
+              :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
+              @blur="blur(formRef, 'account')"
             />
-            <CountdownButton
-              v-model="disableCode"
-              class="btn"
-              size="small"
-              @click="getcode(formRef)"
-            />
-          </div>
-        </el-form-item>
+          </el-form-item>
+          <el-form-item prop="code" :rules="rules">
+            <div class="code">
+              <OInput
+                v-model="form.code"
+                :placeholder="i18n.ENTER_RECEIVED_CODE"
+              />
+              <CountdownButton
+                v-model="disableCode"
+                class="btn"
+                size="small"
+                @click="getcode(formRef)"
+              />
+            </div>
+          </el-form-item>
+        </span>
         <el-form-item prop="policy" :rules="policyRules">
           <div class="checkbox">
             <OCheckboxGroup
