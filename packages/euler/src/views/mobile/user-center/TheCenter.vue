@@ -20,6 +20,7 @@ const i18n = useI18n();
           {{ i18n.PLEASE }}
           <a @click="showGuard()">{{ i18n.LOGIN }}</a> !
         </p>
+
       </template>
     </NotFound>
     <UserCenter v-else></UserCenter>
