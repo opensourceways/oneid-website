@@ -12,10 +12,9 @@ FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.22.0-22.03
 
 # COPY ./deploy/test-login.html /usr/share/nginx/html/test-login.html
 
-COPY --from=Builder /home/openeuler-usercenter/web/dist/ /usr/share/nginx/html/
+COPY --from=Builder /home/openeuler-usercenter/web/dist/gauss /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
 COPY ./deploy/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./deploy/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 
 ENV RUN_USER nginx
