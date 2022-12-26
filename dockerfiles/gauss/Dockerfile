@@ -6,7 +6,7 @@ COPY . /home/openeuler-usercenter/web
 
 RUN pnpm install
 
-RUN pnpm build
+RUN pnpm build:gauss
 
 FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.22.0-22.03-lts
 
