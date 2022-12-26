@@ -17,6 +17,7 @@ import logo_dark from '@/assets/logo_dark.svg';
 import IconCancel from '~icons/app/icon-cancel.svg';
 import IconMenu from '~icons/app/icon-menu.svg';
 import IconLogin from '~icons/app/icon-login.svg';
+import { getCommunityParams } from '@/shared/utils';
 
 interface NavItem {
   NAME: string;
@@ -129,7 +130,7 @@ const goHome = () => {
           </div>
           <ul class="menu-list">
             <!-- <li @click="jumpToUserZone()">{{ i18n.common.USER_CENTER }}</li> -->
-            <li @click="logout()">{{ i18n.LOGOUT }}</li>
+            <li @click="logout(getCommunityParams(true))">{{ i18n.LOGOUT }}</li>
           </ul>
         </div>
         <div v-else class="login" @click="showGuard()">

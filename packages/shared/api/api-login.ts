@@ -55,6 +55,15 @@ export function queryCourse(params: object) {
     .then((res: AxiosResponse) => res.data);
 }
 /**
+ * 获取授权的相关回调链接
+ */
+export function refreshUser(params: object) {
+  const url = '/oneid/user/refresh';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
  * 获取授权token链接
  */
 export function queryToken(params: object) {
@@ -66,9 +75,9 @@ export function queryToken(params: object) {
 /**
  * 获取idtoken用于退出
  */
-export function queryIDToken() {
+export function queryIDToken(params: any) {
   const url = '/oneid/logout';
-  return request.get(url).then((res: AxiosResponse) => res.data);
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
 }
 
 /**
@@ -98,7 +107,7 @@ export function appVerify(params: any) {
 }
 
 /**
- * 校验传入url参数
+ * oidc登录成功调用接口
  */
 export function authorizeOidc(params: any) {
   const url = '/oneid/oidc/auth';

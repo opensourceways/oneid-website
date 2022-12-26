@@ -1,4 +1,4 @@
-import { queryCourse, queryIDToken } from '../api/api-login';
+import { queryCourse, queryIDToken, refreshUser } from '../api/api-login';
 import { useLogin } from '../stores/login';
 import { storeToRefs } from 'pinia';
 import { AuthenticationClient } from 'authing-js-sdk';
@@ -51,19 +51,23 @@ export function getUserAuth() {
 
 // 退出登录
 export function logout(
-  community = 'openeuler',
+  param = { community: 'openeuler' },
   redirectUri = window?.location?.origin
 ) {
-  queryIDToken().then((res: any) => {
-    const idToken = res.data.id_token;
-    const client1 = createClient(community);
-    const logoutUrl = client1.buildLogoutUrl({
-      expert: true,
-      redirectUri,
-      idToken,
-    });
+  queryIDToken(param).then((res: any) => {
     saveUserAuth();
-    window!.location!.href = logoutUrl;
+    if (param.community === 'openeuler') {
+      const idToken = res.data.id_token;
+      const client1 = createClient(param.community);
+      const logoutUrl = client1.buildLogoutUrl({
+        expert: true,
+        redirectUri,
+        idToken,
+      });
+      window.location.href = logoutUrl;
+    } else {
+      window.location.href = redirectUri;
+    }
   });
 }
 
@@ -90,7 +94,8 @@ export function createClient(community = 'openeuler', url?: string) {
 }
 export function showGuard() {
   const origin = import.meta.env.VITE_LOGIN_ORIGIN;
-  location.href = `${origin}/login?redirect_uri=${location.href}`;
+  const { lang } = getLanguage();
+  location.href = `${origin}/login?redirect_uri=${location.href}&lang=${lang}`;
 }
 
 // token失效跳转首页
@@ -110,17 +115,13 @@ export function useStoreData() {
   return stores;
 }
 
-// 刷新页面后store内参数被清除，需重新设定
-export function setStoreData(community = 'openeuler') {
-  refreshInfo(community);
-}
-
 // 刷新后重新请求登录用户信息
-export function refreshInfo(community = 'openeuler') {
+export function refreshInfo(param = { community: 'openeuler' }) {
   const { token } = getUserAuth();
   if (token) {
     const { guardAuthClient } = useStoreData();
-    queryCourse({ community }).then((res) => {
+    const query = param.community === 'openeuler' ? queryCourse : refreshUser;
+    query(param).then((res) => {
       const { data } = res;
       if (Object.prototype.toString.call(data) === '[object Object]') {
         guardAuthClient.value = data;
@@ -131,11 +132,12 @@ export function refreshInfo(community = 'openeuler') {
 }
 
 // 判断是否为有效登录状态
-export function isLogined() {
+export function isLogined(param = { community: 'openeuler' }) {
   return new Promise((resolve, reject) => {
     const { token } = getUserAuth();
     if (token) {
-      queryCourse({ community: 'openeuler' })
+      const query = param.community === 'openeuler' ? queryCourse : refreshUser;
+      query(param)
         .then((res: any) => {
           const { data } = res;
           if (data) {

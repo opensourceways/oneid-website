@@ -5,6 +5,7 @@ import ContentBox from './ContentBox.vue';
 import { deleteAccount } from 'shared/api/api-center';
 import { ElMessage, FormInstance } from 'element-plus';
 import { saveUserAuth } from 'shared/utils/login';
+import { getCommunityParams } from '@/shared/utils';
 
 const i18n = useI18n();
 // 控制弹窗显示
@@ -39,7 +40,7 @@ const confirm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
-      deleteAccount().then(() => {
+      deleteAccount(getCommunityParams(true)).then(() => {
         ElMessage.success({
           showClose: true,
           message: i18n.value.DELETE_SUCCESS,

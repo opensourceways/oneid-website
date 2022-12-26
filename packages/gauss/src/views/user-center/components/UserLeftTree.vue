@@ -13,6 +13,7 @@ import {
   UploadRequestOptions,
 } from 'element-plus';
 import { modifyPhoto } from 'shared/api/api-center';
+import { getCommunityParams } from '@/shared/utils';
 
 interface TabData {
   key: SelectTabKey;
@@ -72,8 +73,11 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
   const formdata = new FormData();
   formdata.append('file', data.file);
+  const param: any = getCommunityParams(true);
+  formdata.append('community', param.community);
+  formdata.append('client_id', param.client_id);
   return modifyPhoto(formdata).then(() => {
-    store.initUserInfo();
+    store.initUserInfo(getCommunityParams(true));
   });
 };
 </script>

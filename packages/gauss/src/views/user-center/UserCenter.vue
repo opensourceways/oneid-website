@@ -7,6 +7,7 @@ import AccountSecurity from './components/AccountSecurity.vue';
 import { SelectTabKey } from './components/interface';
 import { onMounted, ref } from 'vue';
 import { useCommon } from 'shared/stores/common';
+import { getCommunityParams } from '@/shared/utils';
 
 type ComponentKey<T = any> = {
   [key in SelectTabKey]: T;
@@ -30,7 +31,7 @@ const selected = ref('userinfo' as SelectTabKey);
 const store = useCommon();
 
 onMounted(() => {
-  store.initUserInfo();
+  store.initUserInfo(getCommunityParams(true));
 });
 </script>
 <template>
