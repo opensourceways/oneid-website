@@ -14,6 +14,7 @@ import {
 } from 'element-plus';
 import { modifyPhoto } from 'shared/api/api-center';
 import { getCommunityParams } from '@/shared/utils';
+import { refreshInfo } from 'shared/utils/login';
 
 interface TabData {
   key: SelectTabKey;
@@ -78,6 +79,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
   formdata.append('client_id', param.client_id);
   return modifyPhoto(formdata).then(() => {
     store.initUserInfo(getCommunityParams(true));
+    refreshInfo(getCommunityParams(true));
   });
 };
 </script>
