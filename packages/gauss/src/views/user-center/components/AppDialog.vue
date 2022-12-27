@@ -165,6 +165,7 @@ const codePlaceholder = computed(
     v-model="modelValue"
     :draggable="true"
     width="30%"
+    :close-on-click-modal="false"
     :before-close="close"
     :show-close="false"
     :destroy-on-close="true"

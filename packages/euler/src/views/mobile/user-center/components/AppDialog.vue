@@ -165,6 +165,7 @@ const codePlaceholder = computed(
     width="100%"
     :before-close="close"
     :show-close="false"
+    :close-on-click-modal="false"
     :destroy-on-close="true"
     @open="open"
   >

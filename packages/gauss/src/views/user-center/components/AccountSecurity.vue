@@ -74,6 +74,7 @@ const confirm = (formEl: FormInstance | undefined) => {
     v-model="vilible"
     :draggable="true"
     width="30%"
+    :close-on-click-modal="false"
     :before-close="close"
     :show-close="false"
     :destroy-on-close="true"

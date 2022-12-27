@@ -72,6 +72,7 @@ const confirm = (formEl: FormInstance | undefined) => {
   <el-dialog
     v-model="vilible"
     :draggable="true"
+    :close-on-click-modal="false"
     width="30%"
     :before-close="close"
     :show-close="false"

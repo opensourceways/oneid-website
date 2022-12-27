@@ -93,6 +93,7 @@ const goToTree = () => {
     :draggable="true"
     width="100%"
     :before-close="close"
+    :close-on-click-modal="false"
     :show-close="false"
     :destroy-on-close="true"
   >
