@@ -21,7 +21,7 @@ const i18n = useI18n();
 
 const data = ref([
   {
-    key: 'userName',
+    key: 'username',
     label: useI18nStr('USER_NAME'),
     value: '',
     disabled: true,
@@ -47,7 +47,7 @@ const data = ref([
     disabled: true,
   },
   {
-    key: 'nickName',
+    key: 'nickname',
     label: useI18nStr('NICKNAME'),
     value: '',
     placeholder: useI18nStr('ENTER_NICKNAME'),

@@ -90,7 +90,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
         <div v-else class="photo"></div>
       </el-upload>
 
-      <h5 class="nickname">{{ userInfo.userName }}</h5>
+      <h5 class="nickname">{{ userInfo.username }}</h5>
     </div>
     <ul class="user-tab">
       <li

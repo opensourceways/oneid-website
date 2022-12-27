@@ -8,7 +8,7 @@ import { callBackErrMessage } from 'shared/utils/utils';
 export function validatorSameName(rule: any, value: any): void | Promise<void> {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ userName: value })
+      accountExists({ username: value })
         .then(() => {
           resolve();
         })

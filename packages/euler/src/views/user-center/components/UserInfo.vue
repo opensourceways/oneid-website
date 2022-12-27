@@ -22,7 +22,7 @@ const i18n = useI18n();
 
 const data = ref([
   {
-    key: 'userName',
+    key: 'username',
     label: useI18nStr('USER_NAME'),
     value: '',
     disabled: true,
@@ -48,7 +48,7 @@ const data = ref([
     disabled: true,
   },
   {
-    key: 'nickName',
+    key: 'nickname',
     label: useI18nStr('NICKNAME'),
     value: '',
     placeholder: useI18nStr('ENTER_NICKNAME'),
@@ -129,10 +129,10 @@ const getSubmitParams = (formEl: FormInstance[] | undefined) => {
       }
       return pre;
     }, {} as IObject);
-    if (!userInfo.value.userName) {
+    if (!userInfo.value.username) {
       formEl[0].validate((valid: boolean) => {
         if (valid) {
-          Object.assign(param, { username: form.userName });
+          Object.assign(param, { username: form.username });
           observer.next(param);
           observer.complete();
         } else {
@@ -149,7 +149,7 @@ const getSubmitParams = (formEl: FormInstance[] | undefined) => {
 
 // 表单值
 const form = reactive({
-  userName: '',
+  username: '',
 } as any);
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
@@ -163,18 +163,18 @@ const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
       <div v-for="item in data" :key="item.key" class="info-item">
         <p class="info-label">{{ item.label }}</p>
         <el-form
-          v-if="item.key === 'userName' && !item.value"
+          v-if="item.key === 'username' && !item.value"
           ref="formRef1"
           label-width="0"
           :model="form"
         >
           <el-form-item
-            prop="userName"
+            prop="username"
             :rules="userNameRules"
             class="info-form-pd"
           >
             <OInput
-              v-model="form.userName"
+              v-model="form.username"
               class="info-input"
               :placeholder="i18n.ENTER_USERNAME"
             />

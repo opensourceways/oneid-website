@@ -23,7 +23,7 @@ export function getCommunityParams(more = false) {
 export function validatorSameName(rule: any, value: any): void | Promise<void> {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ userName: value, ...getCommunityParams(true) })
+      accountExists({ username: value, ...getCommunityParams(true) })
         .then(() => {
           resolve();
         })

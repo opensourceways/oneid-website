@@ -15,7 +15,7 @@ export function queryUser(params: any) {
 /**
  * 修改用户信息
  */
-export function modifyUser(body: any, params: any) {
+export function modifyUser(body: any, params?: any) {
   const url = '/oneid/update/baseInfo';
 
   return request

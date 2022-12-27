@@ -19,7 +19,7 @@ const goLogin = () => {
 const register = (form: any) => {
   const param = {
     ...getCommunityParams(true),
-    userName: form.userName,
+    username: form.username,
     account: form.account,
     code: form.code,
     company: form.company,

@@ -29,7 +29,7 @@ const { lang } = useCommonData();
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
-  userName: '',
+  username: '',
   account: '',
   code: '',
   company: '',
@@ -206,11 +206,11 @@ const goToOtherPage = (type: string) => {
         style="max-width: 460px"
       >
         <span v-if="type === 'register'">
-          <el-form-item prop="userName" :rules="userNameRules">
+          <el-form-item prop="username" :rules="userNameRules">
             <OInput
-              v-model="form.userName"
+              v-model="form.username"
               :placeholder="i18n.ENTER_USERNAME"
-              @blur="blur(formRef, 'userName')"
+              @blur="blur(formRef, 'username')"
             />
           </el-form-item>
           <el-form-item prop="account" :rules="accountRules">
