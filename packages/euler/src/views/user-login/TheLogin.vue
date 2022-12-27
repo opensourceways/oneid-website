@@ -249,7 +249,13 @@ const doSuccess = () => {
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
     </template>
-    <el-form ref="formRef" label-width="0" :model="form" class="form">
+    <el-form
+      ref="formRef"
+      label-width="0"
+      :model="form"
+      class="form"
+      @submit.prevent=""
+    >
       <el-form-item
         v-if="!padUserinfo.username"
         prop="username"
