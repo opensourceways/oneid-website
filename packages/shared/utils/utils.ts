@@ -1,7 +1,9 @@
 import { useCommon } from '../stores/common';
-import { FormInstance } from 'element-plus';
+import { FormInstance, FormItemRule } from 'element-plus';
 import { from, Observable, reduce, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
+import { useI18nStr } from '../i18n';
+import { COMPANYNAME_REG, NICKNAME_REG } from '../const/common.const';
 
 // iframe的刷新回调
 export function iframeRefreshCallback() {
@@ -141,4 +143,23 @@ export function asyncBlur(formEl: FormInstance | undefined, field: string) {
   setTimeout(() => {
     formValidator(formEl, field).subscribe();
   }, 200);
+}
+export function getNicknammeRules(): FormItemRule[] {
+  return [
+    {
+      pattern: NICKNAME_REG,
+      message: useI18nStr('NICKNAME_VAILD') as unknown as string,
+      trigger: 'blur',
+    },
+  ];
+}
+
+export function getCompanyRules(): FormItemRule[] {
+  return [
+    {
+      pattern: COMPANYNAME_REG,
+      message: useI18nStr('COMPANY_VAILD') as unknown as string,
+      trigger: 'blur',
+    },
+  ];
 }

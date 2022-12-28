@@ -4,7 +4,12 @@ import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { PropType, reactive, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { formValidator, doValidatorForm, asyncBlur } from 'shared/utils/utils';
+import {
+  formValidator,
+  doValidatorForm,
+  asyncBlur,
+  getCompanyRules,
+} from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
 import Verify from '@/verifition/Verify.vue';
 import { callBackErrMessage } from 'shared/utils/utils';
@@ -158,6 +163,12 @@ const accountRules = reactive<FormItemRule[]>([
   },
 ]);
 
+// 公司校验
+const companyRules = reactive<FormItemRule[]>([
+  ...requiredRules,
+  ...getCompanyRules(),
+]);
+
 // 隐私声明校验
 const policyRules = reactive<FormItemRule[]>([
   {
@@ -234,7 +245,11 @@ const goToOtherPage = (type: string) => {
               />
             </div>
           </el-form-item>
-          <el-form-item prop="company" :rules="rules">
+          <el-form-item
+            prop="company"
+            :rules="companyRules"
+            :inline-message="true"
+          >
             <OInput v-model="form.company" :placeholder="i18n.ENTER_COMPANY" />
           </el-form-item>
         </span>
