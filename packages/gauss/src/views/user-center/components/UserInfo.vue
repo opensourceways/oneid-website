@@ -4,7 +4,7 @@ import { useI18n, useI18nStr } from 'shared/i18n';
 import ContentBox from './ContentBox.vue';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import { modifyUser } from 'shared/api/api-center';
-import { ElMessage, FormInstance } from 'element-plus';
+import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { getCommunityParams } from '@/shared/utils';
 import { Observable } from 'rxjs';
 import { IObject } from 'shared/@types/interface';
@@ -25,6 +25,15 @@ const store = useCommon();
 
 const i18n = useI18n();
 
+// 公司校验
+const companyRules = reactive<FormItemRule[]>([
+  {
+    required: true,
+    message: useI18nStr('NOT_EMPTY') as unknown as string,
+    trigger: 'blur',
+  },
+  ...getCompanyRules(),
+]);
 const data = ref([
   {
     key: 'username',
@@ -60,9 +69,10 @@ const data = ref([
     label: useI18nStr('COMPANY'),
     placeholder: useI18nStr('ENTER_COMPANY'),
     disabled: false,
-    rules: getCompanyRules(),
+    rules: companyRules,
   },
 ]);
+
 // 表单值
 const form = reactive({
   username: '',
