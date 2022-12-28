@@ -47,13 +47,15 @@ const verify = ref();
 // 获取验证码
 const getcode = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  formValidator(formEl, 'account').subscribe((valid) => {
-    if (valid) {
-      verify.value.show();
-    } else {
-      return false;
+  formValidator(formEl, ['account', 'username', 'company']).subscribe(
+    (valid) => {
+      if (valid) {
+        verify.value.show();
+      } else {
+        return false;
+      }
     }
-  });
+  );
 };
 
 const verifySuccess = (data: any) => {
