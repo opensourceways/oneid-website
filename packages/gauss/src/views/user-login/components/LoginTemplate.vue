@@ -355,4 +355,7 @@ const goToOtherPage = (type: string) => {
 .el-form-item {
   margin-bottom: 24px;
 }
+:deep(.el-form-item__error--inline) {
+  margin-left: 0 !important;
+}
 </style>
