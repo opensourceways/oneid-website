@@ -148,12 +148,13 @@ export default {
   LEGAL_NOTICE: '法律声明',
   THREE_PART_LOGIN: '第三方账号登录',
   CONTAIN_CHARACTER: '长度必须为3到20个字符',
+  COMPANY_CONTAIN_CHARACTER: '长度必须为2到100个字符',
   USERNAME_VAILD:
     '只能由字母、数字、下划线(_)组成,必须以字母开头，不能以下划线(_)结尾',
   NICKNAME_VAILD:
     '请输入3到20个字符。只能由字母、数字、汉字或者下划线(_)组成。必须以字母或者汉字开头，不能以下划线(_)结尾',
   COMPANY_VAILD:
-    '请输入2到100个字符。只能由字母、数字、汉字、括号或者点(.)、逗号(,)、&组成。必须以字母、数字或者汉字开头，不能以括号、逗号(,)和&结尾',
+    '只能由字母、数字、汉字、(.),&组成。必须以字母、数字或者汉字开头，不能以(),&结尾',
   VERIFY_SUCCESS: '[0]s验证成功',
   VERIFY_FAILED: '验证失败',
   SWIPE_RIGHT: '向右滑动完成验证',
