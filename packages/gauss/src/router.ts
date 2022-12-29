@@ -41,6 +41,66 @@ export const routes = [
     name: 'notfound',
     component: NotFound,
   },
+  {
+    path: '/zh/mobile/profile',
+    name: 'zh_mobile_profile',
+    component: () => {
+      return import('@/views/mobile/user-center/TheCenter.vue');
+    },
+  },
+  {
+    path: '/zh/mobile/profile/userinfo',
+    name: 'zh_mobile_profile_userInfo',
+    component: () => {
+      return import('@/views/mobile/user-center/components/UserInfo.vue');
+    },
+  },
+  {
+    path: '/zh/mobile/profile/binding',
+    name: 'zh_mobile_profile_binding',
+    component: () => {
+      return import('@/views/mobile/user-center/components/AccountBinding.vue');
+    },
+  },
+  {
+    path: '/zh/mobile/profile/security',
+    name: 'zh_mobile_profile_security',
+    component: () => {
+      return import(
+        '@/views/mobile/user-center/components/AccountSecurity.vue'
+      );
+    },
+  },
+  {
+    path: '/en/mobile/profile',
+    name: 'en_mobile_profile',
+    component: () => {
+      return import('@/views/mobile/user-center/TheCenter.vue');
+    },
+  },
+  {
+    path: '/en/mobile/profile/userinfo',
+    name: 'en_mobile_profile_userInfo',
+    component: () => {
+      return import('@/views/mobile/user-center/components/UserInfo.vue');
+    },
+  },
+  {
+    path: '/en/mobile/profile/binding',
+    name: 'en_mobile_profile_binding',
+    component: () => {
+      return import('@/views/mobile/user-center/components/AccountBinding.vue');
+    },
+  },
+  {
+    path: '/en/mobile/profile/security',
+    name: 'en_mobile_profile_security',
+    component: () => {
+      return import(
+        '@/views/mobile/user-center/components/AccountSecurity.vue'
+      );
+    },
+  }
 ];
 
 export const router = createRouter({

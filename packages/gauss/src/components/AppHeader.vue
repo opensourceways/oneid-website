@@ -18,7 +18,9 @@ import IconCancel from '~icons/app/icon-cancel.svg';
 import IconMenu from '~icons/app/icon-menu.svg';
 import IconLogin from '~icons/app/icon-login.svg';
 import { getCommunityParams } from '@/shared/utils';
-
+import { testIsPhone } from "shared/utils/helper";
+import { useRouter } from "vue-router";
+const router = useRouter();
 interface NavItem {
   NAME: string;
   PATH: string;
@@ -78,6 +80,17 @@ const goHome = () => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
   location.href = `${origin}/${lang.value}/`;
 };
+
+// 判断移动端
+const isMobile = () => {
+  if (testIsPhone()) {
+    const Lang = lang.value === "zh" ? "/zh/mobile/profile" : "/en/mobile/profile";
+    if (!window.location.pathname.includes(Lang)) {
+      router.push(Lang);
+    }
+  }
+};
+isMobile();
 </script>
 
 <template>
