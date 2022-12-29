@@ -85,7 +85,7 @@ const requestInterceptorId = request.interceptors.request.use(
       }
       // 如果已请求，则取消重复请求
       if (pendingPool.has(config.url)) {
-        cancelFn(`${config.url}请求重复`);
+        // cancelFn(`${config.url}请求重复`);
       } else {
         // 存储到请求池
         pendingPool.set(config.url, {
