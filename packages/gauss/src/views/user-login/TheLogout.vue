@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getCommunityParams } from '@/shared/utils';
 import { getUserAuth, logout } from 'shared/utils/login';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -8,7 +9,7 @@ onMounted(() => {
   if (redirect_uri) {
     const { token } = getUserAuth();
     if (token) {
-      logout('openeuler', redirect_uri);
+      logout(getCommunityParams(true), redirect_uri);
     } else {
       location.href = redirect_uri;
     }

@@ -4,22 +4,22 @@ import type { AxiosResponse } from '../plugins/axios';
 /**
  * 获取用户信息
  */
-export function queryUser() {
+export function queryUser(params: any) {
   const url = '/oneid/personal/center/user';
 
   return request
-    .get(url, { global: true })
+    .get(url, { global: true, params })
     .then((res: AxiosResponse) => res.data);
 }
 
 /**
  * 修改用户信息
  */
-export function modifyUser(params: any) {
+export function modifyUser(body: any, params?: any) {
   const url = '/oneid/update/baseInfo';
 
   return request
-    .post(url, params, { global: true })
+    .post(url, body, { params, global: true })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -55,14 +55,20 @@ export function sendCode(params: any) {
  */
 export function sendUnbindCode(params: any) {
   const url = '/oneid/sendcode/unbind';
-
+  const param = {
+    account_type: params.account_type,
+    account: params.account,
+  };
+  if (params.community) {
+    Object.assign(param, {
+      community: params.community,
+      client_id: params.client_id,
+    });
+  }
   return request
     .get(url, {
       global: true,
-      params: {
-        account_type: params.account_type,
-        account: params.account,
-      },
+      params: param,
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -83,15 +89,21 @@ export function modifyAccount(params: any) {
  */
 export function bindAccount(params: any) {
   const url = '/oneid/bind/account';
-
+  const param = {
+    account_type: params.account_type,
+    account: params.account,
+    code: params.code,
+  };
+  if (params.community) {
+    Object.assign(param, {
+      community: params.community,
+      client_id: params.client_id,
+    });
+  }
   return request
     .get(url, {
       global: true,
-      params: {
-        account_type: params.account_type,
-        account: params.account,
-        code: params.code,
-      },
+      params: param,
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -101,15 +113,21 @@ export function bindAccount(params: any) {
  */
 export function unbindAccount(params: any) {
   const url = '/oneid/unbind/account';
-
+  const param = {
+    account_type: params.account_type,
+    account: params.account,
+    code: params.code,
+  };
+  if (params.community) {
+    Object.assign(param, {
+      community: params.community,
+      client_id: params.client_id,
+    });
+  }
   return request
     .get(url, {
       global: true,
-      params: {
-        account_type: params.account_type,
-        account: params.account,
-        code: params.code,
-      },
+      params: param,
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -142,10 +160,10 @@ export function unlinkAccount(params: any) {
 /**
  * 删除账号
  */
-export function deleteAccount() {
+export function deleteAccount(params = { community: 'openeuler' }) {
   const url = '/oneid/delete/user';
 
   return request
-    .get(url, { global: true })
+    .get(url, { global: true, params })
     .then((res: AxiosResponse) => res.data);
 }

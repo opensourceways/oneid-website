@@ -7,6 +7,7 @@ import AccountSecurity from './components/AccountSecurity.vue';
 import { SelectTabKey } from './components/interface';
 import { onMounted, ref } from 'vue';
 import { useCommon } from 'shared/stores/common';
+import { getCommunityParams } from '@/shared/utils';
 
 type ComponentKey<T = any> = {
   [key in SelectTabKey]: T;
@@ -30,7 +31,7 @@ const selected = ref('userinfo' as SelectTabKey);
 const store = useCommon();
 
 onMounted(() => {
-  store.initUserInfo();
+  store.initUserInfo(getCommunityParams(true));
 });
 </script>
 <template>
@@ -38,6 +39,7 @@ onMounted(() => {
     <div class="title">
       <h1 class="title-in">USER CENTER</h1>
       <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
+      <img class="title-login" src="../../assets/login_log.png" />
     </div>
   </div>
   <div class="main">
@@ -77,6 +79,11 @@ onMounted(() => {
       font-weight: 500;
       color: var(--o-color-white);
       line-height: 76px;
+    }
+    &-login {
+      position: absolute;
+      top: 46px;
+      right: 0;
     }
   }
 }

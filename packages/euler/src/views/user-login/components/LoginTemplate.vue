@@ -37,7 +37,7 @@ onUnmounted(() => {
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
-  userName: '',
+  username: '',
   account: '',
   code: '',
   policy: [],
@@ -283,13 +283,13 @@ const goToOtherPage = (type: string) => {
       >
         <el-form-item
           v-if="type === 'register'"
-          prop="userName"
+          prop="username"
           :rules="userNameRules"
         >
           <OInput
-            v-model="form.userName"
+            v-model="form.username"
             :placeholder="i18n.ENTER_USERNAME"
-            @blur="blur(formRef, 'userName')"
+            @blur="blur(formRef, 'username')"
           />
         </el-form-item>
         <el-form-item prop="account" :rules="accountRules">

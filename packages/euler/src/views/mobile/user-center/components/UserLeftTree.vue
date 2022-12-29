@@ -14,6 +14,7 @@ import {
 } from "element-plus";
 import { modifyPhoto } from "shared/api/api-center";
 import { useRouter } from "vue-router";
+import { refreshInfo } from "shared/utils/login";
 const router = useRouter();
 
 interface TabData {
@@ -77,6 +78,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
   formdata.append("file", data.file);
   return modifyPhoto(formdata).then(() => {
     store.initUserInfo();
+    refreshInfo();
   });
 };
 </script>
@@ -93,7 +95,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
         <div v-else class="photo"></div>
       </el-upload>
 
-      <h5 class="nickname">{{ userInfo.userName }}</h5>
+      <h5 class="nickname">{{ userInfo.username }}</h5>
     </div>
     <ul class="user-tab">
       <li

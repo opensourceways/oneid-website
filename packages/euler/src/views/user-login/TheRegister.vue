@@ -17,7 +17,7 @@ const goLogin = () => {
 };
 const register = (form: any) => {
   const param = {
-    userName: form.userName,
+    username: form.username,
     account: form.account,
     code: form.code,
   };

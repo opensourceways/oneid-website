@@ -4,9 +4,10 @@ import { useI18n, useI18nStr } from 'shared/i18n';
 import { AccountDialogConfig, QueryCodeParams } from './interface';
 import { ElMessage, FormInstance } from 'element-plus';
 import { useCommonData } from 'shared/stores/common';
-import { sendCode } from 'shared/api/api-center';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
+import { getCommunityParams } from '@/shared/utils';
+import { sendUnbindCode } from 'shared/api/api-center';
 
 const i18n = useI18n();
 const formRef = ref<FormInstance>();
@@ -26,8 +27,9 @@ const { userInfo } = useCommonData();
 
 // 发送验证码
 const sendCodeFuc = (data: QueryCodeParams) => {
+  Object.assign(data, getCommunityParams(true));
   return new Promise((resolve, rejects) => {
-    sendCode(data)
+    sendUnbindCode(data)
       .then(() => {
         resolve(true);
       })
@@ -163,6 +165,7 @@ const codePlaceholder = computed(
     v-model="modelValue"
     :draggable="true"
     width="30%"
+    :close-on-click-modal="false"
     :before-close="close"
     :show-close="false"
     :destroy-on-close="true"

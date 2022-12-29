@@ -8,7 +8,7 @@ onMounted(() => {
   if (redirect_uri) {
     const { token } = getUserAuth();
     if (token) {
-      logout('openeuler', redirect_uri);
+      logout(undefined, redirect_uri);
     } else {
       location.href = redirect_uri;
     }

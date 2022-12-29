@@ -4,7 +4,12 @@ import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { PropType, reactive, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { formValidator, doValidatorForm, asyncBlur } from 'shared/utils/utils';
+import {
+  formValidator,
+  doValidatorForm,
+  asyncBlur,
+  getCompanyRules,
+} from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
 import Verify from '@/verifition/Verify.vue';
 import { callBackErrMessage } from 'shared/utils/utils';
@@ -29,7 +34,7 @@ const { lang } = useCommonData();
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
-  userName: '',
+  username: '',
   account: '',
   code: '',
   company: '',
@@ -42,13 +47,15 @@ const verify = ref();
 // 获取验证码
 const getcode = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  formValidator(formEl, 'account').subscribe((valid) => {
-    if (valid) {
-      verify.value.show();
-    } else {
-      return false;
+  formValidator(formEl, ['account', 'username', 'company']).subscribe(
+    (valid) => {
+      if (valid) {
+        verify.value.show();
+      } else {
+        return false;
+      }
     }
-  });
+  );
 };
 
 const verifySuccess = (data: any) => {
@@ -158,6 +165,12 @@ const accountRules = reactive<FormItemRule[]>([
   },
 ]);
 
+// 公司校验
+const companyRules = reactive<FormItemRule[]>([
+  ...requiredRules,
+  ...getCompanyRules(),
+]);
+
 // 隐私声明校验
 const policyRules = reactive<FormItemRule[]>([
   {
@@ -206,11 +219,11 @@ const goToOtherPage = (type: string) => {
         style="max-width: 460px"
       >
         <span v-if="type === 'register'">
-          <el-form-item prop="userName" :rules="userNameRules">
+          <el-form-item prop="username" :rules="userNameRules">
             <OInput
-              v-model="form.userName"
+              v-model="form.username"
               :placeholder="i18n.ENTER_USERNAME"
-              @blur="blur(formRef, 'userName')"
+              @blur="blur(formRef, 'username')"
             />
           </el-form-item>
           <el-form-item prop="account" :rules="accountRules">
@@ -234,7 +247,11 @@ const goToOtherPage = (type: string) => {
               />
             </div>
           </el-form-item>
-          <el-form-item prop="company" :rules="rules">
+          <el-form-item
+            prop="company"
+            :rules="companyRules"
+            :inline-message="true"
+          >
             <OInput v-model="form.company" :placeholder="i18n.ENTER_COMPANY" />
           </el-form-item>
         </span>
@@ -337,5 +354,8 @@ const goToOtherPage = (type: string) => {
 }
 .el-form-item {
   margin-bottom: 24px;
+}
+:deep(.el-form-item__error--inline) {
+  margin-left: 0 !important;
 }
 </style>

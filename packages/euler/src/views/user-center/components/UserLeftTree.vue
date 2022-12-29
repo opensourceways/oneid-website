@@ -13,6 +13,7 @@ import {
   UploadRequestOptions,
 } from 'element-plus';
 import { modifyPhoto } from 'shared/api/api-center';
+import { refreshInfo } from 'shared/utils/login';
 
 interface TabData {
   key: SelectTabKey;
@@ -74,6 +75,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
   formdata.append('file', data.file);
   return modifyPhoto(formdata).then(() => {
     store.initUserInfo();
+    refreshInfo();
   });
 };
 </script>
@@ -90,7 +92,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
         <div v-else class="photo"></div>
       </el-upload>
 
-      <h5 class="nickname">{{ userInfo.userName }}</h5>
+      <h5 class="nickname">{{ userInfo.username }}</h5>
     </div>
     <ul class="user-tab">
       <li

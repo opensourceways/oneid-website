@@ -20,6 +20,7 @@ import {
 } from 'shared/api/api-center';
 import { ElMessage } from 'element-plus';
 import { IObject } from 'shared/@types/interface';
+import { getCommunityParams } from '@/shared/utils';
 
 const i18n = useI18n();
 const store = useCommon();
@@ -60,42 +61,46 @@ watch(
 
 // 修改绑定邮箱或手机号
 const modifyAccountFuc = (data: BindAccountParams) => {
+  Object.assign(data, getCommunityParams(true));
   modifyAccount(data).then(() => {
     ElMessage.success({
       showClose: true,
       message: i18n.value.MODIFY_SUCCESS,
     });
     vilible.value = false;
-    store.initUserInfo();
+    store.initUserInfo(getCommunityParams(true));
   });
 };
 
 // 绑定手机号或者邮箱
 const bindAccountFuc = (data: BindAccountParams) => {
+  Object.assign(data, getCommunityParams(true));
   bindAccount(data).then(() => {
     ElMessage.success({
       showClose: true,
       message: i18n.value.BIND_SUCCESS,
     });
     vilible.value = false;
-    store.initUserInfo();
+    store.initUserInfo(getCommunityParams(true));
   });
 };
 
 // 解绑手机号或者邮箱
 const unbindAccountFuc = (data: BindAccountParams) => {
+  Object.assign(data, getCommunityParams(true));
   unbindAccount(data).then(() => {
     ElMessage.success({
       showClose: true,
       message: i18n.value.UNBIND_SUCCESS,
     });
     vilible.value = false;
-    store.initUserInfo();
+    store.initUserInfo(getCommunityParams(true));
   });
 };
 
 // 发送验证码
 const sendCodeFuc = (data: QueryCodeParams) => {
+  Object.assign(data, getCommunityParams(true));
   return new Promise((resolve, rejects) => {
     sendUnbindCode(data)
       .then(() => {

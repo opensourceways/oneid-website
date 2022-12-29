@@ -5,10 +5,15 @@ import ContentBox from './ContentBox.vue';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import { modifyUser } from 'shared/api/api-center';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { getUsernammeRules } from '@/shared/utils';
+import { getCommunityParams } from '@/shared/utils';
 import { Observable } from 'rxjs';
 import { IObject } from 'shared/@types/interface';
-const formRef1 = ref<FormInstance[]>();
+import {
+  getCompanyRules,
+  getNicknammeRules,
+  formValidator,
+} from 'shared/utils/utils';
+const formRef1 = ref<FormInstance>();
 const props = defineProps({
   userInfo: {
     type: Object,
@@ -20,56 +25,70 @@ const store = useCommon();
 
 const i18n = useI18n();
 
+// 公司校验
+const companyRules = reactive<FormItemRule[]>([
+  {
+    required: true,
+    message: useI18nStr('NOT_EMPTY') as unknown as string,
+    trigger: 'blur',
+  },
+  ...getCompanyRules(),
+]);
 const data = ref([
   {
-    key: 'userName',
+    key: 'username',
     label: useI18nStr('USER_NAME'),
-    value: '',
     disabled: true,
   },
   {
     key: 'email',
     label: useI18nStr('EMAIL'),
-    value: '',
     placeholder: '-',
     disabled: true,
   },
   {
     key: 'phone',
     label: useI18nStr('PHONE'),
-    value: '',
     placeholder: '-',
     disabled: true,
   },
   {
     key: 'signedUp',
     label: useI18nStr('SIGNED_UP'),
-    value: '',
     disabled: true,
   },
   {
-    key: 'nickName',
+    key: 'nickname',
     label: useI18nStr('NICKNAME'),
-    value: '',
     placeholder: useI18nStr('ENTER_NICKNAME'),
     disabled: false,
+    rules: getNicknammeRules(),
   },
   {
     key: 'company',
     label: useI18nStr('COMPANY'),
-    value: '',
     placeholder: useI18nStr('ENTER_COMPANY'),
     disabled: false,
+    rules: companyRules,
   },
 ]);
 
+// 表单值
+const form = reactive({
+  username: '',
+  email: '',
+  phone: '',
+  signedUp: '',
+  nickname: '',
+  company: '',
+} as any);
 const initData = () => {
   data.value.forEach((item: IObject) => {
     if (item.key in userInfo.value) {
       if (item.key === 'signedUp') {
-        item.value = getTimeData(userInfo.value[item.key]);
+        form[item.key] = getTimeData(userInfo.value[item.key]);
       } else {
-        item.value = userInfo.value[item.key] || '';
+        form[item.key] = userInfo.value[item.key] || '';
       }
     }
   });
@@ -98,61 +117,48 @@ const getTimeData = (time: string): string => {
   )}`;
 };
 
-const submit = (formEl: FormInstance[] | undefined) => {
-  getSubmitParams(formEl).subscribe((param: any) => {
-    if (Object.keys(param).length) {
-      modifyUser(param).then(() => {
+const submit = (formEl: FormInstance | undefined) => {
+  getSubmitParams(formEl).subscribe((body: any) => {
+    if (Object.keys(body).length) {
+      modifyUser(body, getCommunityParams(true)).then(() => {
         ElMessage.success({
           showClose: true,
           message: i18n.value.MODIFY_SUCCESS,
         });
-        store.initUserInfo();
+        store.initUserInfo(getCommunityParams(true));
       });
     }
   });
 };
 // 获取下发参数
-const getSubmitParams = (formEl: FormInstance[] | undefined) => {
+const getSubmitParams = (formEl: FormInstance | undefined) => {
   return new Observable((observer) => {
     if (!formEl) {
       observer.next({});
       observer.complete();
       return;
     }
-    const param: IObject = data.value.reduce((pre, next) => {
-      if (
-        !next.disabled &&
-        next.key in userInfo.value &&
-        next.value !== userInfo.value[next.key]
-      ) {
-        pre[next.key] = next.value;
+    formValidator(formEl).subscribe((valid) => {
+      if (valid) {
+        const param: IObject = data.value.reduce((pre, next) => {
+          if (
+            !next.disabled &&
+            next.key in userInfo.value &&
+            form[next.key] !== userInfo.value[next.key]
+          ) {
+            pre[next.key] = form[next.key];
+          }
+          return pre;
+        }, {} as IObject);
+        observer.next(param);
+        observer.complete();
+      } else {
+        observer.next({});
+        observer.complete();
       }
-      return pre;
-    }, {} as IObject);
-    if (!userInfo.value.userName) {
-      formEl[0].validate((valid: boolean) => {
-        if (valid) {
-          Object.assign(param, { username: form.userName });
-          observer.next(param);
-          observer.complete();
-        } else {
-          observer.next({});
-          observer.complete();
-        }
-      });
-    } else {
-      observer.next(param);
-      observer.complete();
-    }
+    });
   });
 };
-
-// 表单值
-const form = reactive({
-  userName: '',
-} as any);
-// 用户名校验
-const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
 </script>
 <template>
   <ContentBox>
@@ -160,34 +166,23 @@ const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
       {{ i18n.INFO }}
     </template>
     <template #content>
-      <div v-for="item in data" :key="item.key" class="info-item">
-        <p class="info-label">{{ item.label }}</p>
-        <el-form
-          v-if="item.key === 'userName' && !item.value"
-          ref="formRef1"
-          label-width="0"
-          :model="form"
-        >
+      <el-form ref="formRef1" label-width="0" :model="form" class="info-item">
+        <span v-for="item in data" :key="item.key" class="info-item">
+          <p class="info-label">{{ item.label }}</p>
           <el-form-item
-            prop="userName"
-            :rules="userNameRules"
+            :prop="item.key"
             class="info-form-pd"
+            :rules="item.rules"
           >
             <OInput
-              v-model="form.userName"
+              v-model="form[item.key]"
               class="info-input"
-              :placeholder="i18n.ENTER_USERNAME"
+              :disabled="item.disabled"
+              :placeholder="item.placeholder"
             />
           </el-form-item>
-        </el-form>
-        <OInput
-          v-else
-          v-model="item.value"
-          class="info-input info-pd"
-          :disabled="item.disabled"
-          :placeholder="item.placeholder"
-        />
-      </div>
+        </span>
+      </el-form>
       <OButton
         class="btn"
         size="small"
@@ -212,14 +207,8 @@ const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
   .info-form-pd {
     padding-bottom: var(--o-spacing-h9);
   }
-  .info-pd {
-    padding-bottom: var(--o-spacing-h4);
-  }
 }
 .btn {
   margin-top: var(--o-spacing-h4);
-}
-:deep(.el-form-item.is-error .el-input__wrapper) {
-  box-shadow: 0 0 0 1px var(--o-color-error1) inset;
 }
 </style>

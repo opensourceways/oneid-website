@@ -37,8 +37,8 @@ export const useCommon = defineStore('common', () => {
 
   // 修改成功后都应刷新用户信息
   const userInfo = ref({} as IObject);
-  const initUserInfo = () => {
-    queryUser().then((data) => {
+  const initUserInfo = (param = { community: 'openeuler' }) => {
+    queryUser(param).then((data) => {
       userInfo.value = data?.data || {};
     });
   };

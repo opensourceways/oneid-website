@@ -65,7 +65,7 @@ const threePartLogin = (res: any) => {
 };
 // 表单值
 const form = reactive({
-  userName: '',
+  username: '',
   email: '',
   code: '',
 } as any);
@@ -161,7 +161,7 @@ const putUserName = () => {
       observer.complete();
       return;
     }
-    modifyUser({ username: form.userName })
+    modifyUser({ username: form.username })
       .then(() => {
         observer.next(true);
         observer.complete();
@@ -249,16 +249,22 @@ const doSuccess = () => {
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
     </template>
-    <el-form ref="formRef" label-width="0" :model="form" class="form">
+    <el-form
+      ref="formRef"
+      label-width="0"
+      :model="form"
+      class="form"
+      @submit.prevent=""
+    >
       <el-form-item
         v-if="!padUserinfo.username"
-        prop="userName"
+        prop="username"
         :rules="userNameRules"
       >
         <OInput
-          v-model="form.userName"
+          v-model="form.username"
           :placeholder="i18n.ENTER_USERNAME"
-          @blur="asyncBlur(formRef, 'userName')"
+          @blur="asyncBlur(formRef, 'username')"
         />
       </el-form-item>
       <el-form-item

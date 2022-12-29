@@ -13,6 +13,8 @@ import {
   UploadRequestOptions,
 } from 'element-plus';
 import { modifyPhoto } from 'shared/api/api-center';
+import { getCommunityParams } from '@/shared/utils';
+import { refreshInfo } from 'shared/utils/login';
 
 interface TabData {
   key: SelectTabKey;
@@ -72,8 +74,12 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
   const formdata = new FormData();
   formdata.append('file', data.file);
+  const param: any = getCommunityParams(true);
+  formdata.append('community', param.community);
+  formdata.append('client_id', param.client_id);
   return modifyPhoto(formdata).then(() => {
-    store.initUserInfo();
+    store.initUserInfo(getCommunityParams(true));
+    refreshInfo(getCommunityParams(true));
   });
 };
 </script>
@@ -90,7 +96,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
         <div v-else class="photo"></div>
       </el-upload>
 
-      <h5 class="nickname">{{ userInfo.userName }}</h5>
+      <h5 class="nickname">{{ userInfo.username }}</h5>
     </div>
     <ul class="user-tab">
       <li
