@@ -226,6 +226,9 @@ const goToOtherPage = (type: string) => {
               @blur="blur(formRef, 'username')"
             />
           </el-form-item>
+          <el-form-item prop="company" :rules="companyRules">
+            <OInput v-model="form.company" :placeholder="i18n.ENTER_COMPANY" />
+          </el-form-item>
           <el-form-item prop="account" :rules="accountRules">
             <OInput
               v-model="form.account"
@@ -246,13 +249,6 @@ const goToOtherPage = (type: string) => {
                 @click="getcode(formRef)"
               />
             </div>
-          </el-form-item>
-          <el-form-item
-            prop="company"
-            :rules="companyRules"
-            :inline-message="true"
-          >
-            <OInput v-model="form.company" :placeholder="i18n.ENTER_COMPANY" />
           </el-form-item>
         </span>
         <span v-else>

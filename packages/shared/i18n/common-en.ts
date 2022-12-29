@@ -148,12 +148,13 @@ export default {
   LEGAL_NOTICE: 'Legal Notice',
   THREE_PART_LOGIN: 'Use Third-Party Account',
   CONTAIN_CHARACTER: 'Contain 3 to 20 characters.',
+  COMPANY_CONTAIN_CHARACTER: 'Contain 2 to 100 characters.',
   USERNAME_VAILD:
     'Include only letters,digits,and underscores(_). It must start with a letter and cannot end with an underscore(_).',
   NICKNAME_VAILD:
     'contain 3 to 20 characters. include only letters, digits, Chinese and underscores (_). it must start with a letter or Chinese. cannot end with underscore (_)',
   COMPANY_VAILD:
-    'contain 2 to 100 characters. include only letters, digits, Chinese, parentheses, point (.), comma (,) and &. it must start with a letter, digits or Chinese. cannot end with parentheses, comma (,) and &',
+    'Only letters, digits, Chinese, (.) ,& are allowed. It must start with a letter, digit, or Chinese and cannot end with a (),&',
   VERIFY_SUCCESS: 'The verification succeeds in [0]s.',
   VERIFY_FAILED: 'verification failed.',
   SWIPE_RIGHT: 'Swipe right to complete the verification.',

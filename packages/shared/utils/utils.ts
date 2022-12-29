@@ -157,6 +157,12 @@ export function getNicknammeRules(): FormItemRule[] {
 export function getCompanyRules(): FormItemRule[] {
   return [
     {
+      min: 2,
+      max: 100,
+      message: useI18nStr('COMPANY_CONTAIN_CHARACTER') as unknown as string,
+      trigger: 'blur',
+    },
+    {
       pattern: COMPANYNAME_REG,
       message: useI18nStr('COMPANY_VAILD') as unknown as string,
       trigger: 'blur',
