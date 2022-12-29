@@ -329,6 +329,7 @@ const goToOtherPage = (type: string) => {
               <span class="cursor" @click="changeCheckBox(formRef)">
                 {{ i18n.READ_ADN_AGREE }}
               </span>
+              <span>&nbsp;</span>
               <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
               {{ i18n.AND }}
               <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
