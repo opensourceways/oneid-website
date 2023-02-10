@@ -208,8 +208,9 @@ const padUserinfo = reactive({
 const loginSuccess = (data: any) => {
   const { token, username, email_exist } = data || {};
   saveUserAuth(token);
-  if (!username || !email_exist) {
-    padUserinfo.username = username;
+  const name = !username || username.startsWith('oauth2_') ? '' : username;
+  if (!name || !email_exist) {
+    padUserinfo.username = name;
     padUserinfo.email_exist = email_exist;
     visible.value = true;
     return;
