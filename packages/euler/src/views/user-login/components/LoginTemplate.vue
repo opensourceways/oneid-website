@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import IconGithub from '~icons/app/icon-github.svg';
 import IconGitee from '~icons/app/icon-gitee.svg';
-import IconOpenAtom from '~icons/app/icon-openatom.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
@@ -89,13 +88,6 @@ const icons = [
       threePartsLogin(formEl, 'GitHub');
     },
   },
-  {
-    key: 'OpenAtom',
-    icon: IconOpenAtom,
-    onClick: (formEl: FormInstance | undefined) => {
-      threePartsLogin(formEl, 'OpenAtom');
-    },
-  },
 ];
 
 const changeCheckBox = (formEl: FormInstance | undefined) => {
@@ -124,7 +116,6 @@ const threePartsLogin = (formEl: FormInstance | undefined, type: string) => {
   const ext_idp_conn_id: any = {
     Gitee: '6226d91103d81d8654673f1b',
     GitHub: '6226db30c8e30db1518cc4aa',
-    OpenAtom: '63c0bfd4c88ee67bcf1959b4',
   };
   Object.assign(params, { ext_idp_conn_id: ext_idp_conn_id[type] });
   formValidator(formEl, ['policy']).subscribe((valid) => {
