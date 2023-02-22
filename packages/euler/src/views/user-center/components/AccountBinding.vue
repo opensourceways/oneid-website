@@ -7,6 +7,7 @@ import IconMail from '~icons/app/icon-mail.svg';
 import IconPhone from '~icons/app/icon-phone.svg';
 import IconGithub from '~icons/app/icon-github.svg';
 import IconGitee from '~icons/app/icon-gitee.svg';
+import IconOpenAtom from '~icons/app/icon-openatom.svg';
 import {
   AccountOperateKey,
   AllAccountDialogConfig,
@@ -57,6 +58,12 @@ const resetThreeAccountData = () => {
       key: 'gitee',
       icon: IconGitee,
       label: 'Gitee',
+      value: '',
+    },
+    {
+      key: 'openatom',
+      icon: IconOpenAtom,
+      label: 'OpenAtom',
       value: '',
     },
   ];
@@ -293,6 +300,16 @@ const config: AllAccountDialogConfig = {
       unbindSocial(data.account_type);
     },
   },
+  unbind_openatom: {
+    key: 'unbind_openatom',
+    account_type: 'openatom',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
+    content: 'SURE_UNBIND',
+    confirm: (data: BindAccountParams) => {
+      unbindSocial(data.account_type);
+    },
+  },
 };
 const showDialog = (str: string, key: string) => {
   if (!userInfo.value.email && str === 'unbind') {
@@ -311,6 +328,7 @@ const bindSocial = (key: string) => {
     const obj: any = {
       github: 'social_github',
       gitee: 'enterprise_gitee',
+      openatom: 'enterprise_openatom',
     };
     const findone = data.find((item: any) => item.name === obj[key]);
     if (findone) {
