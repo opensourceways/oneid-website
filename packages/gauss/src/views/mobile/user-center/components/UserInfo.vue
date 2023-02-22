@@ -164,7 +164,13 @@ const goToTree = () => {
 <template>
   <AppHeader />
   <main>
-    <div class="banner"></div>
+    <div class="img_box">
+      <div class="title1">
+        <!-- <h1 class="title-in">USER CENTER</h1> -->
+        <h1 class="title1-out">{{ i18n.USER_CENTER }}</h1>
+        <img class="title1-login" src="@/assets/login_log.png" />
+      </div>
+    </div>
     <div class="title">
       <span class="left" @click="goToTree"> </span
       ><span style="font-size: 16px">{{ i18n.INFO }}</span>
@@ -193,6 +199,44 @@ const goToTree = () => {
   <AppFooter />
 </template>
 <style lang="scss" scoped>
+.img_box {
+  width: 100%;
+  height: 100px;
+  background-image: url("@/assets/banner.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  // background-position: left;
+  .title1 {
+    margin: 0 auto;
+    max-width: 1472px;
+    padding: 0 var(--o-spacing-h6);
+    position: relative;
+    &-in {
+      position: absolute;
+      top: 60px;
+      font-size: 68px;
+      font-weight: bold;
+      color: rgba(0, 47, 167, 0.14);
+      line-height: 34px;
+    }
+    &-out {
+      position: absolute;
+      top: 35px;
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--o-color-white);
+      line-height: 30px;
+    }
+    &-login {
+      position: absolute;
+      top: 20px;
+      right: 0;
+      margin-right: var(--o-spacing-h6);
+      width: 90px;
+      height: 60px;
+    }
+  }
+}
 .info-item {
   display: flex;
   background-color: var(--o-color-bg2);
@@ -203,9 +247,10 @@ const goToTree = () => {
     line-height: 22px;
     font-weight: 400;
     min-width: 80px;
-    height: 54px;
-    // margin-bottom: var(--o-spacing-h5);
+    height: 35px;
+    margin-bottom: 25px;
     margin-left: 16px;
+    margin-top:25px;
     display: flex;
     align-items: center;
   }
@@ -213,7 +258,8 @@ const goToTree = () => {
     width: 80%;
   }
   .info-form-pd {
-    // padding-bottom: var(--o-spacing-h9);
+    padding: 19px 0;
+    z-index:1
   }
 }
 .btn {
@@ -222,8 +268,8 @@ const goToTree = () => {
   left: 40%;
 }
 .banner {
-  width: 100%;
-  height: 126px;
+  width: auto;
+  height: auto;
   background-image: url("@/assets/login_log.png");
   background-size: 100%;
   background-repeat: no-repeat;

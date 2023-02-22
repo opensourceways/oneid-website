@@ -67,11 +67,12 @@ const goToTree = () => {
 <template>
   <AppHeader />
   <main>
-    <div class="banner">
-      <!-- <div class="title">
-      <h1 class="title-in">USER CENTER</h1>
-      <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
-    </div> -->
+    <div class="img_box">
+      <div class="title1">
+        <!-- <h1 class="title-in">USER CENTER</h1> -->
+        <h1 class="title1-out">{{ i18n.USER_CENTER }}</h1>
+        <img class="title1-login" src="@/assets/login_log.png" />
+      </div>
     </div>
     <div class="title">
       <span class="left" @click="goToTree"></span>
@@ -129,6 +130,45 @@ const goToTree = () => {
   <AppFooter />
 </template>
 <style lang="scss" scoped>
+
+.img_box {
+  width: 100%;
+  height: 100px;
+  background-image: url("@/assets/banner.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  // background-position: left;
+  .title1 {
+    margin: 0 auto;
+    max-width: 1472px;
+    padding: 0 var(--o-spacing-h6);
+    position: relative;
+    &-in {
+      position: absolute;
+      top: 60px;
+      font-size: 68px;
+      font-weight: bold;
+      color: rgba(0, 47, 167, 0.14);
+      line-height: 34px;
+    }
+    &-out {
+      position: absolute;
+      top: 35px;
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--o-color-white);
+      line-height: 30px;
+    }
+    &-login {
+      position: absolute;
+      top: 20px;
+      right: 0;
+      margin-right: var(--o-spacing-h6);
+      width: 90px;
+      height: 60px;
+    }
+  }
+}
 .tips {
   border: 1px solid var(--o-color-border2);
   background-color: var(--o-color-bg2);
