@@ -173,3 +173,12 @@ export function getLanguage() {
     language: 'en-US',
   };
 }
+
+export function setLogoutSession(bool = false) {
+  window.sessionStorage.setItem('ISLOGOUT', String(bool));
+}
+
+export function getLogoutSession(): boolean {
+  const str = window.sessionStorage.getItem('ISLOGOUT');
+  return str === 'true';
+}

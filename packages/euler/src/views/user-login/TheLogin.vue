@@ -4,7 +4,12 @@ import { accountExists, accountLogin, queryToken } from 'shared/api/api-login';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { useI18n } from 'shared/i18n';
 import { EMAIL_REG } from 'shared/const/common.const';
-import { isLogined, saveUserAuth } from 'shared/utils/login';
+import {
+  getLogoutSession,
+  isLogined,
+  saveUserAuth,
+  setLogoutSession,
+} from 'shared/utils/login';
 import {
   callBackErrMessage,
   formValidator,
@@ -18,6 +23,7 @@ import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
+import { useCommonData } from 'shared/stores/common';
 
 const formRef = ref<FormInstance>();
 const i18n = useI18n();
@@ -31,11 +37,15 @@ const goRegister = () => {
     query: route.query,
   });
 };
+const { loginParams } = useCommonData();
 onMounted(() => {
   validLoginUrl().then(() => {
     isLogined().then((bool) => {
       if (bool) {
         haveLoggedIn();
+      } else if (!getLogoutSession()) {
+        setLogoutSession(true);
+        window.location.href = `https://jldibemigdfj.authing.cn/login/profile/logout?app_id=${loginParams.value.client_id}&redirect_uri=${location.href}`;
       }
     });
   });
@@ -223,6 +233,7 @@ const doSuccess = () => {
     showClose: true,
     message: i18n.value.LOGIN_SUCCESS,
   });
+  setLogoutSession();
   haveLoggedIn();
 };
 </script>
