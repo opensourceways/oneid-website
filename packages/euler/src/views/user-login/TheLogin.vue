@@ -42,7 +42,9 @@ onMounted(() => {
   validLoginUrl().then(() => {
     isLogined().then((bool) => {
       if (bool) {
-        haveLoggedIn();
+        if (isNotPadUserinfo(bool)) {
+          haveLoggedIn();
+        }
       } else if (!getLogoutSession()) {
         setLogoutSession(true);
         window.location.href = `https://jldibemigdfj.authing.cn/login/profile/logout?app_id=${
@@ -216,18 +218,27 @@ const padUserinfo = reactive({
   email_exist: false,
 });
 
+// 判断是否需要补全内容
+const isNotPadUserinfo = (data: any): boolean => {
+  const { username, email_exist = false, email = '' } = data || {};
+  const name = !username || username.startsWith('oauth2_') ? '' : username;
+  const hasEmail = Boolean(email_exist || email);
+  if (!name || !hasEmail) {
+    padUserinfo.username = name;
+    padUserinfo.email_exist = hasEmail;
+    visible.value = true;
+    return false;
+  }
+  return true;
+};
+
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  const { token, username, email_exist } = data || {};
+  const { token } = data || {};
   saveUserAuth(token);
-  const name = !username || username.startsWith('oauth2_') ? '' : username;
-  if (!name || !email_exist) {
-    padUserinfo.username = name;
-    padUserinfo.email_exist = email_exist;
-    visible.value = true;
-    return;
+  if (isNotPadUserinfo(data)) {
+    doSuccess();
   }
-  doSuccess();
 };
 // 登录成功提示
 const doSuccess = () => {

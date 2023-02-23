@@ -141,7 +141,7 @@ export function isLogined(param = { community: 'openeuler' }) {
         .then((res: any) => {
           const { data } = res;
           if (data) {
-            resolve(true);
+            resolve(data);
           } else {
             resolve(false);
           }
