@@ -8,7 +8,7 @@ onMounted(() => {
   if (redirect_uri) {
     const { token } = getUserAuth();
     if (token) {
-      logout(undefined, redirect_uri);
+      logout({ community: 'mindspore' }, redirect_uri);
     } else {
       location.href = redirect_uri;
     }

@@ -86,11 +86,11 @@ export const routes = [
     name: 'login',
     component: TheLogin,
   },
-  // {
-  //   path: '/logout',
-  //   name: 'logout',
-  //   component: TheLogout,
-  // },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: TheLogout,
+  },
   {
     path: '/register',
     name: 'register',
