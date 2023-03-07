@@ -56,7 +56,7 @@ export function logout(
 ) {
   queryIDToken(param).then((res: any) => {
     saveUserAuth();
-    if (param.community === 'openeuler') {
+    if (['openeuler', 'mindspore'].includes(param.community)) {
       const idToken = res.data.id_token;
       const client1 = createClient(param.community);
       const logoutUrl = client1.buildLogoutUrl({
@@ -82,6 +82,13 @@ export function createClient(community = 'openeuler', url?: string) {
     openeuler: {
       appId: '62679eab0b22b146d2ea0a3a',
       appHost: 'https://datastat.authing.cn',
+      redirectUri:
+        url || `${window?.location?.origin}${window?.location?.pathname}`,
+      lang: lang.language,
+    },
+    mindspore: {
+      appId: '62679fdacb2577b0daf17669',
+      appHost: 'https://xihe-ai.authing.cn',
       redirectUri:
         url || `${window?.location?.origin}${window?.location?.pathname}`,
       lang: lang.language,
