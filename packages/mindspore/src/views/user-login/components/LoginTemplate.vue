@@ -270,7 +270,7 @@ const blur = (formEl: FormInstance | undefined, field: string) => {
 
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
-  const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
+  const origin = 'https://mindspore.cn';
   const _lang = lang.value === 'en' ? `/${lang.value}` : '';
   const url = `${origin}/${type}${_lang}`;
   window.open(url, '_blank');
