@@ -220,9 +220,11 @@ const padUserinfo = reactive({
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  const { username, email_exist = false, email = '' } = data || {};
+  // const { username, email_exist = false, email = '' } = data || {};
+  const { username, email_exist = true } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  const hasEmail = Boolean(email_exist || email);
+  // const hasEmail = Boolean(email_exist || email);
+  const hasEmail = Boolean(email_exist);
   if (!name || !hasEmail) {
     padUserinfo.username = name;
     padUserinfo.email_exist = hasEmail;
