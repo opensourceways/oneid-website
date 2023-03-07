@@ -51,12 +51,23 @@ export function getUserAuth() {
 
 // 退出登录
 export function logout(
-  param = { community: 'openeuler' },
+  param: any = { community: 'openeuler' },
   redirectUri = window?.location?.origin
 ) {
+  if (['mindspore'].includes(param.community)) {
+    saveUserAuth();
+    const client1 = createClient(param.community);
+    const logoutUrl = client1.buildLogoutUrl({
+      expert: true,
+      redirectUri,
+      idToken: param.id_token,
+    });
+    window.location.href = logoutUrl;
+    return;
+  }
   queryIDToken(param).then((res: any) => {
     saveUserAuth();
-    if (['openeuler', 'mindspore'].includes(param.community)) {
+    if (['openeuler'].includes(param.community)) {
       const idToken = res.data.id_token;
       const client1 = createClient(param.community);
       const logoutUrl = client1.buildLogoutUrl({
