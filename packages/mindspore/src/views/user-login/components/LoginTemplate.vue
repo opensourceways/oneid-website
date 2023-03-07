@@ -89,13 +89,13 @@ const icons = [
       threePartsLogin(formEl, 'GitHub');
     },
   },
-  {
-    key: 'OpenAtom',
-    icon: IconOpenAtom,
-    onClick: (formEl: FormInstance | undefined) => {
-      threePartsLogin(formEl, 'OpenAtom');
-    },
-  },
+  // {
+  //   key: 'OpenAtom',
+  //   icon: IconOpenAtom,
+  //   onClick: (formEl: FormInstance | undefined) => {
+  //     threePartsLogin(formEl, 'OpenAtom');
+  //   },
+  // },
 ];
 
 const changeCheckBox = (formEl: FormInstance | undefined) => {
@@ -271,7 +271,8 @@ const blur = (formEl: FormInstance | undefined, field: string) => {
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
-  const url = `${origin}/${lang.value}/other/${type}`;
+  const _lang = lang.value === 'en' ? `/${lang.value}` : '';
+  const url = `${origin}/${type}${_lang}`;
   window.open(url, '_blank');
 };
 </script>
