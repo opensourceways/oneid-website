@@ -4,7 +4,6 @@ const { saveLoginParams } = useCommon();
 // 设置全局的默认client_id
 saveLoginParams({ client_id: '62f463c917a9cd81591e0be1' });
 </script>
-
 <template>
   <router-view />
 </template>
