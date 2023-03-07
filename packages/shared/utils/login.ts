@@ -125,7 +125,6 @@ export function refreshInfo(param = { community: 'openeuler' }) {
       const { data } = res;
       if (Object.prototype.toString.call(data) === '[object Object]') {
         guardAuthClient.value = data;
-        saveUserAuth(token);
       }
     });
   }
@@ -141,7 +140,7 @@ export function isLogined(param = { community: 'openeuler' }) {
         .then((res: any) => {
           const { data } = res;
           if (data) {
-            resolve(true);
+            resolve(data);
           } else {
             resolve(false);
           }
