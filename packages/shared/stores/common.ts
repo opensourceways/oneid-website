@@ -13,7 +13,7 @@ export const useCommon = defineStore('common', () => {
   };
 
   const loginParams = ref<LoginParams>({
-    client_id: '62679eab0b22b146d2ea0a3a',
+    client_id: import.meta.env?.VITE_OPENEULER_APPID,
     redirect_uri: import.meta.env.VITE_OPENEULER_WEBSITE,
     response_type: 'code',
     scope: 'openid profile',

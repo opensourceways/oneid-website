@@ -91,8 +91,11 @@ export function createClient(community = 'openeuler', url?: string) {
   const lang = getLanguage();
   const obj: IObject = {
     openeuler: {
-      appId: '62679eab0b22b146d2ea0a3a',
-      appHost: 'https://datastat.authing.cn',
+      appId:
+        import.meta.env?.VITE_OPENEULER_APPID || '62679eab0b22b146d2ea0a3a',
+      appHost:
+        import.meta.env?.VITE_OPENEULER_APPHOST ||
+        'https://datastat.authing.cn',
       redirectUri:
         url || `${window?.location?.origin}${window?.location?.pathname}`,
       lang: lang.language,
