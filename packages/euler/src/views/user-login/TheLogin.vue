@@ -7,7 +7,6 @@ import { EMAIL_REG } from 'shared/const/common.const';
 import {
   getLogoutSession,
   isLogined,
-  saveUserAuth,
   setLogoutSession,
 } from 'shared/utils/login';
 import {
@@ -60,6 +59,7 @@ const login = (form: any) => {
     permission: 'sigRead',
     account: form.account,
     code: form.code,
+    client_id: loginParams.value.client_id,
   };
   accountLogin(param).then((data: any) => {
     loginSuccess(data?.data);
@@ -72,6 +72,7 @@ const threePartLogin = (res: any) => {
     permission: 'sigRead',
     community: 'openeuler',
     redirect: redirect_uri,
+    client_id: loginParams.value.client_id,
   };
   queryToken(param).then((data: any) => {
     loginSuccess(data?.data);
@@ -90,7 +91,7 @@ const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
 const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ account: value })
+      accountExists({ account: value, client_id: loginParams.value.client_id })
         .then(() => {
           resolve();
         })
@@ -220,11 +221,9 @@ const padUserinfo = reactive({
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  // const { username, email_exist = false, email = '' } = data || {};
-  const { username, email_exist = true } = data || {};
+  const { username, email_exist = false, email = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  // const hasEmail = Boolean(email_exist || email);
-  const hasEmail = Boolean(email_exist);
+  const hasEmail = Boolean(email_exist || email);
   if (!name || !hasEmail) {
     padUserinfo.username = name;
     padUserinfo.email_exist = hasEmail;
@@ -236,8 +235,6 @@ const isNotPadUserinfo = (data: any): boolean => {
 
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  const { token } = data || {};
-  saveUserAuth(token);
   if (isNotPadUserinfo(data)) {
     doSuccess();
   }
