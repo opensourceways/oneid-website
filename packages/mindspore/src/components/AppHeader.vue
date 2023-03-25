@@ -96,7 +96,7 @@ isMobile();
         </OIcon>
         <OIcon v-else class="icon" @click="mobileMenuPanel"><IconCancel /></OIcon>
       </div>
-      <img class="logo" alt="openEuler logo" :src="logo" @click="goHome" />
+      <img class="logo" alt="logo" src="@/assets/logo.png" />
       <div
         v-if="toBody"
         class="mobile-menu"
@@ -105,7 +105,7 @@ isMobile();
       >
         <div class="mobile-menu-side">
           <div class="mobile-tools">
-            <AppTheme />
+            <!-- <AppTheme /> -->
             <AppLanguage :show="langShow" @language-click="mobileMenuIcon = false" />
           </div>
         </div>
@@ -115,7 +115,7 @@ isMobile();
         <div class="header-tool">
           <!-- 中英文切换 -->
           <AppLanguage :show="langShow" />
-          <AppTheme />
+          <!-- <AppTheme /> -->
         </div>
       </div>
       <div class="opt-user">
@@ -142,7 +142,7 @@ isMobile();
 
 <style lang="scss" scoped>
 .app-header {
-  background-color: var(--o-color-bg2);
+  background-color: #060b29d9;
   position: fixed;
   left: 0;
   right: 0;
@@ -189,7 +189,7 @@ isMobile();
   }
   .icon {
     font-size: var(--o-font-size-h6);
-    color: var(--o-color-text1);
+    color: #fff;
     cursor: pointer;
   }
 }
@@ -334,7 +334,7 @@ isMobile();
       }
     }
     .opt-name {
-      color: var(--o-color-text1);
+      color: #fff;
       margin-left: 8px;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -391,8 +391,11 @@ isMobile();
 .login {
   .icon {
     font-size: var(--o-font-size-h6);
-    color: var(--o-color-text1);
+    color: #fff;
     cursor: pointer;
   }
+}
+:deep(.lang-menu-link) {
+  color: #fff;
 }
 </style>

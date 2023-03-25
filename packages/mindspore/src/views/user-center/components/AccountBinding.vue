@@ -60,12 +60,12 @@ const resetThreeAccountData = () => {
       label: 'Gitee',
       value: '',
     },
-    {
-      key: 'openatom',
-      icon: IconOpenAtom,
-      label: 'OpenAtom',
-      value: '',
-    },
+    // {
+    //   key: 'openatom',
+    //   icon: IconOpenAtom,
+    //   label: 'OpenAtom',
+    //   value: '',
+    // },
   ];
 };
 const initData = () => {

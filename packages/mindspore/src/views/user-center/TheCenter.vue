@@ -30,7 +30,7 @@ const i18n = useI18n();
 <style lang="scss" scoped>
 main {
   position: relative;
-  min-height: calc(100vh - 339px);
+  min-height: calc(100vh - 280px);
   background-color: var(--o-color-bg1);
   margin-top: 80px;
   overflow: hidden;
