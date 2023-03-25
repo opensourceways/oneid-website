@@ -52,7 +52,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .banner {
   width: 100%;
-  height: 280px;
+  height: 244px;
   background-image: url('../../assets/banner.png');
   background-size: 100%;
   background-repeat: no-repeat;
