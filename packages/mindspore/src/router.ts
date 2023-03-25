@@ -9,78 +9,78 @@ import { LoginParams } from 'shared/@types/interface';
 export const routes = [
   {
     path: '/',
-    redirect: '/login',
+    redirect: 'zh/profile',
   },
-  // {
-  //   path: '/zh/profile',
-  //   name: 'zh-profile',
-  //   component: TheCenter,
-  // },
-  // {
-  //   path: '/zh/mobile/profile',
-  //   name: 'zh_mobile_profile',
-  //   component: () => {
-  //     return import('@/views/mobile/user-center/TheCenter.vue');
-  //   },
-  // },
-  // {
-  //   path: '/zh/mobile/profile/userinfo',
-  //   name: 'zh_mobile_profile_userInfo',
-  //   component: () => {
-  //     return import('@/views/mobile/user-center/components/UserInfo.vue');
-  //   },
-  // },
-  // {
-  //   path: '/zh/mobile/profile/binding',
-  //   name: 'zh_mobile_profile_binding',
-  //   component: () => {
-  //     return import('@/views/mobile/user-center/components/AccountBinding.vue');
-  //   },
-  // },
-  // {
-  //   path: '/zh/mobile/profile/security',
-  //   name: 'zh_mobile_profile_security',
-  //   component: () => {
-  //     return import(
-  //       '@/views/mobile/user-center/components/AccountSecurity.vue'
-  //     );
-  //   },
-  // },
-  // {
-  //   path: '/en/mobile/profile',
-  //   name: 'en_mobile_profile',
-  //   component: () => {
-  //     return import('@/views/mobile/user-center/TheCenter.vue');
-  //   },
-  // },
-  // {
-  //   path: '/en/mobile/profile/userinfo',
-  //   name: 'en_mobile_profile_userInfo',
-  //   component: () => {
-  //     return import('@/views/mobile/user-center/components/UserInfo.vue');
-  //   },
-  // },
-  // {
-  //   path: '/en/mobile/profile/binding',
-  //   name: 'en_mobile_profile_binding',
-  //   component: () => {
-  //     return import('@/views/mobile/user-center/components/AccountBinding.vue');
-  //   },
-  // },
-  // {
-  //   path: '/en/mobile/profile/security',
-  //   name: 'en_mobile_profile_security',
-  //   component: () => {
-  //     return import(
-  //       '@/views/mobile/user-center/components/AccountSecurity.vue'
-  //     );
-  //   },
-  // },
-  // {
-  //   path: '/en/profile',
-  //   name: 'en-profile',
-  //   component: TheCenter,
-  // },
+  {
+    path: '/zh/profile',
+    name: 'zh-profile',
+    component: TheCenter,
+  },
+  {
+    path: '/zh/mobile/profile',
+    name: 'zh_mobile_profile',
+    component: () => {
+      return import('@/views/mobile/user-center/TheCenter.vue');
+    },
+  },
+  {
+    path: '/zh/mobile/profile/userinfo',
+    name: 'zh_mobile_profile_userInfo',
+    component: () => {
+      return import('@/views/mobile/user-center/components/UserInfo.vue');
+    },
+  },
+  {
+    path: '/zh/mobile/profile/binding',
+    name: 'zh_mobile_profile_binding',
+    component: () => {
+      return import('@/views/mobile/user-center/components/AccountBinding.vue');
+    },
+  },
+  {
+    path: '/zh/mobile/profile/security',
+    name: 'zh_mobile_profile_security',
+    component: () => {
+      return import(
+        '@/views/mobile/user-center/components/AccountSecurity.vue'
+      );
+    },
+  },
+  {
+    path: '/en/mobile/profile',
+    name: 'en_mobile_profile',
+    component: () => {
+      return import('@/views/mobile/user-center/TheCenter.vue');
+    },
+  },
+  {
+    path: '/en/mobile/profile/userinfo',
+    name: 'en_mobile_profile_userInfo',
+    component: () => {
+      return import('@/views/mobile/user-center/components/UserInfo.vue');
+    },
+  },
+  {
+    path: '/en/mobile/profile/binding',
+    name: 'en_mobile_profile_binding',
+    component: () => {
+      return import('@/views/mobile/user-center/components/AccountBinding.vue');
+    },
+  },
+  {
+    path: '/en/mobile/profile/security',
+    name: 'en_mobile_profile_security',
+    component: () => {
+      return import(
+        '@/views/mobile/user-center/components/AccountSecurity.vue'
+      );
+    },
+  },
+  {
+    path: '/en/profile',
+    name: 'en-profile',
+    component: TheCenter,
+  },
   {
     path: '/login',
     name: 'login',
@@ -96,11 +96,11 @@ export const routes = [
     name: 'register',
     component: TheRegister,
   },
-  // {
-  //   path: '/notfound',
-  //   name: 'notfound',
-  //   component: NotFound,
-  // },
+  {
+    path: '/notfound',
+    name: 'notfound',
+    component: NotFound,
+  },
 ];
 
 export const router = createRouter({

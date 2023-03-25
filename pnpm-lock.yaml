@@ -89,6 +89,14 @@ importers:
       shared: link:../shared
       unplugin-icons: 0.14.10
 
+  packages/mindspore:
+    specifiers:
+      shared: workspace:^
+      unplugin-icons: ^0.14.0
+    dependencies:
+      shared: link:../shared
+      unplugin-icons: 0.14.10
+
   packages/shared:
     specifiers:
       unplugin-icons: ^0.14.0
