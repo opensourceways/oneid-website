@@ -55,6 +55,7 @@ onMounted(() => {
   height: 244px;
   background-image: url('../../assets/banner.png');
   background-repeat: no-repeat;
+  background-size: cover;
   background-position: left;
   .title {
     margin: 0 auto;
