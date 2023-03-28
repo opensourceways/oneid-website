@@ -77,6 +77,7 @@ export default {
     MAIL_GAUSS: 'contact@opengauss.org',
     COPY_RIGHT: 'Copyright © 2022 openEuler. All rights reserved.',
     COPY_RIGHT_GAUSS: 'Copyright © openGauss 2022. All rights reserved.',
+    COPY_RIGHT_MINDSPORE: 'Copyright © 2022 MindSpore. All rights reserved.',
     RIGHT_LIST: [
       {
         NAME: 'Trademark',

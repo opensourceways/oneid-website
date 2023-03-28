@@ -54,8 +54,7 @@ onMounted(() => {
 .banner {
   width: 100%;
   height: 126px;
-  background-image: url("@/assets/banner_mobile.png");
-  background-size: 100%;
+  background-image: url("@/assets/banner.png");
   background-repeat: no-repeat;
   background-position: left;
   .title {
