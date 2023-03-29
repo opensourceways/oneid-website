@@ -75,9 +75,9 @@ export default {
     ATOM_MO: '/atom-mo.png',
     MAIL: 'contact@openeuler.io',
     MAIL_GAUSS: 'contact@opengauss.org',
-    COPY_RIGHT: 'Copyright © 2022 openEuler. All rights reserved.',
+    COPY_RIGHT: 'Copyright © 2023 openEuler. All rights reserved.',
     COPY_RIGHT_GAUSS: 'Copyright © openGauss 2023. All rights reserved.',
-    COPY_RIGHT_MINDSPORE: 'Copyright © 2022 MindSpore. All rights reserved.',
+    COPY_RIGHT_MINDSPORE: 'Copyright © 2023 MindSpore. All rights reserved.',
     RIGHT_LIST: [
       {
         NAME: 'Trademark',
