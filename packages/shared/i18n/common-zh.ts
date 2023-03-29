@@ -75,7 +75,7 @@ export default {
     MAIL: 'contact@openeuler.io',
     MAIL_GAUSS: 'contact@opengauss.org',
     COPY_RIGHT: '版权所有 © 2022 openEuler 保留一切权利',
-    COPY_RIGHT_GAUSS: '版权所有 ©  openGauss 2022 保留一切权利',
+    COPY_RIGHT_GAUSS: '版权所有 ©  openGauss 2023 保留一切权利',
     COPY_RIGHT_MINDSPORE: '版权所有 © 2022 MindSpore 保留一切权利',
     RIGHT_LIST: [
       {
