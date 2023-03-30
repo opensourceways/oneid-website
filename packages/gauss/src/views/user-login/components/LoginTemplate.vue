@@ -86,14 +86,6 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
 // 手机或邮箱合法校验
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
-    if (type.value === 'register') {
-      if (PHONE_REG.test(value)) {
-        callback();
-      } else {
-        callback(i18n.value.ENTER_VAILD_PHONE);
-      }
-      return;
-    }
     if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
       callback();
     } else {
@@ -232,7 +224,7 @@ const goToOtherPage = (type: string) => {
           <el-form-item prop="account" :rules="accountRules">
             <OInput
               v-model="form.account"
-              :placeholder="i18n.ENTER_YOUR_PHONE"
+              :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
               @blur="blur(formRef, 'account')"
             />
           </el-form-item>
