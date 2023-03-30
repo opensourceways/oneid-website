@@ -65,21 +65,32 @@ export function logout(
     window.location.href = logoutUrl;
     return;
   }
-  queryIDToken(param).then((res: any) => {
-    saveUserAuth();
-    if (['openeuler'].includes(param.community)) {
-      const idToken = res.data.id_token;
-      const client1 = createClient(param.community);
-      const logoutUrl = client1.buildLogoutUrl({
-        expert: true,
-        redirectUri,
-        idToken,
-      });
-      window.location.href = logoutUrl;
-    } else {
+  queryIDToken(param)
+    .then((res: any) => {
+      saveUserAuth();
+      if (['openeuler'].includes(param.community)) {
+        const idToken = res.data.id_token;
+        const appId = res.data.client_id;
+        const appHost = res.data.client_identifier;
+        const client1 = new AuthenticationClient({
+          appId: appId || import.meta.env?.VITE_OPENEULER_APPID,
+          appHost: `https://${appHost || 'datastat'}.authing.cn`,
+          redirectUri: `${window?.location?.origin}${window?.location?.pathname}`,
+        });
+        const logoutUrl = client1.buildLogoutUrl({
+          expert: true,
+          redirectUri: location.href,
+          idToken,
+        });
+        window.location.href = logoutUrl;
+      } else {
+        window.location.href = redirectUri;
+      }
+    })
+    .catch(() => {
+      saveUserAuth();
       window.location.href = redirectUri;
-    }
-  });
+    });
 }
 
 // 跳转首页

@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
+import { useCommonData } from 'shared/stores/common';
 const loginTemplate = ref<any>(null);
 const router = useRouter();
 const route = useRoute();
@@ -15,11 +16,13 @@ const goLogin = () => {
     query: route.query,
   });
 };
+const { loginParams } = useCommonData();
 const register = (form: any) => {
   const param = {
     username: form.username,
     account: form.account,
     code: form.code,
+    client_id: loginParams.value.client_id,
   };
   accountRegister(param).then(() => {
     ElMessage.success({

@@ -30,7 +30,7 @@ const accountData = ref([
     key: 'email',
     icon: IconMail,
     label: useI18nStr('EMAIL'),
-    operate: ['unbind'],
+    operate: [''],
     value: '',
   },
   {
