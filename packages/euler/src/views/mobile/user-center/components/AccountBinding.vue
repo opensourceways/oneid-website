@@ -384,8 +384,8 @@ const goToTree = () => {
   <main>
     <div class="banner">
       <div class="center-title">
-        <h1 class="title-in">USER CENTER</h1>
-        <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
+        <h1 class="center-title-in">USER CENTER</h1>
+        <h1 class="center-title-out">{{ i18n.USER_CENTER }}</h1>
       </div>
     </div>
     <div class="title">
