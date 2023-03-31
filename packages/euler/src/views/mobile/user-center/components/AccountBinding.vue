@@ -383,10 +383,10 @@ const goToTree = () => {
   <AppHeader />
   <main>
     <div class="banner">
-      <!-- <div class="title">
-      <h1 class="title-in">USER CENTER</h1>
-      <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
-    </div> -->
+      <div class="center-title">
+        <h1 class="title-in">USER CENTER</h1>
+        <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
+      </div>
     </div>
     <div class="title">
       <span class="left" @click="goToTree"></span>
@@ -538,6 +538,26 @@ const goToTree = () => {
   background-repeat: no-repeat;
   background-position: left;
   background-color: var(--o-color-bg2);
+  .center-title {
+    padding: 0 var(--o-spacing-h6);
+    position: relative;
+    &-in {
+      position: absolute;
+      top: 38px;
+      font-size: 24px;
+      font-weight: bold;
+      color: rgba(0, 47, 167, 0.14);
+      line-height: 34px;
+    }
+    &-out {
+      position: absolute;
+      top: 28px;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--o-color-white);
+      line-height: 76px;
+    }
+  }
 }
 .title {
   height: 48px;
