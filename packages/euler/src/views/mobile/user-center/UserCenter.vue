@@ -35,10 +35,10 @@ onMounted(() => {
 </script>
 <template>
   <div class="banner">
-    <!-- <div class="title">
+    <div class="title">
       <h1 class="title-in">USER CENTER</h1>
       <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
-    </div> -->
+    </div>
   </div>
   <div class="main">
     <div class="left">
@@ -59,22 +59,20 @@ onMounted(() => {
   background-repeat: no-repeat;
   background-position: left;
   .title {
-    margin: 0 auto;
-    max-width: 1472px;
     padding: 0 var(--o-spacing-h6);
     position: relative;
     &-in {
       position: absolute;
-      top: 20px;
-      font-size: 38px;
+      top: 38px;
+      font-size: 24px;
       font-weight: bold;
       color: rgba(0, 47, 167, 0.14);
       line-height: 34px;
     }
     &-out {
       position: absolute;
-      top: 32px;
-      font-size: 24px;
+      top: 28px;
+      font-size: 18px;
       font-weight: 500;
       color: var(--o-color-white);
       line-height: 76px;
