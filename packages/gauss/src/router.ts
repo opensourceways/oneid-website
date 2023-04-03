@@ -113,7 +113,7 @@ router.beforeEach((to, from, next) => {
   const { changeLang, saveLoginParams } = useCommon();
   if (to.path.startsWith('/en/') || to.query?.lang === 'en') {
     changeLang('en');
-  } else if (to.path.startsWith('/zh/') || to.query?.lang === 'zh') {
+  } else {
     changeLang('zh');
   }
   // 登录与注册需校验url参数
