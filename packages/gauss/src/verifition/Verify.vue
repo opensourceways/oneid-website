@@ -190,6 +190,7 @@ export default {
   background: rgba(0, 0, 0, 0.3);
   /* display: none; */
   transition: all 0.5s;
+  touch-action: pan-y;
 }
 .verify-tips {
   position: absolute;
