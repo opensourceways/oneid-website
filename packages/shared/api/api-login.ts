@@ -112,6 +112,6 @@ export function appVerify(params: any) {
 export function authorizeOidc(params: any) {
   const url = '/oneid/oidc/auth';
   return request
-    .get(url, { params, global: true })
+    .get(url, { params, global: true, $doException: true })
     .then((res: AxiosResponse) => res.data);
 }

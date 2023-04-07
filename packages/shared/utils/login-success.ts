@@ -1,6 +1,7 @@
 import { authorizeOidc } from '../api/api-login';
 import { LoginParams } from '../@types/interface';
 import { useCommonData } from '../stores/common';
+import { ElMessage } from 'element-plus';
 
 export function haveLoggedIn() {
   const { loginParams } = useCommonData();
@@ -21,9 +22,23 @@ function getOidcUri(query: LoginParams) {
     scope: query.scope,
     state: query.state,
   };
-  authorizeOidc(param).then((data) => {
-    if (data?.body) {
-      location.href = data.body;
-    }
-  });
+  authorizeOidc(param)
+    .then((data) => {
+      if (data?.body) {
+        location.href = data.body;
+      }
+    })
+    .catch((err) => {
+      if (err?.response?.data?.message?.includes('No permission')) {
+        const { lang } = useCommonData();
+        const msg =
+          lang.value === 'en'
+            ? err?.response?.data?.message
+            : '无权限登录该应用';
+        ElMessage.error({
+          showClose: true,
+          message: msg,
+        });
+      }
+    });
 }
