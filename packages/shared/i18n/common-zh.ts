@@ -147,6 +147,7 @@ export default {
   PRIVACY_POLICY: '隐私政策',
   AND: '与',
   LEGAL_NOTICE: '法律声明',
+  RESTRICTED_TIPS: '注意: 如访问受限,请联系liuyang@openeuler.sh',
   THREE_PART_LOGIN: '第三方账号登录',
   CONTAIN_CHARACTER: '长度必须为3到20个字符',
   COMPANY_CONTAIN_CHARACTER: '长度必须为2到100个字符',
