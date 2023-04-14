@@ -55,6 +55,7 @@ const doSuccess = () => {
   <LoginTemplate ref="loginTemplate" @submit="login">
     <template #switch>
       {{ i18n.NO_ACCOUNT }}
+      &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>

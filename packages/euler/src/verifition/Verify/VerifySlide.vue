@@ -244,7 +244,7 @@ export default {
         end();
       });
     }
-    watch([type, explain.value], () => {
+    watch([type, explain], () => {
       init();
     });
     onMounted(() => {
