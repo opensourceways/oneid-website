@@ -29,7 +29,6 @@ interface CodeParams {
 
 export interface QueryCodeParams extends CodeParams {
   account?: string;
-  captchaVerification?: string;
 }
 
 export interface AccountDialogConfig extends CodeParams {
