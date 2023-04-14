@@ -147,6 +147,8 @@ export default {
   PRIVACY_POLICY: 'Privacy Statement',
   AND: 'and',
   LEGAL_NOTICE: 'Legal Notice',
+  RESTRICTED_TIPS:
+    'Note: If access is restricted,please contact liuyang@openeuler.sh',
   THREE_PART_LOGIN: 'Use Third-Party Account',
   CONTAIN_CHARACTER: 'Contain 3 to 20 characters.',
   COMPANY_CONTAIN_CHARACTER: 'Contain 2 to 100 characters.',

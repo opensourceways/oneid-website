@@ -5,7 +5,15 @@ import IconOpenAtom from '~icons/app/icon-openatom.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { onMounted, onUnmounted, PropType, reactive, ref, toRefs } from 'vue';
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  PropType,
+  reactive,
+  ref,
+  toRefs,
+} from 'vue';
 import { useI18n } from 'shared/i18n';
 import { formValidator, doValidatorForm, asyncBlur } from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
@@ -275,6 +283,10 @@ const goToOtherPage = (type: string) => {
   const url = `${origin}/${lang.value}/other/${type}`;
   window.open(url, '_blank');
 };
+const hiddenRestrictedTipArr = [import.meta.env?.VITE_OPENEULER_APPID];
+const showRestrictedTip = computed(
+  () => !hiddenRestrictedTipArr.includes(loginParams.value.client_id)
+);
 </script>
 <template>
   <ContentTemplate>
@@ -343,6 +355,8 @@ const goToOtherPage = (type: string) => {
               <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
               {{ i18n.AND }}
               <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
+              <br />
+              <p v-if="showRestrictedTip">{{ i18n.RESTRICTED_TIPS }}</p>
             </span>
           </div>
         </el-form-item>
