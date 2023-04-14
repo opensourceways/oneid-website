@@ -332,7 +332,7 @@ const goToOtherPage = (type: string) => {
   grid-template-columns: auto auto;
   align-items: start;
   color: var(--o-color-text1);
-  font-size: var(--o-font-size-tip);
+  font-size: var(--o-font-size-text);
   line-height: var(--o-line-height-text);
   .o-checkbox-group {
     padding-top: 3px;

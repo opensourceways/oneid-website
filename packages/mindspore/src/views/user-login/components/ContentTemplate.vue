@@ -54,7 +54,7 @@
 .switch {
   display: flex;
   justify-content: end;
-  font-size: var(--o-font-size-tip);
-  line-height: var(--o-line-height-tip);
+  font-size: var(--o-font-size-text);
+  line-height: var(--o-line-height-text);
 }
 </style>
