@@ -34,6 +34,7 @@ const register = (form: any) => {
   <LoginTemplate ref="loginTemplate" type="register" @submit="register">
     <template #switch>
       {{ i18n.HAVE_ACCOUNT }}
+      &nbsp;
       <a @click="goLogin">{{ i18n.RETURN_LOGIN }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_REGISTER }} </template>
