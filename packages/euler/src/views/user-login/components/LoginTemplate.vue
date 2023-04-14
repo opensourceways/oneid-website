@@ -425,7 +425,7 @@ const showRestrictedTip = computed(
   grid-template-columns: auto auto;
   align-items: start;
   color: var(--o-color-text1);
-  font-size: var(--o-font-size-tip);
+  font-size: var(--o-font-size-text);
   line-height: var(--o-line-height-text);
   .o-checkbox-group {
     padding-top: 3px;
@@ -451,8 +451,8 @@ const showRestrictedTip = computed(
     .other {
       padding-left: var(--o-spacing-h5);
       padding-right: var(--o-spacing-h5);
-      font-size: var(--o-font-size-text);
-      line-height: var(--o-line-height-text);
+      font-size: var(--o-font-size-h8);
+      line-height: var(--o-line-height-h8);
       color: var(--o-color-text4);
     }
   }
