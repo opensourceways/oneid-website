@@ -80,10 +80,10 @@ watch(
   display: grid;
   grid-template-columns: repeat(3, max-content);
   gap: var(--o-spacing-h10);
+  font-size: var(--o-font-size-text);
+  line-height: var(--o-line-height-text);
   .select-item {
     cursor: pointer;
-    font-size: var(--o-font-size-tip);
-    line-height: var(--o-line-height-tip);
     &:hover {
       color: var(--o-color-brand2);
     }
