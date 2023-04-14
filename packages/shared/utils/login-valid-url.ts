@@ -14,7 +14,7 @@ export function validLoginUrl(query?: LoginParams) {
         resolve(true);
       })
       .catch(() => {
-        location.href = loginParams.value.redirect_uri || '';
+        location.replace('/notfound');
       });
   });
 }

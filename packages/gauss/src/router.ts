@@ -3,7 +3,7 @@ import TheCenter from '@/views/user-center/TheCenter.vue';
 import TheLogin from '@/views/user-login/TheLogin.vue';
 import TheLogout from '@/views/user-login/TheLogout.vue';
 import TheRegister from '@/views/user-login/TheRegister.vue';
-import NotFound from '@/components/NotFound.vue';
+import NotFound from 'shared/components/NotFound.vue';
 import { useCommon } from 'shared/stores/common';
 import { LoginParams } from 'shared/@types/interface';
 export const routes = [
