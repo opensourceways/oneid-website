@@ -7,7 +7,6 @@ import { useCommonData } from 'shared/stores/common';
 import { sendCode } from 'shared/api/api-center';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
-import Verify from '@/verifition/Verify.vue';
 
 const i18n = useI18n();
 const formRef = ref<FormInstance>();
@@ -21,7 +20,6 @@ const props = defineProps({
     default: () => ({} as AccountDialogConfig),
   },
 });
-const verify = ref();
 const { modelValue, config } = toRefs(props);
 const emit = defineEmits(['update:modelValue']);
 const { userInfo } = useCommonData();
@@ -44,37 +42,31 @@ const oldaccount_num = ref(false);
 const account_num = ref(false);
 
 // 获取验证码
-const verifySuccessType = ref('');
 const getcode = (formEl: FormInstance | undefined, type?: string) => {
   if (!formEl) return;
-  verifySuccessType.value = type || 'account';
-  formEl.validateField(verifySuccessType.value, (valid) => {
+  const _type = type || 'account';
+  formEl.validateField(_type, (valid) => {
     if (valid) {
-      verify.value.show();
+      const param: QueryCodeParams = {
+        account_type: config.value.account_type,
+        account: form[_type],
+      };
+      if (config.value.field) {
+        Object.assign(param, { field: config.value.field });
+      }
+      (config.value?.code?.getCode || sendCodeFuc)(param).then(() => {
+        ElMessage.success({
+          showClose: true,
+          message: i18n.value.SEND_SUCCESS,
+        });
+        if (type === 'oldaccount') {
+          oldaccount_num.value = true;
+        } else {
+          account_num.value = true;
+        }
+      });
     } else {
       return false;
-    }
-  });
-};
-
-const verifySuccess = (data: any) => {
-  const param: QueryCodeParams = {
-    account_type: config.value.account_type,
-    account: form[verifySuccessType.value],
-    captchaVerification: data.captchaVerification,
-  };
-  if (config.value.field) {
-    Object.assign(param, { field: config.value.field });
-  }
-  (config.value?.code?.getCode || sendCodeFuc)(param).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.SEND_SUCCESS,
-    });
-    if (verifySuccessType.value === 'oldaccount') {
-      oldaccount_num.value = true;
-    } else {
-      account_num.value = true;
     }
   });
 };
@@ -251,13 +243,6 @@ const codePlaceholder = computed(
         >
       </div>
     </template>
-    <Verify
-      ref="verify"
-      mode="pop"
-      captcha-type="blockPuzzle"
-      :img-size="{ width: '400px', height: '200px' }"
-      @success="verifySuccess"
-    ></Verify>
   </el-dialog>
 </template>
 <style lang="scss" scoped>

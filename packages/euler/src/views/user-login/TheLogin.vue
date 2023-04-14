@@ -23,7 +23,6 @@ import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
-import Verify from '@/verifition/Verify.vue';
 
 const formRef = ref<FormInstance>();
 const i18n = useI18n();
@@ -37,7 +36,6 @@ const goRegister = () => {
     query: route.query,
   });
 };
-const verify = ref();
 const { loginParams } = useCommonData();
 onMounted(() => {
   validLoginUrl().then(() => {
@@ -133,25 +131,21 @@ const getcode = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formValidator(formEl, 'email').subscribe((valid) => {
     if (valid) {
-      verify.value.show();
+      const param = {
+        account_type: 'email',
+        account: form.email,
+        field: 'change',
+      };
+      sendCode(param).then(() => {
+        ElMessage.success({
+          showClose: true,
+          message: i18n.value.SEND_SUCCESS,
+        });
+        disableCode.value = true;
+      });
     } else {
       return false;
     }
-  });
-};
-const verifySuccess = (data: any) => {
-  const param = {
-    account_type: 'email',
-    account: form.email,
-    field: 'change',
-    captchaVerification: data.captchaVerification,
-  };
-  sendCode(param).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.SEND_SUCCESS,
-    });
-    disableCode.value = true;
   });
 };
 const putUser = (formEl: FormInstance | undefined) => {
@@ -327,13 +321,6 @@ const doSuccess = () => {
         }}</OButton>
       </div>
     </template>
-    <Verify
-      ref="verify"
-      mode="pop"
-      captcha-type="blockPuzzle"
-      :img-size="{ width: '400px', height: '200px' }"
-      @success="verifySuccess"
-    ></Verify>
   </el-dialog>
 </template>
 <style lang="scss" scoped>
