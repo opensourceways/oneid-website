@@ -65,6 +65,11 @@ export function sendUnbindCode(params: any) {
       client_id: params.client_id,
     });
   }
+  if (params.captchaVerification) {
+    Object.assign(param, {
+      captchaVerification: params.captchaVerification,
+    });
+  }
   return request
     .get(url, {
       global: true,
