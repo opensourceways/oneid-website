@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, onUnmounted } from 'vue';
+import { computed, onMounted, ref, onUnmounted, watch } from 'vue';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import { useI18n } from 'shared/i18n';
 import {
@@ -91,6 +91,25 @@ const isMobile = () => {
   }
 };
 isMobile();
+watch(
+  () => guardAuthClient.value,
+  () => {
+    if (
+      testIsPhone() &&
+      !token &&
+      !guardAuthClient.value.username &&
+      !guardAuthClient.value.photo
+    ) {
+      const Lang =
+        lang.value === 'zh' ? '/zh/mobile/profile' : '/en/mobile/profile';
+      router.push(Lang);
+    }
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+);
 </script>
 
 <template>

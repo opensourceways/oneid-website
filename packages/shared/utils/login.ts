@@ -96,7 +96,7 @@ export function logout(
 
 // 跳转首页
 export function goToHome() {
-  window?.location?.reload();
+  window.location.href = '/';
 }
 
 export function createClient(community = 'openeuler', url?: string) {

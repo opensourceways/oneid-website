@@ -51,7 +51,7 @@ const confirm = (formEl: FormInstance | undefined) => {
         });
         vilible.value = false;
         saveUserAuth();
-        window.location.reload();
+        location.href = `/${store.lang}/mobile/profile`;
       });
     } else {
       return false;

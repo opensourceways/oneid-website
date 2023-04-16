@@ -87,6 +87,7 @@ watch(
   { deep: true }
 );
 onMounted(() => {
+  store.initUserInfo();
   initData();
 });
 
