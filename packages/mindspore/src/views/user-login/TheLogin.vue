@@ -14,6 +14,7 @@ import {
   callBackErrMessage,
   formValidator,
   asyncBlur,
+  getFitWidth,
 } from 'shared/utils/utils';
 import { getUsernammeRules } from '@/shared/utils';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
@@ -272,7 +273,7 @@ const doSuccess = () => {
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
-    width="30%"
+    :width="getFitWidth(420)"
   >
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
@@ -335,9 +336,6 @@ const doSuccess = () => {
   text-align: center;
   margin-left: var(--o-spacing-h5);
   padding-top: 28px;
-}
-.form {
-  padding: 0 28px;
 }
 .footer {
   display: flex;
