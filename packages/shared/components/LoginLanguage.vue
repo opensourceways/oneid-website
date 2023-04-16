@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, Ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { useCommonData } from '../stores/common';
 
 const props = defineProps({
@@ -19,14 +20,20 @@ const langOptions = [
   { id: 'en', label: 'English' },
   { id: 'ru', label: 'Русский' },
 ];
-
-// 选择语言
-const emits = defineEmits(['language-click']);
-
+const route = useRoute();
 function chaneLanguage(newlang: string) {
   if (lang.value === newlang) return;
   lang.value = newlang;
-  emits('language-click', newlang);
+  const { query } = route;
+  Object.assign(query, { lang: newlang });
+  const search = Object.entries(query).reduce((pre, next, index) => {
+    if (index) {
+      pre += '&';
+    }
+    pre += `${next[0]}=${next[1]}`;
+    return pre;
+  }, '');
+  location.replace(`${location.pathname}?${search}`);
 }
 
 interface LangType {
