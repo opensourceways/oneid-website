@@ -142,7 +142,7 @@ export default {
   ENTER_YOUR_PHONE: '请输入您的手机号',
   ENTER_YOUR_EMAIL: '请输入您的邮箱地址',
   ENTER_YOUR_EMAIL_OR_PHONE: '请输入您的邮箱地址或手机号',
-  ENTER_RECEIVED_CODE: '请输入收到的验证码',
+  ENTER_RECEIVED_CODE: '请输入验证码',
   READ_ADN_AGREE: '我已阅读并同意',
   PRIVACY_POLICY: '隐私政策',
   AND: '与',
