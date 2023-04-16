@@ -173,14 +173,6 @@ const loginFun = (e: MessageEvent) => {
 // 手机或邮箱合法校验
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
-    if (type.value === 'register') {
-      if (EMAIL_REG.test(value)) {
-        callback();
-      } else {
-        callback(i18n.value.ENTER_VAILD_EMAIL);
-      }
-      return;
-    }
     if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
       callback();
     } else {
@@ -317,11 +309,7 @@ const showRestrictedTip = computed(
         <el-form-item prop="account" :rules="accountRules">
           <OInput
             v-model="form.account"
-            :placeholder="
-              type === 'register'
-                ? i18n.ENTER_YOUR_EMAIL
-                : i18n.ENTER_YOUR_EMAIL_OR_PHONE
-            "
+            :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
             @blur="blur(formRef, 'account')"
           />
         </el-form-item>

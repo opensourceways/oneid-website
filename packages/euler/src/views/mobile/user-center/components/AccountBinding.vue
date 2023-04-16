@@ -83,6 +83,7 @@ const initData = () => {
   }
 };
 onMounted(() => {
+  store.initUserInfo();
   initData();
   listenerBindSocial();
 });

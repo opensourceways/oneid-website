@@ -52,6 +52,7 @@ const initData = () => {
   });
 };
 onMounted(() => {
+  store.initUserInfo();
   initData();
 });
 watch(
