@@ -9,6 +9,7 @@ import {
   doValidatorForm,
   asyncBlur,
   getCompanyRules,
+  getVerifyImgSize,
 } from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
 import Verify from '@/verifition/Verify.vue';
@@ -299,7 +300,7 @@ const goToOtherPage = (type: string) => {
     ref="verify"
     mode="pop"
     captcha-type="blockPuzzle"
-    :img-size="{ width: '400px', height: '200px' }"
+    :img-size="getVerifyImgSize()"
     @success="verifySuccess"
   ></Verify>
 </template>

@@ -7,7 +7,12 @@ import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { onMounted, onUnmounted, PropType, reactive, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { formValidator, doValidatorForm, asyncBlur } from 'shared/utils/utils';
+import {
+  formValidator,
+  doValidatorForm,
+  asyncBlur,
+  getVerifyImgSize,
+} from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
 import Verify from '@/verifition/Verify.vue';
 import { callBackErrMessage, getUrlByParams } from 'shared/utils/utils';
@@ -378,7 +383,7 @@ const goToOtherPage = (type: string) => {
     ref="verify"
     mode="pop"
     captcha-type="blockPuzzle"
-    :img-size="{ width: '400px', height: '200px' }"
+    :img-size="getVerifyImgSize()"
     @success="verifySuccess"
   ></Verify>
 </template>

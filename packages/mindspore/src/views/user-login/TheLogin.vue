@@ -272,7 +272,7 @@ const doSuccess = () => {
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
-    width="450px"
+    width="30%"
   >
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
