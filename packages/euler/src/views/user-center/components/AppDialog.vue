@@ -8,6 +8,7 @@ import { sendCode } from 'shared/api/api-center';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
 import Verify from '@/verifition/Verify.vue';
+import { getVerifyImgSize } from 'shared/utils/utils';
 
 const i18n = useI18n();
 const formRef = ref<FormInstance>();
@@ -255,7 +256,7 @@ const codePlaceholder = computed(
       ref="verify"
       mode="pop"
       captcha-type="blockPuzzle"
-      :img-size="{ width: '400px', height: '200px' }"
+      :img-size="getVerifyImgSize()"
       @success="verifySuccess"
     ></Verify>
   </el-dialog>

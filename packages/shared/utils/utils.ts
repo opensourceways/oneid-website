@@ -169,3 +169,16 @@ export function getCompanyRules(): FormItemRule[] {
     },
   ];
 }
+
+export function getVerifyImgSize() {
+  let width = 400;
+  const height = 200;
+  const innerWidth = window.innerWidth;
+  if (innerWidth - 28 < 400) {
+    width = innerWidth - 30;
+  }
+  return {
+    width: width + 'px',
+    height: height + 'px',
+  };
+}

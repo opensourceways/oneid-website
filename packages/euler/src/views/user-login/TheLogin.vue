@@ -13,6 +13,7 @@ import {
   callBackErrMessage,
   formValidator,
   asyncBlur,
+  getVerifyImgSize,
 } from 'shared/utils/utils';
 import { getUsernammeRules } from '@/shared/utils';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
@@ -275,7 +276,7 @@ const doSuccess = () => {
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
-    width="450px"
+    width="30%"
   >
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
@@ -332,7 +333,7 @@ const doSuccess = () => {
       ref="verify"
       mode="pop"
       captcha-type="blockPuzzle"
-      :img-size="{ width: '400px', height: '200px' }"
+      :img-size="getVerifyImgSize()"
       @success="verifySuccess"
     ></Verify>
   </el-dialog>
