@@ -193,7 +193,7 @@ const codePlaceholder = computed(
           :label="i18n[config?.oldaccount?.label]"
           prop="oldaccount"
         >
-          <OInput v-model="form.oldaccount" disabled />
+          <OInput v-model.trim="form.oldaccount" disabled />
         </el-form-item>
         <el-form-item
           v-if="config?.oldcode"
@@ -202,7 +202,7 @@ const codePlaceholder = computed(
           :rules="rules"
         >
           <div class="code">
-            <OInput v-model="form.oldcode" :placeholder="codePlaceholder" />
+            <OInput v-model.trim="form.oldcode" :placeholder="codePlaceholder" />
             <CountdownButton
               v-model="oldaccount_num"
               class="btn"
@@ -217,7 +217,7 @@ const codePlaceholder = computed(
           prop="account"
           :rules="config.account_type === 'email' ? emailRules : phoneRules"
         >
-          <OInput v-model="form.account" :placeholder="accountPlaceholder" />
+          <OInput v-model.trim="form.account" :placeholder="accountPlaceholder" />
         </el-form-item>
         <el-form-item
           v-if="config?.code"
@@ -226,7 +226,7 @@ const codePlaceholder = computed(
           :rules="rules"
         >
           <div class="code">
-            <OInput v-model="form.code" :placeholder="codePlaceholder" />
+            <OInput v-model.trim="form.code" :placeholder="codePlaceholder" />
             <CountdownButton
               v-model="account_num"
               class="btn"

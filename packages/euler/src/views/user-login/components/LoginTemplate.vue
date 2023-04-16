@@ -301,14 +301,14 @@ const showRestrictedTip = computed(
           :rules="userNameRules"
         >
           <OInput
-            v-model="form.username"
+            v-model.trim="form.username"
             :placeholder="i18n.ENTER_USERNAME"
             @blur="blur(formRef, 'username')"
           />
         </el-form-item>
         <el-form-item prop="account" :rules="accountRules">
           <OInput
-            v-model="form.account"
+            v-model.trim="form.account"
             :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
             @blur="blur(formRef, 'account')"
           />
@@ -316,7 +316,7 @@ const showRestrictedTip = computed(
         <el-form-item prop="code" :rules="rules">
           <div class="code">
             <OInput
-              v-model="form.code"
+              v-model.trim="form.code"
               :placeholder="i18n.ENTER_RECEIVED_CODE"
             />
             <CountdownButton
@@ -423,7 +423,10 @@ const showRestrictedTip = computed(
   box-shadow: 0 0 0 1px var(--o-color-error1) inset;
 }
 .el-form-item {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  @media (max-width: 1100px) {
+    margin-bottom: 40px;
+  }
 }
 .app-footer {
   padding-top: var(--o-spacing-h4);
