@@ -182,3 +182,12 @@ export function getVerifyImgSize() {
     height: height + 'px',
   };
 }
+
+export function getFitWidth(width: number) {
+  let _width = width;
+  const innerWidth = window.innerWidth;
+  if (innerWidth < _width) {
+    _width = innerWidth;
+  }
+  return _width + 'px';
+}

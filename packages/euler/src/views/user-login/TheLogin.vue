@@ -14,6 +14,7 @@ import {
   formValidator,
   asyncBlur,
   getVerifyImgSize,
+  getFitWidth,
 } from 'shared/utils/utils';
 import { getUsernammeRules } from '@/shared/utils';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
@@ -29,7 +30,7 @@ import Verify from '@/verifition/Verify.vue';
 const formRef = ref<FormInstance>();
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
-const visible = ref(false);
+const visible = ref(true);
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
@@ -276,7 +277,7 @@ const doSuccess = () => {
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
-    width="30%"
+    :width="getFitWidth(420)"
   >
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
@@ -346,9 +347,6 @@ const doSuccess = () => {
   text-align: center;
   margin-left: var(--o-spacing-h5);
   padding-top: 28px;
-}
-.form {
-  padding: 0 28px;
 }
 .footer {
   display: flex;
