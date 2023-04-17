@@ -30,7 +30,7 @@ import Verify from '@/verifition/Verify.vue';
 const formRef = ref<FormInstance>();
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
-const visible = ref(false);
+const visible = ref(true);
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
@@ -313,7 +313,10 @@ const doSuccess = () => {
       </el-form-item>
       <el-form-item v-if="!padUserinfo.email_exist" prop="code" :rules="rules">
         <div class="code">
-          <OInput v-model.trim="form.code" :placeholder="i18n.ENTER_RECEIVED_CODE" />
+          <OInput
+            v-model.trim="form.code"
+            :placeholder="i18n.ENTER_RECEIVED_CODE"
+          />
           <CountdownButton
             v-model="disableCode"
             class="btn"
@@ -325,6 +328,7 @@ const doSuccess = () => {
     </el-form>
     <template #footer>
       <div class="footer">
+        <OButton size="small" @click="haveLoggedIn">{{ i18n.CANCEL }}</OButton>
         <OButton size="small" type="primary" @click="putUser(formRef)">{{
           i18n.CONFIRM
         }}</OButton>
@@ -352,6 +356,7 @@ const doSuccess = () => {
   display: flex;
   justify-content: center;
   padding-bottom: 28px;
+  column-gap: 24px;
 }
 .code {
   display: grid;
