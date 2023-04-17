@@ -30,7 +30,7 @@ import Verify from '@/verifition/Verify.vue';
 const formRef = ref<FormInstance>();
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
-const visible = ref(true);
+const visible = ref(false);
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
