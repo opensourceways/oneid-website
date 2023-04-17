@@ -61,7 +61,7 @@ export default {
   ENTER_NEW_EMAIL: '请输入新的邮箱地址',
   ENTER_EMAIL_CODE: '请输入邮件中的验证码',
   SEN_CODE: '获取验证码',
-  TRY_AGAIN: '[0]s后重试',
+  TRY_AGAIN: '[0]s后重发',
   CANCEL: '取消',
   CONFIRM: '确认',
   LOGOUT: '退出登录',
