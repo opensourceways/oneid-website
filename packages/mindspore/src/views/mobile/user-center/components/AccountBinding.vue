@@ -310,23 +310,30 @@ const showDialog = (str: string, key: string) => {
 };
 
 const bindSocial = (key: string) => {
-  linkAccount().then((res) => {
-    const { data = [] } = res;
-    const obj: any = {
-      github: "social_github",
-      gitee: "enterprise_gitee",
-    };
-    const findone = data.find((item: any) => item.name === obj[key]);
-    if (findone) {
-      window.open(
-        findone.authorizationUrl,
-        "_blank",
-        `width=500,height=700,left=${(screen.width - 500) / 2},top=${
-          (screen.height - 700) / 2
-        }`
-      );
-    }
-  });
+  const bindWindow = window.open(
+    '',
+    '_blank',
+    `width=500,height=700,left=${(screen.width - 500) / 2},top=${
+      (screen.height - 700) / 2
+    }`
+  );
+  linkAccount()
+    .then((res) => {
+      const { data = [] } = res;
+      const obj: any = {
+        github: 'social_github',
+        gitee: 'enterprise_gitee',
+      };
+      const findone = data.find((item: any) => item.name === obj[key]);
+      if (findone && bindWindow) {
+        bindWindow.location = findone.authorizationUrl;
+      } else {
+        bindWindow?.close();
+      }
+    })
+    .catch(() => {
+      bindWindow?.close();
+    });
 };
 const listenerBindSocial = () => {
   window.addEventListener("message", bindFun);
@@ -410,11 +417,7 @@ const goToTree = () => {
               <OIcon class="icon">
                 <component :is="item.icon"></component>
               </OIcon>
-              <span style="font-size: 14px">{{ item.label }}</span>
-              <span v-if="item.value">
-                ：
-                <span class="opt-label">{{ item.value }}</span>
-              </span>
+              <div class="opt-label overflow">{{ item.value }}</div>
             </div>
             <div class="center">
               <div
@@ -497,6 +500,12 @@ const goToTree = () => {
   .opt-item {
     display: flex;
     justify-content: space-between;
+    .overflow {
+      max-width: 58vw;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
     .opt-label {
       color: var(--o-color-neutral5);
@@ -507,7 +516,7 @@ const goToTree = () => {
       font-size: 12px;
     }
     .modify {
-      margin-left: var(--o-spacing-h4);
+      margin-left: var(--o-spacing-h6);
     }
   }
 }

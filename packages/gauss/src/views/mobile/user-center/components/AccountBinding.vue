@@ -291,11 +291,7 @@ const goToTree = () => {
               <OIcon class="icon">
                 <component :is="item.icon"></component>
               </OIcon>
-              <span style="font-size: 14px">{{ item.label }}</span>
-              <span v-if="item.value">
-                ：
-                <span class="opt-label">{{ item.value }}</span>
-              </span>
+              <div class="opt-label overflow">{{ item.value }}</div>
             </div>
             <div class="center">
               <div
@@ -384,17 +380,19 @@ const goToTree = () => {
   .opt-item {
     display: flex;
     justify-content: space-between;
+    .overflow {
+      max-width: 58vw;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
     .opt-label {
       color: var(--o-color-neutral5);
       font-size: 14px;
     }
     .opt-btn {
-      cursor: pointer;
-      font-size: 12px;
-    }
-    .modify {
-      margin-left: var(--o-spacing-h4);
+      margin-left: var(--o-spacing-h6);
     }
   }
 }
