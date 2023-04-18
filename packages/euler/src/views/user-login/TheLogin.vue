@@ -7,6 +7,7 @@ import { EMAIL_REG } from 'shared/const/common.const';
 import {
   getLogoutSession,
   isLogined,
+  logout,
   setLogoutSession,
 } from 'shared/utils/login';
 import {
@@ -256,6 +257,13 @@ const doSuccess = () => {
   setLogoutSession();
   haveLoggedIn();
 };
+const cancelPad = () => {
+  if (loginParams.value.response_mode === 'query') {
+    logout();
+  } else {
+    doSuccess();
+  }
+};
 </script>
 <template>
   <LoginTemplate
@@ -328,7 +336,7 @@ const doSuccess = () => {
     </el-form>
     <template #footer>
       <div class="footer">
-        <OButton size="small" @click="haveLoggedIn">{{ i18n.CANCEL }}</OButton>
+        <OButton size="small" @click="cancelPad">{{ i18n.CANCEL }}</OButton>
         <OButton size="small" type="primary" @click="putUser(formRef)">{{
           i18n.CONFIRM
         }}</OButton>
