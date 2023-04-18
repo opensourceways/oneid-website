@@ -229,7 +229,7 @@ const config: AllAccountDialogConfig = {
     },
     code: {
       label: "SMS_CODE",
-      placeholder: "ENTER_PHONE_CODE",
+      placeholder: "ENTER_RECEIVED_CODE",
     },
     confirm: (data: BindAccountParams) => {
       bindAccountFuc(data);
@@ -245,7 +245,7 @@ const config: AllAccountDialogConfig = {
     },
     oldcode: {
       label: "OLD_PHONE_CODE",
-      placeholder: "ENTER_PHONE_CODE",
+      placeholder: "ENTER_RECEIVED_CODE",
     },
     account: {
       label: "NEW_PHONE",
@@ -253,7 +253,7 @@ const config: AllAccountDialogConfig = {
     },
     code: {
       label: "NEW_PHONE_CODE",
-      placeholder: "ENTER_PHONE_CODE",
+      placeholder: "ENTER_RECEIVED_CODE",
     },
     confirm: (data: BindAccountParams) => {
       modifyAccountFuc(data);
@@ -266,7 +266,7 @@ const config: AllAccountDialogConfig = {
     header: "UNBIND_EMAIL",
     code: {
       label: "SMS_CODE",
-      placeholder: "ENTER_PHONE_CODE",
+      placeholder: "ENTER_RECEIVED_CODE",
       getCode: (data: QueryCodeParams) => {
         data.account = userInfo.value.phone;
         return sendCodeFuc(data);
