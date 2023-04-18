@@ -27,15 +27,18 @@
 
   @media screen and (max-width: 867px) {
     height: inherit;
-    max-width: 280px;
+    max-width: 90vw;
     min-width: 0;
+    width: max-content;
 
     .el-message__icon {
       font-size: var(--o-font-size-h8);
     }
 
     .el-message__content {
-      font-size: var(--o-font-size-tip);
+      font-size: var(--o-font-size-text);
+      -webkit-line-clamp: inherit;
+      line-clamp: inherit;
     }
   }
 }
