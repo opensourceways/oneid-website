@@ -7,6 +7,7 @@ import {
   logout,
   useStoreData,
   getUserAuth,
+  refreshInfo,
 } from 'shared/utils/login';
 import AppTheme from 'shared/components/AppTheme.vue';
 import AppLanguage from 'shared/components/AppLanguage.vue';
@@ -84,6 +85,7 @@ const goHome = () => {
 // 判断移动端
 const isMobile = () => {
   if (testIsPhone()) {
+    refreshInfo(getCommunityParams(true));
     const Lang = lang.value === "zh" ? "/zh/mobile/profile" : "/en/mobile/profile";
     if (!window.location.pathname.includes(Lang)) {
       router.push(Lang);
