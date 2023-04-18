@@ -7,7 +7,12 @@ import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { onMounted, onUnmounted, PropType, reactive, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { formValidator, doValidatorForm, asyncBlur } from 'shared/utils/utils';
+import {
+  formValidator,
+  doValidatorForm,
+  asyncBlur,
+  getVerifyImgSize,
+} from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
 import Verify from '@/verifition/Verify.vue';
 import { callBackErrMessage, getUrlByParams } from 'shared/utils/utils';
@@ -297,14 +302,14 @@ const goToOtherPage = (type: string) => {
           :rules="userNameRules"
         >
           <OInput
-            v-model="form.username"
+            v-model.trim="form.username"
             :placeholder="i18n.ENTER_USERNAME"
             @blur="blur(formRef, 'username')"
           />
         </el-form-item>
         <el-form-item prop="account" :rules="accountRules">
           <OInput
-            v-model="form.account"
+            v-model.trim="form.account"
             :placeholder="
               type === 'register'
                 ? i18n.ENTER_YOUR_EMAIL
@@ -316,7 +321,7 @@ const goToOtherPage = (type: string) => {
         <el-form-item prop="code" :rules="rules">
           <div class="code">
             <OInput
-              v-model="form.code"
+              v-model.trim="form.code"
               :placeholder="i18n.ENTER_RECEIVED_CODE"
             />
             <CountdownButton
@@ -378,7 +383,7 @@ const goToOtherPage = (type: string) => {
     ref="verify"
     mode="pop"
     captcha-type="blockPuzzle"
-    :img-size="{ width: '400px', height: '200px' }"
+    :img-size="getVerifyImgSize()"
     @success="verifySuccess"
   ></Verify>
 </template>
@@ -421,7 +426,10 @@ const goToOtherPage = (type: string) => {
   box-shadow: 0 0 0 1px var(--o-color-error1) inset;
 }
 .el-form-item {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  @media (max-width: 1100px) {
+    margin-bottom: 40px;
+  }
 }
 .app-footer {
   padding-top: var(--o-spacing-h4);

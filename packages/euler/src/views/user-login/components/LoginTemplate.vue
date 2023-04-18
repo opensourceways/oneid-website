@@ -15,7 +15,12 @@ import {
   toRefs,
 } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { formValidator, doValidatorForm, asyncBlur } from 'shared/utils/utils';
+import {
+  formValidator,
+  doValidatorForm,
+  asyncBlur,
+  getVerifyImgSize,
+} from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
 import Verify from '@/verifition/Verify.vue';
 import { callBackErrMessage, getUrlByParams } from 'shared/utils/utils';
@@ -173,14 +178,6 @@ const loginFun = (e: MessageEvent) => {
 // 手机或邮箱合法校验
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
-    if (type.value === 'register') {
-      if (EMAIL_REG.test(value)) {
-        callback();
-      } else {
-        callback(i18n.value.ENTER_VAILD_EMAIL);
-      }
-      return;
-    }
     if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
       callback();
     } else {
@@ -309,26 +306,22 @@ const showRestrictedTip = computed(
           :rules="userNameRules"
         >
           <OInput
-            v-model="form.username"
+            v-model.trim="form.username"
             :placeholder="i18n.ENTER_USERNAME"
             @blur="blur(formRef, 'username')"
           />
         </el-form-item>
         <el-form-item prop="account" :rules="accountRules">
           <OInput
-            v-model="form.account"
-            :placeholder="
-              type === 'register'
-                ? i18n.ENTER_YOUR_EMAIL
-                : i18n.ENTER_YOUR_EMAIL_OR_PHONE
-            "
+            v-model.trim="form.account"
+            :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
             @blur="blur(formRef, 'account')"
           />
         </el-form-item>
         <el-form-item prop="code" :rules="rules">
           <div class="code">
             <OInput
-              v-model="form.code"
+              v-model.trim="form.code"
               :placeholder="i18n.ENTER_RECEIVED_CODE"
             />
             <CountdownButton
@@ -392,7 +385,7 @@ const showRestrictedTip = computed(
     ref="verify"
     mode="pop"
     captcha-type="blockPuzzle"
-    :img-size="{ width: '400px', height: '200px' }"
+    :img-size="getVerifyImgSize()"
     @success="verifySuccess"
   ></Verify>
 </template>
@@ -435,7 +428,10 @@ const showRestrictedTip = computed(
   box-shadow: 0 0 0 1px var(--o-color-error1) inset;
 }
 .el-form-item {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  @media (max-width: 1100px) {
+    margin-bottom: 40px;
+  }
 }
 .app-footer {
   padding-top: var(--o-spacing-h4);

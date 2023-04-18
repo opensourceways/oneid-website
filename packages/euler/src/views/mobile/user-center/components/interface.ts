@@ -10,8 +10,9 @@ export type AccountOperateKey =
   | 'unbind_phone'
   | 'delete'
   | 'unbind_github'
+  | 'unbind_openatom'
   | 'unbind_gitee';
-type AccountType = 'email' | 'phone' | 'github' | 'gitee';
+type AccountType = 'email' | 'phone' | 'github' | 'gitee' | 'openatom';
 type AccountField = 'change' | 'verify';
 type Callback<T> = (data: T) => void;
 

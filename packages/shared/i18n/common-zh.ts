@@ -61,7 +61,7 @@ export default {
   ENTER_NEW_EMAIL: '请输入新的邮箱地址',
   ENTER_EMAIL_CODE: '请输入邮件中的验证码',
   SEN_CODE: '获取验证码',
-  TRY_AGAIN: '[0]s后重试',
+  TRY_AGAIN: '[0]s后可重发',
   CANCEL: '取消',
   CONFIRM: '确认',
   LOGOUT: '退出登录',
@@ -142,7 +142,7 @@ export default {
   ENTER_YOUR_PHONE: '请输入您的手机号',
   ENTER_YOUR_EMAIL: '请输入您的邮箱地址',
   ENTER_YOUR_EMAIL_OR_PHONE: '请输入您的邮箱地址或手机号',
-  ENTER_RECEIVED_CODE: '请输入收到的验证码',
+  ENTER_RECEIVED_CODE: '请输入验证码',
   READ_ADN_AGREE: '我已阅读并同意',
   PRIVACY_POLICY: '隐私政策',
   AND: '与',
@@ -152,7 +152,7 @@ export default {
   CONTAIN_CHARACTER: '长度必须为3到20个字符',
   COMPANY_CONTAIN_CHARACTER: '长度必须为2到100个字符',
   USERNAME_VAILD:
-    '只能由字母、数字、下划线(_)组成,必须以字母开头，不能以下划线(_)结尾',
+    '只能由字母、数字、下划线(_)组成，必须以字母开头，不能以下划线(_)结尾',
   NICKNAME_VAILD:
     '请输入3到20个字符。只能由字母、数字、汉字或者下划线(_)组成。必须以字母或者汉字开头，不能以下划线(_)结尾',
   COMPANY_VAILD:

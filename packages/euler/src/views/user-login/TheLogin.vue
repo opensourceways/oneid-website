@@ -7,12 +7,15 @@ import { EMAIL_REG } from 'shared/const/common.const';
 import {
   getLogoutSession,
   isLogined,
+  logout,
   setLogoutSession,
 } from 'shared/utils/login';
 import {
   callBackErrMessage,
   formValidator,
   asyncBlur,
+  getVerifyImgSize,
+  getFitWidth,
 } from 'shared/utils/utils';
 import { getUsernammeRules } from '@/shared/utils';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
@@ -254,6 +257,13 @@ const doSuccess = () => {
   setLogoutSession();
   haveLoggedIn();
 };
+const cancelPad = () => {
+  if (loginParams.value.response_mode === 'query') {
+    logout();
+  } else {
+    doSuccess();
+  }
+};
 </script>
 <template>
   <LoginTemplate
@@ -275,7 +285,7 @@ const doSuccess = () => {
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
-    width="450px"
+    :width="getFitWidth(420)"
   >
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
@@ -293,7 +303,7 @@ const doSuccess = () => {
         :rules="userNameRules"
       >
         <OInput
-          v-model="form.username"
+          v-model.trim="form.username"
           :placeholder="i18n.ENTER_USERNAME"
           @blur="asyncBlur(formRef, 'username')"
         />
@@ -304,14 +314,17 @@ const doSuccess = () => {
         :rules="emailRules"
       >
         <OInput
-          v-model="form.email"
+          v-model.trim="form.email"
           :placeholder="i18n.ENTER_YOUR_EMAIL"
           @blur="asyncBlur(formRef, 'email')"
         />
       </el-form-item>
       <el-form-item v-if="!padUserinfo.email_exist" prop="code" :rules="rules">
         <div class="code">
-          <OInput v-model="form.code" :placeholder="i18n.ENTER_RECEIVED_CODE" />
+          <OInput
+            v-model.trim="form.code"
+            :placeholder="i18n.ENTER_RECEIVED_CODE"
+          />
           <CountdownButton
             v-model="disableCode"
             class="btn"
@@ -323,6 +336,9 @@ const doSuccess = () => {
     </el-form>
     <template #footer>
       <div class="footer">
+        <OButton size="small" @click="cancelPad">{{
+          loginParams.response_mode === 'query' ? i18n.LOGOUT : i18n.CANCEL
+        }}</OButton>
         <OButton size="small" type="primary" @click="putUser(formRef)">{{
           i18n.CONFIRM
         }}</OButton>
@@ -332,7 +348,7 @@ const doSuccess = () => {
       ref="verify"
       mode="pop"
       captcha-type="blockPuzzle"
-      :img-size="{ width: '400px', height: '200px' }"
+      :img-size="getVerifyImgSize()"
       @success="verifySuccess"
     ></Verify>
   </el-dialog>
@@ -346,13 +362,11 @@ const doSuccess = () => {
   margin-left: var(--o-spacing-h5);
   padding-top: 28px;
 }
-.form {
-  padding: 0 28px;
-}
 .footer {
   display: flex;
   justify-content: center;
   padding-bottom: 28px;
+  column-gap: 24px;
 }
 .code {
   display: grid;
@@ -364,7 +378,10 @@ const doSuccess = () => {
   height: 38px;
 }
 .el-form-item {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  @media (max-width: 1100px) {
+    margin-bottom: 40px;
+  }
 }
 :deep(.el-form-item.is-error .el-input__wrapper) {
   box-shadow: 0 0 0 1px var(--o-color-error1) inset;

@@ -52,6 +52,7 @@ const initData = () => {
   });
 };
 onMounted(() => {
+  store.initUserInfo();
   initData();
 });
 watch(
@@ -196,7 +197,7 @@ const config: AllAccountDialogConfig = {
     },
     code: {
       label: 'SMS_CODE',
-      placeholder: 'ENTER_PHONE_CODE',
+      placeholder: 'ENTER_RECEIVED_CODE',
     },
     confirm: (data: BindAccountParams) => {
       bindAccountFuc(data);
@@ -212,7 +213,7 @@ const config: AllAccountDialogConfig = {
     },
     oldcode: {
       label: 'OLD_PHONE_CODE',
-      placeholder: 'ENTER_PHONE_CODE',
+      placeholder: 'ENTER_RECEIVED_CODE',
     },
     account: {
       label: 'NEW_PHONE',
@@ -220,7 +221,7 @@ const config: AllAccountDialogConfig = {
     },
     code: {
       label: 'NEW_PHONE_CODE',
-      placeholder: 'ENTER_PHONE_CODE',
+      placeholder: 'ENTER_RECEIVED_CODE',
     },
     confirm: (data: BindAccountParams) => {
       modifyAccountFuc(data);
@@ -233,7 +234,7 @@ const config: AllAccountDialogConfig = {
     header: 'UNBIND_EMAIL',
     code: {
       label: 'SMS_CODE',
-      placeholder: 'ENTER_PHONE_CODE',
+      placeholder: 'ENTER_RECEIVED_CODE',
       getCode: (data: QueryCodeParams) => {
         data.account = userInfo.value.phone;
         return sendCodeFuc(data);
@@ -290,11 +291,7 @@ const goToTree = () => {
               <OIcon class="icon">
                 <component :is="item.icon"></component>
               </OIcon>
-              <span style="font-size: 14px">{{ item.label }}</span>
-              <span v-if="item.value">
-                ：
-                <span class="opt-label">{{ item.value }}</span>
-              </span>
+              <div class="opt-label overflow">{{ item.value }}</div>
             </div>
             <div class="center">
               <div
@@ -383,17 +380,19 @@ const goToTree = () => {
   .opt-item {
     display: flex;
     justify-content: space-between;
+    .overflow {
+      max-width: 58vw;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
     .opt-label {
       color: var(--o-color-neutral5);
       font-size: 14px;
     }
     .opt-btn {
-      cursor: pointer;
-      font-size: 12px;
-    }
-    .modify {
-      margin-left: var(--o-spacing-h4);
+      margin-left: var(--o-spacing-h6);
     }
   }
 }

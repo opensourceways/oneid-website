@@ -8,7 +8,7 @@ import { sendCode } from 'shared/api/api-center';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
 import Verify from '@/verifition/Verify.vue';
-
+import { getVerifyImgSize } from 'shared/utils/utils';
 const i18n = useI18n();
 const formRef = ref<FormInstance>();
 const props = defineProps({
@@ -163,7 +163,7 @@ const accountPlaceholder = computed(
 );
 const codePlaceholder = computed(
   () =>
-    i18n.value[config.value?.code?.placeholder] || i18n.value.ENTER_EMAIL_CODE
+    i18n.value[config.value?.code?.placeholder] || i18n.value.ENTER_RECEIVED_CODE
 );
 </script>
 <template>
@@ -194,7 +194,7 @@ const codePlaceholder = computed(
           :label="i18n[config?.oldaccount?.label]"
           prop="oldaccount"
         >
-          <OInput v-model="form.oldaccount" disabled />
+          <OInput v-model.trim="form.oldaccount" disabled />
         </el-form-item>
         <el-form-item
           v-if="config?.oldcode"
@@ -203,7 +203,7 @@ const codePlaceholder = computed(
           :rules="rules"
         >
           <div class="code">
-            <OInput v-model="form.oldcode" :placeholder="codePlaceholder" />
+            <OInput v-model.trim="form.oldcode" :placeholder="codePlaceholder" />
             <CountdownButton
               v-model="oldaccount_num"
               class="btn"
@@ -218,7 +218,7 @@ const codePlaceholder = computed(
           prop="account"
           :rules="config.account_type === 'email' ? emailRules : phoneRules"
         >
-          <OInput v-model="form.account" :placeholder="accountPlaceholder" />
+          <OInput v-model.trim="form.account" :placeholder="accountPlaceholder" />
         </el-form-item>
         <el-form-item
           v-if="config?.code"
@@ -227,7 +227,7 @@ const codePlaceholder = computed(
           :rules="rules"
         >
           <div class="code">
-            <OInput v-model="form.code" :placeholder="codePlaceholder" />
+            <OInput v-model.trim="form.code" :placeholder="codePlaceholder" />
             <CountdownButton
               v-model="account_num"
               class="btn"
@@ -256,7 +256,7 @@ const codePlaceholder = computed(
       ref="verify"
       mode="pop"
       captcha-type="blockPuzzle"
-      :img-size="{ width: '400px', height: '200px' }"
+      :img-size="getVerifyImgSize()"
       @success="verifySuccess"
     ></Verify>
   </el-dialog>
