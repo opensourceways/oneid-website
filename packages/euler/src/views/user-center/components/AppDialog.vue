@@ -164,7 +164,7 @@ const accountPlaceholder = computed(
 );
 const codePlaceholder = computed(
   () =>
-    i18n.value[config.value?.code?.placeholder] || i18n.value.ENTER_EMAIL_CODE
+    i18n.value[config.value?.code?.placeholder] || i18n.value.ENTER_RECEIVED_CODE
 );
 </script>
 <template>
@@ -188,6 +188,7 @@ const codePlaceholder = computed(
         label-width="auto"
         :model="form"
         style="max-width: 460px"
+        label-position="top"
       >
         <el-form-item
           v-if="config?.oldaccount"
