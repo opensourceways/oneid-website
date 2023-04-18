@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, onUnmounted, watch } from "vue";
 import { useCommon, useCommonData } from "shared/stores/common";
 import { useI18n } from "shared/i18n";
-import { showGuard, logout, useStoreData, getUserAuth } from "shared/utils/login";
+import { showGuard, logout, useStoreData, getUserAuth, refreshInfo } from "shared/utils/login";
 import AppTheme from "shared/components/AppTheme.vue";
 import AppLanguage from "shared/components/AppLanguage.vue";
 
@@ -77,6 +77,7 @@ const goHome = () => {
 // 判断移动端
 const isMobile = () => {
   if (testIsPhone()) {
+    refreshInfo();
     const Lang = lang.value === "zh" ? "/zh/mobile/profile" : "/en/mobile/profile";
     if (!window.location.pathname.includes(Lang)) {
       router.push(Lang);

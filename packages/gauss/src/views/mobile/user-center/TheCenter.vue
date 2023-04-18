@@ -3,11 +3,9 @@ import UserCenter from './UserCenter.vue';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import NotFound from '@/components/NotFound.vue';
-import { getUserAuth, refreshInfo, showGuard } from 'shared/utils/login';
+import { getUserAuth, showGuard } from 'shared/utils/login';
 import { useI18n } from 'shared/i18n';
-import { getCommunityParams } from '@/shared/utils';
 
-refreshInfo(getCommunityParams(true));
 const { token } = getUserAuth();
 const i18n = useI18n();
 </script>
