@@ -80,7 +80,7 @@ export function logout(
         });
         const logoutUrl = client1.buildLogoutUrl({
           expert: true,
-          redirectUri: location.href,
+          redirectUri: encodeURIComponent(location.href),
           idToken,
         });
         window.location.href = logoutUrl;
