@@ -123,6 +123,7 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
 
 // 三方登录
 const redirect_uri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
+const windowOpener = ref();
 const threePartsLogin = (formEl: FormInstance | undefined, type: string) => {
   const url = 'https://api.authing.cn/api/v3/signin-by-extidp';
   const params = {
@@ -143,7 +144,7 @@ const threePartsLogin = (formEl: FormInstance | undefined, type: string) => {
   Object.assign(params, { ext_idp_conn_id: ext_idp_conn_id[type] });
   formValidator(formEl, ['policy']).subscribe((valid) => {
     if (valid) {
-      window.open(
+      windowOpener.value = window.open(
         getUrlByParams(url, params),
         '_blank',
         `width=500,height=700,left=${(screen.width - 500) / 2},top=${
@@ -167,6 +168,7 @@ const loginFun = (e: MessageEvent) => {
   }
   const { code, state } = response;
   if (code && state) {
+    windowOpener.value?.close();
     const param = {
       code,
       redirect_uri,
