@@ -23,7 +23,7 @@ export interface BindAccountParams {
 }
 
 interface CodeParams {
-  account_type: AccountType;
+  account_type?: AccountType;
   field?: AccountField;
 }
 

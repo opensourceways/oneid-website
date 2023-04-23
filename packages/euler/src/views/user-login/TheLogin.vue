@@ -144,9 +144,8 @@ const getcode = (formEl: FormInstance | undefined) => {
 };
 const verifySuccess = (data: any) => {
   const param = {
-    account_type: 'email',
     account: form.email,
-    field: 'change',
+    channel: 'channel_bind_email',
     captchaVerification: data.captchaVerification,
   };
   sendCode(param).then(() => {
