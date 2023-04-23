@@ -59,12 +59,16 @@ const getcode = (formEl: FormInstance | undefined, type?: string) => {
 
 const verifySuccess = (data: any) => {
   const param: QueryCodeParams = {
-    account_type: config.value.account_type,
     account: form[verifySuccessType.value],
     captchaVerification: data.captchaVerification,
   };
-  if (config.value.field) {
-    Object.assign(param, { field: config.value.field });
+  if (config.value.key.includes('unbind')) {
+    Object.assign(param, { account_type: config.value.account_type });
+  } else {
+    const channel = config.value.account_type.includes('phone')
+      ? 'channel_bind_phone'
+      : 'channel_bind_email';
+    Object.assign(param, { channel });
   }
   (config.value?.code?.getCode || sendCodeFuc)(param).then(() => {
     ElMessage.success({
