@@ -52,7 +52,7 @@ const initData = () => {
   });
 };
 onMounted(() => {
-  store.initUserInfo();
+  store.initUserInfo(getCommunityParams(true));
   initData();
 });
 watch(

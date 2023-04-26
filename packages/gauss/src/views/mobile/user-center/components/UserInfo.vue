@@ -102,7 +102,7 @@ watch(
   { deep: true }
 );
 onMounted(() => {
-  store.initUserInfo();
+  store.initUserInfo(getCommunityParams(true));
   initData();
 });
 
