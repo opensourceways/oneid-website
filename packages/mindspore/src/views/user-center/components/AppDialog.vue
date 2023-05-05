@@ -7,7 +7,8 @@ import { useCommonData } from 'shared/stores/common';
 import { sendCode } from 'shared/api/api-center';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
-
+import Verify from '@/verifition/Verify.vue';
+import { getVerifyImgSize } from 'shared/utils/utils';
 const i18n = useI18n();
 const formRef = ref<FormInstance>();
 const props = defineProps({
@@ -20,6 +21,7 @@ const props = defineProps({
     default: () => ({} as AccountDialogConfig),
   },
 });
+const verify = ref();
 const { modelValue, config } = toRefs(props);
 const emit = defineEmits(['update:modelValue']);
 const { userInfo } = useCommonData();
@@ -42,31 +44,41 @@ const oldaccount_num = ref(false);
 const account_num = ref(false);
 
 // 获取验证码
+const verifySuccessType = ref('');
 const getcode = (formEl: FormInstance | undefined, type?: string) => {
   if (!formEl) return;
-  const _type = type || 'account';
-  formEl.validateField(_type, (valid) => {
+  verifySuccessType.value = type || 'account';
+  formEl.validateField(verifySuccessType.value, (valid) => {
     if (valid) {
-      const param: QueryCodeParams = {
-        account_type: config.value.account_type,
-        account: form[_type],
-      };
-      if (config.value.field) {
-        Object.assign(param, { field: config.value.field });
-      }
-      (config.value?.code?.getCode || sendCodeFuc)(param).then(() => {
-        ElMessage.success({
-          showClose: true,
-          message: i18n.value.SEND_SUCCESS,
-        });
-        if (type === 'oldaccount') {
-          oldaccount_num.value = true;
-        } else {
-          account_num.value = true;
-        }
-      });
+      verify.value.show();
     } else {
       return false;
+    }
+  });
+};
+
+const verifySuccess = (data: any) => {
+  const param: QueryCodeParams = {
+    account: form[verifySuccessType.value],
+    captchaVerification: data.captchaVerification,
+  };
+  if (config.value.key.includes('unbind')) {
+    Object.assign(param, { account_type: config.value.account_type });
+  } else {
+    const channel = config.value.account_type.includes('phone')
+      ? 'channel_bind_phone'
+      : 'channel_bind_email';
+    Object.assign(param, { channel });
+  }
+  (config.value?.code?.getCode || sendCodeFuc)(param).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.SEND_SUCCESS,
+    });
+    if (verifySuccessType.value === 'oldaccount') {
+      oldaccount_num.value = true;
+    } else {
+      account_num.value = true;
     }
   });
 };
@@ -155,7 +167,8 @@ const accountPlaceholder = computed(
 );
 const codePlaceholder = computed(
   () =>
-    i18n.value[config.value?.code?.placeholder] || i18n.value.ENTER_RECEIVED_CODE
+    i18n.value[config.value?.code?.placeholder] ||
+    i18n.value.ENTER_RECEIVED_CODE
 );
 </script>
 <template>
@@ -195,7 +208,10 @@ const codePlaceholder = computed(
           :rules="rules"
         >
           <div class="code">
-            <OInput v-model.trim="form.oldcode" :placeholder="codePlaceholder" />
+            <OInput
+              v-model.trim="form.oldcode"
+              :placeholder="codePlaceholder"
+            />
             <CountdownButton
               v-model="oldaccount_num"
               class="btn"
@@ -210,7 +226,10 @@ const codePlaceholder = computed(
           prop="account"
           :rules="config.account_type === 'email' ? emailRules : phoneRules"
         >
-          <OInput v-model.trim="form.account" :placeholder="accountPlaceholder" />
+          <OInput
+            v-model.trim="form.account"
+            :placeholder="accountPlaceholder"
+          />
         </el-form-item>
         <el-form-item
           v-if="config?.code"
@@ -244,6 +263,13 @@ const codePlaceholder = computed(
         >
       </div>
     </template>
+    <Verify
+      ref="verify"
+      mode="pop"
+      captcha-type="blockPuzzle"
+      :img-size="getVerifyImgSize()"
+      @success="verifySuccess"
+    ></Verify>
   </el-dialog>
 </template>
 <style lang="scss" scoped>

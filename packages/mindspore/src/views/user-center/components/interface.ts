@@ -23,12 +23,13 @@ export interface BindAccountParams {
 }
 
 interface CodeParams {
-  account_type: AccountType;
+  account_type?: AccountType;
   field?: AccountField;
 }
 
 export interface QueryCodeParams extends CodeParams {
   account?: string;
+  captchaVerification?: string;
 }
 
 export interface AccountDialogConfig extends CodeParams {
