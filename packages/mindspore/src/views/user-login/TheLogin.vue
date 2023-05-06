@@ -364,6 +364,7 @@ const cancelPad = () => {
   display: flex;
   justify-content: center;
   padding-bottom: 28px;
+  column-gap: 24px;
 }
 .code {
   display: grid;
