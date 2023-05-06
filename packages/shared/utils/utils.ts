@@ -191,3 +191,12 @@ export function getFitWidth(width: number) {
   }
   return _width + 'px';
 }
+
+export function setSessionStorage(key: string, value = '') {
+  window.sessionStorage?.setItem(key, value);
+}
+
+export function getSessionStorage(key: string) {
+  const str = window.sessionStorage?.getItem(key);
+  return str || undefined;
+}

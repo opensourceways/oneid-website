@@ -7,7 +7,7 @@ import { EMAIL_REG } from 'shared/const/common.const';
 import {
   getLogoutSession,
   isLogined,
-  saveUserAuth,
+  logout,
   setLogoutSession,
 } from 'shared/utils/login';
 import {
@@ -243,8 +243,6 @@ const isNotPadUserinfo = (data: any): boolean => {
 
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  const { token } = data || {};
-  saveUserAuth(token);
   if (isNotPadUserinfo(data)) {
     doSuccess();
   }
@@ -257,6 +255,13 @@ const doSuccess = () => {
   });
   setLogoutSession();
   haveLoggedIn();
+};
+const cancelPad = () => {
+  if (loginParams.value.response_mode === 'query') {
+    logout();
+  } else {
+    doSuccess();
+  }
 };
 </script>
 <template>
@@ -327,6 +332,9 @@ const doSuccess = () => {
     </el-form>
     <template #footer>
       <div class="footer">
+        <OButton size="small" @click="cancelPad">{{
+          loginParams.response_mode === 'query' ? i18n.LOGOUT : i18n.CANCEL
+        }}</OButton>
         <OButton size="small" type="primary" @click="putUser(formRef)">{{
           i18n.CONFIRM
         }}</OButton>
