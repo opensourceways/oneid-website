@@ -113,8 +113,11 @@ export function createClient(community = 'openeuler', url?: string) {
       lang: lang.language,
     },
     mindspore: {
-      appId: '62679fdacb2577b0daf17669',
-      appHost: 'https://xihes-ais.authing.cn',
+      appId:
+        import.meta.env?.VITE_OPENEULER_APPID || '62679fdacb2577b0daf17669',
+      appHost:
+        import.meta.env?.VITE_OPENEULER_APPHOST ||
+        'https://xihes-ais.authing.cn',
       redirectUri:
         url || `${window?.location?.origin}${window?.location?.pathname}`,
       lang: lang.language,

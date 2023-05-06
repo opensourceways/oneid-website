@@ -7,13 +7,14 @@ import { EMAIL_REG } from 'shared/const/common.const';
 import {
   getLogoutSession,
   isLogined,
-  saveUserAuth,
+  logout,
   setLogoutSession,
 } from 'shared/utils/login';
 import {
   callBackErrMessage,
   formValidator,
   asyncBlur,
+  getVerifyImgSize,
   getFitWidth,
 } from 'shared/utils/utils';
 import { getUsernammeRules } from '@/shared/utils';
@@ -25,6 +26,7 @@ import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
+import Verify from '@/verifition/Verify.vue';
 
 const formRef = ref<FormInstance>();
 const i18n = useI18n();
@@ -38,6 +40,7 @@ const goRegister = () => {
     query: route.query,
   });
 };
+const verify = ref();
 const { loginParams } = useCommonData();
 onMounted(() => {
   validLoginUrl().then(() => {
@@ -131,21 +134,24 @@ const getcode = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formValidator(formEl, 'email').subscribe((valid) => {
     if (valid) {
-      const param = {
-        account_type: 'email',
-        account: form.email,
-        field: 'change',
-      };
-      sendCode(param).then(() => {
-        ElMessage.success({
-          showClose: true,
-          message: i18n.value.SEND_SUCCESS,
-        });
-        disableCode.value = true;
-      });
+      verify.value.show();
     } else {
       return false;
     }
+  });
+};
+const verifySuccess = (data: any) => {
+  const param = {
+    account: form.email,
+    channel: 'channel_bind_email',
+    captchaVerification: data.captchaVerification,
+  };
+  sendCode(param).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.SEND_SUCCESS,
+    });
+    disableCode.value = true;
   });
 };
 const putUser = (formEl: FormInstance | undefined) => {
@@ -237,8 +243,6 @@ const isNotPadUserinfo = (data: any): boolean => {
 
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  const { token } = data || {};
-  saveUserAuth(token);
   if (isNotPadUserinfo(data)) {
     doSuccess();
   }
@@ -251,6 +255,13 @@ const doSuccess = () => {
   });
   setLogoutSession();
   haveLoggedIn();
+};
+const cancelPad = () => {
+  if (loginParams.value.response_mode === 'query') {
+    logout();
+  } else {
+    doSuccess();
+  }
 };
 </script>
 <template>
@@ -321,11 +332,21 @@ const doSuccess = () => {
     </el-form>
     <template #footer>
       <div class="footer">
+        <OButton size="small" @click="cancelPad">{{
+          loginParams.response_mode === 'query' ? i18n.LOGOUT : i18n.CANCEL
+        }}</OButton>
         <OButton size="small" type="primary" @click="putUser(formRef)">{{
           i18n.CONFIRM
         }}</OButton>
       </div>
     </template>
+    <Verify
+      ref="verify"
+      mode="pop"
+      captcha-type="blockPuzzle"
+      :img-size="getVerifyImgSize()"
+      @success="verifySuccess"
+    ></Verify>
   </el-dialog>
 </template>
 <style lang="scss" scoped>
