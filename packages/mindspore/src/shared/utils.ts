@@ -2,13 +2,15 @@ import { FormItemRule } from 'element-plus';
 import { accountExists } from 'shared/api/api-login';
 import { USERNAME_REG } from 'shared/const/common.const';
 import { useI18nStr } from 'shared/i18n';
+import { useCommonData } from 'shared/stores/common';
 import { callBackErrMessage } from 'shared/utils/utils';
 
 // 用户名重名校验
 export function validatorSameName(rule: any, value: any): void | Promise<void> {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ username: value })
+      const { loginParams } = useCommonData();
+      accountExists({ username: value, client_id: loginParams.value.client_id })
         .then(() => {
           resolve();
         })

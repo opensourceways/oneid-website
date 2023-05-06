@@ -34,7 +34,7 @@ defineExpose({ validator });
 
 const { type } = toRefs(props);
 const i18n = useI18n();
-const { lang } = useCommonData();
+const { lang, loginParams } = useCommonData();
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
@@ -64,6 +64,7 @@ const verifySuccess = (data: any) => {
     channel: type.value === 'login' ? 'CHANNEL_LOGIN' : 'CHANNEL_REGISTER',
     account: form.account,
     captchaVerification: data.captchaVerification,
+    client_id: loginParams.value.client_id,
   };
   sendCodeV3(param).then(() => {
     disableCode.value = true;
@@ -97,7 +98,7 @@ const validatorAccount = (rule: any, value: any, callback: any) => {
 const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ account: value })
+      accountExists({ account: value, client_id: loginParams.value.client_id })
         .then(() => {
           resolve();
         })
@@ -111,7 +112,7 @@ const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
 const validatorExistAccount = (rule: any, value: any): void | Promise<void> => {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ account: value })
+      accountExists({ account: value, client_id: loginParams.value.client_id })
         .then(() => {
           reject(i18n.value.ACCOUNT_NOT_EXIST);
         })
