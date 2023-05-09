@@ -188,7 +188,7 @@ export function refreshInfo(
   if (token) {
     const { guardAuthClient } = useStoreData();
     guardAuthClient.value = getSessionInfo();
-    const query = param.community === 'openeuler' ? queryCourse : refreshUser;
+    const query = param.community === 'opengauss' ? refreshUser : queryCourse;
     query(param).then((res) => {
       const { data } = res;
       if (Object.prototype.toString.call(data) === '[object Object]') {
@@ -208,7 +208,7 @@ export function isLogined(
   return new Promise((resolve, reject) => {
     const { token } = getUserAuth();
     if (token) {
-      const query = param.community === 'openeuler' ? queryCourse : refreshUser;
+      const query = param.community === 'opengauss' ? refreshUser : queryCourse;
       query(param)
         .then((res: any) => {
           const { data } = res;
