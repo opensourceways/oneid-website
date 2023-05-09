@@ -181,7 +181,9 @@ const removeSessionInfo = () => {
 };
 
 // 刷新后重新请求登录用户信息
-export function refreshInfo(param = { community: 'openeuler' }) {
+export function refreshInfo(
+  param = { community: import.meta.env?.VITE_COMMUNITY || 'openeuler' }
+) {
   const { token } = getUserAuth();
   if (token) {
     const { guardAuthClient } = useStoreData();
@@ -200,7 +202,9 @@ export function refreshInfo(param = { community: 'openeuler' }) {
 }
 
 // 判断是否为有效登录状态
-export function isLogined(param = { community: 'openeuler' }) {
+export function isLogined(
+  param = { community: import.meta.env?.VITE_COMMUNITY || 'openeuler' }
+) {
   return new Promise((resolve, reject) => {
     const { token } = getUserAuth();
     if (token) {
