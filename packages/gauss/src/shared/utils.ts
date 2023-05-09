@@ -1,4 +1,3 @@
-import { WEB_COMMUNITY } from './const';
 import { useCommonData } from 'shared/stores/common';
 import { accountExists } from 'shared/api/api-login';
 import { callBackErrMessage } from 'shared/utils/utils';
@@ -8,7 +7,7 @@ import { USERNAME_REG } from 'shared/const/common.const';
 
 export function getCommunityParams(more = false) {
   const param = {
-    community: WEB_COMMUNITY,
+    community: import.meta.env?.VITE_COMMUNITY,
   };
   if (more) {
     const { loginParams } = useCommonData();
