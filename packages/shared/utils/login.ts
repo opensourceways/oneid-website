@@ -52,7 +52,7 @@ export function getUserAuth() {
 
 // 退出登录
 export function logout(
-  param: any = { community: 'openeuler' },
+  param: any = { community: import.meta.env?.VITE_COMMUNITY },
   redirectUri = window?.location?.origin
 ) {
   if (['mindspore'].includes(param.community)) {
@@ -99,7 +99,10 @@ export function goToHome() {
   window.location.href = '/';
 }
 
-export function createClient(community = 'openeuler', url?: string) {
+export function createClient(
+  community = import.meta.env?.VITE_COMMUNITY,
+  url?: string
+) {
   const lang = getLanguage();
   const obj: IObject = {
     openeuler: {

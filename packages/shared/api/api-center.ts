@@ -165,7 +165,9 @@ export function unlinkAccount(params: any) {
 /**
  * 删除账号
  */
-export function deleteAccount(params = { community: 'openeuler' }) {
+export function deleteAccount(
+  params = { community: import.meta.env?.VITE_COMMUNITY }
+) {
   const url = '/oneid/delete/user';
 
   return request

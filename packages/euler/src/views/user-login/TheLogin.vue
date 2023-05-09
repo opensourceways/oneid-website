@@ -60,7 +60,7 @@ onMounted(() => {
 });
 const login = (form: any) => {
   const param = {
-    community: 'openeuler',
+    community: import.meta.env?.VITE_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
     code: form.code,
@@ -75,7 +75,7 @@ const threePartLogin = (res: any) => {
   const param = {
     code: code,
     permission: 'sigRead',
-    community: 'openeuler',
+    community: import.meta.env?.VITE_COMMUNITY,
     redirect: redirect_uri,
     client_id: loginParams.value.client_id,
   };
