@@ -200,3 +200,7 @@ export function getSessionStorage(key: string) {
   const str = window.sessionStorage?.getItem(key);
   return str || undefined;
 }
+
+export function removeSessionStorage(key: string) {
+  window.sessionStorage?.removeItem(key);
+}
