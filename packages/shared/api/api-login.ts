@@ -46,6 +46,24 @@ export function accountLogin(params: any) {
 }
 
 /**
+ * 邮箱或者手机号注册
+ */
+export function accountRegisterPost(params: any) {
+  const url = '/oneid/register';
+
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 邮箱或者手机号登录
+ */
+export function accountLoginPost(params: any) {
+  const url = '/oneid/login';
+
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
+}
+
+/**
  * 获取授权的相关回调链接
  */
 export function queryCourse(params: object) {
@@ -114,4 +132,28 @@ export function authorizeOidc(params: any) {
   return request
     .get(url, { params, global: true, $doException: true })
     .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 三方登录
+ */
+export function providerLogin(params: any) {
+  const url = 'oneid/provider/login';
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 绑定到已有账户
+ */
+export function providerLink(params: any) {
+  const url = 'oneid/provider/link';
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 获取三方账户用户信息
+ */
+export function providerRegister(params: any) {
+  const url = 'oneid/provider/register';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
 }
