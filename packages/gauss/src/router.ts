@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import TheCenter from '@/views/user-center/TheCenter.vue';
 import TheLogin from '@/views/user-login/TheLogin.vue';
+import TheTripartite from '@/views/user-login/TheTripartite.vue';
 import TheLogout from '@/views/user-login/TheLogout.vue';
 import TheRegister from '@/views/user-login/TheRegister.vue';
 import NotFound from 'shared/components/NotFound.vue';
+import LoginLoading from 'shared/components/LoginLoading.vue';
 import { useCommon } from 'shared/stores/common';
 import { LoginParams } from 'shared/@types/interface';
 export const routes = [
@@ -35,6 +37,16 @@ export const routes = [
     path: '/register',
     name: 'register',
     component: TheRegister,
+  },
+  {
+    path: '/oauth',
+    name: 'oauth',
+    component: TheTripartite,
+  },
+  {
+    path: '/loading',
+    name: 'loading',
+    component: LoginLoading,
   },
   {
     path: '/notfound',
@@ -117,7 +129,7 @@ router.beforeEach((to, from, next) => {
     changeLang('zh');
   }
   // 登录与注册需校验url参数
-  if (['/login', '/register'].includes(to.path)) {
+  if (['/login', '/register', '/oauth'].includes(to.path)) {
     if (to.query && to.query.redirect_uri) {
       saveLoginParams(to.query as unknown as LoginParams);
     }

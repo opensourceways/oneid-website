@@ -26,6 +26,12 @@ function chaneLanguage(newlang: string) {
   lang.value = newlang;
   const { query } = route;
   Object.assign(query, { lang: newlang });
+  if (query.redirect_uri) {
+    // 防止redirect_uri太长被截掉
+    Object.assign(query, {
+      redirect_uri: encodeURIComponent(query.redirect_uri as string),
+    });
+  }
   const search = Object.entries(query).reduce((pre, next, index) => {
     if (index) {
       pre += '&';

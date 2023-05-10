@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { PropType, reactive, ref, toRefs } from 'vue';
+import { PropType, reactive, ref, toRefs, watch } from 'vue';
 import { useI18n } from 'shared/i18n';
 import {
   formValidator,
@@ -24,6 +24,11 @@ const props = defineProps({
     type: String as PropType<TYPE>,
     default: 'login',
   },
+  // 预填值
+  preForm: {
+    type: Object,
+    default: null,
+  },
 });
 
 const emit = defineEmits(['submit']);
@@ -40,6 +45,19 @@ const form = reactive({
   company: '',
   policy: [],
 } as any);
+
+watch(
+  () => props.preForm,
+  (data) => {
+    if (data) {
+      form.username = data.username;
+      form.email = data.email;
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 
 // 验证码限制重发
 const disableCode = ref(false);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { accountLogin } from 'shared/api/api-login';
+import { accountLoginPost } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import { isLogined, saveUserAuth } from 'shared/utils/login';
 import { getCommunityParams } from '@/shared/utils';
@@ -31,7 +31,7 @@ const login = (form: any) => {
     account: form.account,
     code: form.code,
   };
-  accountLogin(param).then((data: any) => {
+  accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);
   });
 };

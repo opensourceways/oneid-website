@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { accountRegister } from 'shared/api/api-login';
+import { accountRegisterPost } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
@@ -24,7 +24,7 @@ const register = (form: any) => {
     code: form.code,
     company: form.company,
   };
-  accountRegister(param).then(() => {
+  accountRegisterPost(param).then(() => {
     ElMessage.success({
       showClose: true,
       message: i18n.value.REGISTER_SUCCESS,

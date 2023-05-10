@@ -8,6 +8,8 @@ import { SelectTabKey } from './components/interface';
 import { onMounted, ref } from 'vue';
 import { useCommon } from 'shared/stores/common';
 import { getCommunityParams } from '@/shared/utils';
+import { getSessionStorage, removeSessionStorage } from 'shared/utils/utils';
+import { USERCENTER_PAGE } from 'shared/utils/login-provider';
 
 type ComponentKey<T = any> = {
   [key in SelectTabKey]: T;
@@ -31,6 +33,11 @@ const selected = ref('userinfo' as SelectTabKey);
 const store = useCommon();
 
 onMounted(() => {
+  const str = getSessionStorage(USERCENTER_PAGE) || '';
+  if (str) {
+    selected.value = 'binding';
+    removeSessionStorage(USERCENTER_PAGE);
+  }
   store.initUserInfo(getCommunityParams(true));
 });
 </script>

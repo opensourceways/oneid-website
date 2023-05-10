@@ -5,6 +5,9 @@ import ContentBox from './ContentBox.vue';
 import AppDialog from './AppDialog.vue';
 import IconMail from '~icons/app/icon-mail.svg';
 import IconPhone from '~icons/app/icon-phone.svg';
+import IconGithub from '~icons/app/icon-github.svg';
+import IconGitee from '~icons/app/icon-gitee.svg';
+import IconOpenAtom from '~icons/app/icon-openatom.svg';
 import {
   AccountOperateKey,
   AllAccountDialogConfig,
@@ -17,10 +20,12 @@ import {
   modifyAccount,
   sendUnbindCode,
   unbindAccount,
+  userUnlink,
 } from 'shared/api/api-center';
 import { ElMessage } from 'element-plus';
 import { IObject } from 'shared/@types/interface';
 import { getCommunityParams } from '@/shared/utils';
+import { threePartsBind } from 'shared/utils/login-provider';
 
 const i18n = useI18n();
 const store = useCommon();
@@ -41,12 +46,46 @@ const accountData = ref([
     value: '',
   },
 ]);
+const threeAccountData = ref([] as IObject[]);
+const resetThreeAccountData = () => {
+  threeAccountData.value = [
+    {
+      key: 'github',
+      icon: IconGithub,
+      label: 'Github',
+      value: '',
+    },
+    {
+      key: 'gitee',
+      icon: IconGitee,
+      label: 'Gitee',
+      value: '',
+    },
+    // {
+    //   key: 'openatom',
+    //   icon: IconOpenAtom,
+    //   label: 'OpenAtom',
+    //   value: '',
+    // },
+  ];
+};
 const initData = () => {
   accountData.value.forEach((item: IObject) => {
     if (item.key in userInfo.value) {
       item.value = userInfo.value[item.key];
     }
   });
+  resetThreeAccountData();
+  if (userInfo.value?.identities?.length) {
+    threeAccountData.value.forEach((item) => {
+      userInfo.value?.identities.forEach((it: IObject) => {
+        if (item.key === it.identity) {
+          item.value = it.user_name;
+          Object.assign(item, it);
+        }
+      });
+    });
+  }
 };
 onMounted(() => {
   initData();
@@ -241,6 +280,26 @@ const config: AllAccountDialogConfig = {
       unbindAccountFuc(data);
     },
   },
+  unbind_github: {
+    key: 'unbind_github',
+    account_type: 'github',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
+    content: 'SURE_UNBIND',
+    confirm: (data: BindAccountParams) => {
+      unbindSocial(data.account_type);
+    },
+  },
+  unbind_gitee: {
+    key: 'unbind_gitee',
+    account_type: 'gitee',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
+    content: 'SURE_UNBIND',
+    confirm: (data: BindAccountParams) => {
+      unbindSocial(data.account_type);
+    },
+  },
 };
 const showDialog = (str: string, key: string) => {
   if (!userInfo.value.phone && str === 'unbind') {
@@ -251,6 +310,23 @@ const showDialog = (str: string, key: string) => {
     operateKey.value = _key;
   }
   vilible.value = true;
+};
+const bindSocial = (key: string) => {
+  threePartsBind(key);
+};
+const unbindSocial = (provider: string) => {
+  const param = {
+    provider,
+    ...getCommunityParams(),
+  };
+  userUnlink(param).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.UNBIND_SUCCESS,
+    });
+    vilible.value = false;
+    store.initUserInfo(getCommunityParams(true));
+  });
 };
 </script>
 <template>
@@ -296,6 +372,42 @@ const showDialog = (str: string, key: string) => {
               v-else
               class="opt-btn default-btn"
               @click="showDialog('bind', item.key)"
+            >
+              {{ i18n.BIND }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-title">{{ i18n.THIRD_ACCOUNT }}</div>
+        <div
+          v-for="(item, index) in threeAccountData"
+          :key="item.key"
+          class="opt-item"
+          :class="{ itemGap: index }"
+        >
+          <div class="center">
+            <OIcon class="icon">
+              <component :is="item.icon"></component>
+            </OIcon>
+            <span>{{ item.label }}</span>
+            <span v-if="item.value">
+              ：
+              <span class="opt-label">{{ item.value }}</span>
+            </span>
+          </div>
+          <div class="center">
+            <div
+              v-if="item.value"
+              class="opt-btn grey-btn"
+              @click="showDialog('unbind', item.key)"
+            >
+              {{ i18n.UNBIND_EMAIL }}
+            </div>
+            <div
+              v-else
+              class="opt-btn default-btn"
+              @click="bindSocial(item.key)"
             >
               {{ i18n.BIND }}
             </div>
