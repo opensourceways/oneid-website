@@ -26,11 +26,9 @@ export function threePartsLogin(type: string) {
 // 三方授权
 export function toThreePartsUri(type: string) {
   const { loginParams } = useCommonData();
-  const url = `${location.origin}/oneid/provider/authorize?
-    community=${import.meta.env?.VITE_COMMUNITY}&
-    provider=${type}&
-    client_id=${loginParams.value.client_id}
-  `;
+  const url = `${location.origin}/oneid/provider/authorize?community=${
+    import.meta.env?.VITE_COMMUNITY
+  }&provider=${type}&client_id=${loginParams.value.client_id}`;
   location.href = url;
 }
 
