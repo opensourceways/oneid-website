@@ -244,8 +244,6 @@ const showRestrictedTip = computed(
           <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
           {{ i18n.AND }}
           <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
-          <br />
-          <p v-if="showRestrictedTip">{{ i18n.RESTRICTED_TIPS }}</p>
         </span>
       </div>
     </el-form-item>
