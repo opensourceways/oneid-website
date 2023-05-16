@@ -60,12 +60,16 @@ const getcode = (formEl: FormInstance | undefined, type?: string) => {
 
 const verifySuccess = (data: any) => {
   const param: QueryCodeParams = {
-    account_type: config.value.account_type,
     account: form[verifySuccessType.value],
     captchaVerification: data.captchaVerification,
   };
-  if (config.value.field) {
-    Object.assign(param, { field: config.value.field });
+  if (config.value.key.includes('unbind')) {
+    Object.assign(param, { account_type: config.value.account_type });
+  } else {
+    const channel = config.value.account_type.includes('phone')
+      ? 'channel_bind_phone'
+      : 'channel_bind_email';
+    Object.assign(param, { channel });
   }
   (config.value?.code?.getCode || sendCodeFuc)(param).then(() => {
     ElMessage.success({
@@ -164,7 +168,8 @@ const accountPlaceholder = computed(
 );
 const codePlaceholder = computed(
   () =>
-    i18n.value[config.value?.code?.placeholder] || i18n.value.ENTER_RECEIVED_CODE
+    i18n.value[config.value?.code?.placeholder] ||
+    i18n.value.ENTER_RECEIVED_CODE
 );
 </script>
 <template>
@@ -204,7 +209,10 @@ const codePlaceholder = computed(
           :rules="rules"
         >
           <div class="code">
-            <OInput v-model.trim="form.oldcode" :placeholder="codePlaceholder" />
+            <OInput
+              v-model.trim="form.oldcode"
+              :placeholder="codePlaceholder"
+            />
             <CountdownButton
               v-model="oldaccount_num"
               class="btn"
@@ -219,7 +227,10 @@ const codePlaceholder = computed(
           prop="account"
           :rules="config.account_type === 'email' ? emailRules : phoneRules"
         >
-          <OInput v-model.trim="form.account" :placeholder="accountPlaceholder" />
+          <OInput
+            v-model.trim="form.account"
+            :placeholder="accountPlaceholder"
+          />
         </el-form-item>
         <el-form-item
           v-if="config?.code"

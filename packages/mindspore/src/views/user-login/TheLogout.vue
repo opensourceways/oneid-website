@@ -9,7 +9,10 @@ onMounted(() => {
   if (redirect_uri) {
     const { token } = getUserAuth();
     if (token) {
-      logout({ community: 'mindspore', id_token }, redirect_uri);
+      logout(
+        { community: import.meta.env?.VITE_COMMUNITY, id_token },
+        redirect_uri
+      );
     } else {
       location.href = redirect_uri;
     }

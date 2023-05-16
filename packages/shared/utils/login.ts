@@ -52,10 +52,10 @@ export function getUserAuth() {
 
 // 退出登录
 export function logout(
-  param: any = { community: 'openeuler' },
+  param: any = { community: import.meta.env?.VITE_COMMUNITY },
   redirectUri = window?.location?.origin
 ) {
-  if (['mindspore'].includes(param.community)) {
+  if (param.id_token) {
     saveUserAuth();
     const client1 = createClient(param.community);
     const logoutUrl = client1.buildLogoutUrl({
@@ -69,7 +69,7 @@ export function logout(
   queryIDToken(param)
     .then((res: any) => {
       saveUserAuth();
-      if (['openeuler'].includes(param.community)) {
+      if (['openeuler', 'mindspore'].includes(param.community)) {
         const idToken = res.data.id_token;
         const appId = res.data.client_id;
         const appHost = res.data.client_identifier;
@@ -99,7 +99,10 @@ export function goToHome() {
   window.location.href = '/';
 }
 
-export function createClient(community = 'openeuler', url?: string) {
+export function createClient(
+  community = import.meta.env?.VITE_COMMUNITY,
+  url?: string
+) {
   const lang = getLanguage();
   const obj: IObject = {
     openeuler: {
@@ -113,8 +116,11 @@ export function createClient(community = 'openeuler', url?: string) {
       lang: lang.language,
     },
     mindspore: {
-      appId: '62679fdacb2577b0daf17669',
-      appHost: 'https://xihes-ais.authing.cn',
+      appId:
+        import.meta.env?.VITE_OPENEULER_APPID || '62679fdacb2577b0daf17669',
+      appHost:
+        import.meta.env?.VITE_OPENEULER_APPHOST ||
+        'https://xihes-ais.authing.cn',
       redirectUri:
         url || `${window?.location?.origin}${window?.location?.pathname}`,
       lang: lang.language,
@@ -178,12 +184,14 @@ const removeSessionInfo = () => {
 };
 
 // 刷新后重新请求登录用户信息
-export function refreshInfo(param = { community: 'openeuler' }) {
+export function refreshInfo(
+  param = { community: import.meta.env?.VITE_COMMUNITY || 'openeuler' }
+) {
   const { token } = getUserAuth();
   if (token) {
     const { guardAuthClient } = useStoreData();
     guardAuthClient.value = getSessionInfo();
-    const query = param.community === 'openeuler' ? queryCourse : refreshUser;
+    const query = param.community === 'opengauss' ? refreshUser : queryCourse;
     query(param).then((res) => {
       const { data } = res;
       if (Object.prototype.toString.call(data) === '[object Object]') {
@@ -197,11 +205,13 @@ export function refreshInfo(param = { community: 'openeuler' }) {
 }
 
 // 判断是否为有效登录状态
-export function isLogined(param = { community: 'openeuler' }) {
+export function isLogined(
+  param = { community: import.meta.env?.VITE_COMMUNITY || 'openeuler' }
+) {
   return new Promise((resolve, reject) => {
     const { token } = getUserAuth();
     if (token) {
-      const query = param.community === 'openeuler' ? queryCourse : refreshUser;
+      const query = param.community === 'opengauss' ? refreshUser : queryCourse;
       query(param)
         .then((res: any) => {
           const { data } = res;
