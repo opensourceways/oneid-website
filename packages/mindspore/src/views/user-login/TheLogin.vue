@@ -46,9 +46,10 @@ onMounted(() => {
   validLoginUrl().then(() => {
     isLogined().then((bool) => {
       if (bool) {
-        if (isNotPadUserinfo(bool)) {
-          haveLoggedIn();
-        }
+        // if (isNotPadUserinfo(bool)) {
+        //   haveLoggedIn();
+        // }
+        haveLoggedIn();
       } else if (!getLogoutSession()) {
         setLogoutSession(true);
         window.location.href = `https://jldibemigdfj.authing.cn/login/profile/logout?app_id=${
@@ -245,9 +246,10 @@ const isNotPadUserinfo = (data: any): boolean => {
 
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  if (isNotPadUserinfo(data)) {
-    doSuccess();
-  }
+  // if (isNotPadUserinfo(data)) {
+  //   doSuccess();
+  // }
+  doSuccess();
 };
 // 登录成功提示
 const doSuccess = () => {
@@ -280,7 +282,7 @@ const cancelPad = () => {
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
-  <el-dialog
+  <!-- <el-dialog
     v-model="visible"
     :draggable="true"
     :close-on-click-modal="false"
@@ -349,7 +351,7 @@ const cancelPad = () => {
       :img-size="getVerifyImgSize()"
       @success="verifySuccess"
     ></Verify>
-  </el-dialog>
+  </el-dialog> -->
 </template>
 <style lang="scss" scoped>
 .header {
