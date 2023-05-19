@@ -18,6 +18,7 @@ import {
 } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
+import { getRsaEncryptWord } from '../utils/rsa';
 
 const props = defineProps({
   modelValue: {
@@ -140,12 +141,13 @@ const nextStep = (formEl: FormInstance | undefined) => {
   });
 };
 const confirm = (formEl: FormInstance | undefined) => {
-  formValidator(formEl).subscribe((valid) => {
+  formValidator(formEl).subscribe(async (valid) => {
     if (valid) {
+      const new_pwd = await getRsaEncryptWord(form.password);
       const param = {
         community: import.meta.env?.VITE_COMMUNITY,
         pwd_reset_token: resetToken.value,
-        new_pwd: form.password,
+        new_pwd,
       };
       resetPwd(param).then(() => {
         ElMessage.success({
