@@ -148,7 +148,7 @@ export function authorizeOidc(params: any) {
  * 三方登录
  */
 export function providerLogin(params: any) {
-  const url = 'oneid/provider/login';
+  const url = '/oneid/provider/login';
   return request.post(url, params).then((res: AxiosResponse) => res.data);
 }
 
@@ -156,7 +156,7 @@ export function providerLogin(params: any) {
  * 绑定到已有账户
  */
 export function providerLink(params: any) {
-  const url = 'oneid/provider/link';
+  const url = '/oneid/provider/link';
   return request.post(url, params).then((res: AxiosResponse) => res.data);
 }
 
@@ -164,7 +164,7 @@ export function providerLink(params: any) {
  * 获取三方账户用户信息
  */
 export function providerRegister(params: any) {
-  const url = 'oneid/provider/register';
+  const url = '/oneid/provider/register';
   return request.get(url, { params }).then((res: AxiosResponse) => res.data);
 }
 
@@ -172,7 +172,7 @@ export function providerRegister(params: any) {
  * 获取publickey
  */
 export function getPublicKey(params: any) {
-  const url = 'oneid/public/key';
+  const url = '/oneid/public/key';
   return request.get(url, { params }).then((res: AxiosResponse) => res.data);
 }
 
@@ -180,7 +180,7 @@ export function getPublicKey(params: any) {
  * 重置密码验证码
  */
 export function resetPwdVerify(params: any) {
-  const url = 'oneid/reset/password/verify';
+  const url = '/oneid/reset/password/verify';
   return request.post(url, params).then((res: AxiosResponse) => res.data);
 }
 
@@ -188,6 +188,6 @@ export function resetPwdVerify(params: any) {
  * 重置密码
  */
 export function resetPwd(params: any) {
-  const url = 'oneid/reset/password';
+  const url = '/oneid/reset/password';
   return request.post(url, params).then((res: AxiosResponse) => res.data);
 }
