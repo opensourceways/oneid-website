@@ -20,6 +20,7 @@ importers:
       eslint: ^8.24.0
       eslint-plugin-vue: ^9.5.1
       husky: ^8.0.1
+      jsencrypt: ^3.3.2
       lint-staged: ^13.0.3
       normalize.css: ^8.0.1
       opendesign: ./opendesign
@@ -44,6 +45,7 @@ importers:
       core-js: 3.26.1
       crypto-js: 4.1.1
       element-plus: registry.npmmirror.com/element-plus/2.2.17_vue@3.2.39
+      jsencrypt: 3.3.2
       normalize.css: 8.0.1
       opendesign: link:opendesign
       pinia: registry.npmmirror.com/pinia/2.0.22_arz4dztosvwy2ghjrlh2wdhejm
@@ -984,7 +986,7 @@ packages:
     dependencies:
       axios: 0.19.2
       crypto-js: 4.1.1
-      jsencrypt: 3.2.1
+      jsencrypt: 3.3.2
       jwt-decode: 2.2.0
       sm-crypto: 0.3.11
     transitivePeerDependencies:
@@ -2462,8 +2464,8 @@ packages:
     resolution: {integrity: sha512-4bYVV3aAMtDTTu4+xsDYa6sy9GyJ69/amsu9sYF2zqjiEoZA5xJi3BrfX3uY+/IekIu7MwdObdbDWpoZdBv3/A==}
     dev: false
 
-  /jsencrypt/3.2.1:
-    resolution: {integrity: sha512-k1sD5QV0KPn+D8uG9AdGzTQuamt82QZ3A3l6f7TRwMU6Oi2Vg0BsL+wZIQBONcraO1pc78ExMdvmBBJ8WhNYUA==}
+  /jsencrypt/3.3.2:
+    resolution: {integrity: sha512-arQR1R1ESGdAxY7ZheWr12wCaF2yF47v5qpB76TtV64H1pyGudk9Hvw8Y9tb/FiTIaaTRUyaSnm5T/Y53Ghm/A==}
     dev: false
 
   /jsesc/2.5.2:

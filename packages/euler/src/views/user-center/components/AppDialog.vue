@@ -7,7 +7,7 @@ import { useCommonData } from 'shared/stores/common';
 import { sendCode } from 'shared/api/api-center';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
-import Verify from '@/verifition/Verify.vue';
+import Verify from 'shared/verifition/Verify.vue';
 import { getVerifyImgSize } from 'shared/utils/utils';
 
 const i18n = useI18n();

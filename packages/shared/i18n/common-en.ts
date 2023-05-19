@@ -161,4 +161,17 @@ export default {
   VERIFY_SUCCESS: 'The verification succeeds in [0]s.',
   VERIFY_FAILED: 'verification failed.',
   SWIPE_RIGHT: 'Swipe right to complete the verification.',
+  PWD_VAILD:
+    'At least 6 characters,must contain two types of letters, numbers and symbols.',
+  MODIFY_PWD: 'Change password',
+  MODIFY_PWD_TIP: '使用原密码修改密码',
+  FORGET_PWD: 'Forgot Password',
+  INTER_PWD: 'Enter your password.',
+  INTER_OLD_PWD: 'Enter your old password.',
+  INTER_NEW_PWD: 'Enter your new password.',
+  RESET_PWD: 'Reset Password',
+  NEXT_STEP: 'Next',
+  LOGIN_PWD: 'Password',
+  LOGIN_CODE: 'Verify Code',
+  RESET_SUCCESS: 'Reset Successfully',
 };

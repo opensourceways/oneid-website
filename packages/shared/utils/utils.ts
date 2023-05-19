@@ -3,7 +3,7 @@ import { FormInstance, FormItemRule } from 'element-plus';
 import { from, Observable, reduce, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { useI18nStr } from '../i18n';
-import { COMPANYNAME_REG, NICKNAME_REG } from '../const/common.const';
+import { COMPANYNAME_REG, NICKNAME_REG, PWD_REG } from '../const/common.const';
 
 // iframe的刷新回调
 export function iframeRefreshCallback() {
@@ -165,6 +165,16 @@ export function getCompanyRules(): FormItemRule[] {
     {
       pattern: COMPANYNAME_REG,
       message: useI18nStr('COMPANY_VAILD') as unknown as string,
+      trigger: 'blur',
+    },
+  ];
+}
+
+export function getPwdRules(): FormItemRule[] {
+  return [
+    {
+      pattern: PWD_REG,
+      message: useI18nStr('PWD_VAILD') as unknown as string,
       trigger: 'blur',
     },
   ];

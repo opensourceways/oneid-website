@@ -22,6 +22,16 @@ export function sendCodeV3(params: any) {
     .get(url, { global: true, params })
     .then((res: AxiosResponse) => res.data);
 }
+/**
+ * 发送验证码
+ */
+export function sendCodeCaptcha(params: any) {
+  const url = '/oneid/captcha/sendCode';
+
+  return request
+    .get(url, { global: true, params })
+    .then((res: AxiosResponse) => res.data);
+}
 
 /**
  * 邮箱或者手机号注册
@@ -156,4 +166,28 @@ export function providerLink(params: any) {
 export function providerRegister(params: any) {
   const url = 'oneid/provider/register';
   return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 获取publickey
+ */
+export function getPublicKey(params: any) {
+  const url = 'oneid/public/key';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 重置密码验证码
+ */
+export function resetPwdVerify(params: any) {
+  const url = 'oneid/reset/password/verify';
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 重置密码
+ */
+export function resetPwd(params: any) {
+  const url = 'oneid/reset/password';
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
 }
