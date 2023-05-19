@@ -179,13 +179,20 @@ export function deleteAccount(
  * 个人中心三方账号绑定
  */
 export function userLink(params: any) {
-  const url = 'oneid/user/link';
+  const url = '/oneid/user/link';
   return request.post(url, params).then((res: AxiosResponse) => res.data);
 }
 /**
  * 个人中心三方账号解绑
  */
 export function userUnlink(params: any) {
-  const url = 'oneid/user/unlink';
+  const url = '/oneid/user/unlink';
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
+}
+/**
+ * 修改密码
+ */
+export function updatePassword(params: any) {
+  const url = '/oneid/update/password';
   return request.post(url, params).then((res: AxiosResponse) => res.data);
 }

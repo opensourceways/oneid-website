@@ -94,10 +94,10 @@
  * VerifySlide
  * @description 滑块
  * */
-import { aesEncrypt } from './../utils/ase';
-import { resetSize } from './../utils/util';
-import { reqGet, reqCheck } from 'shared/api/api-login.ts';
-import { useI18n, useI18nStr } from 'shared/i18n/index.ts';
+import { aesEncrypt } from '../utils/ase.ts';
+import { resetSize } from '../utils/util.ts';
+import { reqGet, reqCheck } from '../../api/api-login.ts';
+import { useI18n, useI18nStr } from '../../i18n/index.ts';
 import {
   computed,
   onMounted,
@@ -244,7 +244,7 @@ export default {
         end();
       });
     }
-    watch([type, explain], () => {
+    watch(type, () => {
       init();
     });
     onMounted(() => {
@@ -270,9 +270,15 @@ export default {
       );
       startMoveTime.value = +new Date(); //开始滑动的时间
       if (isEnd.value === false) {
+        const colors = {
+          openeuler: '#002fa7',
+          opengauss: '#7d32ea',
+          mindspore: '#0d8dff',
+        };
+        const color = colors[import.meta.env?.VITE_COMMUNITY || 'openeuler'];
         text.value = '';
-        moveBlockBackgroundColor.value = '#002fa7';
-        leftBarBorderColor.value = '#002fa7';
+        moveBlockBackgroundColor.value = color;
+        leftBarBorderColor.value = color;
         iconColor.value = '#fff';
         e.stopPropagation();
         status.value = true;

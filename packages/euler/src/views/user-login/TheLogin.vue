@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { bindAccount, modifyUser, sendCode } from 'shared/api/api-center';
-import { accountExists, accountLogin, queryToken } from 'shared/api/api-login';
+import {
+  accountExists,
+  accountLoginPost,
+  queryToken,
+} from 'shared/api/api-login';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { useI18n } from 'shared/i18n';
+import ForgotPwdModal from 'shared/components/ForgotPwdModal.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
 import {
   getLogoutSession,
@@ -26,12 +31,14 @@ import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
-import Verify from '@/verifition/Verify.vue';
+import Verify from 'shared/verifition/Verify.vue';
+import { getRsaEncryptWord } from 'shared/utils/rsa';
 
 const formRef = ref<FormInstance>();
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
 const visible = ref(false);
+const forgotVisible = ref(false);
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
@@ -58,15 +65,20 @@ onMounted(() => {
     });
   });
 });
-const login = (form: any) => {
-  const param = {
+const login = async (form: any) => {
+  const param: any = {
     community: import.meta.env?.VITE_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
-    code: form.code,
     client_id: loginParams.value.client_id,
   };
-  accountLogin(param).then((data: any) => {
+  if (form.password) {
+    const password = await getRsaEncryptWord(form.password);
+    param.password = password;
+  } else {
+    param.code = form.code;
+  }
+  accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);
   });
 };
@@ -271,6 +283,11 @@ const cancelPad = () => {
     @three-part-login="threePartLogin"
   >
     <template #switch>
+      <div style="flex: 1">
+        <a style="display: inline" @click="forgotVisible = true">
+          {{ i18n.FORGET_PWD }}
+        </a>
+      </div>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
@@ -278,6 +295,7 @@ const cancelPad = () => {
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
+  <ForgotPwdModal v-model="forgotVisible"></ForgotPwdModal>
   <el-dialog
     v-model="visible"
     :draggable="true"

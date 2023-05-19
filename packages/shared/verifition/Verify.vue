@@ -40,7 +40,7 @@
  * @description 分发验证码使用
  * */
 import VerifySlide from './Verify/VerifySlide.vue';
-import { useI18n } from 'shared/i18n/index.ts';
+import { useI18n } from '../i18n/index.ts';
 import { computed, ref, toRefs, watchEffect } from 'vue';
 
 export default {
@@ -184,12 +184,13 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1001;
+  z-index: 10001;
   width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.3);
   /* display: none; */
   transition: all 0.5s;
+  touch-action: none;
   touch-action: pan-y;
 }
 .verify-tips {
