@@ -162,7 +162,7 @@ export default {
   SWIPE_RIGHT: '向右滑动完成验证',
   PWD_VAILD: '请使用至少 6 位字符作为密码，须包含英文、数字与符号中的两种',
   MODIFY_PWD: '密码修改',
-  MODIFY_PWD_TIP: '使用原密码修改密码',
+  MODIFY_PWD_TIP: '通过验证手机号、邮箱等方式修改密码',
   FORGET_PWD: '忘记密码',
   INTER_PWD: '请输入您的密码',
   INTER_OLD_PWD: '请输入您旧的密码',
@@ -171,5 +171,9 @@ export default {
   NEXT_STEP: '下一步',
   LOGIN_PWD: '密码登录',
   LOGIN_CODE: '验证码登录',
+  REGISTER_PWD: '密码注册',
+  REGISTER_CODE: '验证码注册',
   RESET_SUCCESS: '重置成功',
+  USE_PHONE: '使用手机号验证',
+  USE_EMAIL: '使用邮箱验证',
 };

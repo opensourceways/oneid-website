@@ -93,10 +93,18 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
 // 手机或邮箱合法校验
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
-    if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
-      callback();
+    if (type.value === 'register' && selectLoginType.value === 'password') {
+      if (EMAIL_REG.test(value)) {
+        callback();
+      } else {
+        callback(i18n.value.ENTER_VAILD_EMAIL);
+      }
     } else {
-      callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
+      if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
+        callback();
+      } else {
+        callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
+      }
     }
   }
 };
@@ -211,8 +219,8 @@ const showRestrictedTip = computed(
 </script>
 <template>
   <LoginTabs
-    v-if="type !== 'register'"
     v-model="selectLoginType"
+    :type="type"
     @select="formRef?.resetFields()"
   ></LoginTabs>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
@@ -230,7 +238,11 @@ const showRestrictedTip = computed(
     <el-form-item prop="account" :rules="accountRules">
       <OInput
         v-model.trim="form.account"
-        :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
+        :placeholder="
+          type === 'register' && selectLoginType === 'password'
+            ? i18n.ENTER_YOUR_EMAIL
+            : i18n.ENTER_YOUR_EMAIL_OR_PHONE
+        "
         @blur="blur(formRef, 'account')"
         @input="changeAccount(formRef)"
       />
@@ -254,7 +266,7 @@ const showRestrictedTip = computed(
       </div>
     </el-form-item>
     <el-form-item
-      v-if="selectLoginType === 'password' || type === 'register'"
+      v-if="selectLoginType === 'password'"
       prop="password"
       :rules="type === 'register' ? passwordRules : rules"
     >

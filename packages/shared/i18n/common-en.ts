@@ -164,7 +164,7 @@ export default {
   PWD_VAILD:
     'At least 6 characters,must contain two types of letters, numbers and symbols.',
   MODIFY_PWD: 'Change password',
-  MODIFY_PWD_TIP: '使用原密码修改密码',
+  MODIFY_PWD_TIP: '通过验证手机号、邮箱等方式修改密码',
   FORGET_PWD: 'Forgot Password',
   INTER_PWD: 'Enter your password.',
   INTER_OLD_PWD: 'Enter your old password.',
@@ -173,5 +173,9 @@ export default {
   NEXT_STEP: 'Next',
   LOGIN_PWD: 'Password',
   LOGIN_CODE: 'Verify Code',
+  REGISTER_PWD: 'Password',
+  REGISTER_CODE: 'Verify Code',
   RESET_SUCCESS: 'Reset Successfully',
+  USE_PHONE: '使用手机号验证',
+  USE_EMAIL: '使用邮箱验证',
 };
