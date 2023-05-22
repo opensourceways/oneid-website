@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useI18n } from 'shared/i18n';
 import ContentBox from './ContentBox.vue';
 import { deleteAccount } from 'shared/api/api-center';
-import ModifyPwdModal from 'shared/components/ModifyPwdModal.vue';
+import ForgotPwdModal from 'shared/components/ForgotPwdModal.vue';
 import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
 import { ElMessage } from 'element-plus';
 import { saveUserAuth } from 'shared/utils/login';
@@ -52,7 +52,7 @@ const pwdVilible = ref(false);
     </template>
   </ContentBox>
   <DeleteAccountModal v-model="vilible" @submit="confirm"></DeleteAccountModal>
-  <ModifyPwdModal v-model="pwdVilible"></ModifyPwdModal>
+  <ForgotPwdModal v-model="pwdVilible" :is-modify="true"></ForgotPwdModal>
 </template>
 <style lang="scss" scoped>
 .tips {

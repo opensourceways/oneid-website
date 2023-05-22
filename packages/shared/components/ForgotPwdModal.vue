@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from '../i18n';
-import { reactive, ref, toRefs } from 'vue';
+import { reactive, ref, toRefs, watchEffect } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG, PHONE_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
@@ -25,10 +25,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isModify: {
+    type: Boolean,
+    default: false,
+  },
 });
-const { modelValue } = toRefs(props);
+const { modelValue, isModify } = toRefs(props);
 const emit = defineEmits(['update:modelValue']);
-const { loginParams } = useCommonData();
+const { loginParams, userInfo } = useCommonData();
 const i18n = useI18n();
 
 const close = () => {
@@ -42,6 +46,30 @@ const form = reactive({
   code: '',
   password: '',
 } as any);
+
+const useAccount = ref('');
+
+watchEffect(() => {
+  if (isModify.value) {
+    if (userInfo.value.email && userInfo.value.phone) {
+      useAccount.value = 'email';
+    } else {
+      useAccount.value = '';
+    }
+    form.account = userInfo.value.email || userInfo.value.phone;
+  }
+});
+
+const changeAccount = () => {
+  if (useAccount.value === 'email') {
+    useAccount.value = 'phone';
+    form.account = userInfo.value.phone;
+  } else if (useAccount.value === 'phone') {
+    useAccount.value = 'email';
+    form.account = userInfo.value.email;
+  }
+  formRef.value?.resetFields('code');
+};
 
 // 空值校验
 const requiredRules: FormItemRule[] = [
@@ -174,7 +202,7 @@ const confirm = (formEl: FormInstance | undefined) => {
     align-center
   >
     <template #header>
-      <h5 class="header">{{ i18n.RESET_PWD }}</h5>
+      <h5 class="header">{{ isModify ? i18n.MODIFY_PWD : i18n.RESET_PWD }}</h5>
     </template>
     <el-form
       ref="formRef"
@@ -184,9 +212,14 @@ const confirm = (formEl: FormInstance | undefined) => {
       @submit.prevent=""
     >
       <el-form-item v-if="!resetToken" prop="account" :rules="accountRules">
+        <a v-if="useAccount" @click="changeAccount">{{
+          useAccount === 'email' ? i18n.USE_PHONE : i18n.USE_EMAIL
+        }}</a>
         <OInput
           v-model="form.account"
           :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
+          :disabled="isModify"
+          @input="formRef?.resetFields('code')"
         />
       </el-form-item>
       <el-form-item v-if="!resetToken" prop="code" :rules="rules">

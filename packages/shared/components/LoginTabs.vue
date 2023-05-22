@@ -1,24 +1,29 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from '../i18n';
 
-defineProps({
+const props = defineProps({
   modelValue: {
     type: String,
     default: 'password',
   },
+  type: {
+    type: String,
+    default: 'login',
+  },
 });
 const i18n = useI18n();
 const emit = defineEmits(['update:modelValue', 'select']);
-const tabs = [
+const tabs = computed(() => [
   {
     value: 'password',
-    label: 'LOGIN_PWD',
+    label: props.type === 'login' ? 'LOGIN_PWD' : 'REGISTER_PWD',
   },
   {
     value: 'code',
-    label: 'LOGIN_CODE',
+    label: props.type === 'login' ? 'LOGIN_CODE' : 'REGISTER_CODE',
   },
-];
+]);
 const select = (key: string) => {
   emit('update:modelValue', key);
   emit('select', key);
