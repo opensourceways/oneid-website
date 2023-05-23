@@ -130,7 +130,7 @@ const requestInterceptorId = request.interceptors.request.use(
 const responseInterceptorId = request.interceptors.response.use(
   (response: AxiosResponse) => {
     const { config } = response;
-    (config as RequestConfig).$ignoreLoading && loadingCount--;
+    !(config as RequestConfig).$ignoreLoading && loadingCount--;
 
     if (loadingCount === 0 && loadingInstance) {
       loadingInstance.close();
