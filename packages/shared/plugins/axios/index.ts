@@ -9,13 +9,15 @@ import type {
 } from 'axios';
 import handleError from './handleError';
 import setConfig from './setConfig';
-import { ElMessage } from 'element-plus';
+import { ElLoading, ElMessage } from 'element-plus';
 import { callBackErrMessage } from '../../utils/utils';
 import { getUserAuth, tokenFailIndicateLogin } from '../../utils/login';
+import { LoadingInstance } from 'element-plus/es/components/loading/src/loading';
 
 interface RequestConfig<D = any> extends AxiosRequestConfig {
   data?: D;
   $doException?: boolean;
+  $ignoreLoading?: boolean; // 是否出现loading框
   global?: boolean; // 是否为全局请求， 全局请求在清除请求池时，不清除
 }
 
@@ -60,6 +62,10 @@ interface RequestInstance extends AxiosInstance {
   ): Promise<R>;
 }
 
+// 全局loading
+let loadingInstance: LoadingInstance | null = null;
+let loadingCount = 0;
+
 /**
  * request是基于axios创建的实例，实例只有常见的数据请求方法，没有axios.isCancel/ axios.CancelToken等方法，
  * 也就是没有**取消请求**和**批量请求**的方法。
@@ -75,7 +81,16 @@ const pendingPool: Map<string, any> = new Map();
  * 请求拦截
  */
 const requestInterceptorId = request.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: RequestConfig) => {
+    if (loadingCount === 0 && !config.$ignoreLoading) {
+      loadingInstance = ElLoading.service({
+        fullscreen: true,
+        target: 'body',
+        text: 'Loading',
+        background: 'transparent',
+      });
+    }
+    config.$ignoreLoading ? '' : loadingCount++;
     // 存储请求信息
     // request.config = Object.assign({}, config);
     // 定义取消请求
@@ -115,6 +130,12 @@ const requestInterceptorId = request.interceptors.request.use(
 const responseInterceptorId = request.interceptors.response.use(
   (response: AxiosResponse) => {
     const { config } = response;
+    (config as RequestConfig).$ignoreLoading && loadingCount--;
+
+    if (loadingCount === 0 && loadingInstance) {
+      loadingInstance.close();
+      loadingInstance = null;
+    }
     // 请求完成，移除请求池
     if (config.url) {
       pendingPool.delete(config.url);
@@ -123,6 +144,10 @@ const responseInterceptorId = request.interceptors.response.use(
     return Promise.resolve(response);
   },
   (err: any) => {
+    if (loadingInstance) {
+      loadingInstance.close();
+      loadingCount = 0;
+    }
     const { config } = err;
 
     // 非取消请求发生异常，同样将请求移除请求池

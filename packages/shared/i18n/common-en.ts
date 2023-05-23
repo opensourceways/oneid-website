@@ -162,7 +162,7 @@ export default {
   VERIFY_FAILED: 'verification failed.',
   SWIPE_RIGHT: 'Swipe right to complete the verification.',
   PWD_VAILD:
-    'At least 6 characters,must contain two types of letters, numbers and symbols.',
+    'The password must contain at least 8 characters, including letters, digits, and special characters(!@%^-_=+[{}]:,./?).',
   MODIFY_PWD: 'Change Password',
   MODIFY_PWD_TIP:
     'Change the password using the verified mobile number or email address.',
