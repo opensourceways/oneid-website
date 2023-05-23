@@ -38,6 +38,8 @@ const i18n = useI18n();
 const close = () => {
   emit('update:modelValue', false);
   formRef.value?.resetFields();
+  form.account = '';
+  form.code = '';
   resetToken.value = '';
 };
 const formRef = ref<FormInstance>();
