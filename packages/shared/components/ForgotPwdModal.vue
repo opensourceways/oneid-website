@@ -38,6 +38,7 @@ const i18n = useI18n();
 const close = () => {
   emit('update:modelValue', false);
   formRef.value?.resetFields();
+  resetToken.value = '';
 };
 const formRef = ref<FormInstance>();
 // 表单值
@@ -180,7 +181,9 @@ const confirm = (formEl: FormInstance | undefined) => {
       resetPwd(param).then(() => {
         ElMessage.success({
           showClose: true,
-          message: i18n.value.RESET_SUCCESS,
+          message: isModify.value
+            ? i18n.value.MODIFY_SUCCESS
+            : i18n.value.RESET_SUCCESS,
         });
         close();
       });

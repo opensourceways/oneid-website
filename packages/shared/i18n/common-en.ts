@@ -163,8 +163,9 @@ export default {
   SWIPE_RIGHT: 'Swipe right to complete the verification.',
   PWD_VAILD:
     'At least 6 characters,must contain two types of letters, numbers and symbols.',
-  MODIFY_PWD: 'Change password',
-  MODIFY_PWD_TIP: '通过验证手机号、邮箱等方式修改密码',
+  MODIFY_PWD: 'Change Password',
+  MODIFY_PWD_TIP:
+    'Change the password using the verified mobile number or email address.',
   FORGET_PWD: 'Forgot Password',
   INTER_PWD: 'Enter your password.',
   INTER_OLD_PWD: 'Enter your old password.',
@@ -176,6 +177,6 @@ export default {
   REGISTER_PWD: 'Password',
   REGISTER_CODE: 'Verify Code',
   RESET_SUCCESS: 'Reset Successfully',
-  USE_PHONE: '使用手机号验证',
-  USE_EMAIL: '使用邮箱验证',
+  USE_PHONE: 'SMS Verification',
+  USE_EMAIL: 'Email Verification',
 };
