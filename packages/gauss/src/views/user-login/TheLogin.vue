@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { accountLogin } from 'shared/api/api-login';
+import { accountLoginPost } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import { isLogined, saveUserAuth } from 'shared/utils/login';
 import { getCommunityParams } from '@/shared/utils';
@@ -7,11 +7,14 @@ import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
+import ForgotPwdModal from 'shared/components/ForgotPwdModal.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
+import { getRsaEncryptWord } from 'shared/utils/rsa';
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
 const router = useRouter();
 const route = useRoute();
+const forgotVisible = ref(false);
 const goRegister = () => {
   router.push({
     path: '/register',
@@ -25,13 +28,18 @@ onMounted(() => {
     }
   });
 });
-const login = (form: any) => {
-  const param = {
+const login = async (form: any) => {
+  const param: any = {
     ...getCommunityParams(true),
     account: form.account,
-    code: form.code,
   };
-  accountLogin(param).then((data: any) => {
+  if (form.password) {
+    const password = await getRsaEncryptWord(form.password);
+    param.password = password;
+  } else {
+    param.code = form.code;
+  }
+  accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);
   });
 };
@@ -54,6 +62,11 @@ const doSuccess = () => {
 <template>
   <LoginTemplate ref="loginTemplate" @submit="login">
     <template #switch>
+      <div style="flex: 1">
+        <a style="display: inline" @click="forgotVisible = true">
+          {{ i18n.FORGET_PWD }}
+        </a>
+      </div>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
@@ -61,6 +74,7 @@ const doSuccess = () => {
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
+  <ForgotPwdModal v-model="forgotVisible"></ForgotPwdModal>
 </template>
 <style lang="scss" scoped>
 .header {

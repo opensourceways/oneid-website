@@ -10,9 +10,10 @@ import {
   getCompanyRules,
   getVerifyImgSize,
 } from 'shared/utils/utils';
-import { accountExists, sendCodeV3 } from 'shared/api/api-login';
-import Verify from '@/verifition/Verify.vue';
-import { callBackErrMessage } from 'shared/utils/utils';
+import { accountExists, sendCodeCaptcha } from 'shared/api/api-login';
+import Verify from 'shared/verifition/Verify.vue';
+import LoginTabs from 'shared/components/LoginTabs.vue';
+import { callBackErrMessage, getPwdRules } from 'shared/utils/utils';
 import { getUsernammeRules } from '@/shared/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
@@ -26,6 +27,8 @@ const props = defineProps({
   },
 });
 
+const selectLoginType = ref('password');
+
 const emit = defineEmits(['submit']);
 
 const { type } = toRefs(props);
@@ -37,6 +40,7 @@ const form = reactive({
   username: '',
   account: '',
   code: '',
+  password: '',
   company: '',
   policy: [],
 } as any);
@@ -61,11 +65,12 @@ const getcode = (formEl: FormInstance | undefined) => {
 const verifySuccess = (data: any) => {
   const param = {
     ...getCommunityParams(),
-    channel: type.value === 'login' ? 'CHANNEL_LOGIN' : 'CHANNEL_REGISTER',
+    channel:
+      type.value === 'login' ? 'CHANNEL_LOGIN' : 'CHANNEL_REGISTER_BY_PASSWORD',
     account: form.account,
     captchaVerification: data.captchaVerification,
   };
-  sendCodeV3(param).then(() => {
+  sendCodeCaptcha(param).then(() => {
     disableCode.value = true;
     ElMessage.success({
       showClose: true,
@@ -142,6 +147,7 @@ const rules = ref(requiredRules);
 
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
+const passwordRules = ref<FormItemRule[]>([...requiredRules, ...getPwdRules()]);
 
 // 账户校验
 const accountRules = reactive<FormItemRule[]>([
@@ -188,6 +194,14 @@ const blur = (formEl: FormInstance | undefined, field: string) => {
   }
 };
 
+// 改变账户值，重置code或pwd
+const changeAccount = (formEl: FormInstance | undefined) => {
+  formEl?.resetFields('code');
+  if (type.value === 'login') {
+    formEl?.resetFields('password');
+  }
+};
+
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
@@ -196,6 +210,11 @@ const goToOtherPage = (type: string) => {
 };
 </script>
 <template>
+  <LoginTabs
+    v-model="selectLoginType"
+    :type="type"
+    @select="formRef?.resetFields()"
+  ></LoginTabs>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
     <span v-if="type === 'register'">
       <el-form-item prop="username" :rules="userNameRules">
@@ -238,7 +257,11 @@ const goToOtherPage = (type: string) => {
           @blur="blur(formRef, 'account')"
         />
       </el-form-item>
-      <el-form-item prop="code" :rules="rules">
+      <el-form-item
+        v-if="selectLoginType === 'code'"
+        prop="code"
+        :rules="rules"
+      >
         <div class="code">
           <OInput
             v-model.trim="form.code"
@@ -253,6 +276,18 @@ const goToOtherPage = (type: string) => {
         </div>
       </el-form-item>
     </span>
+    <el-form-item
+      v-if="selectLoginType === 'password'"
+      prop="password"
+      :rules="type === 'register' ? passwordRules : rules"
+    >
+      <OInput
+        v-model="form.password"
+        :placeholder="i18n.INTER_PWD"
+        type="password"
+        show-password
+      />
+    </el-form-item>
     <el-form-item prop="policy" :rules="policyRules">
       <div class="checkbox">
         <OCheckboxGroup
