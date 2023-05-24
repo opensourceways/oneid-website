@@ -177,4 +177,10 @@ export default {
   RESET_SUCCESS: '重置成功',
   USE_PHONE: '使用手机号验证',
   USE_EMAIL: '使用邮箱验证',
+  PWD_STRENGTH: '密码强度：',
+  VERY_WEAK: '非常弱',
+  WEAK: '弱',
+  MIDDLE: '一般',
+  STRONG: '强',
+  VERY_STRONG: '非常强',
 };

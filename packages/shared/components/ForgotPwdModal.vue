@@ -4,6 +4,7 @@ import { reactive, ref, toRefs, watchEffect } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG, PHONE_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
+import PwdPower from './PwdPower.vue';
 import {
   accountExists,
   resetPwd,
@@ -42,6 +43,7 @@ const close = () => {
   form.code = '';
   resetToken.value = '';
 };
+const pwdPower = ref();
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
@@ -244,7 +246,11 @@ const confirm = (formEl: FormInstance | undefined) => {
           :placeholder="i18n.INTER_PWD"
           type="password"
           show-password
+          @blur="pwdPower?.init(form.password)"
         />
+      </el-form-item>
+      <el-form-item v-if="resetToken">
+        <PwdPower ref="pwdPower"></PwdPower>
       </el-form-item>
     </el-form>
     <template #footer>
