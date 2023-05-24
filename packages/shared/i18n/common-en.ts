@@ -179,4 +179,10 @@ export default {
   RESET_SUCCESS: 'Reset Successfully',
   USE_PHONE: 'SMS Verification',
   USE_EMAIL: 'Email Verification',
+  PWD_STRENGTH: 'Password Strength: ',
+  VERY_WEAK: 'Very weak',
+  WEAK: 'Weak',
+  MIDDLE: 'Middle',
+  STRONG: 'Strong',
+  VERY_STRONG: 'Very strong',
 };
