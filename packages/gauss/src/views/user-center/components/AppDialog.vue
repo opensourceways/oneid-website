@@ -9,7 +9,7 @@ import { EMAIL_REG } from 'shared/const/common.const';
 import { getCommunityParams } from '@/shared/utils';
 import { sendUnbindCode } from 'shared/api/api-center';
 import { getVerifyImgSize } from 'shared/utils/utils';
-import Verify from '@/verifition/Verify.vue';
+import Verify from 'shared/verifition/Verify.vue';
 
 const i18n = useI18n();
 const formRef = ref<FormInstance>();
