@@ -15,9 +15,11 @@ export function getRsaEncryptWord(
 ): Promise<string | string[]> {
   return new Promise((resolve, reject) => {
     getPublicKey({ community: import.meta.env?.VITE_COMMUNITY }).then((res) => {
-      const publicKey = res?.data?.rsa?.publicKey;
+      const publicKey = res?.data?.rsa?.publicKey || res?.data;
       if (publicKey) {
-        const keyword = publicKey.slice(27, -26);
+        const keyword = publicKey.includes('-----BEGIN PUBLIC KEY-----')
+          ? publicKey.slice(27, -26)
+          : publicKey;
         if (Array.isArray(word)) {
           resolve(word.map((item) => rsaEncrypt(item, keyword)));
         } else {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { accountLoginPost } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
-import { isLogined, saveUserAuth } from 'shared/utils/login';
+import { isLogined } from 'shared/utils/login';
 import { getCommunityParams } from '@/shared/utils';
 import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue';
@@ -46,8 +46,6 @@ const login = async (form: any) => {
 
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  const { token } = data || {};
-  saveUserAuth(token);
   doSuccess();
 };
 // 登录成功提示
