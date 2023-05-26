@@ -5,6 +5,7 @@ import { reactive, ref, toRefs } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { updatePassword } from '../api/api-center';
 import { getRsaEncryptWord } from '../utils/rsa';
+import { useCommonData } from '../stores/common';
 
 const props = defineProps({
   modelValue: {
@@ -12,6 +13,8 @@ const props = defineProps({
     default: false,
   },
 });
+
+const { loginParams } = useCommonData();
 const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'submit']);
 const i18n = useI18n();
@@ -27,6 +30,7 @@ const submit = (formEl: FormInstance | undefined) => {
       const pwd = await getRsaEncryptWord([form.old_pwd, form.new_pwd]);
       const param = {
         community: import.meta.env?.VITE_COMMUNITY,
+        client_id: loginParams.value.client_id,
         old_pwd: pwd[0],
         new_pwd: pwd[1],
       };

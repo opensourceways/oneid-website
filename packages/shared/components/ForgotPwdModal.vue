@@ -178,6 +178,7 @@ const confirm = (formEl: FormInstance | undefined) => {
     if (valid) {
       const new_pwd = await getRsaEncryptWord(form.password);
       const param = {
+        client_id: loginParams.value.client_id,
         community: import.meta.env?.VITE_COMMUNITY,
         pwd_reset_token: resetToken.value,
         new_pwd,
