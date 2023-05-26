@@ -271,8 +271,8 @@ export default {
       startMoveTime.value = +new Date(); //开始滑动的时间
       if (isEnd.value === false) {
         text.value = '';
-        moveBlockBackgroundColor.value = '#002fa7';
-        leftBarBorderColor.value = '#002fa7';
+        moveBlockBackgroundColor.value = '#0d8dff';
+        leftBarBorderColor.value = '#0d8dff';
         iconColor.value = '#fff';
         e.stopPropagation();
         status.value = true;
