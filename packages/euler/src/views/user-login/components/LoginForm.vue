@@ -64,9 +64,14 @@ const getcode = (formEl: FormInstance | undefined) => {
 };
 
 const verifySuccess = (data: any) => {
+  let channel = 'CHANNEL_REGISTER';
+  if (type.value === 'login') {
+    channel = 'CHANNEL_LOGIN';
+  } else if (selectLoginType.value === 'password') {
+    channel = 'CHANNEL_REGISTER_BY_PASSWORD';
+  }
   const param = {
-    channel:
-      type.value === 'login' ? 'CHANNEL_LOGIN' : 'CHANNEL_REGISTER_BY_PASSWORD',
+    channel,
     account: form.account,
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
