@@ -251,8 +251,14 @@ const goToOtherPage = (type: string) => {
           </span>
           <span>&nbsp;</span>
           <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
-          {{ i18n.AND }}
+          {{ '、' }}
           <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
+          {{ i18n.AND }}
+          <a
+            href="https://xihe-docs.mindspore.cn/zh/appendix/platlicense/"
+            target="_blank"
+            >昇思大模型平台协议</a
+          >
         </span>
       </div>
     </el-form-item>
