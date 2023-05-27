@@ -70,9 +70,9 @@ const goToTree = () => {
           <div class="tips-title">{{ i18n.DELETE_ACCOUNT }}</div>
           <div class="tips-content">{{ i18n.DELETE_ACCOUNT_TIPS }}</div>
         </div>
-        <OButton size="small" class="btn" @click="submit">{{
-          i18n.DELETE
-        }}</OButton>
+        <div class="btn">
+          <OButton size="small" @click="submit">{{ i18n.DELETE }}</OButton>
+        </div>
       </template>
     </ContentBox>
   </main>
