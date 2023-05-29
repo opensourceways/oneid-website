@@ -255,9 +255,6 @@ const goToTree = () => {
     display: flex;
     align-items: center;
   }
-  .info-input {
-    width: 80%;
-  }
   .info-form-pd {
     padding: 19px 0;
     z-index:1

@@ -227,9 +227,6 @@ const goToTree = () => {
     display: flex;
     align-items: center;
   }
-  .info-input {
-    width: 80%;
-  }
   .info-form-pd {
     padding-bottom: var(--o-spacing-h9);
   }
