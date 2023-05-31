@@ -142,6 +142,7 @@ export default {
   ENTER_YOUR_PHONE: 'Mobile number',
   ENTER_YOUR_EMAIL: 'Email address',
   ENTER_YOUR_EMAIL_OR_PHONE: 'Email address or mobile number',
+  ENTER_YOUR_ACCOUNT: 'Email address, mobile number or username',
   ENTER_RECEIVED_CODE: 'Verification code',
   READ_ADN_AGREE: 'I have read and agree to the',
   PRIVACY_POLICY: 'Privacy Statement',
