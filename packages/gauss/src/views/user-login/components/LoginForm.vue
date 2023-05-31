@@ -255,10 +255,17 @@ const goToOtherPage = (type: string) => {
       </el-form-item>
     </span>
     <span v-else>
-      <el-form-item prop="account" :rules="accountRules">
+      <el-form-item
+        prop="account"
+        :rules="selectLoginType === 'code' ? rules : accountRules"
+      >
         <OInput
           v-model.trim="form.account"
-          :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
+          :placeholder="
+            selectLoginType === 'code'
+              ? i18n.ENTER_YOUR_ACCOUNT
+              : i18n.ENTER_YOUR_EMAIL_OR_PHONE
+          "
           @blur="blur(formRef, 'account')"
         />
       </el-form-item>
