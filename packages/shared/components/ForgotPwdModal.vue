@@ -42,6 +42,7 @@ const close = () => {
   form.account = '';
   form.code = '';
   resetToken.value = '';
+  disableCode.value = false;
 };
 const pwdPower = ref();
 const formRef = ref<FormInstance>();
