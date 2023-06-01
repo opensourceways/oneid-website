@@ -221,6 +221,15 @@ const hiddenRestrictedTipArr = [import.meta.env?.VITE_OPENEULER_APPID];
 const showRestrictedTip = computed(
   () => !hiddenRestrictedTipArr.includes(loginParams.value.client_id)
 );
+const accountPlaceholder = computed(() => {
+  if (type.value === 'register' && selectLoginType.value === 'password') {
+    return i18n.value.ENTER_YOUR_EMAIL;
+  } else if (type.value === 'login' && selectLoginType.value === 'password') {
+    return i18n.value.ENTER_YOUR_ACCOUNT;
+  } else {
+    return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
+  }
+});
 </script>
 <template>
   <LoginTabs
@@ -240,14 +249,17 @@ const showRestrictedTip = computed(
         @blur="blur(formRef, 'username')"
       />
     </el-form-item>
-    <el-form-item prop="account" :rules="accountRules">
+    <el-form-item
+      prop="account"
+      :rules="
+        type === 'login' && selectLoginType === 'password'
+          ? rules
+          : accountRules
+      "
+    >
       <OInput
         v-model.trim="form.account"
-        :placeholder="
-          type === 'register' && selectLoginType === 'password'
-            ? i18n.ENTER_YOUR_EMAIL
-            : i18n.ENTER_YOUR_EMAIL_OR_PHONE
-        "
+        :placeholder="accountPlaceholder"
         @blur="blur(formRef, 'account')"
         @input="changeAccount(formRef)"
       />
