@@ -56,7 +56,7 @@ const form = reactive({
 const useAccount = ref('');
 
 watchEffect(() => {
-  if (isModify.value) {
+  if (isModify.value && modelValue.value) {
     if (userInfo.value.email && userInfo.value.phone) {
       useAccount.value = 'email';
     } else {
@@ -184,15 +184,24 @@ const confirm = (formEl: FormInstance | undefined) => {
         pwd_reset_token: resetToken.value,
         new_pwd,
       };
-      resetPwd(param).then(() => {
-        ElMessage.success({
-          showClose: true,
-          message: isModify.value
-            ? i18n.value.MODIFY_SUCCESS
-            : i18n.value.RESET_SUCCESS,
+      resetPwd(param)
+        .then(() => {
+          ElMessage.success({
+            showClose: true,
+            message: isModify.value
+              ? i18n.value.MODIFY_SUCCESS
+              : i18n.value.RESET_SUCCESS,
+          });
+          close();
+        })
+        .catch((err) => {
+          if (err?.response?.data?.msg?.code === 'E00056') {
+            formRef.value?.resetFields('code');
+            form.code = '';
+            resetToken.value = '';
+            disableCode.value = false;
+          }
         });
-        close();
-      });
     } else {
       return false;
     }
@@ -272,6 +281,7 @@ const confirm = (formEl: FormInstance | undefined) => {
     </template>
   </el-dialog>
   <Verify
+    v-if="modelValue"
     ref="verify"
     mode="pop"
     captcha-type="blockPuzzle"

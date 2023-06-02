@@ -291,7 +291,7 @@ const accountPlaceholder = computed(() => {
         v-model="form.password"
         :placeholder="i18n.INTER_PWD"
         type="password"
-        show-password
+        :show-password="type === 'register'"
       />
     </el-form-item>
     <el-form-item prop="policy" :rules="policyRules">
