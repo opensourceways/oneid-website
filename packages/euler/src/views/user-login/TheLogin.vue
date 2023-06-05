@@ -7,7 +7,6 @@ import {
 } from 'shared/api/api-login';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { useI18n } from 'shared/i18n';
-import ForgotPwdModal from 'shared/components/ForgotPwdModal.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
 import {
   getLogoutSession,
@@ -38,12 +37,17 @@ const formRef = ref<FormInstance>();
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
 const visible = ref(false);
-const forgotVisible = ref(false);
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
   router.push({
     path: '/register',
+    query: route.query,
+  });
+};
+const goResetPwd = () => {
+  router.push({
+    path: '/resetPwd',
     query: route.query,
   });
 };
@@ -284,7 +288,7 @@ const cancelPad = () => {
   >
     <template #switch>
       <div style="flex: 1">
-        <a style="display: inline" @click="forgotVisible = true">
+        <a style="display: inline" @click="goResetPwd()">
           {{ i18n.FORGET_PWD }}
         </a>
       </div>
@@ -295,7 +299,6 @@ const cancelPad = () => {
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
-  <ForgotPwdModal v-model="forgotVisible"></ForgotPwdModal>
   <el-dialog
     v-model="visible"
     :draggable="true"
