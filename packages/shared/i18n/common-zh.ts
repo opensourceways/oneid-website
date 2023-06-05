@@ -169,6 +169,8 @@ export default {
   INTER_PWD: '请输入您的密码',
   INTER_OLD_PWD: '请输入您旧的密码',
   INTER_NEW_PWD: '请输入您的新密码',
+  CONFIRM_NEW_PWD: '确认您的新密码',
+  CONFIRM_NOT_MATCH_PWD: '确认密码与新密码不匹配',
   RESET_PWD: '重置密码',
   NEXT_STEP: '下一步',
   LOGIN_PWD: '密码登录',

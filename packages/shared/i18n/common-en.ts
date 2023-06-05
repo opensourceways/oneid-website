@@ -171,6 +171,8 @@ export default {
   INTER_PWD: 'Enter your password.',
   INTER_OLD_PWD: 'Enter your old password.',
   INTER_NEW_PWD: 'Enter your new password.',
+  CONFIRM_NEW_PWD: 'Confirm your new password.',
+  CONFIRM_NOT_MATCH_PWD: "Password confirmation doesn't match the password.",
   RESET_PWD: 'Reset Password',
   NEXT_STEP: 'Next',
   LOGIN_PWD: 'Password',

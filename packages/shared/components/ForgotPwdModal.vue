@@ -51,6 +51,7 @@ const form = reactive({
   account: '',
   code: '',
   password: '',
+  confirm_pwd: '',
 } as any);
 
 const useAccount = ref('');
@@ -124,6 +125,22 @@ const accountRules = reactive<FormItemRule[]>([
 ]);
 const passwordRules = ref<FormItemRule[]>([...requiredRules, ...getPwdRules()]);
 
+// 确认密码校验
+const validatorConfirmPwd = (rule: any, value: any, callback: any) => {
+  if (value === form.password) {
+    callback();
+  } else {
+    callback(i18n.value.CONFIRM_NOT_MATCH_PWD);
+  }
+};
+const confirmPwdRules = reactive<FormItemRule[]>([
+  ...requiredRules,
+  {
+    validator: validatorConfirmPwd,
+    trigger: 'blur',
+  },
+]);
+
 // 验证码限制重发
 const disableCode = ref(false);
 const verify = ref();
@@ -196,7 +213,7 @@ const confirm = (formEl: FormInstance | undefined) => {
         })
         .catch((err) => {
           if (err?.response?.data?.msg?.code === 'E00056') {
-            formRef.value?.resetFields('code');
+            formRef.value?.resetFields(['code', 'password', 'confirm_pwd']);
             form.code = '';
             resetToken.value = '';
             disableCode.value = false;
@@ -229,40 +246,53 @@ const confirm = (formEl: FormInstance | undefined) => {
       class="form"
       @submit.prevent=""
     >
-      <el-form-item v-if="!resetToken" prop="account" :rules="accountRules">
-        <a v-if="useAccount" @click="changeAccount">{{
-          useAccount === 'email' ? i18n.USE_PHONE : i18n.USE_EMAIL
-        }}</a>
-        <OInput
-          v-model="form.account"
-          :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
-          :disabled="isModify"
-          @input="formRef?.resetFields('code')"
-        />
-      </el-form-item>
-      <el-form-item v-if="!resetToken" prop="code" :rules="rules">
-        <div class="code">
-          <OInput v-model="form.code" :placeholder="i18n.ENTER_RECEIVED_CODE" />
-          <CountdownButton
-            v-model="disableCode"
-            class="btn"
-            size="small"
-            @click="getcode(formRef)"
+      <span v-if="!resetToken">
+        <el-form-item prop="account" :rules="accountRules">
+          <a v-if="useAccount" @click="changeAccount">{{
+            useAccount === 'email' ? i18n.USE_PHONE : i18n.USE_EMAIL
+          }}</a>
+          <OInput
+            v-model="form.account"
+            :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
+            :disabled="isModify"
+            @input="formRef?.resetFields('code')"
           />
-        </div>
-      </el-form-item>
-      <el-form-item v-if="resetToken" prop="password" :rules="passwordRules">
-        <OInput
-          v-model="form.password"
-          :placeholder="i18n.INTER_PWD"
-          type="password"
-          show-password
-          @blur="pwdPower?.init(form.password)"
-        />
-      </el-form-item>
-      <el-form-item v-if="resetToken">
-        <PwdPower ref="pwdPower"></PwdPower>
-      </el-form-item>
+        </el-form-item>
+        <el-form-item prop="code" :rules="rules">
+          <div class="code">
+            <OInput
+              v-model="form.code"
+              :placeholder="i18n.ENTER_RECEIVED_CODE"
+            />
+            <CountdownButton
+              v-model="disableCode"
+              class="btn"
+              size="small"
+              @click="getcode(formRef)"
+            />
+          </div>
+        </el-form-item>
+      </span>
+      <span v-else>
+        <el-form-item prop="password" :rules="passwordRules">
+          <OInput
+            v-model="form.password"
+            :placeholder="i18n.INTER_NEW_PWD"
+            type="password"
+            @blur="pwdPower?.init(form.password)"
+          />
+        </el-form-item>
+        <el-form-item prop="confirm_pwd" :rules="confirmPwdRules">
+          <OInput
+            v-model="form.confirm_pwd"
+            :placeholder="i18n.CONFIRM_NEW_PWD"
+            type="password"
+          />
+        </el-form-item>
+        <el-form-item>
+          <PwdPower ref="pwdPower"></PwdPower>
+        </el-form-item>
+      </span>
     </el-form>
     <template #footer>
       <div class="footer">
