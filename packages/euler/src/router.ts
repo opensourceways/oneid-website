@@ -123,7 +123,7 @@ router.beforeEach((to, from, next) => {
     changeLang('zh');
   }
   // 登录与注册需校验url参数
-  if (['/login', '/register', '/reserPwd'].includes(to.path)) {
+  if (['/login', '/register', '/resetPwd'].includes(to.path)) {
     if (to.query && to.query.redirect_uri) {
       saveLoginParams(to.query as unknown as LoginParams);
     }
