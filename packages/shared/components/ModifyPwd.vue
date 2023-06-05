@@ -335,7 +335,10 @@ const confirm = (formEl: FormInstance | undefined) => {
   height: 38px;
 }
 .el-form-item {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  @media (max-width: 1100px) {
+    margin-bottom: 40px;
+  }
 }
 :deep(.el-form-item.is-error .el-input__wrapper) {
   box-shadow: 0 0 0 1px var(--o-color-error1) inset;
