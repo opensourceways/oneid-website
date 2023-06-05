@@ -121,7 +121,9 @@ export function reqGet(data: any) {
  */
 export function reqCheck(data: any) {
   const url = '/oneid/captcha/check';
-  return request.post(url, data).then((res: AxiosResponse) => res.data);
+  return request
+    .post(url, data, { $doException: true })
+    .then((res: AxiosResponse) => res.data);
 }
 
 /**

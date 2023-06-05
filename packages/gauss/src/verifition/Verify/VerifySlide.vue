@@ -332,42 +332,59 @@ export default {
             : JSON.stringify({ x: moveLeftDistance, y: 5.0 }),
           token: backToken.value,
         };
-        reqCheck(data).then((res) => {
-          if (res.repCode === '0000') {
-            moveBlockBackgroundColor.value = '#6dc335';
-            leftBarBorderColor.value = '#6dc335';
-            iconColor.value = '#fff';
-            iconClass.value = 'icon-check';
-            showRefresh.value = false;
-            isEnd.value = true;
-            if (mode.value === 'pop') {
+        reqCheck(data)
+          .then((res) => {
+            if (res.repCode === '0000') {
+              moveBlockBackgroundColor.value = '#6dc335';
+              leftBarBorderColor.value = '#6dc335';
+              iconColor.value = '#fff';
+              iconClass.value = 'icon-check';
+              showRefresh.value = false;
+              isEnd.value = true;
+              if (mode.value === 'pop') {
+                setTimeout(() => {
+                  proxy.$parent.clickShow = false;
+                  refresh();
+                }, 1500);
+              }
+              passFlag.value = true;
+              tipWords.value = useI18nStr('VERIFY_SUCCESS', [
+                `${((endMovetime.value - startMoveTime.value) / 1000).toFixed(
+                  2
+                )}`,
+              ]).value;
+              const captchaVerification = secretKey.value
+                ? aesEncrypt(
+                    backToken.value +
+                      '---' +
+                      JSON.stringify({ x: moveLeftDistance, y: 5.0 }),
+                    secretKey.value
+                  )
+                : backToken.value +
+                  '---' +
+                  JSON.stringify({ x: moveLeftDistance, y: 5.0 });
               setTimeout(() => {
-                proxy.$parent.clickShow = false;
+                tipWords.value = '';
+                proxy.$parent.closeBox();
+                proxy.$parent.$emit('success', { captchaVerification });
+              }, 1000);
+            } else {
+              moveBlockBackgroundColor.value = '#f3524d';
+              leftBarBorderColor.value = '#f3524d';
+              iconColor.value = '#fff';
+              iconClass.value = 'icon-close';
+              passFlag.value = false;
+              setTimeout(function () {
                 refresh();
-              }, 1500);
+              }, 1000);
+              proxy.$parent.$emit('error', proxy);
+              tipWords.value = i18n.value.VERIFY_FAILED;
+              setTimeout(() => {
+                tipWords.value = '';
+              }, 1000);
             }
-            passFlag.value = true;
-            tipWords.value = useI18nStr('VERIFY_SUCCESS', [
-              `${((endMovetime.value - startMoveTime.value) / 1000).toFixed(
-                2
-              )}`,
-            ]).value;
-            const captchaVerification = secretKey.value
-              ? aesEncrypt(
-                  backToken.value +
-                    '---' +
-                    JSON.stringify({ x: moveLeftDistance, y: 5.0 }),
-                  secretKey.value
-                )
-              : backToken.value +
-                '---' +
-                JSON.stringify({ x: moveLeftDistance, y: 5.0 });
-            setTimeout(() => {
-              tipWords.value = '';
-              proxy.$parent.closeBox();
-              proxy.$parent.$emit('success', { captchaVerification });
-            }, 1000);
-          } else {
+          })
+          .catch(() => {
             moveBlockBackgroundColor.value = '#f3524d';
             leftBarBorderColor.value = '#f3524d';
             iconColor.value = '#fff';
@@ -381,8 +398,7 @@ export default {
             setTimeout(() => {
               tipWords.value = '';
             }, 1000);
-          }
-        });
+          });
         status.value = false;
       }
     }
