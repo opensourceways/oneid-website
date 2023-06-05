@@ -4,7 +4,6 @@ import { reactive, ref, toRefs, watchEffect } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG, PHONE_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import PwdPower from './PwdPower.vue';
 import {
   accountExists,
   resetPwd,
@@ -26,12 +25,8 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  isModify: {
-    type: Boolean,
-    default: false,
-  },
 });
-const { modelValue, isModify } = toRefs(props);
+const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue']);
 const { loginParams, userInfo } = useCommonData();
 const i18n = useI18n();
@@ -44,7 +39,6 @@ const close = () => {
   resetToken.value = '';
   disableCode.value = false;
 };
-const pwdPower = ref();
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
@@ -57,7 +51,7 @@ const form = reactive({
 const useAccount = ref('');
 
 watchEffect(() => {
-  if (isModify.value && modelValue.value) {
+  if (modelValue.value) {
     if (userInfo.value.email && userInfo.value.phone) {
       useAccount.value = 'email';
     } else {
@@ -137,7 +131,7 @@ const confirmPwdRules = reactive<FormItemRule[]>([
   ...requiredRules,
   {
     validator: validatorConfirmPwd,
-    trigger: 'blur',
+    trigger: 'change',
   },
 ]);
 
@@ -205,9 +199,7 @@ const confirm = (formEl: FormInstance | undefined) => {
         .then(() => {
           ElMessage.success({
             showClose: true,
-            message: isModify.value
-              ? i18n.value.MODIFY_SUCCESS
-              : i18n.value.RESET_SUCCESS,
+            message: i18n.value.MODIFY_SUCCESS,
           });
           close();
         })
@@ -237,7 +229,7 @@ const confirm = (formEl: FormInstance | undefined) => {
     align-center
   >
     <template #header>
-      <h5 class="header">{{ isModify ? i18n.MODIFY_PWD : i18n.RESET_PWD }}</h5>
+      <h5 class="header">{{ i18n.MODIFY_PWD }}</h5>
     </template>
     <el-form
       ref="formRef"
@@ -254,7 +246,7 @@ const confirm = (formEl: FormInstance | undefined) => {
           <OInput
             v-model="form.account"
             :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
-            :disabled="isModify"
+            :disabled="true"
             @input="formRef?.resetFields('code')"
           />
         </el-form-item>
@@ -279,7 +271,6 @@ const confirm = (formEl: FormInstance | undefined) => {
             v-model="form.password"
             :placeholder="i18n.INTER_NEW_PWD"
             type="password"
-            @blur="pwdPower?.init(form.password)"
           />
         </el-form-item>
         <el-form-item prop="confirm_pwd" :rules="confirmPwdRules">
@@ -288,9 +279,6 @@ const confirm = (formEl: FormInstance | undefined) => {
             :placeholder="i18n.CONFIRM_NEW_PWD"
             type="password"
           />
-        </el-form-item>
-        <el-form-item>
-          <PwdPower ref="pwdPower"></PwdPower>
         </el-form-item>
       </span>
     </el-form>

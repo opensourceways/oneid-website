@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@authing/web": "^5.1.2",
-    "@types/zxcvbn": "^4.4.1",
     "authing-js-sdk": "^4.23.35",
     "axios": "^1.1.3",
     "core-js": "^3.6.5",
@@ -31,8 +30,7 @@
     "pinia": "^2.0.22",
     "rxjs": "^7.5.7",
     "vue": "^3.2.37",
-    "vue-router": "^4.1.5",
-    "zxcvbn": "^4.4.2"
+    "vue-router": "^4.1.5"
   },
   "devDependencies": {
     "@types/node": "^18.7.23",

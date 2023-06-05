@@ -10,7 +10,7 @@ import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
 import { useCommon } from 'shared/stores/common';
 import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
-import ForgotPwdModal from 'shared/components/ForgotPwdModal.vue';
+import ModifyPwd from 'shared/components/ModifyPwd.vue';
 const store = useCommon();
 const router = useRouter();
 const i18n = useI18n();
@@ -76,7 +76,7 @@ const goToTree = () => {
     </ContentBox>
   </main>
   <DeleteAccountModal v-model="vilible" @submit="confirm"></DeleteAccountModal>
-  <ForgotPwdModal v-model="pwdVilible" :is-modify="true"></ForgotPwdModal>
+  <ModifyPwd v-model="pwdVilible"></ModifyPwd>
   <AppFooter />
 </template>
 <style lang="scss" scoped>
