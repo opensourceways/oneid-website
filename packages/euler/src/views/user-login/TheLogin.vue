@@ -245,6 +245,13 @@ const padUserinfo = reactive({
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
+  if (
+    loginParams.value.response_mode !== 'query' ||
+    !loginParams.value.scope?.includes('email')
+  ) {
+    // oidc模式选择了email，才需要补全用户
+    return true;
+  }
   const { username, email_exist = false, email = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
   const hasEmail = Boolean(email_exist || email);
