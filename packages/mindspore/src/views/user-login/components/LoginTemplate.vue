@@ -46,13 +46,6 @@ const icons = [
       threePartsLogin(type);
     },
   },
-  // {
-  //   key: 'OpenAtom',
-  //   icon: IconOpenAtom,
-  //   onClick: (type: string) => {
-  //   threePartsLogin(type);
-  // },
-  // },
 ];
 
 // 三方登录

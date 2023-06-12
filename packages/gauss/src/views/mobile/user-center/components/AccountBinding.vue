@@ -21,9 +21,9 @@ import {
 import { ElMessage } from 'element-plus';
 import { IObject } from 'shared/@types/interface';
 import { getCommunityParams } from '@/shared/utils';
-import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
-import { useRouter } from "vue-router";
+import AppHeader from '@/components/AppHeader.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import { useRouter } from 'vue-router';
 const router = useRouter();
 const i18n = useI18n();
 const store = useCommon();
@@ -329,10 +329,9 @@ const goToTree = () => {
 .img_box {
   width: 100%;
   height: 100px;
-  background-image: url("@/assets/banner.png");
+  background-image: url('@/assets/banner.png');
   background-size: cover;
   background-repeat: no-repeat;
-  // background-position: left;
   .title1 {
     margin: 0 auto;
     max-width: 1472px;
@@ -419,7 +418,7 @@ const goToTree = () => {
 .banner {
   width: 100%;
   height: 126px;
-  background-image: url("@/assets/login_log.png");
+  background-image: url('@/assets/login_log.png');
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: left;
@@ -436,7 +435,7 @@ const goToTree = () => {
   align-items: center;
   color: var(--o-color-text1);
   .left {
-    background-image: url("@/assets/left_down.png");
+    background-image: url('@/assets/left_down.png');
     width: 16px;
     height: 16px;
     position: absolute;

@@ -46,9 +46,6 @@ onMounted(() => {
   validLoginUrl().then(() => {
     isLogined().then((bool) => {
       if (bool) {
-        // if (isNotPadUserinfo(bool)) {
-        //   haveLoggedIn();
-        // }
         haveLoggedIn();
       } else if (!getLogoutSession()) {
         setLogoutSession(true);
@@ -228,27 +225,8 @@ const padUserinfo = reactive({
   email_exist: false,
 });
 
-// 判断是否需要补全内容
-const isNotPadUserinfo = (data: any): boolean => {
-  // const { username, email_exist = false, email = '' } = data || {};
-  const { username, email_exist = true } = data || {};
-  const name = !username || username.startsWith('oauth2_') ? '' : username;
-  // const hasEmail = Boolean(email_exist || email);
-  const hasEmail = Boolean(email_exist);
-  if (!name || !hasEmail) {
-    padUserinfo.username = name;
-    padUserinfo.email_exist = hasEmail;
-    visible.value = true;
-    return false;
-  }
-  return true;
-};
-
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  // if (isNotPadUserinfo(data)) {
-  //   doSuccess();
-  // }
   doSuccess();
 };
 // 登录成功提示
@@ -282,76 +260,6 @@ const cancelPad = () => {
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
-  <!-- <el-dialog
-    v-model="visible"
-    :draggable="true"
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    :show-close="false"
-    :width="getFitWidth(420)"
-  >
-    <template #header>
-      <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
-    </template>
-    <el-form
-      ref="formRef"
-      label-width="0"
-      :model="form"
-      class="form"
-      @submit.prevent=""
-    >
-      <el-form-item
-        v-if="!padUserinfo.username"
-        prop="username"
-        :rules="userNameRules"
-      >
-        <OInput
-          v-model.trim="form.username"
-          :placeholder="i18n.ENTER_USERNAME"
-          @blur="asyncBlur(formRef, 'username')"
-        />
-      </el-form-item>
-      <el-form-item
-        v-if="!padUserinfo.email_exist"
-        prop="email"
-        :rules="emailRules"
-      >
-        <OInput
-          v-model.trim="form.email"
-          :placeholder="i18n.ENTER_YOUR_EMAIL"
-          @blur="asyncBlur(formRef, 'email')"
-        />
-      </el-form-item>
-      <el-form-item v-if="!padUserinfo.email_exist" prop="code" :rules="rules">
-        <div class="code">
-          <OInput v-model.trim="form.code" :placeholder="i18n.ENTER_RECEIVED_CODE" />
-          <CountdownButton
-            v-model="disableCode"
-            class="btn"
-            size="small"
-            @click="getcode(formRef)"
-          />
-        </div>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="footer">
-        <OButton size="small" @click="cancelPad">{{
-          loginParams.response_mode === 'query' ? i18n.LOGOUT : i18n.CANCEL
-        }}</OButton>
-        <OButton size="small" type="primary" @click="putUser(formRef)">{{
-          i18n.CONFIRM
-        }}</OButton>
-      </div>
-    </template>
-    <Verify
-      ref="verify"
-      mode="pop"
-      captcha-type="blockPuzzle"
-      :img-size="getVerifyImgSize()"
-      @success="verifySuccess"
-    ></Verify>
-  </el-dialog> -->
 </template>
 <style lang="scss" scoped>
 .header {

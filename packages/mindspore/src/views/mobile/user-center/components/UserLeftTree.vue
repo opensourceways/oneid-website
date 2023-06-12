@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { FunctionalComponent, ref } from "vue";
-import { useI18n, useI18nStr } from "shared/i18n";
-import IconInfo from "~icons/app/icon-info.svg";
-import IconBinding from "~icons/app/icon-binding.svg";
-import IconSecurity from "~icons/app/icon-security.svg";
-import { SelectTabKey } from "./interface";
-import { useCommon, useCommonData } from "shared/stores/common";
+import { FunctionalComponent, ref } from 'vue';
+import { useI18n, useI18nStr } from 'shared/i18n';
+import IconInfo from '~icons/app/icon-info.svg';
+import IconBinding from '~icons/app/icon-binding.svg';
+import IconSecurity from '~icons/app/icon-security.svg';
+import { SelectTabKey } from './interface';
+import { useCommon, useCommonData } from 'shared/stores/common';
 import {
   ElMessage,
   UploadProps,
   UploadRequestHandler,
   UploadRequestOptions,
-} from "element-plus";
-import { modifyPhoto } from "shared/api/api-center";
-import { useRouter } from "vue-router";
-import { refreshInfo } from "shared/utils/login";
+} from 'element-plus';
+import { modifyPhoto } from 'shared/api/api-center';
+import { useRouter } from 'vue-router';
+import { refreshInfo } from 'shared/utils/login';
 const router = useRouter();
 
 interface TabData {
@@ -25,8 +25,8 @@ interface TabData {
 
 const props = defineProps({
   modelValue: {
-    type: () => "" as SelectTabKey,
-    default: "userinfo",
+    type: () => '' as SelectTabKey,
+    default: 'userinfo',
   },
 });
 const store = useCommon();
@@ -37,28 +37,28 @@ const i18n = useI18n();
 // tab选项值
 const tabData = ref([
   {
-    key: "userinfo",
-    label: useI18nStr("INFO"),
+    key: 'userinfo',
+    label: useI18nStr('INFO'),
     icon: IconInfo,
   },
   {
-    key: "binding",
-    label: useI18nStr("IDENTITY"),
+    key: 'binding',
+    label: useI18nStr('IDENTITY'),
     icon: IconBinding,
   },
   {
-    key: "security",
-    label: useI18nStr("SECURITY"),
+    key: 'security',
+    label: useI18nStr('SECURITY'),
     icon: IconSecurity,
   },
 ] as TabData[]);
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 const selectTab = (key: SelectTabKey) => {
-  emit("update:modelValue", key);
+  emit('update:modelValue', key);
   router.push(`/${store.lang}/mobile/profile/${key}`);
 };
-const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
-  if (!["image/png", "image/jpeg"].includes(rawFile.type)) {
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  if (!['image/png', 'image/jpeg'].includes(rawFile.type)) {
     ElMessage.error({
       showClose: true,
       message: i18n.value.ONLY_IMAGE,
@@ -75,7 +75,7 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
 };
 const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
   const formdata = new FormData();
-  formdata.append("file", data.file);
+  formdata.append('file', data.file);
   return modifyPhoto(formdata).then(() => {
     store.initUserInfo();
     refreshInfo();
@@ -156,7 +156,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
         margin-right: var(--o-spacing-h6);
       }
       .right {
-        background-image: url("@/assets/right_down.png");
+        background-image: url('@/assets/right_down.png');
         height: 16px;
         width: 17px;
         position: absolute;

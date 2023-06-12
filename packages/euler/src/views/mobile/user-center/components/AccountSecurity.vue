@@ -52,9 +52,6 @@ const goToTree = () => {
       <span style="font-size: 16px">{{ i18n.SECURITY }}</span>
     </div>
     <ContentBox>
-      <!-- <template #header>
-      {{ i18n.SECURITY }}
-    </template> -->
       <template #content>
         <div class="tips">
           <div class="tips-title">{{ i18n.MODIFY_PWD }}</div>

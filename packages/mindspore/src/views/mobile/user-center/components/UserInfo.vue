@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from "vue";
-import { useI18n, useI18nStr } from "shared/i18n";
-import ContentBox from "./ContentBox.vue";
-import { useCommon, useCommonData } from "shared/stores/common";
-import { modifyUser } from "shared/api/api-center";
-import { ElMessage, FormInstance, FormItemRule } from "element-plus";
-import { getUsernammeRules } from "@/shared/utils";
-import { Observable } from "rxjs";
-import { IObject } from "shared/@types/interface";
-import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
-import { useRouter } from "vue-router";
+import { onMounted, reactive, ref, watch } from 'vue';
+import { useI18n, useI18nStr } from 'shared/i18n';
+import ContentBox from './ContentBox.vue';
+import { useCommon, useCommonData } from 'shared/stores/common';
+import { modifyUser } from 'shared/api/api-center';
+import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
+import { getUsernammeRules } from '@/shared/utils';
+import { Observable } from 'rxjs';
+import { IObject } from 'shared/@types/interface';
+import AppHeader from '@/components/AppHeader.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import { useRouter } from 'vue-router';
 const router = useRouter();
 const formRef1 = ref<FormInstance[]>();
 const props = defineProps({
@@ -26,43 +26,43 @@ const i18n = useI18n();
 
 const data = ref([
   {
-    key: "username",
-    label: useI18nStr("USER_NAME"),
-    value: "",
+    key: 'username',
+    label: useI18nStr('USER_NAME'),
+    value: '',
     disabled: true,
   },
   {
-    key: "email",
-    label: useI18nStr("EMAIL"),
-    value: "",
-    placeholder: "-",
+    key: 'email',
+    label: useI18nStr('EMAIL'),
+    value: '',
+    placeholder: '-',
     disabled: true,
   },
   {
-    key: "phone",
-    label: useI18nStr("PHONE"),
-    value: "",
-    placeholder: "-",
+    key: 'phone',
+    label: useI18nStr('PHONE'),
+    value: '',
+    placeholder: '-',
     disabled: true,
   },
   {
-    key: "signedUp",
-    label: useI18nStr("SIGNED_UP"),
-    value: "",
+    key: 'signedUp',
+    label: useI18nStr('SIGNED_UP'),
+    value: '',
     disabled: true,
   },
   {
-    key: "nickname",
-    label: useI18nStr("NICKNAME"),
-    value: "",
-    placeholder: useI18nStr("ENTER_NICKNAME"),
+    key: 'nickname',
+    label: useI18nStr('NICKNAME'),
+    value: '',
+    placeholder: useI18nStr('ENTER_NICKNAME'),
     disabled: false,
   },
   {
-    key: "company",
-    label: useI18nStr("COMPANY"),
-    value: "",
-    placeholder: useI18nStr("ENTER_COMPANY"),
+    key: 'company',
+    label: useI18nStr('COMPANY'),
+    value: '',
+    placeholder: useI18nStr('ENTER_COMPANY'),
     disabled: false,
   },
 ]);
@@ -70,10 +70,10 @@ const data = ref([
 const initData = () => {
   data.value.forEach((item: IObject) => {
     if (item.key in userInfo.value) {
-      if (item.key === "signedUp") {
+      if (item.key === 'signedUp') {
         item.value = getTimeData(userInfo.value[item.key]);
       } else {
-        item.value = userInfo.value[item.key] || "";
+        item.value = userInfo.value[item.key] || '';
       }
     }
   });
@@ -97,7 +97,10 @@ const getTimeData = (time: string): string => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(
+    2,
+    '0'
+  )}`;
 };
 
 const submit = (formEl: FormInstance[] | undefined) => {
@@ -151,7 +154,7 @@ const getSubmitParams = (formEl: FormInstance[] | undefined) => {
 
 // 表单值
 const form = reactive({
-  username: "",
+  username: '',
 } as any);
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
@@ -185,7 +188,11 @@ const goToTree = () => {
             label-width="0"
             :model="form"
           >
-            <el-form-item prop="username" :rules="userNameRules" class="info-form-pd">
+            <el-form-item
+              prop="username"
+              :rules="userNameRules"
+              class="info-form-pd"
+            >
               <OInput
                 v-model="form.username"
                 class="info-input"
@@ -201,9 +208,13 @@ const goToTree = () => {
             :placeholder="item.placeholder"
           />
         </div>
-        <OButton class="btn" size="small" type="primary" @click="submit(formRef1)">{{
-          i18n.SAVE
-        }}</OButton>
+        <OButton
+          class="btn"
+          size="small"
+          type="primary"
+          @click="submit(formRef1)"
+          >{{ i18n.SAVE }}</OButton
+        >
       </template>
     </ContentBox>
   </main>
@@ -222,16 +233,12 @@ const goToTree = () => {
     font-weight: 400;
     min-width: 80px;
     height: 54px;
-    // margin-bottom: var(--o-spacing-h5);
     margin-left: 16px;
     display: flex;
     align-items: center;
   }
   .info-form-pd {
     padding-bottom: var(--o-spacing-h9);
-  }
-  .info-pd {
-    // padding-bottom: var(--o-spacing-h4);
   }
 }
 .btn {
@@ -252,7 +259,7 @@ const goToTree = () => {
 .banner {
   width: 100%;
   height: 126px;
-  background-image: url("@/assets/banner_mobile.png");
+  background-image: url('@/assets/banner_mobile.png');
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: left;
@@ -269,7 +276,7 @@ const goToTree = () => {
   font-size: 16px;
   color: var(--o-color-text1);
   .left {
-    background-image: url("@/assets/left_down.png");
+    background-image: url('@/assets/left_down.png');
     width: 16px;
     height: 16px;
     position: absolute;

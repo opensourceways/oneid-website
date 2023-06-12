@@ -372,9 +372,6 @@ const bindFun = (e: MessageEvent) => {
   try {
     parsedMessage = JSON.parse(message);
   } catch (error) {
-    // 错误处理
-    console.error('Json parse error in postMessage');
-    console.error(`message: ${message}, code: ${code}`);
     return;
   }
   const { statusCode } = parsedMessage;

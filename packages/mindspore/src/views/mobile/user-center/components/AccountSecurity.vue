@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { useI18n } from "shared/i18n";
-import ContentBox from "./ContentBox.vue";
-import { deleteAccount } from "shared/api/api-center";
-import { ElMessage, FormInstance } from "element-plus";
-import { saveUserAuth } from "shared/utils/login";
-import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
-import { useRouter } from "vue-router";
-import { useCommon } from "shared/stores/common";
+import { reactive, ref } from 'vue';
+import { useI18n } from 'shared/i18n';
+import ContentBox from './ContentBox.vue';
+import { deleteAccount } from 'shared/api/api-center';
+import { ElMessage, FormInstance } from 'element-plus';
+import { saveUserAuth } from 'shared/utils/login';
+import AppHeader from '@/components/AppHeader.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import { useRouter } from 'vue-router';
+import { useCommon } from 'shared/stores/common';
 const store = useCommon();
 const router = useRouter();
 const i18n = useI18n();
@@ -19,16 +19,16 @@ const submit = () => {
   vilible.value = true;
 };
 const close = () => {
-  form.text = "";
+  form.text = '';
   vilible.value = false;
 };
 // 表单值
 const formRef = ref<FormInstance>();
 const form = reactive({
-  text: "",
+  text: '',
 } as any);
 const validatorText = (rule: any, value: any, callback: any) => {
-  if (value === "delete") {
+  if (value === 'delete') {
     callback();
   } else {
     callback(i18n.value.DELETE_ENTER_ERR);
@@ -37,7 +37,7 @@ const validatorText = (rule: any, value: any, callback: any) => {
 const rules = ref([
   {
     validator: validatorText,
-    trigger: "blur",
+    trigger: 'blur',
   },
 ]);
 const confirm = (formEl: FormInstance | undefined) => {
@@ -65,26 +65,20 @@ const goToTree = () => {
 <template>
   <AppHeader />
   <main>
-    <div class="banner">
-      <!-- <div class="title">
-      <h1 class="title-in">USER CENTER</h1>
-      <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
-    </div> -->
-    </div>
+    <div class="banner"></div>
     <div class="title">
       <span class="left" @click="goToTree"></span>
       <span style="font-size: 16px">{{ i18n.SECURITY }}</span>
     </div>
     <ContentBox>
-      <!-- <template #header>
-      {{ i18n.SECURITY }}
-    </template> -->
       <template #content>
         <div class="tips">
           <div class="tips-title">{{ i18n.DELETE_ACCOUNT }}</div>
           <div class="tips-content">{{ i18n.DELETE_ACCOUNT_TIPS }}</div>
         </div>
-        <OButton size="small" class="btn" @click="submit">{{ i18n.DELETE }}</OButton>
+        <OButton size="small" class="btn" @click="submit">{{
+          i18n.DELETE
+        }}</OButton>
       </template>
     </ContentBox>
   </main>
@@ -103,7 +97,12 @@ const goToTree = () => {
     <div class="Omain">
       <div>{{ i18n.DELETE_ACCOUNT_WARNING }}</div>
       <div class="delete-tips">{{ i18n.DELETE_ENTER }}</div>
-      <el-form ref="formRef" label-width="auto" :model="form" style="max-width: 460px">
+      <el-form
+        ref="formRef"
+        label-width="auto"
+        :model="form"
+        style="max-width: 460px"
+      >
         <el-form-item prop="text" :rules="rules">
           <OInput v-model="form.text" />
         </el-form-item>
@@ -178,7 +177,7 @@ const goToTree = () => {
 .banner {
   width: 100%;
   height: 126px;
-  background-image: url("@/assets/banner_mobile.png");
+  background-image: url('@/assets/banner_mobile.png');
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: left;
@@ -194,12 +193,11 @@ const goToTree = () => {
   align-items: center;
   color: var(--o-color-text1);
   .left {
-    background-image: url("@/assets/left_down.png");
+    background-image: url('@/assets/left_down.png');
     width: 16px;
     height: 16px;
     position: absolute;
     left: 26px;
-    // margin-bottom: 20px;
   }
 }
 main {

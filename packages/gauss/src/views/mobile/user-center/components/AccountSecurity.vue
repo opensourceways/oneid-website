@@ -43,7 +43,6 @@ const goToTree = () => {
   <main>
     <div class="img_box">
       <div class="title1">
-        <!-- <h1 class="title-in">USER CENTER</h1> -->
         <h1 class="title1-out">{{ i18n.USER_CENTER }}</h1>
         <img class="title1-login" src="@/assets/login_log.png" />
       </div>
@@ -53,9 +52,6 @@ const goToTree = () => {
       <span style="font-size: 16px">{{ i18n.SECURITY }}</span>
     </div>
     <ContentBox>
-      <!-- <template #header>
-      {{ i18n.SECURITY }}
-    </template> -->
       <template #content>
         <div class="tips">
           <div class="tips-title">{{ i18n.MODIFY_PWD }}</div>
@@ -87,7 +83,6 @@ const goToTree = () => {
   background-image: url('@/assets/banner.png');
   background-size: cover;
   background-repeat: no-repeat;
-  // background-position: left;
   .title1 {
     margin: 0 auto;
     max-width: 1472px;
