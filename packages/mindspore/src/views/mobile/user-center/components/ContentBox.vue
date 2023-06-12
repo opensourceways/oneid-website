@@ -4,7 +4,6 @@
     <div class="box-header">
       <slot name="header"></slot>
     </div>
-    <!-- <div class="line"></div> -->
     <slot name="content"></slot>
   </div>
 </template>

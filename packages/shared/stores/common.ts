@@ -26,7 +26,7 @@ export const useCommon = defineStore('common', () => {
   const saveLoginParams = (obj: LoginParams) => {
     if (determiningType(obj, 'Object')) {
       Object.entries(obj).forEach((item: any) => {
-        if (loginParams.value.hasOwnProperty(item[0])) {
+        if (Object.prototype.hasOwnProperty.call(loginParams.value, item[0])) {
           (loginParams.value as any)[item[0]] = item[1];
         }
       });

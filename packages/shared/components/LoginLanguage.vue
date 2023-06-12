@@ -44,7 +44,7 @@ const langList: Ref<LangType[]> = ref([]);
 const filterLang = () => {
   langList.value = [];
   props.show.forEach((item: string) => {
-    langOptions.filter((el: LangType) => {
+    langOptions.forEach((el: LangType) => {
       if (el.id === item) {
         langList.value.push(el);
       }
