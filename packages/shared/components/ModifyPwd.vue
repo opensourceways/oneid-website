@@ -123,7 +123,7 @@ const confirmPwdRules = reactive<FormItemRule[]>([
   ...requiredRules,
   {
     validator: validatorConfirmPwd,
-    trigger: 'change',
+    trigger: ['change', 'blur'],
   },
 ]);
 

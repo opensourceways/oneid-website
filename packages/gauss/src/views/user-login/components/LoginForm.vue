@@ -13,6 +13,7 @@ import {
 import { accountExists, sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from 'shared/components/LoginTabs.vue';
+import PwdInput from 'shared/components/PwdInput.vue';
 import { callBackErrMessage, getPwdRules } from 'shared/utils/utils';
 import { getUsernammeRules } from '@/shared/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
@@ -293,10 +294,9 @@ const goToOtherPage = (type: string) => {
       prop="password"
       :rules="type === 'register' ? passwordRules : rules"
     >
-      <OInput
+      <PwdInput
         v-model="form.password"
         :placeholder="i18n.INTER_PWD"
-        type="password"
         :show-password="type === 'register'"
       />
     </el-form-item>

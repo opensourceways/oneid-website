@@ -165,7 +165,7 @@ export function getPwdRules(): FormItemRule[] {
     {
       pattern: PWD_REG,
       message: useI18nStr('PWD_VAILD') as unknown as string,
-      trigger: 'change',
+      trigger: ['change', 'blur'],
     },
   ];
 }
