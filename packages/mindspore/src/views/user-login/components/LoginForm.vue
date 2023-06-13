@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { PropType, reactive, ref, toRefs } from 'vue';
+import { PropType, reactive, ref, toRefs, computed } from 'vue';
 import { useI18n } from 'shared/i18n';
 import {
   formValidator,
@@ -194,11 +194,13 @@ const blur = (formEl: FormInstance | undefined, field: string) => {
 
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
-  const origin = 'https://mindspore.cn';
   const _lang = lang.value === 'en' ? `/${lang.value}` : '';
-  const url = `${origin}/${type}${_lang}`;
+  const url = `${import.meta.env?.VITE_MINDSPORE_MAIN}/${type}${_lang}`;
   window.open(url, '_blank');
 };
+const docsUrl = computed(
+  () => `${import.meta.env?.VITE_MINDSPORE_DOCS}/zh/appendix/platlicense/`
+);
 </script>
 <template>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
@@ -255,11 +257,7 @@ const goToOtherPage = (type: string) => {
           {{ '、' }}
           <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
           {{ i18n.AND }}
-          <a
-            href="https://xihe-docs.mindspore.cn/zh/appendix/platlicense/"
-            target="_blank"
-            >昇思大模型平台协议</a
-          >
+          <a :href="docsUrl" target="_blank">昇思大模型平台协议</a>
         </span>
       </div>
     </el-form-item>
