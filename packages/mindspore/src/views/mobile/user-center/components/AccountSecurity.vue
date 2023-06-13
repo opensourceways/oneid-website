@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'shared/i18n';
 import ContentBox from './ContentBox.vue';
 import { deleteAccount } from 'shared/api/api-center';
-import { ElMessage, FormInstance } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import { saveUserAuth } from 'shared/utils/login';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
 import { useCommon } from 'shared/stores/common';
+import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
+import ModifyPwd from 'shared/components/ModifyPwd.vue';
 const store = useCommon();
 const router = useRouter();
 const i18n = useI18n();
@@ -18,48 +20,21 @@ const vilible = ref(false);
 const submit = () => {
   vilible.value = true;
 };
-// 表单值
-const formRef = ref<FormInstance>();
-const form = reactive({
-  text: '',
-} as any);
-const validatorText = (rule: any, value: any, callback: any) => {
-  if (value === 'delete') {
-    callback();
-  } else {
-    callback(i18n.value.DELETE_ENTER_ERR);
-  }
-};
-const rules = ref([
-  {
-    validator: validatorText,
-    trigger: 'blur',
-  },
-]);
-const confirm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.validate((valid) => {
-    if (valid) {
-      deleteAccount().then(() => {
-        ElMessage.success({
-          showClose: true,
-          message: i18n.value.DELETE_SUCCESS,
-        });
-        vilible.value = false;
-        saveUserAuth();
-        location.href = `/${store.lang}/mobile/profile`;
-      });
-    } else {
-      return false;
-    }
+const confirm = () => {
+  deleteAccount().then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.DELETE_SUCCESS,
+    });
+    vilible.value = false;
+    saveUserAuth();
+    location.href = `/${store.lang}/mobile/profile`;
   });
 };
+
+const pwdVilible = ref(false);
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
-};
-const close = () => {
-  form.text = '';
-  vilible.value = false;
 };
 </script>
 <template>
@@ -73,56 +48,26 @@ const close = () => {
     <ContentBox>
       <template #content>
         <div class="tips">
+          <div class="tips-title">{{ i18n.MODIFY_PWD }}</div>
+          <div class="tips-content">{{ i18n.MODIFY_PWD_TIP }}</div>
+        </div>
+        <div class="btn gap">
+          <OButton size="small" @click="pwdVilible = true">{{
+            i18n.MODIFY_PWD
+          }}</OButton>
+        </div>
+        <div class="tips red">
           <div class="tips-title">{{ i18n.DELETE_ACCOUNT }}</div>
           <div class="tips-content">{{ i18n.DELETE_ACCOUNT_TIPS }}</div>
         </div>
-        <OButton size="small" class="btn" @click="submit">{{
-          i18n.DELETE
-        }}</OButton>
+        <div class="btn">
+          <OButton size="small" @click="submit">{{ i18n.DELETE }}</OButton>
+        </div>
       </template>
     </ContentBox>
   </main>
-  <el-dialog
-    v-model="vilible"
-    :draggable="true"
-    width="100%"
-    :before-close="close"
-    :close-on-click-modal="false"
-    :show-close="false"
-    :destroy-on-close="true"
-  >
-    <template #header>
-      <h5 class="header">{{ i18n.DELETE_ACCOUNT }}</h5>
-    </template>
-    <div class="Omain">
-      <div>{{ i18n.DELETE_ACCOUNT_WARNING }}</div>
-      <div class="delete-tips">{{ i18n.DELETE_ENTER }}</div>
-      <el-form
-        ref="formRef"
-        label-width="auto"
-        :model="form"
-        style="max-width: 460px"
-      >
-        <el-form-item prop="text" :rules="rules">
-          <OInput v-model="form.text" />
-        </el-form-item>
-      </el-form>
-    </div>
-    <template #footer>
-      <div class="Ofooter">
-        <OButton class="close-btn footer-btn" size="small" @click="close">{{
-          i18n.CANCEL
-        }}</OButton>
-        <OButton
-          class="Ofooter-btn"
-          size="small"
-          type="primary"
-          @click="confirm(formRef)"
-          >{{ i18n.CONFIRM }}</OButton
-        >
-      </div>
-    </template>
-  </el-dialog>
+  <DeleteAccountModal v-model="vilible" @submit="confirm"></DeleteAccountModal>
+  <ModifyPwd v-model="pwdVilible"></ModifyPwd>
   <AppFooter />
 </template>
 <style lang="scss" scoped>
@@ -130,7 +75,6 @@ const close = () => {
   border: 1px solid var(--o-color-border2);
   background-color: var(--o-color-bg2);
   padding: var(--o-spacing-h4) var(--o-spacing-h5);
-  color: var(--o-color-error1);
   &-title {
     font-size: var(--o-font-size-h7);
     line-height: var(--o-line-height-h7);
@@ -143,36 +87,16 @@ const close = () => {
     font-weight: normal;
   }
 }
+.red {
+  color: var(--o-color-error1);
+}
+.gap {
+  margin-bottom: var(--o-spacing-h2);
+}
 .btn {
   margin-top: var(--o-spacing-h4);
-  position: relative;
-  left: 40%;
-}
-.header {
-  font-size: var(--o-font-size-h5);
-  line-height: var(--o-line-height-h5);
-  font-weight: 600;
-  text-align: center;
-}
-.Ofooter {
   display: flex;
   justify-content: center;
-  .close-btn {
-    margin-right: var(--o-spacing-h4);
-  }
-}
-.Omain {
-  max-width: 460px;
-  margin: 0 auto;
-  .delete-tips {
-    margin: 16px 0;
-  }
-}
-.footer-btn {
-  height: 38px;
-}
-:deep(.el-form-item.is-error .el-input__wrapper) {
-  box-shadow: 0 0 0 1px var(--o-color-error1) inset;
 }
 .banner {
   width: 100%;

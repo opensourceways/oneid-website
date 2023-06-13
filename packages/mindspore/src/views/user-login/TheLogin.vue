@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { accountLogin, queryToken } from 'shared/api/api-login';
+import { accountLoginPost, queryToken } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import {
   getLogoutSession,
@@ -13,6 +13,7 @@ import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
+import { getRsaEncryptWord } from 'shared/utils/rsa';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
@@ -21,6 +22,12 @@ const route = useRoute();
 const goRegister = () => {
   router.push({
     path: '/register',
+    query: route.query,
+  });
+};
+const goResetPwd = () => {
+  router.push({
+    path: '/resetPwd',
     query: route.query,
   });
 };
@@ -56,15 +63,20 @@ const doSuccess = () => {
 const loginSuccess = (data: any) => {
   doSuccess();
 };
-const login = (form: any) => {
-  const param = {
+const login = async (form: any) => {
+  const param: any = {
     community: import.meta.env?.VITE_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
-    code: form.code,
     client_id: loginParams.value.client_id,
   };
-  accountLogin(param).then((data: any) => {
+  if (form.password) {
+    const password = await getRsaEncryptWord(form.password);
+    param.password = password;
+  } else {
+    param.code = form.code;
+  }
+  accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);
   });
 };
@@ -89,6 +101,11 @@ const threePartLogin = (res: any) => {
     @three-part-login="threePartLogin"
   >
     <template #switch>
+      <div style="flex: 1">
+        <a style="display: inline" @click="goResetPwd()">
+          {{ i18n.FORGET_PWD }}
+        </a>
+      </div>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>

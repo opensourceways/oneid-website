@@ -148,7 +148,6 @@ const goToTree = () => {
     height: 16px;
     position: absolute;
     left: 26px;
-    // margin-bottom: 20px;
   }
 }
 main {
