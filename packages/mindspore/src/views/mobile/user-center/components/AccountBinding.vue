@@ -82,22 +82,9 @@ const initData = () => {
     });
   }
 };
-onMounted(() => {
-  store.initUserInfo();
-  initData();
-  listenerBindSocial();
-});
-onUnmounted(() => {
-  // 移除监听
-  window.removeEventListener('message', bindFun);
-});
-watch(
-  () => userInfo.value,
-  () => {
-    initData();
-  },
-  { deep: true }
-);
+
+// 控制弹窗显示
+const vilible = ref(false);
 
 // 修改绑定邮箱或手机号
 const modifyAccountFuc = (data: BindAccountParams) => {
@@ -148,8 +135,17 @@ const sendCodeFuc = (data: QueryCodeParams) => {
   });
 };
 
-// 控制弹窗显示
-const vilible = ref(false);
+const unbindSocial = (platform: string) => {
+  unlinkAccount({ platform }).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.UNBIND_SUCCESS,
+    });
+    vilible.value = false;
+    store.initUserInfo();
+  });
+};
+
 // 展示所选弹窗key
 const operateKey = ref('bind_email' as AccountOperateKey);
 // 各个弹窗配置
@@ -371,19 +367,25 @@ const bindFun = (e: MessageEvent) => {
     });
   }
 };
-const unbindSocial = (platform: string) => {
-  unlinkAccount({ platform }).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.UNBIND_SUCCESS,
-    });
-    vilible.value = false;
-    store.initUserInfo();
-  });
-};
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
 };
+onMounted(() => {
+  store.initUserInfo();
+  initData();
+  listenerBindSocial();
+});
+onUnmounted(() => {
+  // 移除监听
+  window.removeEventListener('message', bindFun);
+});
+watch(
+  () => userInfo.value,
+  () => {
+    initData();
+  },
+  { deep: true }
+);
 </script>
 <template>
   <AppHeader />

@@ -43,8 +43,8 @@ const sendCodeFuc = (data: QueryCodeParams) => {
 };
 
 // 限制验证码重发
-const oldaccount_num = ref(false);
-const account_num = ref(false);
+const oldaccountNum = ref(false);
+const accountNum = ref(false);
 
 // 获取验证码
 const verifySuccessType = ref('');
@@ -59,6 +59,14 @@ const getcode = (formEl: FormInstance | undefined, type?: string) => {
     }
   });
 };
+
+// 表单值
+const form = reactive({
+  oldaccount: '',
+  oldcode: '',
+  account: '',
+  code: '',
+} as any);
 
 const verifySuccess = (data: any) => {
   const param: QueryCodeParams = {
@@ -75,28 +83,21 @@ const verifySuccess = (data: any) => {
       message: i18n.value.SEND_SUCCESS,
     });
     if (verifySuccessType.value === 'oldaccount') {
-      oldaccount_num.value = true;
+      oldaccountNum.value = true;
     } else {
-      account_num.value = true;
+      accountNum.value = true;
     }
   });
 };
 
-// 表单值
-const form = reactive({
-  oldaccount: '',
-  oldcode: '',
-  account: '',
-  code: '',
-} as any);
 // 清空表单
 const clear = () => {
   form.oldaccount = '';
   form.oldcode = '';
   form.account = '';
   form.code = '';
-  oldaccount_num.value = false;
-  account_num.value = false;
+  oldaccountNum.value = false;
+  accountNum.value = false;
 };
 const close = () => {
   clear();
@@ -212,7 +213,7 @@ const codePlaceholder = computed(
               :placeholder="codePlaceholder"
             />
             <CountdownButton
-              v-model="oldaccount_num"
+              v-model="oldaccountNum"
               class="btn"
               size="small"
               @click="getcode(formRef, 'oldaccount')"
@@ -239,7 +240,7 @@ const codePlaceholder = computed(
           <div class="code">
             <OInput v-model.trim="form.code" :placeholder="codePlaceholder" />
             <CountdownButton
-              v-model="account_num"
+              v-model="accountNum"
               class="btn"
               size="small"
               @click="getcode(formRef)"

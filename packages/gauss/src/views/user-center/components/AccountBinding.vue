@@ -59,6 +59,9 @@ watch(
   { deep: true }
 );
 
+// 控制弹窗显示
+const vilible = ref(false);
+
 // 修改绑定邮箱或手机号
 const modifyAccountFuc = (data: BindAccountParams) => {
   Object.assign(data, getCommunityParams(true));
@@ -112,8 +115,6 @@ const sendCodeFuc = (data: QueryCodeParams) => {
   });
 };
 
-// 控制弹窗显示
-const vilible = ref(false);
 // 展示所选弹窗key
 const operateKey = ref('bind_email' as AccountOperateKey);
 // 各个弹窗配置

@@ -19,6 +19,13 @@ const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'submit']);
 const i18n = useI18n();
 
+const formRef = ref<FormInstance>();
+// 表单值
+const form = reactive({
+  old_pwd: '',
+  new_pwd: '',
+} as any);
+
 const close = () => {
   emit('update:modelValue', false);
   formRef.value?.resetFields();
@@ -47,12 +54,6 @@ const submit = (formEl: FormInstance | undefined) => {
     }
   });
 };
-const formRef = ref<FormInstance>();
-// 表单值
-const form = reactive({
-  old_pwd: '',
-  new_pwd: '',
-} as any);
 
 // 空值校验
 const requiredRules: FormItemRule[] = [

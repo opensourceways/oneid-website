@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useCommon, useCommonData } from '../stores/common';
 
-import notFoundImg_light from '../assets/404.png';
-import notFoundImg_dark from '../assets/404_dark.png';
+import notFoundImgLight from '../assets/404.png';
+import notFoundImgDark from '../assets/404_dark.png';
 import { computed } from 'vue';
 const { lang } = useCommonData();
 const commonStore = useCommon();
 
 const notFoundImg = computed(() =>
-  commonStore.theme === 'light' ? notFoundImg_light : notFoundImg_dark
+  commonStore.theme === 'light' ? notFoundImgLight : notFoundImgDark
 );
 </script>
 
