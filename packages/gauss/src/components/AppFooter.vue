@@ -25,39 +25,39 @@ const i18n = useI18n();
 const footerLinks = {
   row: [
     {
-      path: 'https://my.oschina.net/u/5059795',
+      path: import.meta.env?.VITE_OPENGAUSS_OSCHINA,
       logo: logoOschina,
       id: 'oschina',
     },
     {
-      path: 'https://blog.csdn.net/weixin_49727236?spm=1000.2115.3001.5343',
+      path: import.meta.env?.VITE_OPENGAUSS_CSDN,
       logo: logoCsdn,
       id: 'csdn',
     },
     {
-      path: 'https://blog.51cto.com/u_15157671',
+      path: import.meta.env?.VITE_OPENGAUSS_51CTO,
       logo: logo51cto,
       id: '51cto',
     },
   ],
   row1: [
     {
-      path: 'https://www.modb.pro/u/429265',
+      path: import.meta.env?.VITE_OPENGAUSS_MODB,
       logo: logoModb,
       id: 'modb',
     },
     {
-      path: 'https://www.infoq.cn/u/opengauss/publish',
+      path: import.meta.env?.VITE_OPENGAUSS_INFOQ,
       logo: logoInfoq,
       id: 'infoq',
     },
     {
-      path: 'https://space.bilibili.com/543286270',
+      path: import.meta.env?.VITE_OPENGAUSS_BILIBILI,
       logo: logoBilibili,
       id: 'bilibili',
     },
     {
-      path: 'https://www.zhihu.com/people/opengauss',
+      path: import.meta.env?.VITE_OPENGAUSS_ZHIHU,
       logo: logoZhihu,
       id: 'zhihu',
     },

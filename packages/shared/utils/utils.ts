@@ -5,16 +5,6 @@ import { mergeMap } from 'rxjs/operators';
 import { useI18nStr } from '../i18n';
 import { COMPANYNAME_REG, NICKNAME_REG, PWD_REG } from '../const/common.const';
 
-// iframe的刷新回调
-export function iframeRefreshCallback() {
-  window.parent.postMessage(
-    {
-      key: 'refresh',
-    },
-    'https://openeuler-website.test.osinfra.cn'
-  );
-}
-
 // 返回接口报错信息
 export function callBackErrMessage(err: any) {
   let _msg = '';
