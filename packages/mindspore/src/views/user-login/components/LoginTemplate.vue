@@ -43,8 +43,8 @@ const threePartsLogin = (type: string) => {
     GitHub: '6226db30c8e30db1518cc4aa',
   };
   if (import.meta.env?.VITE_COOKIE_DOMAIN.includes('myopeninfra')) {
-    connIds.Gitee = '6486ca4cd4cb1cc80d482a6a';
-    connIds.GitHub = '6486c8f7a3d7102579ead567';
+    connIds.Gitee = '6486ca4c5a8820be3da60942';
+    connIds.GitHub = '6486c8f7fa654de59f887a08';
   }
   Object.assign(params, { ext_idp_conn_id: connIds[type] });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
