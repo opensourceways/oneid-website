@@ -15,40 +15,8 @@ export function accountExists(params: any) {
 /**
  * 发送验证码
  */
-export function sendCodeV3(params: any) {
-  const url = '/oneid/v3/sendCode';
-
-  return request
-    .get(url, { global: true, params })
-    .then((res: AxiosResponse) => res.data);
-}
-/**
- * 发送验证码
- */
 export function sendCodeCaptcha(params: any) {
   const url = '/oneid/captcha/sendCode';
-
-  return request
-    .get(url, { global: true, params })
-    .then((res: AxiosResponse) => res.data);
-}
-
-/**
- * 邮箱或者手机号注册
- */
-export function accountRegister(params: any) {
-  const url = '/oneid/register';
-
-  return request
-    .get(url, { global: true, params })
-    .then((res: AxiosResponse) => res.data);
-}
-
-/**
- * 邮箱或者手机号登录
- */
-export function accountLogin(params: any) {
-  const url = '/oneid/login';
 
   return request
     .get(url, { global: true, params })

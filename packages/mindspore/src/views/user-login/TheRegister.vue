@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { accountRegister } from 'shared/api/api-login';
+import { accountRegisterPost } from 'shared/api/api-login';
+import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { useI18n } from 'shared/i18n';
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
@@ -17,14 +18,19 @@ const goLogin = () => {
   });
 };
 const { loginParams } = useCommonData();
-const register = (form: any) => {
-  const param = {
+const register = async (form: any) => {
+  const param: any = {
     username: form.username,
     account: form.account,
     code: form.code,
     client_id: loginParams.value.client_id,
+    community: import.meta.env?.VITE_COMMUNITY,
   };
-  accountRegister(param).then(() => {
+  if (form.password) {
+    const password = await getRsaEncryptWord(form.password);
+    param.password = password;
+  }
+  accountRegisterPost(param).then(() => {
     ElMessage.success({
       showClose: true,
       message: i18n.value.REGISTER_SUCCESS,
