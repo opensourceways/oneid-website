@@ -26,10 +26,8 @@ const langOptions = [
 
 // 选择语言
 const emits = defineEmits(['language-click']);
-const mobileChaneLanguage = (newlang: string) => {
-  chaneLanguage(newlang);
-  emits('language-click');
-};
+
+const isMenu = ref(false);
 
 function chaneLanguage(newlang: string) {
   if (lang.value === newlang) return;
@@ -48,7 +46,11 @@ function chaneLanguage(newlang: string) {
   }
 }
 
-const isMenu = ref(false);
+const mobileChaneLanguage = (newlang: string) => {
+  chaneLanguage(newlang);
+  emits('language-click');
+};
+
 const showSub = () => {
   isMenu.value = true;
 };

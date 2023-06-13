@@ -10,7 +10,7 @@ import {
   getVerifyImgSize,
 } from 'shared/utils/utils';
 import { accountExists, sendCodeV3 } from 'shared/api/api-login';
-import Verify from '@/verifition/Verify.vue';
+import Verify from 'shared/verifition/Verify.vue';
 import { callBackErrMessage } from 'shared/utils/utils';
 import { getUsernammeRules } from '@/shared/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
@@ -24,6 +24,8 @@ const props = defineProps({
   },
 });
 
+const formRef = ref<FormInstance>();
+
 const emit = defineEmits(['submit', 'threePartLogin']);
 
 // 外部校验方法
@@ -35,7 +37,6 @@ defineExpose({ validator });
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams } = useCommonData();
-const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
   username: '',

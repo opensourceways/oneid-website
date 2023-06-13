@@ -1,37 +1,21 @@
 <script setup lang="ts">
-import { bindAccount, modifyUser, sendCode } from 'shared/api/api-center';
-import { accountExists, accountLogin, queryToken } from 'shared/api/api-login';
-import CountdownButton from 'shared/components/CountdownButton.vue';
+import { accountLogin, queryToken } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
-import { EMAIL_REG } from 'shared/const/common.const';
 import {
   getLogoutSession,
   isLogined,
-  logout,
   setLogoutSession,
 } from 'shared/utils/login';
-import {
-  callBackErrMessage,
-  formValidator,
-  asyncBlur,
-  getVerifyImgSize,
-  getFitWidth,
-} from 'shared/utils/utils';
-import { getUsernammeRules } from '@/shared/utils';
-import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { mergeMap, Observable, of, zip, map } from 'rxjs';
-import { onMounted, reactive, ref } from 'vue';
+import { ElMessage } from 'element-plus';
+import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
-import Verify from '@/verifition/Verify.vue';
 
-const formRef = ref<FormInstance>();
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
-const visible = ref(false);
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
@@ -40,7 +24,6 @@ const goRegister = () => {
     query: route.query,
   });
 };
-const verify = ref();
 const { loginParams } = useCommonData();
 onMounted(() => {
   validLoginUrl().then(() => {
@@ -56,6 +39,21 @@ onMounted(() => {
     });
   });
 });
+
+// 登录成功提示
+const doSuccess = () => {
+  ElMessage.success({
+    showClose: true,
+    message: i18n.value.LOGIN_SUCCESS,
+  });
+  setLogoutSession();
+  haveLoggedIn();
+};
+
+// 登录成功处理函数
+const loginSuccess = (data: any) => {
+  doSuccess();
+};
 const login = (form: any) => {
   const param = {
     community: import.meta.env?.VITE_COMMUNITY,
@@ -80,170 +78,6 @@ const threePartLogin = (res: any) => {
   queryToken(param).then((data: any) => {
     loginSuccess(data?.data);
   });
-};
-// 表单值
-const form = reactive({
-  username: '',
-  email: '',
-  code: '',
-} as any);
-// 用户名校验
-const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
-
-// 邮箱重名校验
-const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      accountExists({ account: value, client_id: loginParams.value.client_id })
-        .then(() => {
-          resolve();
-        })
-        .catch((err: any) => {
-          reject(callBackErrMessage(err));
-        });
-    });
-  }
-};
-// 空值校验
-const requiredRules: FormItemRule[] = [
-  {
-    required: true,
-    message: i18n.value.NOT_EMPTY,
-    trigger: 'blur',
-  },
-];
-const rules = ref(requiredRules);
-// 邮箱校验
-const emailRules = reactive<FormItemRule[]>([
-  ...requiredRules,
-  {
-    pattern: EMAIL_REG,
-    message: i18n.value.ENTER_VAILD_EMAIL,
-    trigger: 'blur',
-  },
-  {
-    asyncValidator: validatorSameAccount,
-    trigger: 'none',
-  },
-]);
-
-// 验证码限制重发
-const disableCode = ref(false);
-// 获取验证码
-const getcode = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formValidator(formEl, 'email').subscribe((valid) => {
-    if (valid) {
-      verify.value.show();
-    } else {
-      return false;
-    }
-  });
-};
-const verifySuccess = (data: any) => {
-  const param = {
-    account: form.email,
-    channel: 'channel_bind_email',
-    captchaVerification: data.captchaVerification,
-  };
-  sendCode(param).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.SEND_SUCCESS,
-    });
-    disableCode.value = true;
-  });
-};
-const putUser = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formValidator(formEl)
-    .pipe(
-      mergeMap((bool) => {
-        if (bool) {
-          return zip(putUserName(), putEmail()).pipe(
-            map((value) => value.reduce((pre, next) => pre && next))
-          );
-        }
-        return of(false);
-      })
-    )
-    .subscribe((data) => {
-      if (data) {
-        doSuccess();
-      }
-    });
-};
-
-// 补全用户名
-const putUserName = () => {
-  return new Observable((observer) => {
-    if (padUserinfo.username) {
-      observer.next(true);
-      observer.complete();
-      return;
-    }
-    modifyUser({ username: form.username })
-      .then(() => {
-        observer.next(true);
-        observer.complete();
-      })
-      .catch(() => {
-        observer.next(false);
-        observer.complete();
-      });
-  });
-};
-
-// 补全邮箱
-const putEmail = () => {
-  return new Observable((observer) => {
-    if (padUserinfo.email_exist) {
-      observer.next(true);
-      observer.complete();
-      return;
-    }
-    const param = {
-      account_type: 'email',
-      account: form.email,
-      code: form.code,
-    };
-    bindAccount(param)
-      .then(() => {
-        observer.next(true);
-        observer.complete();
-      })
-      .catch(() => {
-        observer.next(false);
-        observer.complete();
-      });
-  });
-};
-
-// 控制补全框内容
-const padUserinfo = reactive({
-  username: '',
-  email_exist: false,
-});
-
-// 登录成功处理函数
-const loginSuccess = (data: any) => {
-  doSuccess();
-};
-// 登录成功提示
-const doSuccess = () => {
-  ElMessage.success({
-    showClose: true,
-    message: i18n.value.LOGIN_SUCCESS,
-  });
-  setLogoutSession();
-  haveLoggedIn();
-};
-const cancelPad = () => {
-  if (loginParams.value.response_mode === 'query') {
-    logout();
-  } else {
-    doSuccess();
-  }
 };
 </script>
 <template>

@@ -53,6 +53,33 @@ const goResetPwd = () => {
 };
 const verify = ref();
 const { loginParams } = useCommonData();
+
+// 控制补全框内容
+const padUserinfo = reactive({
+  username: '',
+  emailExist: false,
+});
+
+// 判断是否需要补全内容
+const isNotPadUserinfo = (data: any): boolean => {
+  if (
+    loginParams.value.response_mode !== 'query' ||
+    !loginParams.value.scope?.includes('email')
+  ) {
+    // oidc模式选择了email，才需要补全用户
+    return true;
+  }
+  const { username, email_exist: emailExist = false, email = '' } = data || {};
+  const name = !username || username.startsWith('oauth2_') ? '' : username;
+  const hasEmail = Boolean(emailExist || email);
+  if (!name || !hasEmail) {
+    padUserinfo.username = name;
+    padUserinfo.emailExist = hasEmail;
+    visible.value = true;
+    return false;
+  }
+  return true;
+};
 onMounted(() => {
   validLoginUrl().then(() => {
     isLogined().then((bool) => {
@@ -69,6 +96,23 @@ onMounted(() => {
     });
   });
 });
+
+// 登录成功提示
+const doSuccess = () => {
+  ElMessage.success({
+    showClose: true,
+    message: i18n.value.LOGIN_SUCCESS,
+  });
+  setLogoutSession();
+  haveLoggedIn();
+};
+
+// 登录成功处理函数
+const loginSuccess = (data: any) => {
+  if (isNotPadUserinfo(data)) {
+    doSuccess();
+  }
+};
 const login = async (form: any) => {
   const param: any = {
     community: import.meta.env?.VITE_COMMUNITY,
@@ -172,25 +216,6 @@ const verifySuccess = (data: any) => {
     disableCode.value = true;
   });
 };
-const putUser = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formValidator(formEl)
-    .pipe(
-      mergeMap((bool) => {
-        if (bool) {
-          return zip(putUserName(), putEmail()).pipe(
-            map((value) => value.reduce((pre, next) => pre && next))
-          );
-        }
-        return of(false);
-      })
-    )
-    .subscribe((data) => {
-      if (data) {
-        doSuccess();
-      }
-    });
-};
 
 // 补全用户名
 const putUserName = () => {
@@ -215,7 +240,7 @@ const putUserName = () => {
 // 补全邮箱
 const putEmail = () => {
   return new Observable((observer) => {
-    if (padUserinfo.email_exist) {
+    if (padUserinfo.emailExist) {
       observer.next(true);
       observer.complete();
       return;
@@ -237,48 +262,26 @@ const putEmail = () => {
   });
 };
 
-// 控制补全框内容
-const padUserinfo = reactive({
-  username: '',
-  email_exist: false,
-});
-
-// 判断是否需要补全内容
-const isNotPadUserinfo = (data: any): boolean => {
-  if (
-    loginParams.value.response_mode !== 'query' ||
-    !loginParams.value.scope?.includes('email')
-  ) {
-    // oidc模式选择了email，才需要补全用户
-    return true;
-  }
-  const { username, email_exist = false, email = '' } = data || {};
-  const name = !username || username.startsWith('oauth2_') ? '' : username;
-  const hasEmail = Boolean(email_exist || email);
-  if (!name || !hasEmail) {
-    padUserinfo.username = name;
-    padUserinfo.email_exist = hasEmail;
-    visible.value = true;
-    return false;
-  }
-  return true;
+const putUser = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formValidator(formEl)
+    .pipe(
+      mergeMap((bool) => {
+        if (bool) {
+          return zip(putUserName(), putEmail()).pipe(
+            map((value) => value.reduce((pre, next) => pre && next))
+          );
+        }
+        return of(false);
+      })
+    )
+    .subscribe((data) => {
+      if (data) {
+        doSuccess();
+      }
+    });
 };
 
-// 登录成功处理函数
-const loginSuccess = (data: any) => {
-  if (isNotPadUserinfo(data)) {
-    doSuccess();
-  }
-};
-// 登录成功提示
-const doSuccess = () => {
-  ElMessage.success({
-    showClose: true,
-    message: i18n.value.LOGIN_SUCCESS,
-  });
-  setLogoutSession();
-  haveLoggedIn();
-};
 const cancelPad = () => {
   if (loginParams.value.response_mode === 'query') {
     logout();
@@ -336,7 +339,7 @@ const cancelPad = () => {
         />
       </el-form-item>
       <el-form-item
-        v-if="!padUserinfo.email_exist"
+        v-if="!padUserinfo.emailExist"
         prop="email"
         :rules="emailRules"
       >
@@ -346,7 +349,7 @@ const cancelPad = () => {
           @blur="asyncBlur(formRef, 'email')"
         />
       </el-form-item>
-      <el-form-item v-if="!padUserinfo.email_exist" prop="code" :rules="rules">
+      <el-form-item v-if="!padUserinfo.emailExist" prop="code" :rules="rules">
         <div class="code">
           <OInput
             v-model.trim="form.code"

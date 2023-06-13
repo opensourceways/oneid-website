@@ -5,13 +5,13 @@ import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 onMounted(() => {
-  const redirect_uri = route.query.redirect_uri as string;
-  if (redirect_uri) {
+  const redirectUri = route.query.redirect_uri as string;
+  if (redirectUri) {
     const { token } = getUserAuth();
     if (token) {
-      logout(getCommunityParams(true), redirect_uri);
+      logout(getCommunityParams(true), redirectUri);
     } else {
-      location.href = redirect_uri;
+      location.href = redirectUri;
     }
   }
 });

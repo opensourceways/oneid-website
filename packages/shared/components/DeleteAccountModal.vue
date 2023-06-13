@@ -14,10 +14,6 @@ const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'submit']);
 const i18n = useI18n();
 
-const close = () => {
-  emit('update:modelValue', false);
-  formRef.value?.resetFields();
-};
 const submit = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formValidator(formEl).subscribe((valid) => {
@@ -46,6 +42,11 @@ const rules = ref([
     trigger: 'blur',
   },
 ]);
+
+const close = () => {
+  emit('update:modelValue', false);
+  formRef.value?.resetFields();
+};
 </script>
 <template>
   <el-dialog

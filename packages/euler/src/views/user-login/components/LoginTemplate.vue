@@ -22,38 +22,7 @@ const emit = defineEmits(['submit', 'threePartLogin']);
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams } = useCommonData();
-onMounted(() => {
-  listenerThreePartsLogin();
-});
-onUnmounted(() => {
-  // 移除监听
-  window.removeEventListener('message', loginFun);
-});
 const loginForm = ref();
-
-const icons = [
-  {
-    key: 'Gitee',
-    icon: IconGitee,
-    onClick: (type: string) => {
-      threePartsLogin(type);
-    },
-  },
-  {
-    key: 'GitHub',
-    icon: IconGithub,
-    onClick: (type: string) => {
-      threePartsLogin(type);
-    },
-  },
-  {
-    key: 'OpenAtom',
-    icon: IconOpenAtom,
-    onClick: (type: string) => {
-      threePartsLogin(type);
-    },
-  },
-];
 
 // 三方登录
 const redirect_uri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
@@ -91,10 +60,30 @@ const threePartsLogin = (type: string) => {
   });
 };
 
-// 监听三方登录结果
-const listenerThreePartsLogin = () => {
-  window.addEventListener('message', loginFun);
-};
+const icons = [
+  {
+    key: 'Gitee',
+    icon: IconGitee,
+    onClick: (type: string) => {
+      threePartsLogin(type);
+    },
+  },
+  {
+    key: 'GitHub',
+    icon: IconGithub,
+    onClick: (type: string) => {
+      threePartsLogin(type);
+    },
+  },
+  {
+    key: 'OpenAtom',
+    icon: IconOpenAtom,
+    onClick: (type: string) => {
+      threePartsLogin(type);
+    },
+  },
+];
+
 const loginFun = (e: MessageEvent) => {
   const { type, response } = e.data;
   if (type !== 'authorization_response') {
@@ -111,9 +100,21 @@ const loginFun = (e: MessageEvent) => {
   }
 };
 
+// 监听三方登录结果
+const listenerThreePartsLogin = () => {
+  window.addEventListener('message', loginFun);
+};
+
 const submit = (form: any) => {
   emit('submit', form);
 };
+onMounted(() => {
+  listenerThreePartsLogin();
+});
+onUnmounted(() => {
+  // 移除监听
+  window.removeEventListener('message', loginFun);
+});
 </script>
 <template>
   <ContentTemplate>

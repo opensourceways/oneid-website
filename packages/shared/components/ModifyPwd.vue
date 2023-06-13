@@ -31,21 +31,13 @@ const emit = defineEmits(['update:modelValue']);
 const { loginParams, userInfo } = useCommonData();
 const i18n = useI18n();
 
-const close = () => {
-  emit('update:modelValue', false);
-  formRef.value?.resetFields();
-  form.account = '';
-  form.code = '';
-  resetToken.value = '';
-  disableCode.value = false;
-};
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
   account: '',
   code: '',
   password: '',
-  confirm_pwd: '',
+  confirmPwd: '',
 } as any);
 
 const useAccount = ref('');
@@ -205,7 +197,7 @@ const confirm = (formEl: FormInstance | undefined) => {
         })
         .catch((err) => {
           if (err?.response?.data?.msg?.code === 'E00056') {
-            formRef.value?.resetFields(['code', 'password', 'confirm_pwd']);
+            formRef.value?.resetFields(['code', 'password', 'confirmPwd']);
             form.code = '';
             resetToken.value = '';
             disableCode.value = false;
@@ -215,6 +207,15 @@ const confirm = (formEl: FormInstance | undefined) => {
       return false;
     }
   });
+};
+
+const close = () => {
+  emit('update:modelValue', false);
+  formRef.value?.resetFields();
+  form.account = '';
+  form.code = '';
+  resetToken.value = '';
+  disableCode.value = false;
 };
 </script>
 <template>
@@ -273,9 +274,9 @@ const confirm = (formEl: FormInstance | undefined) => {
             type="password"
           />
         </el-form-item>
-        <el-form-item prop="confirm_pwd" :rules="confirmPwdRules">
+        <el-form-item prop="confirmPwd" :rules="confirmPwdRules">
           <OInput
-            v-model="form.confirm_pwd"
+            v-model="form.confirmPwd"
             :placeholder="i18n.CONFIRM_NEW_PWD"
             type="password"
           />

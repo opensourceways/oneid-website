@@ -86,29 +86,6 @@ const form = reactive({
   nickname: '',
   company: '',
 } as any);
-const initData = () => {
-  data.value.forEach((item: IObject) => {
-    if (item.key in userInfo.value) {
-      if (item.key === 'signedUp') {
-        form[item.key] = getTimeData(userInfo.value[item.key]);
-      } else {
-        form[item.key] = userInfo.value[item.key] || '';
-      }
-    }
-  });
-};
-
-watch(
-  () => userInfo.value,
-  () => {
-    initData();
-  },
-  { deep: true }
-);
-onMounted(() => {
-  store.initUserInfo(getCommunityParams(true));
-  initData();
-});
 
 // 显示注册时间
 const getTimeData = (time: string): string => {
@@ -122,19 +99,6 @@ const getTimeData = (time: string): string => {
   )}`;
 };
 
-const submit = (formEl: FormInstance | undefined) => {
-  getSubmitParams(formEl).subscribe((body: any) => {
-    if (Object.keys(body).length) {
-      modifyUser(body, getCommunityParams(true)).then(() => {
-        ElMessage.success({
-          showClose: true,
-          message: i18n.value.MODIFY_SUCCESS,
-        });
-        store.initUserInfo(getCommunityParams(true));
-      });
-    }
-  });
-};
 // 获取下发参数
 const getSubmitParams = (formEl: FormInstance | undefined) => {
   return new Observable((observer) => {
@@ -165,9 +129,47 @@ const getSubmitParams = (formEl: FormInstance | undefined) => {
   });
 };
 
+const submit = (formEl: FormInstance | undefined) => {
+  getSubmitParams(formEl).subscribe((body: any) => {
+    if (Object.keys(body).length) {
+      modifyUser(body, getCommunityParams(true)).then(() => {
+        ElMessage.success({
+          showClose: true,
+          message: i18n.value.MODIFY_SUCCESS,
+        });
+        store.initUserInfo(getCommunityParams(true));
+      });
+    }
+  });
+};
+
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
 };
+
+const initData = () => {
+  data.value.forEach((item: IObject) => {
+    if (item.key in userInfo.value) {
+      if (item.key === 'signedUp') {
+        form[item.key] = getTimeData(userInfo.value[item.key]);
+      } else {
+        form[item.key] = userInfo.value[item.key] || '';
+      }
+    }
+  });
+};
+
+watch(
+  () => userInfo.value,
+  () => {
+    initData();
+  },
+  { deep: true }
+);
+onMounted(() => {
+  store.initUserInfo(getCommunityParams(true));
+  initData();
+});
 </script>
 <template>
   <AppHeader />

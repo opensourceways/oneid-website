@@ -32,6 +32,20 @@ onMounted(() => {
     }
   });
 });
+
+// 登录成功提示
+const doSuccess = () => {
+  ElMessage.success({
+    showClose: true,
+    message: i18n.value.LOGIN_SUCCESS,
+  });
+  haveLoggedIn();
+};
+
+// 登录成功处理函数
+const loginSuccess = (data: any) => {
+  doSuccess();
+};
 const login = async (form: any) => {
   const param: any = {
     ...getCommunityParams(true),
@@ -46,19 +60,6 @@ const login = async (form: any) => {
   accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);
   });
-};
-
-// 登录成功处理函数
-const loginSuccess = (data: any) => {
-  doSuccess();
-};
-// 登录成功提示
-const doSuccess = () => {
-  ElMessage.success({
-    showClose: true,
-    message: i18n.value.LOGIN_SUCCESS,
-  });
-  haveLoggedIn();
 };
 </script>
 <template>

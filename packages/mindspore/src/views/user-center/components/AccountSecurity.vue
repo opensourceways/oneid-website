@@ -13,10 +13,6 @@ const vilible = ref(false);
 const submit = () => {
   vilible.value = true;
 };
-const close = () => {
-  form.text = '';
-  vilible.value = false;
-};
 // 表单值
 const formRef = ref<FormInstance>();
 const form = reactive({
@@ -52,6 +48,10 @@ const confirm = (formEl: FormInstance | undefined) => {
       return false;
     }
   });
+};
+const close = () => {
+  form.text = '';
+  vilible.value = false;
 };
 </script>
 <template>

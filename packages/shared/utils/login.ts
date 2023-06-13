@@ -55,13 +55,13 @@ export function logout(
   param: any = { community: import.meta.env?.VITE_COMMUNITY },
   redirectUri = window?.location?.origin
 ) {
-  if (param.id_token) {
+  if (param.idToken) {
     saveUserAuth();
     const client1 = createClient(param.community);
     const logoutUrl = client1.buildLogoutUrl({
       expert: true,
       redirectUri,
-      idToken: param.id_token,
+      idToken: param.idToken,
     });
     window.location.href = logoutUrl;
     return;

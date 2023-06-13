@@ -67,29 +67,10 @@ const data = ref([
   },
 ]);
 
-const initData = () => {
-  data.value.forEach((item: IObject) => {
-    if (item.key in userInfo.value) {
-      if (item.key === 'signedUp') {
-        item.value = getTimeData(userInfo.value[item.key]);
-      } else {
-        item.value = userInfo.value[item.key] || '';
-      }
-    }
-  });
-};
-
-watch(
-  () => userInfo.value,
-  () => {
-    initData();
-  },
-  { deep: true }
-);
-onMounted(() => {
-  store.initUserInfo();
-  initData();
-});
+// 表单值
+const form = reactive({
+  username: '',
+} as any);
 
 // 显示注册时间
 const getTimeData = (time: string): string => {
@@ -103,19 +84,6 @@ const getTimeData = (time: string): string => {
   )}`;
 };
 
-const submit = (formEl: FormInstance[] | undefined) => {
-  getSubmitParams(formEl).subscribe((param: any) => {
-    if (Object.keys(param).length) {
-      modifyUser(param).then(() => {
-        ElMessage.success({
-          showClose: true,
-          message: i18n.value.MODIFY_SUCCESS,
-        });
-        store.initUserInfo();
-      });
-    }
-  });
-};
 // 获取下发参数
 const getSubmitParams = (formEl: FormInstance[] | undefined) => {
   return new Observable((observer) => {
@@ -152,15 +120,49 @@ const getSubmitParams = (formEl: FormInstance[] | undefined) => {
   });
 };
 
-// 表单值
-const form = reactive({
-  username: '',
-} as any);
+const submit = (formEl: FormInstance[] | undefined) => {
+  getSubmitParams(formEl).subscribe((param: any) => {
+    if (Object.keys(param).length) {
+      modifyUser(param).then(() => {
+        ElMessage.success({
+          showClose: true,
+          message: i18n.value.MODIFY_SUCCESS,
+        });
+        store.initUserInfo();
+      });
+    }
+  });
+};
+
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
 };
+
+const initData = () => {
+  data.value.forEach((item: IObject) => {
+    if (item.key in userInfo.value) {
+      if (item.key === 'signedUp') {
+        item.value = getTimeData(userInfo.value[item.key]);
+      } else {
+        item.value = userInfo.value[item.key] || '';
+      }
+    }
+  });
+};
+
+watch(
+  () => userInfo.value,
+  () => {
+    initData();
+  },
+  { deep: true }
+);
+onMounted(() => {
+  store.initUserInfo();
+  initData();
+});
 </script>
 <template>
   <AppHeader />
