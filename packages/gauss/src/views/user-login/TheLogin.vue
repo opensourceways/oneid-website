@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { accountLoginPost } from 'shared/api/api-login';
+import { accountLoginPost, checkLoginAccount } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import { isLogined } from 'shared/utils/login';
 import { getCommunityParams } from '@/shared/utils';
@@ -9,6 +9,8 @@ import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
+import Verify from 'shared/verifition/Verify.vue';
+import { getVerifyImgSize } from 'shared/utils/utils';
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
 const router = useRouter();
@@ -46,11 +48,37 @@ const doSuccess = () => {
 const loginSuccess = (data: any) => {
   doSuccess();
 };
-const login = async (form: any) => {
+
+const verify = ref();
+const formCopy = ref(null);
+
+// 密码登录前检查账号
+const chenckLogin = (form: any) => {
+  formCopy.value = form;
+  const param = {
+    community: import.meta.env?.VITE_COMMUNITY,
+    account: form.account,
+  };
+  checkLoginAccount(param).then((data) => {
+    if (data?.data?.need_captcha_verification) {
+      verify.value.show();
+    } else {
+      login(form);
+    }
+  });
+};
+
+const verifySuccess = (data: any) => {
+  login(formCopy.value, data.captchaVerification);
+};
+const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
     ...getCommunityParams(true),
     account: form.account,
   };
+  if (captchaVerification) {
+    param.captchaVerification = captchaVerification;
+  }
   if (form.password) {
     const password = await getRsaEncryptWord(form.password);
     param.password = password;
@@ -63,7 +91,7 @@ const login = async (form: any) => {
 };
 </script>
 <template>
-  <LoginTemplate ref="loginTemplate" @submit="login">
+  <LoginTemplate ref="loginTemplate" @submit="chenckLogin">
     <template #switch>
       <div style="flex: 1">
         <a style="display: inline" @click="goResetPwd()">
@@ -77,40 +105,12 @@ const login = async (form: any) => {
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
+  <Verify
+    ref="verify"
+    mode="pop"
+    captcha-type="blockPuzzle"
+    :img-size="getVerifyImgSize()"
+    @success="verifySuccess"
+  ></Verify>
 </template>
-<style lang="scss" scoped>
-.header {
-  font-size: var(--o-font-size-h5);
-  line-height: var(--o-line-height-h5);
-  font-weight: normal;
-  text-align: center;
-  margin-left: var(--o-spacing-h5);
-  padding-top: 28px;
-}
-.form {
-  padding: 0 28px;
-}
-.footer {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 28px;
-}
-.code {
-  display: grid;
-  grid-template-columns: auto max-content;
-  width: 100%;
-  grid-gap: var(--o-spacing-h9);
-}
-.btn {
-  height: 38px;
-}
-.el-form-item {
-  margin-bottom: 28px;
-  @media (max-width: 1100px) {
-    margin-bottom: 40px;
-  }
-}
-:deep(.el-form-item.is-error .el-input__wrapper) {
-  box-shadow: 0 0 0 1px var(--o-color-error1) inset;
-}
-</style>
+<style lang="scss" scoped></style>
