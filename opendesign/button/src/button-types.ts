@@ -3,7 +3,6 @@ import { SizeType } from '../../_utils/common';
 
 type ButtonType = 'outline' | 'primary' | 'secondary' | 'text';
 // TODO:status颜色规范待补充
-// type ButtonStatus = 'normal' | 'success' | 'warning' | 'danger';
 type ButtonStatus = 'normal';
 type ButtonNativeType = 'button' | 'submit' | 'reset';
 

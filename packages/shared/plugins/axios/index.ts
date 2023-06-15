@@ -91,8 +91,6 @@ const requestInterceptorId = request.interceptors.request.use(
       });
     }
     config.$ignoreLoading ? '' : loadingCount++;
-    // 存储请求信息
-    // request.config = Object.assign({}, config);
     // 定义取消请求
     config.cancelToken = new axios.CancelToken((cancelFn) => {
       if (!config.url) {
@@ -100,7 +98,6 @@ const requestInterceptorId = request.interceptors.request.use(
       }
       // 如果已请求，则取消重复请求
       if (pendingPool.has(config.url)) {
-        // cancelFn(`${config.url}请求重复`);
       } else {
         // 存储到请求池
         pendingPool.set(config.url, {
