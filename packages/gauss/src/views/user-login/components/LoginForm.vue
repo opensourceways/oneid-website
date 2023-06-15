@@ -14,8 +14,11 @@ import { accountExists, sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from 'shared/components/LoginTabs.vue';
 import PwdInput from 'shared/components/PwdInput.vue';
-import { callBackErrMessage, getPwdRules } from 'shared/utils/utils';
-import { getUsernammeRules } from '@/shared/utils';
+import {
+  callBackErrMessage,
+  getPwdRules,
+  getUsernammeRules,
+} from 'shared/utils/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 import { getCommunityParams } from '@/shared/utils';

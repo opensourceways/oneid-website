@@ -15,6 +15,17 @@ export function accountExists(params: any) {
 /**
  * 发送验证码
  */
+export function checkLoginAccount(params: any) {
+  const url = '/oneid/captcha/checkLogin';
+
+  return request
+    .get(url, { global: true, params })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 发送验证码
+ */
 export function sendCodeCaptcha(params: any) {
   const url = '/oneid/captcha/sendCode';
 

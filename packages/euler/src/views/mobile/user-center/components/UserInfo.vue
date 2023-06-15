@@ -5,12 +5,12 @@ import ContentBox from './ContentBox.vue';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import { modifyUser } from 'shared/api/api-center';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { getUsernammeRules } from '@/shared/utils';
 import { Observable } from 'rxjs';
 import { IObject } from 'shared/@types/interface';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
+import { getUsernammeRules } from 'shared/utils/utils';
 const router = useRouter();
 const formRef1 = ref<FormInstance[]>();
 const props = defineProps({
