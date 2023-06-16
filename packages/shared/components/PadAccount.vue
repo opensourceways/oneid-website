@@ -161,6 +161,11 @@ const putEmail = () => {
   });
 };
 
+const close = () => {
+  emit('update:modelValue', false);
+  formRef.value?.resetFields();
+};
+
 const doSuccess = () => {
   emit('success');
   close();
@@ -186,10 +191,6 @@ const putUser = (formEl: FormInstance | undefined) => {
     });
 };
 
-const close = () => {
-  emit('update:modelValue', false);
-  formRef.value?.resetFields();
-};
 const cancelPad = () => {
   emit('cancel');
   close();
