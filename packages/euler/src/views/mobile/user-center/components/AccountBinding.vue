@@ -13,7 +13,7 @@ import {
   AllAccountDialogConfig,
   QueryCodeParams,
   BindAccountParams,
-} from './interface';
+} from 'shared/@types/usercenter.interface';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import {
   bindAccount,
@@ -420,9 +420,6 @@ watch(
       <span style="font-size: 16px">{{ i18n.IDENTITY }}</span>
     </div>
     <ContentBox>
-      <!-- <template #header>
-      {{ i18n.IDENTITY }}
-    </template> -->
       <template #content>
         <div class="box_m">
           <div class="box_m-title">{{ i18n.PHONE_AND_EMAIL }}</div>

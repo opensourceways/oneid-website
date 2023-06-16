@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, reactive, ref, toRefs } from 'vue';
 import { useI18n, useI18nStr } from 'shared/i18n';
-import { AccountDialogConfig, QueryCodeParams } from './interface';
+import {
+  AccountDialogConfig,
+  QueryCodeParams,
+} from 'shared/@types/usercenter.interface';
 import { ElMessage, FormInstance } from 'element-plus';
 import { useCommonData } from 'shared/stores/common';
 import { sendCode } from 'shared/api/api-center';

@@ -4,7 +4,7 @@ import UserLeftTree from './components/UserLeftTree.vue';
 import UserInfo from './components/UserInfo.vue';
 import AccountBinding from './components/AccountBinding.vue';
 import AccountSecurity from './components/AccountSecurity.vue';
-import { SelectTabKey } from './components/interface';
+import { SelectTabKey } from 'shared/@types/usercenter.interface';
 import { onMounted, ref } from 'vue';
 import { useCommon } from 'shared/stores/common';
 

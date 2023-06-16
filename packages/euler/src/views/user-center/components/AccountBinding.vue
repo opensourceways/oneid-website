@@ -13,7 +13,7 @@ import {
   AllAccountDialogConfig,
   QueryCodeParams,
   BindAccountParams,
-} from './interface';
+} from 'shared/@types/usercenter.interface';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import {
   bindAccount,

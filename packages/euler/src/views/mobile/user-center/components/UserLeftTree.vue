@@ -4,7 +4,7 @@ import { useI18n, useI18nStr } from 'shared/i18n';
 import IconInfo from '~icons/app/icon-info.svg';
 import IconBinding from '~icons/app/icon-binding.svg';
 import IconSecurity from '~icons/app/icon-security.svg';
-import { SelectTabKey } from './interface';
+import { SelectTabKey } from 'shared/@types/usercenter.interface';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import {
   ElMessage,
@@ -163,11 +163,6 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
         right: 27px;
       }
     }
-    // .selected {
-    //   background-color: rgba(0, 47, 167, 0.03);
-    //   border-left: 2px solid var(--o-color-border3);
-    //   color: var(--o-color-brand1);
-    // }
   }
 }
 </style>
