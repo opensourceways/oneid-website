@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import UserLeftTree from './components/UserLeftTree.vue';
-import { SelectTabKey } from './components/interface';
+import { SelectTabKey } from 'shared/@types/usercenter.interface';
 import { onMounted, ref } from 'vue';
 import { useCommon } from 'shared/stores/common';
 

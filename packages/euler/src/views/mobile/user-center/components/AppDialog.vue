@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, reactive, ref, toRefs } from 'vue';
 import { useI18n, useI18nStr } from 'shared/i18n';
-import { AccountDialogConfig, QueryCodeParams } from './interface';
+import {
+  AccountDialogConfig,
+  QueryCodeParams,
+} from 'shared/@types/usercenter.interface';
 import { ElMessage, FormInstance } from 'element-plus';
 import { useCommonData } from 'shared/stores/common';
 import { sendCode } from 'shared/api/api-center';
@@ -168,7 +171,8 @@ const accountPlaceholder = computed(
 );
 const codePlaceholder = computed(
   () =>
-    i18n.value[config.value?.code?.placeholder] || i18n.value.ENTER_RECEIVED_CODE
+    i18n.value[config.value?.code?.placeholder] ||
+    i18n.value.ENTER_RECEIVED_CODE
 );
 </script>
 <template>
@@ -208,7 +212,10 @@ const codePlaceholder = computed(
           :rules="rules"
         >
           <div class="code">
-            <OInput v-model.trim="form.oldcode" :placeholder="codePlaceholder" />
+            <OInput
+              v-model.trim="form.oldcode"
+              :placeholder="codePlaceholder"
+            />
             <CountdownButton
               v-model="oldaccountNum"
               class="btn"
@@ -223,7 +230,10 @@ const codePlaceholder = computed(
           prop="account"
           :rules="config.account_type === 'email' ? emailRules : phoneRules"
         >
-          <OInput v-model.trim="form.account" :placeholder="accountPlaceholder" />
+          <OInput
+            v-model.trim="form.account"
+            :placeholder="accountPlaceholder"
+          />
         </el-form-item>
         <el-form-item
           v-if="config?.code"

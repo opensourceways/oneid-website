@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import UserLeftTree from './components/UserLeftTree.vue';
-import { SelectTabKey } from './components/interface';
+import { SelectTabKey } from 'shared/@types/usercenter.interface';
 import { onMounted, ref } from 'vue';
 import { useCommon } from 'shared/stores/common';
 const i18n = useI18n();
@@ -60,11 +60,6 @@ onMounted(() => {
   padding: var(--o-spacing-h3) var(--o-spacing-h5);
   margin: 0 auto;
   max-width: 1472px;
-  // display: grid;
   grid-template-columns: 33.9% 66.1%;
-  // min-height: 963px;
-  .left {
-    // padding-right: var(--o-spacing-h4);
-  }
 }
 </style>
