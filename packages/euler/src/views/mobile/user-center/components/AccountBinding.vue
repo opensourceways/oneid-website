@@ -349,9 +349,6 @@ const bindSocial = (key: string) => {
       bindWindow?.close();
     });
 };
-const listenerBindSocial = () => {
-  window.addEventListener('message', bindFun);
-};
 const bindFun = (e: MessageEvent) => {
   const { code, event, message } = e.data;
   if (event?.source !== 'authing') {
@@ -383,6 +380,10 @@ const bindFun = (e: MessageEvent) => {
       message: i18n.value.BIND_FAILED,
     });
   }
+};
+
+const listenerBindSocial = () => {
+  window.addEventListener('message', bindFun);
 };
 
 const goToTree = () => {

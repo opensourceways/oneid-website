@@ -161,6 +161,11 @@ const putEmail = () => {
   });
 };
 
+const doSuccess = () => {
+  emit('success');
+  close();
+};
+
 const putUser = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formValidator(formEl)
@@ -179,11 +184,6 @@ const putUser = (formEl: FormInstance | undefined) => {
         doSuccess();
       }
     });
-};
-
-const doSuccess = () => {
-  emit('success');
-  close();
 };
 
 const close = () => {

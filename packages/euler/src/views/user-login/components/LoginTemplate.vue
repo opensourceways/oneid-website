@@ -25,26 +25,26 @@ const { lang, loginParams } = useCommonData();
 const loginForm = ref();
 
 // 三方登录
-const redirect_uri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
+const redirectUri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
 const windowOpener = ref();
 const threePartsLogin = (type: string) => {
   const url = `${import.meta.env?.VITE_LOGIN_USERPOOL}/api/v3/signin-by-extidp`;
   const params = {
     client_id: loginParams.value.client_id,
     response_type: loginParams.value.response_type,
-    redirect_uri,
+    redirect_uri: redirectUri,
     scope: 'openid profile username email',
     state: loginParams.value.state,
     nonce: loginParams.value.nonce,
     lang: lang.value === 'zh' ? 'zh-CN' : 'en-US',
     response_mode: 'web_message',
   };
-  const ext_idp_conn_id: any = {
+  const connIds: any = {
     Gitee: '6226d91103d81d8654673f1b',
     GitHub: '6226db30c8e30db1518cc4aa',
     OpenAtom: '63c0bfd4c88ee67bcf1959b4',
   };
-  Object.assign(params, { ext_idp_conn_id: ext_idp_conn_id[type] });
+  Object.assign(params, { ext_idp_conn_id: connIds[type] });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
     if (valid) {
       windowOpener.value = window.open(
@@ -94,7 +94,7 @@ const loginFun = (e: MessageEvent) => {
     windowOpener.value?.close();
     const param = {
       code,
-      redirect_uri,
+      redirect_uri: redirectUri,
     };
     emit('threePartLogin', param);
   }

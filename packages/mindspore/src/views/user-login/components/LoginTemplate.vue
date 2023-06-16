@@ -25,13 +25,13 @@ const { lang, loginParams } = useCommonData();
 const loginForm = ref();
 
 // 三方登录
-const redirect_uri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
+const redirectUri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
 const threePartsLogin = (type: string) => {
   const url = `${import.meta.env?.VITE_LOGIN_USERAPI}/api/v3/signin-by-extidp`;
   const params = {
     client_id: loginParams.value.client_id,
     response_type: loginParams.value.response_type,
-    redirect_uri,
+    redirect_uri: redirectUri,
     scope: 'openid profile username email',
     state: loginParams.value.state,
     nonce: loginParams.value.nonce,
@@ -88,7 +88,7 @@ const loginFun = (e: MessageEvent) => {
   if (code && state) {
     const param = {
       code,
-      redirect_uri,
+      redirect_uri: redirectUri,
     };
     emit('threePartLogin', param);
   }

@@ -35,7 +35,7 @@ function chaneLanguage(newlang: string) {
   const newHref = pathname.replace(`/${lang.value}/`, `/${newlang}/`);
   const RU = 'ru';
   isMenu.value = false;
-  //判断是否是ru
+  // 判断是否是ru
   if (host.includes(RU) || newlang === RU) {
     window.open(
       `https://${newlang === RU ? RU : 'www'}.openeuler.org` + newHref + search,

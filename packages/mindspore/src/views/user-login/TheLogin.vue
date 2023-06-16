@@ -70,6 +70,27 @@ const loginSuccess = (data: any) => {
   doSuccess();
 };
 
+const login = async (form: any, captchaVerification?: string) => {
+  const param: any = {
+    community: import.meta.env?.VITE_COMMUNITY,
+    permission: 'sigRead',
+    account: form.account,
+    client_id: loginParams.value.client_id,
+  };
+  if (captchaVerification) {
+    param.captchaVerification = captchaVerification;
+  }
+  if (form.password) {
+    const password = await getRsaEncryptWord(form.password);
+    param.password = password;
+  } else {
+    param.code = form.code;
+  }
+  accountLoginPost(param).then((data: any) => {
+    loginSuccess(data?.data);
+  });
+};
+
 const verify = ref();
 const formCopy = ref(null);
 
@@ -93,26 +114,6 @@ const verifySuccess = (data: any) => {
   login(formCopy.value, data.captchaVerification);
 };
 
-const login = async (form: any, captchaVerification?: string) => {
-  const param: any = {
-    community: import.meta.env?.VITE_COMMUNITY,
-    permission: 'sigRead',
-    account: form.account,
-    client_id: loginParams.value.client_id,
-  };
-  if (captchaVerification) {
-    param.captchaVerification = captchaVerification;
-  }
-  if (form.password) {
-    const password = await getRsaEncryptWord(form.password);
-    param.password = password;
-  } else {
-    param.code = form.code;
-  }
-  accountLoginPost(param).then((data: any) => {
-    loginSuccess(data?.data);
-  });
-};
 const threePartLogin = (res: any) => {
   const { code, redirect_uri } = res;
   const param = {
