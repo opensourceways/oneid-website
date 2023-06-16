@@ -24,6 +24,11 @@ const store = useCommon();
 
 const i18n = useI18n();
 
+// 表单值
+const form = reactive({
+  username: '',
+} as any);
+
 const data = ref([
   {
     key: 'username',
@@ -153,10 +158,6 @@ onMounted(() => {
   initData();
 });
 
-// 表单值
-const form = reactive({
-  username: '',
-} as any);
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
 const goToTree = () => {

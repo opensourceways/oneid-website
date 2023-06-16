@@ -27,6 +27,14 @@ const { modelValue, config } = toRefs(props);
 const emit = defineEmits(['update:modelValue']);
 const { userInfo } = useCommonData();
 
+// 表单值
+const form = reactive({
+  oldaccount: '',
+  oldcode: '',
+  account: '',
+  code: '',
+} as any);
+
 // 发送验证码
 const sendCodeFuc = (data: QueryCodeParams) => {
   return new Promise((resolve, rejects) => {
@@ -84,13 +92,6 @@ const verifySuccess = (data: any) => {
   });
 };
 
-// 表单值
-const form = reactive({
-  oldaccount: '',
-  oldcode: '',
-  account: '',
-  code: '',
-} as any);
 // 清空表单
 const clear = () => {
   form.oldaccount = '';

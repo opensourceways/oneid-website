@@ -177,6 +177,14 @@ const nextStep = (formEl: FormInstance | undefined) => {
     }
   });
 };
+const close = () => {
+  emit('update:modelValue', false);
+  formRef.value?.resetFields();
+  form.account = '';
+  form.code = '';
+  resetToken.value = '';
+  disableCode.value = false;
+};
 const confirm = (formEl: FormInstance | undefined) => {
   formValidator(formEl).subscribe(async (valid) => {
     if (valid) {
@@ -207,15 +215,6 @@ const confirm = (formEl: FormInstance | undefined) => {
       return false;
     }
   });
-};
-
-const close = () => {
-  emit('update:modelValue', false);
-  formRef.value?.resetFields();
-  form.account = '';
-  form.code = '';
-  resetToken.value = '';
-  disableCode.value = false;
 };
 </script>
 <template>
