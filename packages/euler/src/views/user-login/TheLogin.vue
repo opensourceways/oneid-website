@@ -149,12 +149,12 @@ const verifySuccess = (data: any) => {
 };
 
 const threePartLogin = (res: any) => {
-  const { code, redirect_uri } = res;
+  const { code, redirect_uri: redirect } = res;
   const param = {
     code: code,
     permission: 'sigRead',
     community: import.meta.env?.VITE_COMMUNITY,
-    redirect: redirect_uri,
+    redirect,
     client_id: loginParams.value.client_id,
   };
   queryToken(param).then((data: any) => {
