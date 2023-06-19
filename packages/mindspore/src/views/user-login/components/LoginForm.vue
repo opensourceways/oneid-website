@@ -236,7 +236,7 @@ const accountPlaceholder = computed(() => {
 });
 const loginTabSelect = () => {
   formRef.value?.resetFields();
-  disableCode.value = true;
+  disableCode.value = false;
 };
 </script>
 <template>

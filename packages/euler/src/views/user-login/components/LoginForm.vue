@@ -156,6 +156,19 @@ const validatorCheckbox = (rule: any, value: any, callback: any) => {
   }
 };
 
+// 校验密码不能包含用户名
+const validatorPwd = (rule: any, value: any, callback: any) => {
+  if (
+    value &&
+    (value.includes(form.username) ||
+      value.includes(form.username.split('').reverse().join('')))
+  ) {
+    callback(i18n.value.PLEASE_CHECK_PRIVACY);
+  } else {
+    callback();
+  }
+};
+
 // 空值校验
 const requiredRules: FormItemRule[] = [
   {
@@ -238,7 +251,7 @@ const accountPlaceholder = computed(() => {
 });
 const loginTabSelect = () => {
   formRef.value?.resetFields();
-  disableCode.value = true;
+  disableCode.value = false;
 };
 </script>
 <template>
