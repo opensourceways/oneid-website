@@ -236,12 +236,16 @@ const accountPlaceholder = computed(() => {
     return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
   }
 });
+const loginTabSelect = () => {
+  formRef.value?.resetFields();
+  disableCode.value = true;
+};
 </script>
 <template>
   <LoginTabs
     v-model="selectLoginType"
     :type="type"
-    @select="formRef?.resetFields()"
+    @select="loginTabSelect"
   ></LoginTabs>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
     <el-form-item

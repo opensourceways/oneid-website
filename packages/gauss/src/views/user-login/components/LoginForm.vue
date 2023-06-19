@@ -217,12 +217,17 @@ const goToOtherPage = (type: string) => {
   const url = `${origin}/${lang.value}/${type}/`;
   window.open(url, '_blank');
 };
+
+const loginTabSelect = () => {
+  formRef.value?.resetFields();
+  disableCode.value = true;
+};
 </script>
 <template>
   <LoginTabs
     v-model="selectLoginType"
     :type="type"
-    @select="formRef?.resetFields()"
+    @select="loginTabSelect"
   ></LoginTabs>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
     <span v-if="type === 'register'">
