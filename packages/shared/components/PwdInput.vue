@@ -34,6 +34,7 @@ const closeEye = () => {
         @mouseleave="closeEye"
         @touchstart="openEye"
         @touchend="closeEye"
+        @touchmove="closeEye"
       >
         <component :is="iconCom"></component>
       </OIcon>
