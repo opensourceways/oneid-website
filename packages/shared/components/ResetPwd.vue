@@ -229,6 +229,9 @@ const confirm = (formEl: FormInstance | undefined) => {
     </span>
   </el-form>
   <div class="footer">
+    <OButton size="small" @click="goLogin">
+      {{ i18n.RETURN_LOGIN }}
+    </OButton>
     <OButton
       v-if="!resetToken"
       size="small"
