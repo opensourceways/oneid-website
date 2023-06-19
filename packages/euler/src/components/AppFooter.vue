@@ -92,42 +92,13 @@ const linksData = {
       id: 'youtube',
     },
   ],
-  ru: [
-    {
-      path: import.meta.env?.VITE_OPENEULER_REDDIT,
-      logo: LogoRedditSquare,
-      id: 'reddit-square',
-    },
-    {
-      path: import.meta.env?.VITE_OPENEULER_LINKEDIN,
-      logo: LogoLinkedin,
-      id: 'linkedin',
-    },
-    {
-      path: import.meta.env?.VITE_OPENEULER_TWITTER,
-      logo: LogoTwitter,
-      id: 'twitter',
-    },
-    {
-      path: import.meta.env?.VITE_OPENEULER_BILIBILI,
-      logo: LogoBilibili2,
-      id: 'bilibili',
-    },
-    {
-      path: import.meta.env?.VITE_OPENEULER_YOUTUBE,
-      logo: LogoYoutube,
-      id: 'youtube',
-    },
-  ],
 };
 
 const footerLinks = computed(() => {
-  if (lang.value === 'en') {
-    return linksData.en;
-  } else if (lang.value === 'ru') {
-    return linksData.ru;
-  } else {
+  if (lang.value === 'zh') {
     return linksData.zh;
+  } else {
+    return linksData.en;
   }
 });
 
