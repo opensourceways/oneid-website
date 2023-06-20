@@ -164,6 +164,10 @@ export default {
   SWIPE_RIGHT: 'Swipe right to complete the verification.',
   PWD_VAILD:
     'The password must contain 8 to 20 characters, including letters, digits, and special characters(!@%^-_=+[{}]:,./?).',
+  PWD_REPEAT_VAILD:
+    "The same character can't be used 3 times or more in a row.",
+  PWD_USERNAME_VAILD:
+    "The password can't contain the user name or its reverse order.",
   MODIFY_PWD: 'Change Password',
   MODIFY_PWD_TIP:
     'Change the password using the verified mobile number or email address.',
