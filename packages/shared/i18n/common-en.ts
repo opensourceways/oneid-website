@@ -142,6 +142,7 @@ export default {
   ENTER_YOUR_PHONE: 'Mobile number',
   ENTER_YOUR_EMAIL: 'Email address',
   ENTER_YOUR_EMAIL_OR_PHONE: 'Email address or mobile number',
+  ENTER_YOUR_ACCOUNT: 'Email address, mobile number or username',
   ENTER_RECEIVED_CODE: 'Verification code',
   READ_ADN_AGREE: 'I have read and agree to the',
   PRIVACY_POLICY: 'Privacy Statement',
@@ -155,10 +156,40 @@ export default {
   USERNAME_VAILD:
     'Include only letters,digits,and underscores(_). It must start with a letter and cannot end with an underscore(_).',
   NICKNAME_VAILD:
-    'contain 3 to 20 characters. include only letters, digits, Chinese and underscores (_). it must start with a letter or Chinese. cannot end with underscore (_)',
+    'Contain 3 to 20 characters. include only letters, digits, Chinese and underscores (_). it must start with a letter or Chinese. cannot end with underscore (_)',
   COMPANY_VAILD:
     'Only letters, digits, Chinese, (.) ,& are allowed. It must start with a letter, digit, or Chinese and cannot end with a (),&',
   VERIFY_SUCCESS: 'The verification succeeds in [0]s.',
   VERIFY_FAILED: 'verification failed.',
   SWIPE_RIGHT: 'Swipe right to complete the verification.',
+  PWD_VAILD:
+    'The password must contain 8 to 20 characters, including letters, digits, and special characters(!@%^-_=+[{}]:,./?).',
+  PWD_REPEAT_VAILD:
+    "The same character can't be used 3 times or more in a row.",
+  PWD_USERNAME_VAILD:
+    "The password can't contain the user name or its reverse order.",
+  MODIFY_PWD: 'Change Password',
+  MODIFY_PWD_TIP:
+    'Change the password using the verified mobile number or email address.',
+  FORGET_PWD: 'Forgot Password',
+  INTER_PWD: 'Enter your password.',
+  INTER_OLD_PWD: 'Enter your old password.',
+  INTER_NEW_PWD: 'Enter your new password.',
+  CONFIRM_NEW_PWD: 'Confirm your new password.',
+  CONFIRM_NOT_MATCH_PWD: "Password confirmation doesn't match the password.",
+  RESET_PWD: 'Reset Password',
+  NEXT_STEP: 'Next',
+  LOGIN_PWD: 'Password',
+  LOGIN_CODE: 'Verify Code',
+  REGISTER_PWD: 'Password',
+  REGISTER_CODE: 'Verify Code',
+  RESET_SUCCESS: 'Reset Successfully',
+  USE_PHONE: 'SMS Verification',
+  USE_EMAIL: 'Email Verification',
+  PWD_STRENGTH: 'Password Strength: ',
+  VERY_WEAK: 'Very weak',
+  WEAK: 'Weak',
+  MIDDLE: 'Middle',
+  STRONG: 'Strong',
+  VERY_STRONG: 'Very strong',
 };

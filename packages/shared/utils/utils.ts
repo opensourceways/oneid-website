@@ -1,19 +1,16 @@
-import { useCommon } from '../stores/common';
+import { useCommon, useCommonData } from '../stores/common';
 import { FormInstance, FormItemRule } from 'element-plus';
 import { from, Observable, reduce, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { useI18nStr } from '../i18n';
-import { COMPANYNAME_REG, NICKNAME_REG } from '../const/common.const';
-
-// iframe的刷新回调
-export function iframeRefreshCallback() {
-  window.parent.postMessage(
-    {
-      key: 'refresh',
-    },
-    'https://openeuler-website.test.osinfra.cn'
-  );
-}
+import {
+  COMPANYNAME_REG,
+  NICKNAME_REG,
+  PWD_REG,
+  PWD_REPEAT_REG,
+  USERNAME_REG,
+} from '../const/common.const';
+import { accountExists } from '../api/api-login';
 
 // 返回接口报错信息
 export function callBackErrMessage(err: any) {
@@ -166,6 +163,74 @@ export function getCompanyRules(): FormItemRule[] {
       pattern: COMPANYNAME_REG,
       message: useI18nStr('COMPANY_VAILD') as unknown as string,
       trigger: 'blur',
+    },
+  ];
+}
+
+const validatorRepeatPwd = (rule: any, value: any, callback: any) => {
+  if (PWD_REPEAT_REG.test(value)) {
+    callback(useI18nStr('PWD_REPEAT_VAILD').value);
+  } else {
+    callback();
+  }
+};
+
+export function getPwdRules(): FormItemRule[] {
+  return [
+    {
+      pattern: PWD_REG,
+      message: useI18nStr('PWD_VAILD') as unknown as string,
+      trigger: ['change', 'blur'],
+    },
+    {
+      validator: validatorRepeatPwd,
+      trigger: ['change', 'blur'],
+    },
+  ];
+}
+
+// 用户名重名校验
+export function validatorSameName(rule: any, value: any): void | Promise<void> {
+  if (value) {
+    return new Promise((resolve, reject) => {
+      const { loginParams } = useCommonData();
+      const param: any = {
+        username: value,
+        client_id: loginParams.value.client_id,
+        community: import.meta.env?.VITE_COMMUNITY,
+      };
+      accountExists(param)
+        .then(() => {
+          resolve();
+        })
+        .catch((err: any) => {
+          reject(callBackErrMessage(err));
+        });
+    });
+  }
+}
+
+export function getUsernammeRules(): FormItemRule[] {
+  return [
+    {
+      required: true,
+      message: useI18nStr('NOT_EMPTY') as unknown as string,
+      trigger: 'blur',
+    },
+    {
+      min: 3,
+      max: 20,
+      message: useI18nStr('CONTAIN_CHARACTER') as unknown as string,
+      trigger: 'blur',
+    },
+    {
+      pattern: USERNAME_REG,
+      message: useI18nStr('USERNAME_VAILD') as unknown as string,
+      trigger: 'blur',
+    },
+    {
+      asyncValidator: validatorSameName,
+      trigger: 'none',
     },
   ];
 }

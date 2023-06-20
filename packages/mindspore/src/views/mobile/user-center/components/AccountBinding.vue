@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from "vue";
-import { useI18n, useI18nStr } from "shared/i18n";
-import ContentBox from "./ContentBox.vue";
-import AppDialog from "./AppDialog.vue";
-import IconMail from "~icons/app/icon-mail.svg";
-import IconPhone from "~icons/app/icon-phone.svg";
-import IconGithub from "~icons/app/icon-github.svg";
-import IconGitee from "~icons/app/icon-gitee.svg";
+import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { useI18n, useI18nStr } from 'shared/i18n';
+import ContentBox from './ContentBox.vue';
+import AppDialog from './AppDialog.vue';
+import IconMail from '~icons/app/icon-mail.svg';
+import IconPhone from '~icons/app/icon-phone.svg';
+import IconGithub from '~icons/app/icon-github.svg';
+import IconGitee from '~icons/app/icon-gitee.svg';
 import {
   AccountOperateKey,
   AllAccountDialogConfig,
   QueryCodeParams,
   BindAccountParams,
-} from "./interface";
-import { useCommon, useCommonData } from "shared/stores/common";
+} from 'shared/@types/usercenter.interface';
+import { useCommon, useCommonData } from 'shared/stores/common';
 import {
   bindAccount,
   modifyAccount,
@@ -21,46 +21,46 @@ import {
   unbindAccount,
   linkAccount,
   unlinkAccount,
-} from "shared/api/api-center";
-import { ElMessage } from "element-plus";
-import { IObject } from "shared/@types/interface";
-import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
-import { useRouter } from "vue-router";
+} from 'shared/api/api-center';
+import { ElMessage } from 'element-plus';
+import { IObject } from 'shared/@types/interface';
+import AppHeader from '@/components/AppHeader.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import { useRouter } from 'vue-router';
 const router = useRouter();
 const i18n = useI18n();
 const store = useCommon();
 const { userInfo } = useCommonData();
 const accountData = ref([
   {
-    key: "email",
+    key: 'email',
     icon: IconMail,
-    label: useI18nStr("EMAIL"),
+    label: useI18nStr('EMAIL'),
     operate: [],
-    value: "",
+    value: '',
   },
   {
-    key: "phone",
+    key: 'phone',
     icon: IconPhone,
-    label: useI18nStr("PHONE"),
-    operate: ["unbind"],
-    value: "",
+    label: useI18nStr('PHONE'),
+    operate: ['unbind'],
+    value: '',
   },
 ]);
 const threeAccountData = ref([] as IObject[]);
 const resetThreeAccountData = () => {
   threeAccountData.value = [
     {
-      key: "github",
+      key: 'github',
       icon: IconGithub,
-      label: "Github",
-      value: "",
+      label: 'Github',
+      value: '',
     },
     {
-      key: "gitee",
+      key: 'gitee',
       icon: IconGitee,
-      label: "Gitee",
-      value: "",
+      label: 'Gitee',
+      value: '',
     },
   ];
 };
@@ -82,22 +82,9 @@ const initData = () => {
     });
   }
 };
-onMounted(() => {
-  store.initUserInfo();
-  initData();
-  listenerBindSocial();
-});
-onUnmounted(() => {
-  // 移除监听
-  window.removeEventListener("message", bindFun);
-});
-watch(
-  () => userInfo.value,
-  () => {
-    initData();
-  },
-  { deep: true }
-);
+
+// 控制弹窗显示
+const vilible = ref(false);
 
 // 修改绑定邮箱或手机号
 const modifyAccountFuc = (data: BindAccountParams) => {
@@ -148,66 +135,75 @@ const sendCodeFuc = (data: QueryCodeParams) => {
   });
 };
 
-// 控制弹窗显示
-const vilible = ref(false);
+const unbindSocial = (platform: string) => {
+  unlinkAccount({ platform }).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.UNBIND_SUCCESS,
+    });
+    vilible.value = false;
+    store.initUserInfo();
+  });
+};
+
 // 展示所选弹窗key
-const operateKey = ref("bind_email" as AccountOperateKey);
+const operateKey = ref('bind_email' as AccountOperateKey);
 // 各个弹窗配置
 const config: AllAccountDialogConfig = {
   confirm_bind_email: {
-    key: "confirm_bind_email",
-    account_type: "email",
-    field: "change",
-    header: "BIND_EMAIL",
-    content: "CONFIRM_BIND_EMAIL",
+    key: 'confirm_bind_email',
+    account_type: 'email',
+    field: 'change',
+    header: 'BIND_EMAIL',
+    content: 'CONFIRM_BIND_EMAIL',
     confirm: () => {
-      operateKey.value = "bind_email";
+      operateKey.value = 'bind_email';
       vilible.value = true;
     },
   },
   bind_email: {
-    key: "bind_email",
-    account_type: "email",
-    field: "change",
-    header: "BIND_EMAIL",
+    key: 'bind_email',
+    account_type: 'email',
+    field: 'change',
+    header: 'BIND_EMAIL',
     account: {
-      label: "EMAIL",
+      label: 'EMAIL',
     },
     code: {
-      label: "EMAIL_CODE",
+      label: 'EMAIL_CODE',
     },
     confirm: (data: BindAccountParams) => {
       bindAccountFuc(data);
     },
   },
   modify_email: {
-    key: "modify_email",
-    account_type: "email",
-    field: "change",
-    header: "MODIFY_EMAIL",
+    key: 'modify_email',
+    account_type: 'email',
+    field: 'change',
+    header: 'MODIFY_EMAIL',
     oldaccount: {
-      label: "CURRENT_EMAIL",
+      label: 'CURRENT_EMAIL',
     },
     oldcode: {
-      label: "CURRENT_EMAIL_CODE",
+      label: 'CURRENT_EMAIL_CODE',
     },
     account: {
-      label: "NEW_EMAIL",
+      label: 'NEW_EMAIL',
     },
     code: {
-      label: "MEW_EMAIL_CODE",
+      label: 'MEW_EMAIL_CODE',
     },
     confirm: (data: BindAccountParams) => {
       modifyAccountFuc(data);
     },
   },
   unbind_email: {
-    key: "unbind_email",
-    account_type: "email",
-    field: "change",
-    header: "UNBIND_EMAIL",
+    key: 'unbind_email',
+    account_type: 'email',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
     code: {
-      label: "CURRENT_EMAIL_CODE",
+      label: 'CURRENT_EMAIL_CODE',
       getCode: (data: QueryCodeParams) => {
         data.account = userInfo.value.email;
         return sendCodeFuc(data);
@@ -219,54 +215,54 @@ const config: AllAccountDialogConfig = {
     },
   },
   bind_phone: {
-    key: "bind_phone",
-    account_type: "phone",
-    field: "change",
-    header: "BIND_PHONE",
+    key: 'bind_phone',
+    account_type: 'phone',
+    field: 'change',
+    header: 'BIND_PHONE',
     account: {
-      label: "PHONE",
-      placeholder: "ENTER_PHONE",
+      label: 'PHONE',
+      placeholder: 'ENTER_PHONE',
     },
     code: {
-      label: "SMS_CODE",
-      placeholder: "ENTER_RECEIVED_CODE",
+      label: 'SMS_CODE',
+      placeholder: 'ENTER_RECEIVED_CODE',
     },
     confirm: (data: BindAccountParams) => {
       bindAccountFuc(data);
     },
   },
   modify_phone: {
-    key: "modify_phone",
-    account_type: "phone",
-    field: "change",
-    header: "MODIFY_PHONE",
+    key: 'modify_phone',
+    account_type: 'phone',
+    field: 'change',
+    header: 'MODIFY_PHONE',
     oldaccount: {
-      label: "CURRENT_PHONE",
+      label: 'CURRENT_PHONE',
     },
     oldcode: {
-      label: "OLD_PHONE_CODE",
-      placeholder: "ENTER_RECEIVED_CODE",
+      label: 'OLD_PHONE_CODE',
+      placeholder: 'ENTER_RECEIVED_CODE',
     },
     account: {
-      label: "NEW_PHONE",
-      placeholder: "ENTER_PHONE",
+      label: 'NEW_PHONE',
+      placeholder: 'ENTER_PHONE',
     },
     code: {
-      label: "NEW_PHONE_CODE",
-      placeholder: "ENTER_RECEIVED_CODE",
+      label: 'NEW_PHONE_CODE',
+      placeholder: 'ENTER_RECEIVED_CODE',
     },
     confirm: (data: BindAccountParams) => {
       modifyAccountFuc(data);
     },
   },
   unbind_phone: {
-    key: "unbind_phone",
-    account_type: "phone",
-    field: "change",
-    header: "UNBIND_EMAIL",
+    key: 'unbind_phone',
+    account_type: 'phone',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
     code: {
-      label: "SMS_CODE",
-      placeholder: "ENTER_RECEIVED_CODE",
+      label: 'SMS_CODE',
+      placeholder: 'ENTER_RECEIVED_CODE',
       getCode: (data: QueryCodeParams) => {
         data.account = userInfo.value.phone;
         return sendCodeFuc(data);
@@ -278,30 +274,30 @@ const config: AllAccountDialogConfig = {
     },
   },
   unbind_github: {
-    key: "unbind_github",
-    account_type: "github",
-    field: "change",
-    header: "UNBIND_EMAIL",
-    content: "SURE_UNBIND",
+    key: 'unbind_github',
+    account_type: 'github',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
+    content: 'SURE_UNBIND',
     confirm: (data: BindAccountParams) => {
       unbindSocial(data.account_type);
     },
   },
   unbind_gitee: {
-    key: "unbind_gitee",
-    account_type: "gitee",
-    field: "change",
-    header: "UNBIND_EMAIL",
-    content: "SURE_UNBIND",
+    key: 'unbind_gitee',
+    account_type: 'gitee',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
+    content: 'SURE_UNBIND',
     confirm: (data: BindAccountParams) => {
       unbindSocial(data.account_type);
     },
   },
 };
 const showDialog = (str: string, key: string) => {
-  if (!userInfo.value.email && str === "unbind") {
+  if (!userInfo.value.email && str === 'unbind') {
     // 未绑定邮箱解绑操作时，应先绑定邮箱
-    operateKey.value = "confirm_bind_email";
+    operateKey.value = 'confirm_bind_email';
   } else {
     const _key = `${str}_${key}` as AccountOperateKey;
     operateKey.value = _key;
@@ -335,12 +331,9 @@ const bindSocial = (key: string) => {
       bindWindow?.close();
     });
 };
-const listenerBindSocial = () => {
-  window.addEventListener("message", bindFun);
-};
 const bindFun = (e: MessageEvent) => {
   const { code, event, message } = e.data;
-  if (event?.source !== "authing") {
+  if (event?.source !== 'authing') {
     return;
   }
 
@@ -355,8 +348,6 @@ const bindFun = (e: MessageEvent) => {
     parsedMessage = JSON.parse(message);
   } catch (error) {
     // 错误处理
-    console.error("Json parse error in postMessage");
-    console.error(`message: ${message}, code: ${code}`);
     return;
   }
   const { statusCode } = parsedMessage;
@@ -373,37 +364,38 @@ const bindFun = (e: MessageEvent) => {
     });
   }
 };
-const unbindSocial = (platform: string) => {
-  unlinkAccount({ platform }).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.UNBIND_SUCCESS,
-    });
-    vilible.value = false;
-    store.initUserInfo();
-  });
+const listenerBindSocial = () => {
+  window.addEventListener('message', bindFun);
 };
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
 };
+onMounted(() => {
+  store.initUserInfo();
+  initData();
+  listenerBindSocial();
+});
+onUnmounted(() => {
+  // 移除监听
+  window.removeEventListener('message', bindFun);
+});
+watch(
+  () => userInfo.value,
+  () => {
+    initData();
+  },
+  { deep: true }
+);
 </script>
 <template>
   <AppHeader />
   <main>
-    <div class="banner">
-      <!-- <div class="title">
-      <h1 class="title-in">USER CENTER</h1>
-      <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
-    </div> -->
-    </div>
+    <div class="banner"></div>
     <div class="title">
       <span class="left" @click="goToTree"></span>
       <span style="font-size: 16px">{{ i18n.IDENTITY }}</span>
     </div>
     <ContentBox>
-      <!-- <template #header>
-      {{ i18n.IDENTITY }}
-    </template> -->
       <template #content>
         <div class="box_m">
           <div class="box_m-title">{{ i18n.PHONE_AND_EMAIL }}</div>
@@ -470,7 +462,11 @@ const goToTree = () => {
               >
                 {{ i18n.UNBIND_EMAIL }}
               </div>
-              <div v-else class="opt-btn default-btn" @click="bindSocial(item.key)">
+              <div
+                v-else
+                class="opt-btn default-btn"
+                @click="bindSocial(item.key)"
+              >
                 {{ i18n.BIND }}
               </div>
             </div>
@@ -543,7 +539,7 @@ const goToTree = () => {
 .banner {
   width: 100%;
   height: 126px;
-  background-image: url("@/assets/banner_mobile.png");
+  background-image: url('@/assets/banner_mobile.png');
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: left;
@@ -560,7 +556,7 @@ const goToTree = () => {
   align-items: center;
   color: var(--o-color-text1);
   .left {
-    background-image: url("@/assets/left_down.png");
+    background-image: url('@/assets/left_down.png');
     width: 16px;
     height: 16px;
     position: absolute;

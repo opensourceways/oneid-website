@@ -5,7 +5,7 @@ import ContentBox from './ContentBox.vue';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import { modifyUser } from 'shared/api/api-center';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { getUsernammeRules } from '@/shared/utils';
+import { getUsernammeRules } from 'shared/utils/utils';
 import { Observable } from 'rxjs';
 import { IObject } from 'shared/@types/interface';
 const formRef1 = ref<FormInstance[]>();
@@ -63,29 +63,6 @@ const data = ref([
   },
 ]);
 
-const initData = () => {
-  data.value.forEach((item: IObject) => {
-    if (item.key in userInfo.value) {
-      if (item.key === 'signedUp') {
-        item.value = getTimeData(userInfo.value[item.key]);
-      } else {
-        item.value = userInfo.value[item.key] || '';
-      }
-    }
-  });
-};
-
-watch(
-  () => userInfo.value,
-  () => {
-    initData();
-  },
-  { deep: true }
-);
-onMounted(() => {
-  initData();
-});
-
 // 显示注册时间
 const getTimeData = (time: string): string => {
   const date = new Date(time);
@@ -98,19 +75,11 @@ const getTimeData = (time: string): string => {
   )}`;
 };
 
-const submit = (formEl: FormInstance[] | undefined) => {
-  getSubmitParams(formEl).subscribe((param: any) => {
-    if (Object.keys(param).length) {
-      modifyUser(param).then(() => {
-        ElMessage.success({
-          showClose: true,
-          message: i18n.value.MODIFY_SUCCESS,
-        });
-        store.initUserInfo();
-      });
-    }
-  });
-};
+// 表单值
+const form = reactive({
+  username: '',
+} as any);
+
 // 获取下发参数
 const getSubmitParams = (formEl: FormInstance[] | undefined) => {
   return new Observable((observer) => {
@@ -147,10 +116,43 @@ const getSubmitParams = (formEl: FormInstance[] | undefined) => {
   });
 };
 
-// 表单值
-const form = reactive({
-  username: '',
-} as any);
+const submit = (formEl: FormInstance[] | undefined) => {
+  getSubmitParams(formEl).subscribe((param: any) => {
+    if (Object.keys(param).length) {
+      modifyUser(param).then(() => {
+        ElMessage.success({
+          showClose: true,
+          message: i18n.value.MODIFY_SUCCESS,
+        });
+        store.initUserInfo();
+      });
+    }
+  });
+};
+
+const initData = () => {
+  data.value.forEach((item: IObject) => {
+    if (item.key in userInfo.value) {
+      if (item.key === 'signedUp') {
+        item.value = getTimeData(userInfo.value[item.key]);
+      } else {
+        item.value = userInfo.value[item.key] || '';
+      }
+    }
+  });
+};
+
+watch(
+  () => userInfo.value,
+  () => {
+    initData();
+  },
+  { deep: true }
+);
+onMounted(() => {
+  initData();
+});
+
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
 </script>

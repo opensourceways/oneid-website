@@ -1,30 +1,12 @@
 <script setup lang="ts">
-import { useI18n } from "shared/i18n";
-import UserLeftTree from "./components/UserLeftTree.vue";
-import UserInfo from "./components/UserInfo.vue";
-import AccountBinding from "./components/AccountBinding.vue";
-import AccountSecurity from "./components/AccountSecurity.vue";
-import { SelectTabKey } from "./components/interface";
-import { onMounted, ref } from "vue";
-import { useCommon } from "shared/stores/common";
+import { useI18n } from 'shared/i18n';
+import UserLeftTree from './components/UserLeftTree.vue';
+import { SelectTabKey } from 'shared/@types/usercenter.interface';
+import { onMounted, ref } from 'vue';
+import { useCommon } from 'shared/stores/common';
 
-type ComponentKey<T = any> = {
-  [key in SelectTabKey]: T;
-};
-const props = defineProps({
-  token: {
-    type: String,
-    default: "",
-  },
-});
-
-const componentSelected: ComponentKey = {
-  userinfo: UserInfo,
-  binding: AccountBinding,
-  security: AccountSecurity,
-};
 const i18n = useI18n();
-const selected = ref("userinfo" as SelectTabKey);
+const selected = ref('userinfo' as SelectTabKey);
 
 // token传入
 const store = useCommon();
@@ -34,27 +16,18 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="banner">
-    <!-- <div class="title">
-      <h1 class="title-in">USER CENTER</h1>
-      <h1 class="title-out">{{ i18n.USER_CENTER }}</h1>
-    </div> -->
-  </div>
+  <div class="banner"></div>
   <div class="main">
     <div class="left">
       <UserLeftTree v-model="selected"></UserLeftTree>
     </div>
-    <!-- <div class="right">
-      <component :is="componentSelected[selected]"></component>
-    </div> -->
-
   </div>
 </template>
 <style lang="scss" scoped>
 .banner {
   width: 100%;
   height: 126px;
-  background-image: url("@/assets/banner.png");
+  background-image: url('@/assets/banner.png');
   background-repeat: no-repeat;
   background-position: left;
   .title {
@@ -84,11 +57,6 @@ onMounted(() => {
   padding: var(--o-spacing-h3) var(--o-spacing-h5);
   margin: 0 auto;
   max-width: 1472px;
-  // display: grid;
   grid-template-columns: 33.9% 66.1%;
-  // min-height: 963px;
-  .left {
-    // padding-right: var(--o-spacing-h4);
-  }
 }
 </style>

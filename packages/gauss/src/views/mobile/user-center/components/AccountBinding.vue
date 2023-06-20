@@ -10,7 +10,7 @@ import {
   AllAccountDialogConfig,
   QueryCodeParams,
   BindAccountParams,
-} from './interface';
+} from 'shared/@types/usercenter.interface';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import {
   bindAccount,
@@ -21,9 +21,9 @@ import {
 import { ElMessage } from 'element-plus';
 import { IObject } from 'shared/@types/interface';
 import { getCommunityParams } from '@/shared/utils';
-import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
-import { useRouter } from "vue-router";
+import AppHeader from '@/components/AppHeader.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import { useRouter } from 'vue-router';
 const router = useRouter();
 const i18n = useI18n();
 const store = useCommon();
@@ -62,6 +62,9 @@ watch(
   },
   { deep: true }
 );
+
+// 控制弹窗显示
+const vilible = ref(false);
 
 // 修改绑定邮箱或手机号
 const modifyAccountFuc = (data: BindAccountParams) => {
@@ -116,8 +119,6 @@ const sendCodeFuc = (data: QueryCodeParams) => {
   });
 };
 
-// 控制弹窗显示
-const vilible = ref(false);
 // 展示所选弹窗key
 const operateKey = ref('bind_email' as AccountOperateKey);
 // 各个弹窗配置
@@ -265,7 +266,6 @@ const goToTree = () => {
   <main>
     <div class="img_box">
       <div class="title1">
-        <!-- <h1 class="title-in">USER CENTER</h1> -->
         <h1 class="title1-out">{{ i18n.USER_CENTER }}</h1>
         <img class="title1-login" src="@/assets/login_log.png" />
       </div>
@@ -275,9 +275,6 @@ const goToTree = () => {
       <span style="font-size: 16px">{{ i18n.IDENTITY }}</span>
     </div>
     <ContentBox>
-      <!-- <template #header>
-      {{ i18n.IDENTITY }}
-    </template> -->
       <template #content>
         <div class="box_m">
           <div class="box_m-title">{{ i18n.PHONE_AND_EMAIL }}</div>
@@ -329,10 +326,9 @@ const goToTree = () => {
 .img_box {
   width: 100%;
   height: 100px;
-  background-image: url("@/assets/banner.png");
+  background-image: url('@/assets/banner.png');
   background-size: cover;
   background-repeat: no-repeat;
-  // background-position: left;
   .title1 {
     margin: 0 auto;
     max-width: 1472px;
@@ -419,7 +415,7 @@ const goToTree = () => {
 .banner {
   width: 100%;
   height: 126px;
-  background-image: url("@/assets/login_log.png");
+  background-image: url('@/assets/login_log.png');
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: left;
@@ -436,7 +432,7 @@ const goToTree = () => {
   align-items: center;
   color: var(--o-color-text1);
   .left {
-    background-image: url("@/assets/left_down.png");
+    background-image: url('@/assets/left_down.png');
     width: 16px;
     height: 16px;
     position: absolute;

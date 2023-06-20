@@ -15,15 +15,6 @@ const emit = defineEmits(['update:modelValue', 'click']);
 const num = ref(0);
 let timer: NodeJS.Timer;
 
-watch(
-  () => modelValue.value,
-  (value) => {
-    if (value) {
-      limitedToResend(num);
-    }
-  }
-);
-
 // 验证码重发限制60s
 const limitedToResend = (num: Ref<number>) => {
   num.value = 60;
@@ -38,6 +29,15 @@ const limitedToResend = (num: Ref<number>) => {
     }
   }, 1000);
 };
+
+watch(
+  () => modelValue.value,
+  (value) => {
+    if (value) {
+      limitedToResend(num);
+    }
+  }
+);
 
 onUnmounted(() => {
   timer && clearInterval(timer);

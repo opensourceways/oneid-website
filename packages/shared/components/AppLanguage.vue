@@ -26,10 +26,8 @@ const langOptions = [
 
 // 选择语言
 const emits = defineEmits(['language-click']);
-const mobileChaneLanguage = (newlang: string) => {
-  chaneLanguage(newlang);
-  emits('language-click');
-};
+
+const isMenu = ref(false);
 
 function chaneLanguage(newlang: string) {
   if (lang.value === newlang) return;
@@ -37,7 +35,7 @@ function chaneLanguage(newlang: string) {
   const newHref = pathname.replace(`/${lang.value}/`, `/${newlang}/`);
   const RU = 'ru';
   isMenu.value = false;
-  //判断是否是ru
+  // 判断是否是ru
   if (host.includes(RU) || newlang === RU) {
     window.open(
       `https://${newlang === RU ? RU : 'www'}.openeuler.org` + newHref + search,
@@ -48,7 +46,11 @@ function chaneLanguage(newlang: string) {
   }
 }
 
-const isMenu = ref(false);
+const mobileChaneLanguage = (newlang: string) => {
+  chaneLanguage(newlang);
+  emits('language-click');
+};
+
 const showSub = () => {
   isMenu.value = true;
 };
@@ -64,7 +66,7 @@ const langList: Ref<LangType[]> = ref([]);
 const filterLang = () => {
   langList.value = [];
   props.show.forEach((item: string) => {
-    langOptions.filter((el: LangType) => {
+    langOptions.forEach((el: LangType) => {
       if (el.id === item) {
         langList.value.push(el);
       }

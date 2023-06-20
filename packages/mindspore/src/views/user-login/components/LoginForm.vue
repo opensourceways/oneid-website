@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { PropType, reactive, ref, toRefs } from 'vue';
+import { PropType, reactive, ref, toRefs, computed } from 'vue';
 import { useI18n } from 'shared/i18n';
 import {
   formValidator,
@@ -9,10 +9,15 @@ import {
   asyncBlur,
   getVerifyImgSize,
 } from 'shared/utils/utils';
-import { accountExists, sendCodeV3 } from 'shared/api/api-login';
-import Verify from '@/verifition/Verify.vue';
-import { callBackErrMessage } from 'shared/utils/utils';
-import { getUsernammeRules } from '@/shared/utils';
+import { accountExists, sendCodeCaptcha } from 'shared/api/api-login';
+import Verify from 'shared/verifition/Verify.vue';
+import LoginTabs from 'shared/components/LoginTabs.vue';
+import PwdInput from 'shared/components/PwdInput.vue';
+import {
+  callBackErrMessage,
+  getPwdRules,
+  getUsernammeRules,
+} from 'shared/utils/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 
@@ -23,6 +28,10 @@ const props = defineProps({
     default: 'login',
   },
 });
+
+const formRef = ref<FormInstance>();
+
+const selectLoginType = ref('password');
 
 const emit = defineEmits(['submit', 'threePartLogin']);
 
@@ -35,13 +44,13 @@ defineExpose({ validator });
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams } = useCommonData();
-const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
   username: '',
   account: '',
   code: '',
   policy: [],
+  password: '',
 } as any);
 
 // 验证码限制重发
@@ -60,13 +69,20 @@ const getcode = (formEl: FormInstance | undefined) => {
 };
 
 const verifySuccess = (data: any) => {
+  let channel = 'CHANNEL_REGISTER';
+  if (type.value === 'login') {
+    channel = 'CHANNEL_LOGIN';
+  } else if (selectLoginType.value === 'password') {
+    channel = 'CHANNEL_REGISTER_BY_PASSWORD';
+  }
   const param = {
-    channel: type.value === 'login' ? 'CHANNEL_LOGIN' : 'CHANNEL_REGISTER',
+    channel,
     account: form.account,
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
+    community: import.meta.env?.VITE_COMMUNITY,
   };
-  sendCodeV3(param).then(() => {
+  sendCodeCaptcha(param).then(() => {
     disableCode.value = true;
     ElMessage.success({
       showClose: true,
@@ -130,6 +146,20 @@ const validatorExistAccount = (rule: any, value: any): void | Promise<void> => {
     });
   }
 };
+
+// 校验密码不能包含用户名及其逆序
+const validatorPwd = (rule: any, value: any, callback: any) => {
+  if (
+    value &&
+    form.username &&
+    (value.includes(form.username) ||
+      value.includes(form.username.split('').reverse().join('')))
+  ) {
+    callback(i18n.value.PWD_USERNAME_VAILD);
+  } else {
+    callback();
+  }
+};
 // checkbox校验
 const validatorCheckbox = (rule: any, value: any, callback: any) => {
   if (!value || !value.length) {
@@ -151,6 +181,14 @@ const rules = ref(requiredRules);
 
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
+const passwordRules = ref<FormItemRule[]>([
+  ...requiredRules,
+  ...getPwdRules(),
+  {
+    validator: validatorPwd,
+    trigger: ['change', 'blur'],
+  },
+]);
 
 // 账户校验
 const accountRules = reactive<FormItemRule[]>([
@@ -191,15 +229,43 @@ const blur = (formEl: FormInstance | undefined, field: string) => {
   }
 };
 
+// 改变账户值，重置code或pwd
+const changeAccount = (formEl: FormInstance | undefined) => {
+  formEl?.resetFields('code');
+  if (type.value === 'login') {
+    formEl?.resetFields('password');
+  }
+};
+
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
-  const origin = 'https://mindspore.cn';
   const _lang = lang.value === 'en' ? `/${lang.value}` : '';
-  const url = `${origin}/${type}${_lang}`;
+  const url = `${import.meta.env?.VITE_MINDSPORE_MAIN}/${type}${_lang}`;
   window.open(url, '_blank');
+};
+const docsUrl = computed(
+  () => `${import.meta.env?.VITE_MINDSPORE_DOCS}/zh/appendix/platlicense/`
+);
+const accountPlaceholder = computed(() => {
+  if (type.value === 'register' && selectLoginType.value === 'password') {
+    return i18n.value.ENTER_YOUR_PHONE;
+  } else if (type.value === 'login' && selectLoginType.value === 'password') {
+    return i18n.value.ENTER_YOUR_ACCOUNT;
+  } else {
+    return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
+  }
+});
+const loginTabSelect = () => {
+  formRef.value?.resetFields();
+  disableCode.value = false;
 };
 </script>
 <template>
+  <LoginTabs
+    v-model="selectLoginType"
+    :type="type"
+    @select="loginTabSelect"
+  ></LoginTabs>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
     <el-form-item
       v-if="type === 'register'"
@@ -212,18 +278,26 @@ const goToOtherPage = (type: string) => {
         @blur="blur(formRef, 'username')"
       />
     </el-form-item>
-    <el-form-item prop="account" :rules="accountRules">
+    <el-form-item
+      prop="account"
+      :rules="
+        type === 'login' && selectLoginType === 'password'
+          ? rules
+          : accountRules
+      "
+    >
       <OInput
         v-model.trim="form.account"
-        :placeholder="
-          type === 'register'
-            ? i18n.ENTER_YOUR_PHONE
-            : i18n.ENTER_YOUR_EMAIL_OR_PHONE
-        "
+        :placeholder="accountPlaceholder"
         @blur="blur(formRef, 'account')"
+        @input="changeAccount(formRef)"
       />
     </el-form-item>
-    <el-form-item prop="code" :rules="rules">
+    <el-form-item
+      v-if="selectLoginType === 'code' || type === 'register'"
+      prop="code"
+      :rules="rules"
+    >
       <div class="code">
         <OInput
           v-model.trim="form.code"
@@ -236,6 +310,17 @@ const goToOtherPage = (type: string) => {
           @click="getcode(formRef)"
         />
       </div>
+    </el-form-item>
+    <el-form-item
+      v-if="selectLoginType === 'password'"
+      prop="password"
+      :rules="type === 'register' ? passwordRules : rules"
+    >
+      <PwdInput
+        v-model="form.password"
+        :placeholder="i18n.INTER_PWD"
+        :show-password="type === 'register'"
+      />
     </el-form-item>
     <el-form-item prop="policy" :rules="policyRules">
       <div class="checkbox">
@@ -254,11 +339,7 @@ const goToOtherPage = (type: string) => {
           {{ '、' }}
           <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
           {{ i18n.AND }}
-          <a
-            href="https://xihe-docs.mindspore.cn/zh/appendix/platlicense/"
-            target="_blank"
-            >昇思大模型平台协议</a
-          >
+          <a :href="docsUrl" target="_blank">昇思大模型平台协议</a>
         </span>
       </div>
     </el-form-item>

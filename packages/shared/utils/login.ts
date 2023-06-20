@@ -13,7 +13,9 @@ function setCookie(cname: string, cvalue: string, isDelete?: boolean) {
   const deleteStr = isDelete ? 'max-age=0; ' : '';
   const domain = import.meta.env.VITE_COOKIE_DOMAIN;
   const expires = `${deleteStr}path=/; domain=${domain}`;
-  document.cookie = `${cname}=${cvalue}; ${expires}`;
+  try {
+    document.cookie = `${cname}=${cvalue}; ${expires}`;
+  } catch (error) {}
 }
 function getCookie(cname: string) {
   const name = `${cname}=`;
@@ -55,13 +57,13 @@ export function logout(
   param: any = { community: import.meta.env?.VITE_COMMUNITY },
   redirectUri = window?.location?.origin
 ) {
-  if (param.id_token) {
+  if (param.idToken) {
     saveUserAuth();
     const client1 = createClient(param.community);
     const logoutUrl = client1.buildLogoutUrl({
       expert: true,
       redirectUri,
-      idToken: param.id_token,
+      idToken: param.idToken,
     });
     window.location.href = logoutUrl;
     return;
@@ -106,21 +108,15 @@ export function createClient(
   const lang = getLanguage();
   const obj: IObject = {
     openeuler: {
-      appId:
-        import.meta.env?.VITE_OPENEULER_APPID || '62679eab0b22b146d2ea0a3a',
-      appHost:
-        import.meta.env?.VITE_OPENEULER_APPHOST ||
-        'https://datastat.authing.cn',
+      appId: import.meta.env?.VITE_OPENEULER_APPID,
+      appHost: import.meta.env?.VITE_OPENEULER_APPHOST,
       redirectUri:
         url || `${window?.location?.origin}${window?.location?.pathname}`,
       lang: lang.language,
     },
     mindspore: {
-      appId:
-        import.meta.env?.VITE_OPENEULER_APPID || '62679fdacb2577b0daf17669',
-      appHost:
-        import.meta.env?.VITE_OPENEULER_APPHOST ||
-        'https://xihes-ais.authing.cn',
+      appId: import.meta.env?.VITE_OPENEULER_APPID,
+      appHost: import.meta.env?.VITE_OPENEULER_APPHOST,
       redirectUri:
         url || `${window?.location?.origin}${window?.location?.pathname}`,
       lang: lang.language,

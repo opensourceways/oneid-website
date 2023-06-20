@@ -2,6 +2,7 @@ export type SelectTabKey = 'userinfo' | 'binding' | 'security';
 
 export type AccountOperateKey =
   | 'confirm_bind_email'
+  | 'confirm_bind_phone'
   | 'bind_email'
   | 'modify_email'
   | 'unbind_email'
@@ -10,8 +11,8 @@ export type AccountOperateKey =
   | 'unbind_phone'
   | 'delete'
   | 'unbind_github'
-  | 'unbind_openatom'
-  | 'unbind_gitee';
+  | 'unbind_gitee'
+  | 'unbind_openatom';
 type AccountType = 'email' | 'phone' | 'github' | 'gitee' | 'openatom';
 type AccountField = 'change' | 'verify';
 type Callback<T> = (data: T) => void;

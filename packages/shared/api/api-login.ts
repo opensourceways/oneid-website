@@ -15,8 +15,8 @@ export function accountExists(params: any) {
 /**
  * 发送验证码
  */
-export function sendCodeV3(params: any) {
-  const url = '/oneid/v3/sendCode';
+export function checkLoginAccount(params: any) {
+  const url = '/oneid/captcha/checkLogin';
 
   return request
     .get(url, { global: true, params })
@@ -24,21 +24,10 @@ export function sendCodeV3(params: any) {
 }
 
 /**
- * 邮箱或者手机号注册
+ * 发送验证码
  */
-export function accountRegister(params: any) {
-  const url = '/oneid/register';
-
-  return request
-    .get(url, { global: true, params })
-    .then((res: AxiosResponse) => res.data);
-}
-
-/**
- * 邮箱或者手机号登录
- */
-export function accountLogin(params: any) {
-  const url = '/oneid/login';
+export function sendCodeCaptcha(params: any) {
+  const url = '/oneid/captcha/sendCode';
 
   return request
     .get(url, { global: true, params })
@@ -111,7 +100,9 @@ export function reqGet(data: any) {
  */
 export function reqCheck(data: any) {
   const url = '/oneid/captcha/check';
-  return request.post(url, data).then((res: AxiosResponse) => res.data);
+  return request
+    .post(url, data, { $doException: true })
+    .then((res: AxiosResponse) => res.data);
 }
 
 /**
@@ -138,7 +129,7 @@ export function authorizeOidc(params: any) {
  * 三方登录
  */
 export function providerLogin(params: any) {
-  const url = 'oneid/provider/login';
+  const url = '/oneid/provider/login';
   return request.post(url, params).then((res: AxiosResponse) => res.data);
 }
 
@@ -146,7 +137,7 @@ export function providerLogin(params: any) {
  * 绑定到已有账户
  */
 export function providerLink(params: any) {
-  const url = 'oneid/provider/link';
+  const url = '/oneid/provider/link';
   return request.post(url, params).then((res: AxiosResponse) => res.data);
 }
 
@@ -154,6 +145,30 @@ export function providerLink(params: any) {
  * 获取三方账户用户信息
  */
 export function providerRegister(params: any) {
-  const url = 'oneid/provider/register';
+  const url = '/oneid/provider/register';
   return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 获取publickey
+ */
+export function getPublicKey(params: any) {
+  const url = '/oneid/public/key';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 重置密码验证码
+ */
+export function resetPwdVerify(params: any) {
+  const url = '/oneid/reset/password/verify';
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 重置密码
+ */
+export function resetPwd(params: any) {
+  const url = '/oneid/reset/password';
+  return request.post(url, params).then((res: AxiosResponse) => res.data);
 }

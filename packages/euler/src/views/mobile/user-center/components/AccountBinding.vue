@@ -13,7 +13,7 @@ import {
   AllAccountDialogConfig,
   QueryCodeParams,
   BindAccountParams,
-} from './interface';
+} from 'shared/@types/usercenter.interface';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import {
   bindAccount,
@@ -89,22 +89,9 @@ const initData = () => {
     });
   }
 };
-onMounted(() => {
-  store.initUserInfo();
-  initData();
-  listenerBindSocial();
-});
-onUnmounted(() => {
-  // 移除监听
-  window.removeEventListener('message', bindFun);
-});
-watch(
-  () => userInfo.value,
-  () => {
-    initData();
-  },
-  { deep: true }
-);
+
+// 控制弹窗显示
+const vilible = ref(false);
 
 // 修改绑定邮箱或手机号
 const modifyAccountFuc = (data: BindAccountParams) => {
@@ -155,8 +142,17 @@ const sendCodeFuc = (data: QueryCodeParams) => {
   });
 };
 
-// 控制弹窗显示
-const vilible = ref(false);
+const unbindSocial = (platform: string) => {
+  unlinkAccount({ platform }).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.UNBIND_SUCCESS,
+    });
+    vilible.value = false;
+    store.initUserInfo();
+  });
+};
+
 // 展示所选弹窗key
 const operateKey = ref('bind_email' as AccountOperateKey);
 // 各个弹窗配置
@@ -353,9 +349,6 @@ const bindSocial = (key: string) => {
       bindWindow?.close();
     });
 };
-const listenerBindSocial = () => {
-  window.addEventListener('message', bindFun);
-};
 const bindFun = (e: MessageEvent) => {
   const { code, event, message } = e.data;
   if (event?.source !== 'authing') {
@@ -372,9 +365,6 @@ const bindFun = (e: MessageEvent) => {
   try {
     parsedMessage = JSON.parse(message);
   } catch (error) {
-    // 错误处理
-    console.error('Json parse error in postMessage');
-    console.error(`message: ${message}, code: ${code}`);
     return;
   }
   const { statusCode } = parsedMessage;
@@ -391,19 +381,30 @@ const bindFun = (e: MessageEvent) => {
     });
   }
 };
-const unbindSocial = (platform: string) => {
-  unlinkAccount({ platform }).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.UNBIND_SUCCESS,
-    });
-    vilible.value = false;
-    store.initUserInfo();
-  });
+
+const listenerBindSocial = () => {
+  window.addEventListener('message', bindFun);
 };
+
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
 };
+onMounted(() => {
+  store.initUserInfo();
+  initData();
+  listenerBindSocial();
+});
+onUnmounted(() => {
+  // 移除监听
+  window.removeEventListener('message', bindFun);
+});
+watch(
+  () => userInfo.value,
+  () => {
+    initData();
+  },
+  { deep: true }
+);
 </script>
 <template>
   <AppHeader />
@@ -419,9 +420,6 @@ const goToTree = () => {
       <span style="font-size: 16px">{{ i18n.IDENTITY }}</span>
     </div>
     <ContentBox>
-      <!-- <template #header>
-      {{ i18n.IDENTITY }}
-    </template> -->
       <template #content>
         <div class="box_m">
           <div class="box_m-title">{{ i18n.PHONE_AND_EMAIL }}</div>

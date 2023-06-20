@@ -12,15 +12,15 @@ import {
 import AppTheme from 'shared/components/AppTheme.vue';
 import AppLanguage from 'shared/components/AppLanguage.vue';
 
-import logo_light from '@/assets/logo.svg';
-import logo_dark from '@/assets/logo_dark.svg';
+import logoLight from '@/assets/logo.svg';
+import logoDark from '@/assets/logo_dark.svg';
 
 import IconCancel from '~icons/app/icon-cancel.svg';
 import IconMenu from '~icons/app/icon-menu.svg';
 import IconLogin from '~icons/app/icon-login.svg';
 import { getCommunityParams } from '@/shared/utils';
-import { testIsPhone } from "shared/utils/helper";
-import { useRouter } from "vue-router";
+import { testIsPhone } from 'shared/utils/helper';
+import { useRouter } from 'vue-router';
 const router = useRouter();
 interface NavItem {
   NAME: string;
@@ -40,8 +40,10 @@ const i18n = useI18n();
 const commonStore = useCommon();
 const documentElement = document.documentElement;
 
+const toBody = ref(false);
+
 const logo = computed(() =>
-  commonStore.theme === 'light' ? logo_light : logo_dark
+  commonStore.theme === 'light' ? logoLight : logoDark
 );
 
 // 移动菜单事件
@@ -68,7 +70,6 @@ const handleMenuLayer = (e: any) => {
 
 const langShow = ref(['zh', 'en'] as any);
 
-const toBody = ref(false);
 onMounted(() => {
   toBody.value = true;
 });
@@ -86,7 +87,8 @@ const goHome = () => {
 const isMobile = () => {
   if (testIsPhone()) {
     refreshInfo(getCommunityParams(true));
-    const Lang = lang.value === "zh" ? "/zh/mobile/profile" : "/en/mobile/profile";
+    const Lang =
+      lang.value === 'zh' ? '/zh/mobile/profile' : '/en/mobile/profile';
     if (!window.location.pathname.includes(Lang)) {
       router.push(Lang);
     }

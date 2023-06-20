@@ -2,7 +2,7 @@
 import { useCommon } from 'shared/stores/common';
 const { saveLoginParams } = useCommon();
 // 设置全局的默认client_id
-saveLoginParams({ client_id: '90aa315f895544359209920da32ff75a' });
+saveLoginParams({ client_id: import.meta.env?.VITE_OPENEULER_APPID });
 </script>
 
 <template>

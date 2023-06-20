@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useCommonData } from 'shared/stores/common';
 import { useI18n } from 'shared/i18n';
 import AppContent from 'shared/components/AppContent.vue';
@@ -35,86 +35,59 @@ const i18n = useI18n();
 const linksData = {
   zh: [
     {
-      path: 'https://my.oschina.net/openeuler',
+      path: import.meta.env?.VITE_OPENEULER_OSCHINA,
       logo: LogoOschina,
       id: 'oschina',
     },
     {
-      path: 'https://blog.csdn.net/openEuler_?spm=1000.2115.3001.5343',
+      path: import.meta.env?.VITE_OPENEULER_CSDN,
       logo: LogoCsdn,
       id: 'csdn',
     },
     {
-      path: 'https://juejin.cn/user/3183782863845454',
+      path: import.meta.env?.VITE_OPENEULER_JUEJIN,
       logo: LogoJuejin,
       id: 'juejin',
     },
     {
-      path: 'https://space.bilibili.com/527064077/channel/series',
+      path: import.meta.env?.VITE_OPENEULER_BILIBILI,
       logo: LogoBilibili,
       id: 'bilibili',
     },
     {
-      path: 'https://www.infoq.cn/profile/6E6CE3E2316F28/publish',
+      path: import.meta.env?.VITE_OPENEULER_INFOQ,
       logo: LogoInfoq,
       id: 'infoq',
     },
     {
-      path: 'https://blog.51cto.com/u_14948868',
+      path: import.meta.env?.VITE_OPENEULER_51CTO,
       logo: Logo51cto,
       id: '51cto',
     },
   ],
   en: [
     {
-      path: 'https://www.reddit.com/r/openEuler/',
+      path: import.meta.env?.VITE_OPENEULER_REDDIT,
       logo: LogoRedditSquare,
       id: 'reddit-square',
     },
     {
-      path: 'https://www.linkedin.com/company/openeuler',
+      path: import.meta.env?.VITE_OPENEULER_LINKEDIN,
       logo: LogoLinkedin,
       id: 'linkedin',
     },
     {
-      path: 'https://twitter.com/openEuler',
+      path: import.meta.env?.VITE_OPENEULER_TWITTER,
       logo: LogoTwitter,
       id: 'twitter',
     },
     {
-      path: 'https://space.bilibili.com/527064077/channel/series',
+      path: import.meta.env?.VITE_OPENEULER_BILIBILI,
       logo: LogoBilibili2,
       id: 'bilibili',
     },
     {
-      path: 'https://www.youtube.com/channel/UCPzSqXqCgmJmdIicbY7GAeA',
-      logo: LogoYoutube,
-      id: 'youtube',
-    },
-  ],
-  ru: [
-    {
-      path: 'https://www.reddit.com/r/openEuler/',
-      logo: LogoRedditSquare,
-      id: 'reddit-square',
-    },
-    {
-      path: 'https://www.linkedin.com/company/openeuler',
-      logo: LogoLinkedin,
-      id: 'linkedin',
-    },
-    {
-      path: 'https://twitter.com/openEuler',
-      logo: LogoTwitter,
-      id: 'twitter',
-    },
-    {
-      path: 'https://space.bilibili.com/527064077/channel/series',
-      logo: LogoBilibili2,
-      id: 'bilibili',
-    },
-    {
-      path: 'https://www.youtube.com/channel/UCPzSqXqCgmJmdIicbY7GAeA',
+      path: import.meta.env?.VITE_OPENEULER_YOUTUBE,
       logo: LogoYoutube,
       id: 'youtube',
     },
@@ -122,12 +95,10 @@ const linksData = {
 };
 
 const footerLinks = computed(() => {
-  if (lang.value === 'en') {
-    return linksData.en;
-  } else if (lang.value === 'ru') {
-    return linksData.ru;
-  } else {
+  if (lang.value === 'zh') {
     return linksData.zh;
+  } else {
+    return linksData.en;
   }
 });
 
@@ -154,6 +125,8 @@ const handleNavClick = (path: string) => {
   const url = `${origin}/${lang.value}${path}`;
   window.open(url, '_blank');
 };
+
+const atomUri = ref(import.meta.env?.VITE_OPENEULER_OPENATOM);
 </script>
 
 <template>
@@ -161,7 +134,7 @@ const handleNavClick = (path: string) => {
     <AppContent :pc-top="0" :mobile-top="0">
       <div class="atom">
         <p class="atom-text">{{ i18n.FOOTER.ATOM_TEXT }}</p>
-        <a href="https://openatom.cn/home" target="_blank">
+        <a :href="atomUri" target="_blank">
           <img :src="LogoAtom" class="atom-logo" alt="" />
         </a>
       </div>

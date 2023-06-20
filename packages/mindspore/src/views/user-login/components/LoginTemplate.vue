@@ -22,14 +22,45 @@ const emit = defineEmits(['submit', 'threePartLogin']);
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams } = useCommonData();
-onMounted(() => {
-  listenerThreePartsLogin();
-});
-onUnmounted(() => {
-  // 移除监听
-  window.removeEventListener('message', loginFun);
-});
 const loginForm = ref();
+
+// 三方登录
+const redirectUri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
+const threePartsLogin = (type: string) => {
+  const url = `${import.meta.env?.VITE_LOGIN_USERAPI}/api/v3/signin-by-extidp`;
+  const params = {
+    client_id: loginParams.value.client_id,
+    response_type: loginParams.value.response_type,
+    redirect_uri: redirectUri,
+    scope: 'openid profile username email',
+    state: loginParams.value.state,
+    nonce: loginParams.value.nonce,
+    lang: lang.value === 'zh' ? 'zh-CN' : 'en-US',
+    response_mode: 'web_message',
+  };
+  const connIds: any = {
+    Gitee: '6226d91103d81d8654673f1b',
+    GitHub: '6226db30c8e30db1518cc4aa',
+  };
+  if (import.meta.env?.VITE_COOKIE_DOMAIN.includes('myopeninfra')) {
+    connIds.Gitee = '6486ca4c5a8820be3da60942';
+    connIds.GitHub = '6486c8f7fa654de59f887a08';
+  }
+  Object.assign(params, { ext_idp_conn_id: connIds[type] });
+  loginForm.value?.validator('policy').subscribe((valid: boolean) => {
+    if (valid) {
+      window.open(
+        getUrlByParams(url, params),
+        '_blank',
+        `width=500,height=700,left=${(screen.width - 500) / 2},top=${
+          (screen.height - 700) / 2
+        }`
+      );
+    } else {
+      return false;
+    }
+  });
+};
 
 const icons = [
   {
@@ -46,54 +77,8 @@ const icons = [
       threePartsLogin(type);
     },
   },
-  // {
-  //   key: 'OpenAtom',
-  //   icon: IconOpenAtom,
-  //   onClick: (type: string) => {
-  //   threePartsLogin(type);
-  // },
-  // },
 ];
 
-// 三方登录
-const redirect_uri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
-const threePartsLogin = (type: string) => {
-  const url = 'https://api.authing.cn/api/v3/signin-by-extidp';
-  const params = {
-    client_id: loginParams.value.client_id,
-    response_type: loginParams.value.response_type,
-    redirect_uri,
-    scope: 'openid profile username email',
-    state: loginParams.value.state,
-    nonce: loginParams.value.nonce,
-    lang: lang.value === 'zh' ? 'zh-CN' : 'en-US',
-    response_mode: 'web_message',
-  };
-  const ext_idp_conn_id: any = {
-    Gitee: '6226d91103d81d8654673f1b',
-    GitHub: '6226db30c8e30db1518cc4aa',
-    OpenAtom: '63c0bfd4c88ee67bcf1959b4',
-  };
-  Object.assign(params, { ext_idp_conn_id: ext_idp_conn_id[type] });
-  loginForm.value?.validator('policy').subscribe((valid: boolean) => {
-    if (valid) {
-      window.open(
-        getUrlByParams(url, params),
-        '_blank',
-        `width=500,height=700,left=${(screen.width - 500) / 2},top=${
-          (screen.height - 700) / 2
-        }`
-      );
-    } else {
-      return false;
-    }
-  });
-};
-
-// 监听三方登录结果
-const listenerThreePartsLogin = () => {
-  window.addEventListener('message', loginFun);
-};
 const loginFun = (e: MessageEvent) => {
   const { type, response } = e.data;
   if (type !== 'authorization_response') {
@@ -103,15 +88,27 @@ const loginFun = (e: MessageEvent) => {
   if (code && state) {
     const param = {
       code,
-      redirect_uri,
+      redirect_uri: redirectUri,
     };
     emit('threePartLogin', param);
   }
 };
 
+// 监听三方登录结果
+const listenerThreePartsLogin = () => {
+  window.addEventListener('message', loginFun);
+};
+
 const submit = (form: any) => {
   emit('submit', form);
 };
+onMounted(() => {
+  listenerThreePartsLogin();
+});
+onUnmounted(() => {
+  // 移除监听
+  window.removeEventListener('message', loginFun);
+});
 </script>
 <template>
   <ContentTemplate>
