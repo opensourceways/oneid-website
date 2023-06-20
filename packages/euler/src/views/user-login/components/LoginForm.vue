@@ -160,11 +160,12 @@ const validatorCheckbox = (rule: any, value: any, callback: any) => {
 const validatorPwd = (rule: any, value: any, callback: any) => {
   if (
     value &&
-    form.username &&
-    (value.includes(form.username) ||
-      value.includes(form.username.split('').reverse().join('')) ||
-      value.includes(form.account) ||
-      value.includes(form.account.split('').reverse().join('')))
+    ((form.username &&
+      (value.includes(form.username) ||
+        value.includes(form.username.split('').reverse().join('')))) ||
+      (form.account &&
+        (value.includes(form.account) ||
+          value.includes(form.account.split('').reverse().join('')))))
   ) {
     callback(i18n.value.PWD_USERNAME_VAILD);
   } else {
