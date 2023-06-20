@@ -13,3 +13,5 @@ export const COMPANYNAME_REG =
 
 export const PWD_REG =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@%\^\-_\=\+\[\{\}\]\:,\.\/\?])[\w!@%\^\-_\=\+\[\{\}\]\:,\.\/\?]{8,20}$/;
+
+export const PWD_REPEAT_REG = /(\w)\1{2}/;

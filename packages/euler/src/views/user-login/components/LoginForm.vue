@@ -156,14 +156,15 @@ const validatorCheckbox = (rule: any, value: any, callback: any) => {
   }
 };
 
-// 校验密码不能包含用户名
+// 校验密码不能包含用户名及其逆序
 const validatorPwd = (rule: any, value: any, callback: any) => {
   if (
     value &&
+    form.username &&
     (value.includes(form.username) ||
       value.includes(form.username.split('').reverse().join('')))
   ) {
-    callback(i18n.value.PLEASE_CHECK_PRIVACY);
+    callback(i18n.value.PWD_USERNAME_VAILD);
   } else {
     callback();
   }
@@ -181,7 +182,14 @@ const rules = ref(requiredRules);
 
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
-const passwordRules = ref<FormItemRule[]>([...requiredRules, ...getPwdRules()]);
+const passwordRules = ref<FormItemRule[]>([
+  ...requiredRules,
+  ...getPwdRules(),
+  {
+    validator: validatorPwd,
+    trigger: ['change', 'blur'],
+  },
+]);
 
 // 账户校验
 const accountRules = reactive<FormItemRule[]>([

@@ -7,6 +7,7 @@ import {
   COMPANYNAME_REG,
   NICKNAME_REG,
   PWD_REG,
+  PWD_REPEAT_REG,
   USERNAME_REG,
 } from '../const/common.const';
 import { accountExists } from '../api/api-login';
@@ -166,11 +167,23 @@ export function getCompanyRules(): FormItemRule[] {
   ];
 }
 
+const validatorRepeatPwd = (rule: any, value: any, callback: any) => {
+  if (PWD_REPEAT_REG.test(value)) {
+    callback(useI18nStr('PWD_REPEAT_VAILD').value);
+  } else {
+    callback();
+  }
+};
+
 export function getPwdRules(): FormItemRule[] {
   return [
     {
       pattern: PWD_REG,
       message: useI18nStr('PWD_VAILD') as unknown as string,
+      trigger: ['change', 'blur'],
+    },
+    {
+      validator: validatorRepeatPwd,
       trigger: ['change', 'blur'],
     },
   ];
