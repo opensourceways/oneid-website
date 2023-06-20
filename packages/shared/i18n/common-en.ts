@@ -142,7 +142,7 @@ export default {
   ENTER_YOUR_PHONE: 'Mobile number',
   ENTER_YOUR_EMAIL: 'Email address',
   ENTER_YOUR_EMAIL_OR_PHONE: 'Email address or mobile number',
-  ENTER_YOUR_ACCOUNT: 'Email address, mobile number or username',
+  ENTER_YOUR_ACCOUNT: 'Mobile number, username or email address',
   ENTER_RECEIVED_CODE: 'Verification code',
   READ_ADN_AGREE: 'I have read and agree to the',
   PRIVACY_POLICY: 'Privacy Statement',
@@ -167,7 +167,7 @@ export default {
   PWD_REPEAT_VAILD:
     "The same character can't be used 3 times or more in a row.",
   PWD_USERNAME_VAILD:
-    "The password can't contain the user name or its reverse order.",
+    "The password can't contain the account or its reverse order.",
   MODIFY_PWD: 'Change Password',
   MODIFY_PWD_TIP:
     'Change the password using the verified mobile number or email address.',

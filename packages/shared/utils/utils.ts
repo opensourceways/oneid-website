@@ -167,14 +167,6 @@ export function getCompanyRules(): FormItemRule[] {
   ];
 }
 
-const validatorRepeatPwd = (rule: any, value: any, callback: any) => {
-  if (PWD_REPEAT_REG.test(value)) {
-    callback(useI18nStr('PWD_REPEAT_VAILD').value);
-  } else {
-    callback();
-  }
-};
-
 export function getPwdRules(): FormItemRule[] {
   return [
     {
@@ -183,7 +175,8 @@ export function getPwdRules(): FormItemRule[] {
       trigger: ['change', 'blur'],
     },
     {
-      validator: validatorRepeatPwd,
+      pattern: PWD_REPEAT_REG,
+      message: useI18nStr('PWD_REPEAT_VAILD') as unknown as string,
       trigger: ['change', 'blur'],
     },
   ];

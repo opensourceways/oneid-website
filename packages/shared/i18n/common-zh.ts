@@ -142,7 +142,7 @@ export default {
   ENTER_YOUR_PHONE: '请输入您的手机号',
   ENTER_YOUR_EMAIL: '请输入您的邮箱地址',
   ENTER_YOUR_EMAIL_OR_PHONE: '请输入您的邮箱地址或手机号',
-  ENTER_YOUR_ACCOUNT: '请输入您的邮箱地址/手机号/用户名',
+  ENTER_YOUR_ACCOUNT: '请输入您的手机号/用户名/邮箱地址',
   ENTER_RECEIVED_CODE: '请输入验证码',
   READ_ADN_AGREE: '我已阅读并同意',
   PRIVACY_POLICY: '隐私政策',
@@ -164,7 +164,7 @@ export default {
   PWD_VAILD:
     '密码长度为8到20个字符，必须包含英文、数字与特殊字符(!@%^-_=+[{}]:,./?)',
   PWD_REPEAT_VAILD: '不能包含3个及以上连续相同的字符',
-  PWD_USERNAME_VAILD: '不能包含用户名及其逆序',
+  PWD_USERNAME_VAILD: '不能包含账号及其逆序',
   MODIFY_PWD: '密码修改',
   MODIFY_PWD_TIP: '通过验证手机号、邮箱等方式修改密码',
   FORGET_PWD: '忘记密码',
