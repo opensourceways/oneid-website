@@ -31,7 +31,7 @@ const props = defineProps({
   },
   emailExist: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 });
 const { modelValue, username, emailExist } = toRefs(props);
