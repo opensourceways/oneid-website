@@ -106,21 +106,15 @@ export function createClient(
   const lang = getLanguage();
   const obj: IObject = {
     openeuler: {
-      appId:
-        import.meta.env?.VITE_OPENEULER_APPID || '62679eab0b22b146d2ea0a3a',
-      appHost:
-        import.meta.env?.VITE_OPENEULER_APPHOST ||
-        'https://datastat.authing.cn',
+      appId: import.meta.env?.VITE_OPENEULER_APPID,
+      appHost: import.meta.env?.VITE_OPENEULER_APPHOST,
       redirectUri:
         url || `${window?.location?.origin}${window?.location?.pathname}`,
       lang: lang.language,
     },
     mindspore: {
-      appId:
-        import.meta.env?.VITE_OPENEULER_APPID || '62679fdacb2577b0daf17669',
-      appHost:
-        import.meta.env?.VITE_OPENEULER_APPHOST ||
-        'https://xihes-ais.authing.cn',
+      appId: import.meta.env?.VITE_OPENEULER_APPID,
+      appHost: import.meta.env?.VITE_OPENEULER_APPHOST,
       redirectUri:
         url || `${window?.location?.origin}${window?.location?.pathname}`,
       lang: lang.language,

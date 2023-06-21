@@ -28,7 +28,7 @@ const loginForm = ref();
 const redirect_uri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
 const windowOpener = ref();
 const threePartsLogin = (type: string) => {
-  const url = 'https://api.authing.cn/api/v3/signin-by-extidp';
+  const url = `${import.meta.env?.VITE_LOGIN_USERPOOL}/api/v3/signin-by-extidp`;
   const params = {
     client_id: loginParams.value.client_id,
     response_type: loginParams.value.response_type,

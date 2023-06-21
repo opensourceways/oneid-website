@@ -6,8 +6,7 @@ import { useI18n } from 'shared/i18n';
 const i18n = useI18n();
 // 隐私政策、法律声明
 const goToOtherPage = (type) => {
-  const origin = 'https://mindspore.cn';
-  const url = `${origin}/${type}`;
+  const url = `${import.meta.env?.VITE_MINDSPORE_MAIN}/${type}`;
   window.open(url, '_blank');
 };
 </script>

@@ -89,7 +89,9 @@ onMounted(() => {
         }
       } else if (!getLogoutSession()) {
         setLogoutSession(true);
-        window.location.href = `https://jldibemigdfj.authing.cn/login/profile/logout?app_id=${
+        window.location.href = `${
+          import.meta.env?.VITE_LOGIN_USERPOOL
+        }/login/profile/logout?app_id=${
           loginParams.value.client_id
         }&redirect_uri=${encodeURIComponent(location.href)}`;
       }
