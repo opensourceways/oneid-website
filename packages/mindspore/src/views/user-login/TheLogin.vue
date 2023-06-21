@@ -4,15 +4,17 @@ import { useI18n } from 'shared/i18n';
 import {
   getLogoutSession,
   isLogined,
+  logout,
   setLogoutSession,
 } from 'shared/utils/login';
 import { ElMessage } from 'element-plus';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
+import PadAccount from 'shared/components/PadAccount.vue';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
@@ -25,11 +27,29 @@ const goRegister = () => {
   });
 };
 const { loginParams } = useCommonData();
+const visible = ref(false);
+// 控制补全框内容
+const padUserinfo = reactive({
+  username: '',
+});
+// 判断是否需要补全内容
+const isNotPadUserinfo = (data: any): boolean => {
+  const { username } = data || {};
+  const name = !username || username.startsWith('oauth2_') ? '' : username;
+  if (!name) {
+    padUserinfo.username = name;
+    visible.value = true;
+    return false;
+  }
+  return true;
+};
 onMounted(() => {
   validLoginUrl().then(() => {
     isLogined().then((bool) => {
       if (bool) {
-        haveLoggedIn();
+        if (isNotPadUserinfo(bool)) {
+          haveLoggedIn();
+        }
       } else if (!getLogoutSession()) {
         setLogoutSession(true);
         window.location.href = `${
@@ -54,7 +74,9 @@ const doSuccess = () => {
 
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  doSuccess();
+  if (isNotPadUserinfo(data)) {
+    doSuccess();
+  }
 };
 const login = (form: any) => {
   const param = {
@@ -81,6 +103,13 @@ const threePartLogin = (res: any) => {
     loginSuccess(data?.data);
   });
 };
+const cancelPad = () => {
+  if (loginParams.value.response_mode === 'query') {
+    logout();
+  } else {
+    doSuccess();
+  }
+};
 </script>
 <template>
   <LoginTemplate
@@ -96,6 +125,12 @@ const threePartLogin = (res: any) => {
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
+  <PadAccount
+    v-model="visible"
+    :username="padUserinfo.username"
+    @success="doSuccess"
+    @cancel="cancelPad"
+  ></PadAccount>
 </template>
 <style lang="scss" scoped>
 .header {
