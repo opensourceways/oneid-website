@@ -60,7 +60,11 @@ const validatorAccount = (rule: any, value: any, callback: any) => {
 const validatorExistAccount = (rule: any, value: any): void | Promise<void> => {
   if (value) {
     return new Promise((resolve, reject) => {
-      accountExists({ account: value, client_id: loginParams.value.client_id })
+      accountExists({
+        account: value,
+        client_id: loginParams.value.client_id,
+        community: import.meta.env?.VITE_COMMUNITY,
+      })
         .then(() => {
           reject(i18n.value.ACCOUNT_NOT_EXIST);
         })
