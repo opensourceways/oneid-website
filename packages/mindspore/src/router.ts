@@ -102,11 +102,6 @@ export const routes = [
     name: 'notfound',
     component: NotFound,
   },
-  {
-    path: '/resetPwd',
-    name: 'resetPwd',
-    component: TheResetPwd,
-  },
 ];
 
 export const router = createRouter({

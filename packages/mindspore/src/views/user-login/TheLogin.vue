@@ -166,11 +166,6 @@ const cancelPad = () => {
     @three-part-login="threePartLogin"
   >
     <template #switch>
-      <div style="flex: 1">
-        <a style="display: inline" @click="goResetPwd()">
-          {{ i18n.FORGET_PWD }}
-        </a>
-      </div>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>

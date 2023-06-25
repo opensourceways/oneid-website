@@ -31,7 +31,7 @@ const props = defineProps({
 
 const formRef = ref<FormInstance>();
 
-const selectLoginType = ref('password');
+const selectLoginType = ref('code');
 
 const emit = defineEmits(['submit', 'threePartLogin']);
 
@@ -250,10 +250,8 @@ const docsUrl = computed(
   () => `${import.meta.env?.VITE_MINDSPORE_DOCS}/zh/appendix/platlicense/`
 );
 const accountPlaceholder = computed(() => {
-  if (type.value === 'register' && selectLoginType.value === 'password') {
+  if (type.value === 'register') {
     return i18n.value.ENTER_YOUR_PHONE;
-  } else if (type.value === 'login' && selectLoginType.value === 'password') {
-    return i18n.value.ENTER_YOUR_ACCOUNT;
   } else {
     return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
   }
@@ -264,11 +262,6 @@ const loginTabSelect = () => {
 };
 </script>
 <template>
-  <LoginTabs
-    v-model="selectLoginType"
-    :type="type"
-    @select="loginTabSelect"
-  ></LoginTabs>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
     <el-form-item
       v-if="type === 'register'"
