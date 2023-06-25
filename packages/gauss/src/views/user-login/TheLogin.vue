@@ -11,6 +11,7 @@ import { haveLoggedIn } from 'shared/utils/login-success';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import Verify from 'shared/verifition/Verify.vue';
 import { getVerifyImgSize } from 'shared/utils/utils';
+import { validLoginUrl } from 'shared/utils/login-valid-url';
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
 const router = useRouter();
@@ -28,10 +29,12 @@ const goResetPwd = () => {
   });
 };
 onMounted(() => {
-  isLogined(getCommunityParams(true)).then((bool) => {
-    if (bool) {
-      haveLoggedIn();
-    }
+  validLoginUrl().then(() => {
+    isLogined(getCommunityParams(true)).then((bool) => {
+      if (bool) {
+        haveLoggedIn();
+      }
+    });
   });
 });
 
