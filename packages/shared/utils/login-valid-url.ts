@@ -8,6 +8,7 @@ export function validLoginUrl(query?: LoginParams) {
     const param = {
       client_id: query?.client_id || loginParams.value.client_id,
       redirect_uri: query?.redirect_uri || loginParams.value.redirect_uri,
+      community: import.meta.env?.VITE_COMMUNITY,
     };
     appVerify(param)
       .then(() => {
