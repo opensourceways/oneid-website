@@ -35,13 +35,6 @@ const pwdVilible = ref(false);
       {{ i18n.SECURITY }}
     </template>
     <template #content>
-      <div class="tips">
-        <div class="tips-title">{{ i18n.MODIFY_PWD }}</div>
-        <div class="tips-content">{{ i18n.MODIFY_PWD_TIP }}</div>
-      </div>
-      <OButton size="small" class="btn gap" @click="pwdVilible = true">{{
-        i18n.MODIFY_PWD
-      }}</OButton>
       <div class="tips red">
         <div class="tips-title">{{ i18n.DELETE_ACCOUNT }}</div>
         <div class="tips-content">{{ i18n.DELETE_ACCOUNT_TIPS }}</div>
