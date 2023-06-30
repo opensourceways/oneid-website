@@ -228,6 +228,52 @@ export function getUsernammeRules(): FormItemRule[] {
   ];
 }
 
+// 手机或邮箱重名校验
+export function validatorSameAccount(
+  rule: any,
+  value: any
+): void | Promise<void> {
+  if (value) {
+    return new Promise((resolve, reject) => {
+      const { loginParams } = useCommonData();
+      accountExists({
+        account: value,
+        client_id: loginParams.value.client_id,
+        community: import.meta.env?.VITE_COMMUNITY,
+      })
+        .then(() => {
+          resolve();
+        })
+        .catch((err: any) => {
+          reject(callBackErrMessage(err));
+        });
+    });
+  }
+}
+
+// 手机或邮箱是否存在校验
+export function validatorExistAccount(
+  rule: any,
+  value: any
+): void | Promise<void> {
+  if (value) {
+    return new Promise((resolve, reject) => {
+      const { loginParams } = useCommonData();
+      accountExists({
+        account: value,
+        client_id: loginParams.value.client_id,
+        community: import.meta.env?.VITE_COMMUNITY,
+      })
+        .then(() => {
+          reject(useI18nStr('ACCOUNT_NOT_EXIST').value);
+        })
+        .catch(() => {
+          resolve();
+        });
+    });
+  }
+}
+
 export function getVerifyImgSize() {
   let width = 400;
   const height = 200;

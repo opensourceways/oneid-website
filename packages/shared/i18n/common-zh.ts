@@ -3,7 +3,7 @@ export default {
   INFO: '基本信息',
   IDENTITY: '账号绑定',
   SECURITY: '账号安全',
-  ONLY_IMAGE: '请选择JGP或PNG格式的图片',
+  ONLY_IMAGE: '请选择JPG或PNG格式的图片',
   FILE_SIZE_EXCEED: '文件大小不能超过 2MB!',
   USER_NAME: '用户名称',
   EMAIL: '邮箱',
