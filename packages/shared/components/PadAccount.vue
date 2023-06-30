@@ -4,14 +4,13 @@ import { reactive, ref, toRefs } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import { accountExists } from '../api/api-login';
 import {
-  callBackErrMessage,
   formValidator,
   getFitWidth,
   getUsernammeRules,
   getVerifyImgSize,
   asyncBlur,
+  validatorSameAccount,
 } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
@@ -51,20 +50,6 @@ const form = reactive({
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
 
-// 邮箱重名校验
-const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      accountExists({ account: value, client_id: loginParams.value.client_id })
-        .then(() => {
-          resolve();
-        })
-        .catch((err: any) => {
-          reject(callBackErrMessage(err));
-        });
-    });
-  }
-};
 // 空值校验
 const requiredRules: FormItemRule[] = [
   {
