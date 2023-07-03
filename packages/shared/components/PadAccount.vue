@@ -234,7 +234,9 @@ const cancelPad = () => {
     <template #footer>
       <div class="footer">
         <OButton size="small" @click="cancelPad">{{
-          loginParams.response_mode === 'query' ? i18n.LOGOUT : i18n.CANCEL
+          loginParams.response_mode === 'query' || !username
+            ? i18n.LOGOUT
+            : i18n.CANCEL
         }}</OButton>
         <OButton size="small" type="primary" @click="putUser(formRef)">{{
           i18n.CONFIRM

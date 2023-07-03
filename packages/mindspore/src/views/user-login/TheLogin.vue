@@ -152,11 +152,7 @@ const threePartLogin = (res: any) => {
   });
 };
 const cancelPad = () => {
-  if (loginParams.value.response_mode === 'query') {
-    logout();
-  } else {
-    doSuccess();
-  }
+  logout();
 };
 </script>
 <template>
