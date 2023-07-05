@@ -15,6 +15,7 @@ import {
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
 import { getRsaEncryptWord } from '../utils/rsa';
+import { logout } from '../utils/login';
 
 const props = defineProps({
   modelValue: {
@@ -24,7 +25,7 @@ const props = defineProps({
 });
 const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue']);
-const { loginParams, userInfo } = useCommonData();
+const { loginParams, userInfo, lang } = useCommonData();
 const i18n = useI18n();
 
 const formRef = ref<FormInstance>();
@@ -184,7 +185,8 @@ const confirm = (formEl: FormInstance | undefined) => {
             showClose: true,
             message: i18n.value.MODIFY_SUCCESS,
           });
-          close();
+          const url = `${location.origin}/login?redirect_uri=${location.origin}/${lang.value}/profile&lang=${lang.value}`;
+          logout({ community: import.meta.env?.VITE_COMMUNITY }, url);
         })
         .catch((err) => {
           if (err?.response?.data?.msg?.code === 'E00056') {

@@ -170,7 +170,7 @@ export default {
     "The password can't contain the account or its reverse order.",
   MODIFY_PWD: 'Change Password',
   MODIFY_PWD_TIP:
-    'Change the password using the verified mobile number or email address.',
+    'Change the password using the verified mobile number or email address. After the password is changed, you need to log in again.',
   FORGET_PWD: 'Forgot Password',
   INTER_PWD: 'Enter your password.',
   INTER_OLD_PWD: 'Enter your old password.',
