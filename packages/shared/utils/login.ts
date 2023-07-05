@@ -57,8 +57,8 @@ export function logout(
   param: any = { community: import.meta.env?.VITE_COMMUNITY },
   redirectUri = window?.location?.origin
 ) {
+  saveUserAuth();
   if (param.idToken) {
-    saveUserAuth();
     const client1 = createClient(param.community);
     const logoutUrl = client1.buildLogoutUrl({
       expert: true,
@@ -70,7 +70,6 @@ export function logout(
   }
   queryIDToken(param)
     .then((res: any) => {
-      saveUserAuth();
       if (['openeuler', 'mindspore'].includes(param.community)) {
         const idToken = res.data.id_token;
         const appId = res.data.client_id;
@@ -91,7 +90,6 @@ export function logout(
       }
     })
     .catch(() => {
-      saveUserAuth();
       window.location.href = redirectUri;
     });
 }
