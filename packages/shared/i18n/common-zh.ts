@@ -166,7 +166,7 @@ export default {
   PWD_REPEAT_VAILD: '不能包含3个及以上连续相同的字符',
   PWD_USERNAME_VAILD: '不能包含账号及其逆序',
   MODIFY_PWD: '密码修改',
-  MODIFY_PWD_TIP: '通过验证手机号、邮箱等方式修改密码',
+  MODIFY_PWD_TIP: '通过验证手机号、邮箱等方式修改密码，修改成功后需要重新登录',
   FORGET_PWD: '忘记密码',
   INTER_PWD: '请输入您的密码',
   INTER_OLD_PWD: '请输入您旧的密码',

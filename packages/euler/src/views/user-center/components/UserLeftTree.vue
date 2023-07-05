@@ -55,7 +55,6 @@ const selectTab = (key: SelectTabKey) => {
   emit('update:modelValue', key);
 };
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  return true;
   if (!['image/png', 'image/jpeg'].includes(rawFile.type)) {
     ElMessage.error({
       showClose: true,
