@@ -186,7 +186,13 @@ const confirm = (formEl: FormInstance | undefined) => {
             message: i18n.value.MODIFY_SUCCESS,
           });
           const url = `${location.origin}/login?redirect_uri=${location.origin}/${lang.value}/profile&lang=${lang.value}`;
-          logout({ community: import.meta.env?.VITE_COMMUNITY }, url);
+          const param: any = {
+            community: import.meta.env?.VITE_COMMUNITY,
+          };
+          if (param.community === 'opengauss') {
+            param.client_id = import.meta.env?.VITE_OPENEULER_APPID;
+          }
+          logout(param, url);
         })
         .catch((err) => {
           if (err?.response?.data?.msg?.code === 'E00056') {
