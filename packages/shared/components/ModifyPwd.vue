@@ -10,7 +10,6 @@ import {
   getFitWidth,
   getPwdRules,
   getVerifyImgSize,
-  validatorExistAccount,
 } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
@@ -87,10 +86,6 @@ const accountRules = reactive<FormItemRule[]>([
   {
     validator: validatorAccount,
     trigger: 'blur',
-  },
-  {
-    asyncValidator: validatorExistAccount,
-    trigger: 'none',
   },
 ]);
 const passwordRules = ref<FormItemRule[]>([...requiredRules, ...getPwdRules()]);

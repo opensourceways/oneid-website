@@ -8,8 +8,6 @@ import {
   doValidatorForm,
   asyncBlur,
   getVerifyImgSize,
-  validatorSameAccount,
-  validatorExistAccount,
   getPwdRules,
   getUsernammeRules,
 } from 'shared/utils/utils';
@@ -170,11 +168,6 @@ const accountRules = reactive<FormItemRule[]>([
   {
     validator: validatorAccount,
     trigger: 'blur',
-  },
-  {
-    asyncValidator:
-      type.value === 'register' ? validatorSameAccount : validatorExistAccount,
-    trigger: 'none',
   },
 ]);
 
