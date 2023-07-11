@@ -5,12 +5,7 @@ import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG, PHONE_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
 import { resetPwd, resetPwdVerify, sendCodeCaptcha } from '../api/api-login';
-import {
-  formValidator,
-  getPwdRules,
-  getVerifyImgSize,
-  validatorExistAccount,
-} from '../utils/utils';
+import { formValidator, getPwdRules, getVerifyImgSize } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
 import { getRsaEncryptWord } from '../utils/rsa';
@@ -63,10 +58,6 @@ const accountRules = reactive<FormItemRule[]>([
   {
     validator: validatorAccount,
     trigger: 'blur',
-  },
-  {
-    asyncValidator: validatorExistAccount,
-    trigger: 'none',
   },
 ]);
 const passwordRules = ref<FormItemRule[]>([...requiredRules, ...getPwdRules()]);

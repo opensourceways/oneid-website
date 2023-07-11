@@ -13,12 +13,7 @@ import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from 'shared/components/LoginTabs.vue';
 import PwdInput from 'shared/components/PwdInput.vue';
-import {
-  getPwdRules,
-  getUsernammeRules,
-  validatorSameAccount,
-  validatorExistAccount,
-} from 'shared/utils/utils';
+import { getPwdRules, getUsernammeRules } from 'shared/utils/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 
@@ -174,11 +169,6 @@ const accountRules = reactive<FormItemRule[]>([
   {
     validator: validatorAccount,
     trigger: 'blur',
-  },
-  {
-    asyncValidator:
-      type.value === 'register' ? validatorSameAccount : validatorExistAccount,
-    trigger: 'none',
   },
 ]);
 

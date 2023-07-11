@@ -10,7 +10,6 @@ import {
   getUsernammeRules,
   getVerifyImgSize,
   asyncBlur,
-  validatorSameAccount,
 } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
@@ -66,10 +65,6 @@ const emailRules = reactive<FormItemRule[]>([
     pattern: EMAIL_REG,
     message: i18n.value.ENTER_VAILD_EMAIL,
     trigger: 'blur',
-  },
-  {
-    asyncValidator: validatorSameAccount,
-    trigger: 'none',
   },
 ]);
 
