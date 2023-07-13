@@ -52,6 +52,8 @@ const form = reactive({
 
 // 验证码限制重发
 const disableCode = ref(false);
+// 验证码限制输入
+const disableCodeInput = ref(true);
 const verify = ref();
 // 获取验证码
 const getcode = (formEl: FormInstance | undefined) => {
@@ -81,6 +83,7 @@ const verifySuccess = (data: any) => {
   };
   sendCodeCaptcha(param).then(() => {
     disableCode.value = true;
+    disableCodeInput.value = false;
     ElMessage.success({
       showClose: true,
       message: i18n.value.SEND_SUCCESS,
@@ -223,6 +226,7 @@ const accountPlaceholder = computed(() => {
 const loginTabSelect = () => {
   formRef.value?.resetFields();
   disableCode.value = false;
+  disableCodeInput.value = true;
 };
 </script>
 <template>
@@ -262,6 +266,7 @@ const loginTabSelect = () => {
         <OInput
           v-model.trim="form.code"
           :placeholder="i18n.ENTER_RECEIVED_CODE"
+          :disabled="type === 'register' ? false : disableCodeInput"
         />
         <CountdownButton
           v-model="disableCode"
