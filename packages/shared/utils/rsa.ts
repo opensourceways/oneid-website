@@ -1,5 +1,6 @@
 import { getPublicKey } from '../api/api-login';
 import JsEncrypt from 'jsencrypt';
+import { b64tohex } from './base64';
 /**
  * @word 要加密的内容
  * @keyWord String  服务器随机返回的关键字
@@ -7,7 +8,7 @@ import JsEncrypt from 'jsencrypt';
 export function rsaEncrypt(word: string, keyWord: string): string {
   const encrypt = new JsEncrypt();
   encrypt.setPublicKey(keyWord);
-  return encrypt.encrypt(word) || '';
+  return b64tohex(encrypt.encrypt(word) as string) || '';
 }
 
 export function getRsaEncryptWord(
