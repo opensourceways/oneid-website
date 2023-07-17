@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+  因送检需要以及xihe有自己的个人中心且不支持注销账号，现需要删除mindspore-usercenter个人中心相关内容
+  个人中心内容备份至分支save_mindspore_usercenter_20230717，方便后续找回
+*/
 import UserCenter from './UserCenter.vue';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
