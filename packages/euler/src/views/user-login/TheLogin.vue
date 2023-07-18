@@ -163,7 +163,7 @@ const threePartLogin = (res: any) => {
 };
 
 const cancelPad = () => {
-  if (loginParams.value.response_mode === 'query') {
+  if (loginParams.value.response_mode === 'query' || !padUserinfo.username) {
     logout();
   } else {
     doSuccess();

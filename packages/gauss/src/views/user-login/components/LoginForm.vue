@@ -9,16 +9,13 @@ import {
   asyncBlur,
   getCompanyRules,
   getVerifyImgSize,
-} from 'shared/utils/utils';
-import { accountExists, sendCodeCaptcha } from 'shared/api/api-login';
-import Verify from 'shared/verifition/Verify.vue';
-import LoginTabs from 'shared/components/LoginTabs.vue';
-import PwdInput from 'shared/components/PwdInput.vue';
-import {
-  callBackErrMessage,
   getPwdRules,
   getUsernammeRules,
 } from 'shared/utils/utils';
+import { sendCodeCaptcha } from 'shared/api/api-login';
+import Verify from 'shared/verifition/Verify.vue';
+import LoginTabs from 'shared/components/LoginTabs.vue';
+import PwdInput from 'shared/components/PwdInput.vue';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 import { getCommunityParams } from '@/shared/utils';
@@ -51,6 +48,8 @@ const form = reactive({
 
 // 验证码限制重发
 const disableCode = ref(false);
+// 验证码限制输入
+const disableCodeInput = ref(true);
 const verify = ref();
 // 获取验证码
 const getcode = (formEl: FormInstance | undefined) => {
@@ -81,6 +80,7 @@ const verifySuccess = (data: any) => {
   };
   sendCodeCaptcha(param).then(() => {
     disableCode.value = true;
+    disableCodeInput.value = false;
     ElMessage.success({
       showClose: true,
       message: i18n.value.SEND_SUCCESS,
@@ -105,34 +105,6 @@ const validatorAccount = (rule: any, value: any, callback: any) => {
     } else {
       callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
     }
-  }
-};
-// 手机或邮箱重名校验
-const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      accountExists({ account: value, ...getCommunityParams(true) })
-        .then(() => {
-          resolve();
-        })
-        .catch((err: any) => {
-          reject(callBackErrMessage(err));
-        });
-    });
-  }
-};
-// 手机或邮箱是否存在校验
-const validatorExistAccount = (rule: any, value: any): void | Promise<void> => {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      accountExists({ account: value, ...getCommunityParams(true) })
-        .then(() => {
-          reject(i18n.value.ACCOUNT_NOT_EXIST);
-        })
-        .catch(() => {
-          resolve();
-        });
-    });
   }
 };
 // checkbox校验
@@ -189,11 +161,6 @@ const accountRules = reactive<FormItemRule[]>([
     validator: validatorAccount,
     trigger: 'blur',
   },
-  {
-    asyncValidator:
-      type.value === 'register' ? validatorSameAccount : validatorExistAccount,
-    trigger: 'none',
-  },
 ]);
 
 // 公司校验
@@ -245,6 +212,7 @@ const goToOtherPage = (type: string) => {
 const loginTabSelect = () => {
   formRef.value?.resetFields();
   disableCode.value = false;
+  disableCodeInput.value = true;
 };
 </script>
 <template>
@@ -311,6 +279,7 @@ const loginTabSelect = () => {
           <OInput
             v-model.trim="form.code"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
+            :disabled="disableCodeInput"
           />
           <CountdownButton
             v-model="disableCode"

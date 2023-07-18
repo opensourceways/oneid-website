@@ -4,9 +4,7 @@ import { reactive, ref, toRefs } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import { accountExists } from '../api/api-login';
 import {
-  callBackErrMessage,
   formValidator,
   getFitWidth,
   getUsernammeRules,
@@ -51,20 +49,6 @@ const form = reactive({
 // 用户名校验
 const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
 
-// 邮箱重名校验
-const validatorSameAccount = (rule: any, value: any): void | Promise<void> => {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      accountExists({ account: value, client_id: loginParams.value.client_id })
-        .then(() => {
-          resolve();
-        })
-        .catch((err: any) => {
-          reject(callBackErrMessage(err));
-        });
-    });
-  }
-};
 // 空值校验
 const requiredRules: FormItemRule[] = [
   {
@@ -81,10 +65,6 @@ const emailRules = reactive<FormItemRule[]>([
     pattern: EMAIL_REG,
     message: i18n.value.ENTER_VAILD_EMAIL,
     trigger: 'blur',
-  },
-  {
-    asyncValidator: validatorSameAccount,
-    trigger: 'none',
   },
 ]);
 
@@ -249,7 +229,9 @@ const cancelPad = () => {
     <template #footer>
       <div class="footer">
         <OButton size="small" @click="cancelPad">{{
-          loginParams.response_mode === 'query' ? i18n.LOGOUT : i18n.CANCEL
+          loginParams.response_mode === 'query' || !username
+            ? i18n.LOGOUT
+            : i18n.CANCEL
         }}</OButton>
         <OButton size="small" type="primary" @click="putUser(formRef)">{{
           i18n.CONFIRM

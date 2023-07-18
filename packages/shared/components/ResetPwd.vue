@@ -4,12 +4,7 @@ import { reactive, ref } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG, PHONE_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import {
-  accountExists,
-  resetPwd,
-  resetPwdVerify,
-  sendCodeCaptcha,
-} from '../api/api-login';
+import { resetPwd, resetPwdVerify, sendCodeCaptcha } from '../api/api-login';
 import { formValidator, getPwdRules, getVerifyImgSize } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
@@ -56,34 +51,13 @@ const validatorAccount = (rule: any, value: any, callback: any) => {
     }
   }
 };
-// 手机或邮箱是否存在校验
-const validatorExistAccount = (rule: any, value: any): void | Promise<void> => {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      accountExists({
-        account: value,
-        client_id: loginParams.value.client_id,
-        community: import.meta.env?.VITE_COMMUNITY,
-      })
-        .then(() => {
-          reject(i18n.value.ACCOUNT_NOT_EXIST);
-        })
-        .catch(() => {
-          resolve();
-        });
-    });
-  }
-};
+
 // 账户校验
 const accountRules = reactive<FormItemRule[]>([
   ...requiredRules,
   {
     validator: validatorAccount,
     trigger: 'blur',
-  },
-  {
-    asyncValidator: validatorExistAccount,
-    trigger: 'none',
   },
 ]);
 const passwordRules = ref<FormItemRule[]>([...requiredRules, ...getPwdRules()]);
