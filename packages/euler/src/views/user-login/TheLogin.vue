@@ -111,6 +111,7 @@ const login = async (form: any, captchaVerification?: string) => {
     permission: 'sigRead',
     account: form.account,
     client_id: loginParams.value.client_id,
+    accept_term: 0,
   };
   if (captchaVerification) {
     param.captchaVerification = captchaVerification;
