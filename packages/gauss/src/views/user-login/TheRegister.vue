@@ -24,6 +24,7 @@ const register = async (form: any) => {
     account: form.account,
     code: form.code,
     company: form.company,
+    accept_term: 0,
   };
   if (form.password) {
     const password = await getRsaEncryptWord(form.password);
