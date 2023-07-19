@@ -56,6 +56,7 @@ const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
     ...getCommunityParams(true),
     account: form.account,
+    accept_term: 0,
   };
   if (captchaVerification) {
     param.captchaVerification = captchaVerification;
