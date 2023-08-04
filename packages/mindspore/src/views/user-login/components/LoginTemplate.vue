@@ -4,7 +4,7 @@ import IconGitee from '~icons/app/icon-gitee.svg';
 import IconOpenAtom from '~icons/app/icon-openatom.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
-import { onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
+import { computed, onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { getUrlByParams } from 'shared/utils/utils';
 import { useCommonData } from 'shared/stores/common';
@@ -109,6 +109,11 @@ onUnmounted(() => {
   // 移除监听
   window.removeEventListener('message', loginFun);
 });
+const showFooter = computed(
+  () =>
+    type.value === 'login' &&
+    loginParams.value.client_id !== '64ae9734f3247259a5f2b095'
+);
 </script>
 <template>
   <ContentTemplate>
@@ -125,7 +130,7 @@ onUnmounted(() => {
         </template>
       </LoginForm>
     </template>
-    <template v-if="type !== 'register'" #footer>
+    <template v-if="showFooter" #footer>
       <div class="app-footer">
         <div class="divider">
           <div class="line"></div>
