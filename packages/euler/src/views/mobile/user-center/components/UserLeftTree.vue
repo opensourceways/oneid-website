@@ -85,15 +85,8 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
 <template>
   <div class="user">
     <div class="user-header">
-      <el-upload
-        action=""
-        :http-request="upload"
-        :show-file-list="false"
-        :before-upload="beforeAvatarUpload"
-      >
-        <img v-if="userInfo.photo" class="photo" :src="userInfo.photo" />
-        <div v-else class="photo"></div>
-      </el-upload>
+      <img v-if="userInfo.photo" class="photo" :src="userInfo.photo" />
+      <div v-else class="photo"></div>
 
       <h5 class="nickname">{{ userInfo.username }}</h5>
     </div>

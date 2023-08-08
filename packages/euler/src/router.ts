@@ -93,11 +93,6 @@ export const routes = [
     component: TheLogout,
   },
   {
-    path: '/register',
-    name: 'register',
-    component: TheRegister,
-  },
-  {
     path: '/notfound',
     name: 'notfound',
     component: NotFound,

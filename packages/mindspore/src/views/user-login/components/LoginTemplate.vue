@@ -112,7 +112,13 @@ onUnmounted(() => {
 const showFooter = computed(
   () =>
     type.value === 'login' &&
-    loginParams.value.client_id !== '64ae9734f3247259a5f2b095'
+    ![
+      '641e9462ccdac11ce37f6f56',
+      '62a2f9596b35a2a0330c3e6a',
+      '62849faf9ee1a5d5d6aadde2',
+      '62845bb7b52bbf9a67a76e26',
+      '64ae9734f3247259a5f2b095',
+    ].includes(loginParams.value.client_id as string)
 );
 </script>
 <template>
