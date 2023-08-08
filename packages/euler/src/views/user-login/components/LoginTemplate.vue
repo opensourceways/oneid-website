@@ -115,15 +115,7 @@ onUnmounted(() => {
   // 移除监听
   window.removeEventListener('message', loginFun);
 });
-const showFooter = computed(
-  () =>
-    type.value === 'login' &&
-    ![
-      '6284c350348462b176a03bca',
-      '638edd99f9080f705a561218',
-      '6284bba4cda4351c53b8c7ff',
-    ].includes(loginParams.value.client_id as string)
-);
+const showFooter = computed(() => type.value === 'login');
 </script>
 <template>
   <ContentTemplate>
