@@ -118,6 +118,9 @@ const showFooter = computed(
       '62849faf9ee1a5d5d6aadde2',
       '62845bb7b52bbf9a67a76e26',
       '64ae9734f3247259a5f2b095',
+      '6284c350348462b176a03bca',
+      '638edd99f9080f705a561218',
+      '6284bba4cda4351c53b8c7ff',
     ].includes(loginParams.value.client_id as string)
 );
 </script>
