@@ -14,7 +14,7 @@ export const useCommon = defineStore('common', () => {
 
   const loginParams = ref<LoginParams>({
     client_id: import.meta.env?.VITE_OPENEULER_APPID,
-    redirect_uri: import.meta.env.VITE_OPENEULER_WEBSITE,
+    redirect_uri: `${import.meta.env.VITE_OPENEULER_WEBSITE}/`,
     response_type: 'code',
     scope: 'openid profile',
     state: 6223573296,
