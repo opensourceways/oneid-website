@@ -183,6 +183,9 @@ const cancelPad = () => {
           {{ i18n.FORGET_PWD }}
         </a>
       </div>
+      {{ i18n.NO_ACCOUNT }}
+      &nbsp;
+      <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>

@@ -460,6 +460,42 @@ watch(
             </div>
           </div>
         </div>
+        <div class="box_m">
+          <div class="box_m-title">{{ i18n.THIRD_ACCOUNT }}</div>
+          <div
+            v-for="(item, index) in threeAccountData"
+            :key="item.key"
+            class="opt-item"
+            :class="{ itemGap: index }"
+          >
+            <div class="center">
+              <OIcon class="icon">
+                <component :is="item.icon"></component>
+              </OIcon>
+              <span style="font-size: 14px">{{ item.label }}</span>
+              <span v-if="item.value">
+                ：
+                <span class="opt-label">{{ item.value }}</span>
+              </span>
+            </div>
+            <div class="center">
+              <div
+                v-if="item.value"
+                class="opt-btn grey-btn"
+                @click="showDialog('unbind', item.key)"
+              >
+                {{ i18n.UNBIND_EMAIL }}
+              </div>
+              <div
+                v-else
+                class="opt-btn default-btn"
+                @click="bindSocial(item.key)"
+              >
+                {{ i18n.BIND }}
+              </div>
+            </div>
+          </div>
+        </div>
       </template>
     </ContentBox>
   </main>
