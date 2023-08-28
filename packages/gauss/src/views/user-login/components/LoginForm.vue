@@ -279,7 +279,7 @@ watch(
         <OInput
           v-model.trim="form.account"
           :placeholder="
-            selectLoginType === 'code'
+            selectLoginType === 'code' && showSwitch
               ? i18n.ENTER_YOUR_EMAIL_OR_PHONE
               : i18n.ENTER_YOUR_ACCOUNT
           "
