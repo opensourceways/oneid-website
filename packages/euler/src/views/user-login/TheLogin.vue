@@ -13,7 +13,7 @@ import {
   setLogoutSession,
 } from 'shared/utils/login';
 import { ElMessage } from 'element-plus';
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
@@ -22,6 +22,7 @@ import { useCommonData } from 'shared/stores/common';
 import Verify from 'shared/verifition/Verify.vue';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { getVerifyImgSize } from 'shared/utils/utils';
+import { ONLY_LOGIN_ID } from '@/shared/const';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
@@ -170,6 +171,9 @@ const cancelPad = () => {
     doSuccess();
   }
 };
+const showSwitch = computed(
+  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+);
 </script>
 <template>
   <LoginTemplate
@@ -177,7 +181,7 @@ const cancelPad = () => {
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
   >
-    <template #switch>
+    <template v-if="showSwitch" #switch>
       <div style="flex: 1">
         <a style="display: inline" @click="goResetPwd()">
           {{ i18n.FORGET_PWD }}
