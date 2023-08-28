@@ -243,6 +243,9 @@ watch(
     if (!showSwitch.value) {
       selectLoginType.value = 'code';
     }
+  },
+  {
+    immediate: true,
   }
 );
 </script>
