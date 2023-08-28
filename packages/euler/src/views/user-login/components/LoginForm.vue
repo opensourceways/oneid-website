@@ -220,7 +220,10 @@ const showRestrictedTip = computed(
   () => !hiddenRestrictedTipArr.includes(loginParams.value.client_id)
 );
 const accountPlaceholder = computed(() => {
-  if (type.value === 'register' && selectLoginType.value === 'password') {
+  if (
+    (type.value === 'register' && selectLoginType.value === 'password') ||
+    !showSwitch.value
+  ) {
     return i18n.value.ENTER_YOUR_EMAIL;
   } else if (type.value === 'login' && selectLoginType.value === 'password') {
     return i18n.value.ENTER_YOUR_ACCOUNT;
