@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { PropType, reactive, ref, toRefs } from 'vue';
+import { PropType, reactive, ref, toRefs, watch } from 'vue';
 import { useI18n } from 'shared/i18n';
 import {
   formValidator,
@@ -19,6 +19,7 @@ import PwdInput from 'shared/components/PwdInput.vue';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 import { getCommunityParams } from '@/shared/utils';
+import { ONLY_LOGIN_ID } from '@/shared/const';
 
 type TYPE = 'login' | 'register';
 const props = defineProps({
@@ -27,14 +28,13 @@ const props = defineProps({
     default: 'login',
   },
 });
-
 const selectLoginType = ref('password');
 
 const emit = defineEmits(['submit']);
 
 const { type } = toRefs(props);
 const i18n = useI18n();
-const { lang } = useCommonData();
+const { lang, loginParams } = useCommonData();
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
@@ -214,9 +214,22 @@ const loginTabSelect = () => {
   disableCode.value = false;
   disableCodeInput.value = true;
 };
+const showSwitch = ref(true);
+watch(
+  () => loginParams.value.client_id,
+  () => {
+    showSwitch.value = !ONLY_LOGIN_ID.includes(
+      loginParams.value.client_id as string
+    );
+    if (!showSwitch.value) {
+      selectLoginType.value = 'code';
+    }
+  }
+);
 </script>
 <template>
   <LoginTabs
+    v-if="showSwitch"
     v-model="selectLoginType"
     :type="type"
     @select="loginTabSelect"
