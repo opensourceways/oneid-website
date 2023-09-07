@@ -4,16 +4,19 @@ import { useI18n } from 'shared/i18n';
 import ContentBox from './ContentBox.vue';
 import { deleteAccount } from 'shared/api/api-center';
 import { ElMessage } from 'element-plus';
-import { saveUserAuth } from 'shared/utils/login';
+import { saveUserAuth, useStoreData, refreshInfo } from 'shared/utils/login';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
-import { useCommon } from 'shared/stores/common';
+import { useCommon, useCommonData } from 'shared/stores/common';
 import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
 import ModifyPwd from 'shared/components/ModifyPwd.vue';
+import DeleteAgreeModal from 'shared/components/DeleteAgreeModal.vue';
 const store = useCommon();
 const router = useRouter();
 const i18n = useI18n();
+const { lang } = useCommonData();
+const { guardAuthClient } = useStoreData();
 // 控制弹窗显示
 const vilible = ref(false);
 
@@ -34,9 +37,13 @@ const confirm = () => {
 };
 
 const pwdVilible = ref(false);
+const agreeVilible = ref(false);
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
 };
+const agreeUrl = `${
+  import.meta.env.VITE_OPENEULER_WEBSITE
+}/zh/other/search/agreement/`;
 </script>
 <template>
   <AppHeader />
@@ -62,6 +69,20 @@ const goToTree = () => {
             i18n.MODIFY_PWD
           }}</OButton>
         </div>
+        <template v-if="lang === 'zh' && guardAuthClient.aigcPrivacyAccepted">
+          <div class="tips">
+            <div class="tips-title">终止协议</div>
+            <div class="tips-content">
+              终止openEuler社区搜索服务
+              <a :href="agreeUrl" rel="noopener noreferrer" target="_blank">
+                用户协议
+              </a>
+            </div>
+          </div>
+          <div class="btn gap">
+            <OButton size="small" @click="agreeVilible = true"> 终止 </OButton>
+          </div>
+        </template>
         <div class="tips red">
           <div class="tips-title">{{ i18n.DELETE_ACCOUNT }}</div>
           <div class="tips-content">{{ i18n.DELETE_ACCOUNT_TIPS }}</div>
@@ -73,6 +94,10 @@ const goToTree = () => {
     </ContentBox>
   </main>
   <DeleteAccountModal v-model="vilible" @submit="confirm"></DeleteAccountModal>
+  <DeleteAgreeModal
+    v-model="agreeVilible"
+    @submit="refreshInfo"
+  ></DeleteAgreeModal>
   <ModifyPwd v-model="pwdVilible"></ModifyPwd>
   <AppFooter />
 </template>
