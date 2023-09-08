@@ -154,9 +154,9 @@ export default {
   CONTAIN_CHARACTER: 'Contain 3 to 20 characters.',
   COMPANY_CONTAIN_CHARACTER: 'Contain 2 to 100 characters.',
   USERNAME_VAILD:
-    'Include only letters,digits,and underscores(_). It must start with a letter and cannot end with an underscore(_).',
+    'Include only letters,digits,and special characters(_-). It must start with a letter and cannot end with an special characters(_-).',
   NICKNAME_VAILD:
-    'Contain 3 to 20 characters. include only letters, digits, Chinese and underscores (_). it must start with a letter or Chinese. cannot end with underscore (_)',
+    'Contain 3 to 20 characters. include only letters, digits, Chinese and special characters(_-). it must start with a letter or Chinese. cannot end with special characters(_-)',
   COMPANY_VAILD:
     'Only letters, digits, Chinese, (.) ,& are allowed. It must start with a letter, digit, or Chinese and cannot end with a (),&',
   VERIFY_SUCCESS: 'The verification succeeds in [0]s.',

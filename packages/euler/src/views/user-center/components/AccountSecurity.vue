@@ -5,10 +5,14 @@ import ContentBox from './ContentBox.vue';
 import { deleteAccount } from 'shared/api/api-center';
 import ModifyPwd from 'shared/components/ModifyPwd.vue';
 import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
+import DeleteAgreeModal from 'shared/components/DeleteAgreeModal.vue';
 import { ElMessage } from 'element-plus';
-import { saveUserAuth } from 'shared/utils/login';
+import { saveUserAuth, useStoreData, refreshInfo } from 'shared/utils/login';
+import { useCommonData } from 'shared/stores/common';
 
 const i18n = useI18n();
+const { lang } = useCommonData();
+const { guardAuthClient } = useStoreData();
 // 控制弹窗显示
 const vilible = ref(false);
 
@@ -28,6 +32,11 @@ const confirm = () => {
 };
 
 const pwdVilible = ref(false);
+const agreeVilible = ref(false);
+
+const agreeUrl = `${
+  import.meta.env.VITE_OPENEULER_WEBSITE
+}/zh/other/search/agreement/`;
 </script>
 <template>
   <ContentBox>
@@ -42,6 +51,20 @@ const pwdVilible = ref(false);
       <OButton size="small" class="btn gap" @click="pwdVilible = true">{{
         i18n.MODIFY_PWD
       }}</OButton>
+      <template v-if="lang === 'zh' && guardAuthClient.aigcPrivacyAccepted">
+        <div class="tips">
+          <div class="tips-title">终止协议</div>
+          <div class="tips-content">
+            终止openEuler社区搜索服务
+            <a :href="agreeUrl" rel="noopener noreferrer" target="_blank">
+              用户协议
+            </a>
+          </div>
+        </div>
+        <OButton size="small" class="btn gap" @click="agreeVilible = true">
+          终止
+        </OButton>
+      </template>
       <div class="tips red">
         <div class="tips-title">{{ i18n.DELETE_ACCOUNT }}</div>
         <div class="tips-content">{{ i18n.DELETE_ACCOUNT_TIPS }}</div>
@@ -52,6 +75,10 @@ const pwdVilible = ref(false);
     </template>
   </ContentBox>
   <DeleteAccountModal v-model="vilible" @submit="confirm"></DeleteAccountModal>
+  <DeleteAgreeModal
+    v-model="agreeVilible"
+    @submit="refreshInfo"
+  ></DeleteAgreeModal>
   <ModifyPwd v-model="pwdVilible"></ModifyPwd>
 </template>
 <style lang="scss" scoped>
