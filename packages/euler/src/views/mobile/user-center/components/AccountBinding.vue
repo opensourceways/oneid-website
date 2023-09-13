@@ -28,6 +28,7 @@ import { IObject } from 'shared/@types/interface';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
+import { isSendCodeEmail } from 'shared/utils/utils';
 const router = useRouter();
 const i18n = useI18n();
 const store = useCommon();
@@ -94,15 +95,17 @@ const initData = () => {
 const vilible = ref(false);
 
 // 修改绑定邮箱或手机号
-const modifyAccountFuc = (data: BindAccountParams) => {
-  modifyAccount(data).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.MODIFY_SUCCESS,
-    });
-    vilible.value = false;
-    store.initUserInfo();
-  });
+const modifyAccountFuc = (data: any) => {
+  (isSendCodeEmail(data?.oldaccount) ? modifyAccount : bindAccount)(data).then(
+    () => {
+      ElMessage.success({
+        showClose: true,
+        message: i18n.value.MODIFY_SUCCESS,
+      });
+      vilible.value = false;
+      store.initUserInfo();
+    }
+  );
 };
 
 // 绑定手机号或者邮箱

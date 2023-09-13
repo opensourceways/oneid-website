@@ -308,3 +308,8 @@ export function getSessionStorage(key: string) {
 export function removeSessionStorage(key: string) {
   window.sessionStorage?.removeItem(key);
 }
+
+export function isSendCodeEmail(mail: string): boolean {
+  const NOT_SEND_CODE_MAIL = ['@user.noreply.osinfra.cn'];
+  return !NOT_SEND_CODE_MAIL.some((item) => mail.includes(item));
+}

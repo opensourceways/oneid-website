@@ -32,7 +32,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/oneid/': {
-        target: 'https://omapi.test.osinfra.cn/',
+        target: 'https://openeuler-usercenter.test.osinfra.cn/',
         secure: false,
         changeOrigin: true,
       },
