@@ -206,7 +206,7 @@ const codePlaceholder = computed(
           <OInput v-model.trim="form.oldaccount" disabled />
         </el-form-item>
         <el-form-item
-          v-if="config?.oldcode && isSendCodeEmail(config?.oldaccount)"
+          v-if="config?.oldcode && isSendCodeEmail(form?.oldaccount)"
           :label="i18n[config?.oldcode?.label]"
           prop="oldcode"
           :rules="rules"
