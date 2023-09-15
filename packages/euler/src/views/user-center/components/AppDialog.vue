@@ -11,7 +11,7 @@ import { sendCode } from 'shared/api/api-center';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
 import Verify from 'shared/verifition/Verify.vue';
-import { getVerifyImgSize } from 'shared/utils/utils';
+import { getVerifyImgSize, isSendCodeEmail } from 'shared/utils/utils';
 
 const i18n = useI18n();
 const formRef = ref<FormInstance>();
@@ -207,7 +207,7 @@ const codePlaceholder = computed(
           <OInput v-model.trim="form.oldaccount" disabled />
         </el-form-item>
         <el-form-item
-          v-if="config?.oldcode"
+          v-if="config?.oldcode && isSendCodeEmail(form?.oldaccount)"
           :label="i18n[config?.oldcode?.label]"
           prop="oldcode"
           :rules="rules"

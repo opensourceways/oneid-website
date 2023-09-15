@@ -25,6 +25,7 @@ import {
 } from 'shared/api/api-center';
 import { ElMessage } from 'element-plus';
 import { IObject } from 'shared/@types/interface';
+import { isSendCodeEmail } from 'shared/utils/utils';
 
 const i18n = useI18n();
 const store = useCommon();
@@ -91,15 +92,17 @@ const initData = () => {
 const vilible = ref(false);
 
 // 修改绑定邮箱或手机号
-const modifyAccountFuc = (data: BindAccountParams) => {
-  modifyAccount(data).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.MODIFY_SUCCESS,
-    });
-    vilible.value = false;
-    store.initUserInfo();
-  });
+const modifyAccountFuc = (data: any) => {
+  (isSendCodeEmail(data?.oldaccount) ? modifyAccount : bindAccount)(data).then(
+    () => {
+      ElMessage.success({
+        showClose: true,
+        message: i18n.value.MODIFY_SUCCESS,
+      });
+      vilible.value = false;
+      store.initUserInfo();
+    }
+  );
 };
 
 // 绑定手机号或者邮箱

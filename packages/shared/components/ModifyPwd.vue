@@ -10,6 +10,7 @@ import {
   getFitWidth,
   getPwdRules,
   getVerifyImgSize,
+  isSendCodeEmail,
 } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
@@ -40,12 +41,14 @@ const useAccount = ref('');
 
 watchEffect(() => {
   if (modelValue.value) {
-    if (userInfo.value.email && userInfo.value.phone) {
+    if (isSendCodeEmail(userInfo.value.email) && userInfo.value.phone) {
       useAccount.value = 'email';
     } else {
       useAccount.value = '';
     }
-    form.account = userInfo.value.email || userInfo.value.phone;
+    form.account =
+      (isSendCodeEmail(userInfo.value.email) && userInfo.value.email) ||
+      userInfo.value.phone;
   }
 });
 
