@@ -54,14 +54,7 @@ const padUserinfo = reactive({
 const isNotPadUserinfo = (data: any): boolean => {
   const { username, email_exist: emailExist = false, email = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  let hasEmail = true;
-  if (
-    loginParams.value.response_mode === 'query' &&
-    loginParams.value.scope?.includes('email')
-  ) {
-    // oidc模式选择了email，才需要补全邮箱功能
-    hasEmail = Boolean(emailExist || email);
-  }
+  const hasEmail = true;
   if (!name || !hasEmail) {
     padUserinfo.username = name;
     padUserinfo.emailExist = hasEmail;
