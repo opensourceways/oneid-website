@@ -310,6 +310,7 @@ export function removeSessionStorage(key: string) {
 }
 
 export function isSendCodeEmail(mail: string): boolean {
+  if (!mail) return false;
   const NOT_SEND_CODE_MAIL = ['@user.noreply.osinfra.cn'];
   return !NOT_SEND_CODE_MAIL.some((item) => mail?.includes(item));
 }
