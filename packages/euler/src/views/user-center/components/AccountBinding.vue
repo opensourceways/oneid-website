@@ -72,7 +72,8 @@ const resetThreeAccountData = () => {
 const initData = () => {
   accountData.value.forEach((item: IObject) => {
     if (item.key in userInfo.value) {
-      item.value = userInfo.value[item.key];
+      const key = item.key === 'phone' ? 'phoneCountry' : item.key;
+      item.value = userInfo.value[key];
     }
   });
   resetThreeAccountData();
@@ -271,12 +272,12 @@ const config: AllAccountDialogConfig = {
       label: 'SMS_CODE',
       placeholder: 'ENTER_RECEIVED_CODE',
       getCode: (data: QueryCodeParams) => {
-        data.account = userInfo.value.phone;
+        data.account = userInfo.value.phoneCountry;
         return sendCodeFuc(data);
       },
     },
     confirm: (data: BindAccountParams) => {
-      data.account = userInfo.value.phone;
+      data.account = userInfo.value.phoneCountry;
       unbindAccountFuc(data);
     },
   },
@@ -312,7 +313,7 @@ const config: AllAccountDialogConfig = {
   },
 };
 const showDialog = (str: string, key: string) => {
-  if (!userInfo.value.email && str === 'unbind') {
+  if (!isSendCodeEmail(userInfo.value.email) && str === 'unbind') {
     // 未绑定邮箱解绑操作时，应先绑定邮箱
     operateKey.value = 'confirm_bind_email';
   } else {

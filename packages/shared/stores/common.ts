@@ -42,6 +42,9 @@ export const useCommon = defineStore('common', () => {
   ) => {
     queryUser(param).then((data) => {
       userInfo.value = data?.data || {};
+      userInfo.value.phoneCountry = `${userInfo.value.phoneCountryCode || ''}${
+        userInfo.value.phone
+      }`;
     });
   };
   return {

@@ -21,6 +21,8 @@ export interface BindAccountParams {
   account_type: AccountType;
   account?: string;
   code: string;
+  oldaccount?: string;
+  oldcode?: string;
 }
 
 interface CodeParams {
