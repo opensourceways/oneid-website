@@ -112,7 +112,7 @@ const open = () => {
   form.oldaccount =
     config.value.account_type === 'email'
       ? userInfo.value.email
-      : userInfo.value.phone;
+      : userInfo.value.phoneCountry;
 };
 const confirm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -174,6 +174,18 @@ const codePlaceholder = computed(
     i18n.value[config.value?.code?.placeholder] ||
     i18n.value.ENTER_RECEIVED_CODE
 );
+const showCode = computed(() => {
+  const bool =
+    config.value?.code &&
+    !(
+      config.value.key === 'unbind_phone' &&
+      !(
+        !userInfo.value.phoneCountryCode ||
+        userInfo.value.phoneCountryCode === '+86'
+      )
+    );
+  return bool;
+});
 </script>
 <template>
   <el-dialog
@@ -236,7 +248,7 @@ const codePlaceholder = computed(
           />
         </el-form-item>
         <el-form-item
-          v-if="config?.code"
+          v-if="showCode"
           :label="i18n[config?.code?.label]"
           prop="code"
           :rules="rules"

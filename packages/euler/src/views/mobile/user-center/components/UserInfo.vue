@@ -39,7 +39,7 @@ const data = ref([
     disabled: true,
   },
   {
-    key: 'phone',
+    key: 'phoneCountry',
     label: useI18nStr('PHONE'),
     value: '',
     placeholder: '-',

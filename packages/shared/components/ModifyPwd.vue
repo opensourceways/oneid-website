@@ -48,14 +48,19 @@ watchEffect(() => {
     }
     form.account =
       (isSendCodeEmail(userInfo.value.email) && userInfo.value.email) ||
-      userInfo.value.phone;
+      (import.meta.env?.VITE_COMMUNITY === 'openeuler'
+        ? userInfo.value.phoneCountry
+        : userInfo.value.phone);
   }
 });
 
 const changeAccount = () => {
   if (useAccount.value === 'email') {
     useAccount.value = 'phone';
-    form.account = userInfo.value.phone;
+    form.account =
+      import.meta.env?.VITE_COMMUNITY === 'openeuler'
+        ? userInfo.value.phoneCountry
+        : userInfo.value.phone;
   } else if (useAccount.value === 'phone') {
     useAccount.value = 'email';
     form.account = userInfo.value.email;
