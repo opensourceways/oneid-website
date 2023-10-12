@@ -209,8 +209,7 @@ const changeAccount = (formEl: FormInstance | undefined) => {
 
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
-  const _lang = lang.value === 'en' ? `/${lang.value}` : '';
-  const url = `${import.meta.env?.VITE_MINDSPORE_MAIN}/${type}${_lang}`;
+  const url = `${import.meta.env?.VITE_MINDSPORE_MAIN}/${type}`;
   window.open(url, '_blank');
 };
 const docsUrl = computed(
