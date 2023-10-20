@@ -223,7 +223,7 @@ const confirm = (formEl: FormInstance | undefined) => {
     align-center
   >
     <template #header>
-      <h5 class="header">{{ i18n.MODIFY_PWD }}</h5>
+      <h5 class="header">{{ i18n.FORGET_PWD }}</h5>
     </template>
     <el-form
       ref="formRef"

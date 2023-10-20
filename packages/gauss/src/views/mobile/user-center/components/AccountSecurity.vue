@@ -54,12 +54,12 @@ const goToTree = () => {
     <ContentBox>
       <template #content>
         <div class="tips">
-          <div class="tips-title">{{ i18n.MODIFY_PWD }}</div>
+          <div class="tips-title">{{ i18n.FORGET_PWD }}</div>
           <div class="tips-content">{{ i18n.MODIFY_PWD_TIP }}</div>
         </div>
         <div class="btn gap">
           <OButton size="small" @click="pwdVilible = true">{{
-            i18n.MODIFY_PWD
+            i18n.FORGET_PWD
           }}</OButton>
         </div>
         <div class="tips red">

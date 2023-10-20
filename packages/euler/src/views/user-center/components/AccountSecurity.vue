@@ -45,11 +45,11 @@ const agreeUrl = `${
     </template>
     <template #content>
       <div class="tips">
-        <div class="tips-title">{{ i18n.MODIFY_PWD }}</div>
+        <div class="tips-title">{{ i18n.FORGET_PWD }}</div>
         <div class="tips-content">{{ i18n.MODIFY_PWD_TIP }}</div>
       </div>
       <OButton size="small" class="btn gap" @click="pwdVilible = true">{{
-        i18n.MODIFY_PWD
+        i18n.FORGET_PWD
       }}</OButton>
       <template v-if="lang === 'zh' && guardAuthClient.aigcPrivacyAccepted">
         <div class="tips">
