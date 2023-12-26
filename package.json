@@ -10,6 +10,8 @@
     "build:gauss": "pnpm --filter gauss build",
     "dev:mindspore": "pnpm --filter mindspore dev",
     "build:mindspore": "pnpm --filter mindspore build",
+    "dev:merlin": "pnpm --filter merlin dev",
+    "build:merlin": "pnpm --filter merlin build",
     "build": "pnpm build:euler & pnpm build:gauss",
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.{js,ts,vue,jsx,tsx}\"",
