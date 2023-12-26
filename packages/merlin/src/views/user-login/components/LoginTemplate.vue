@@ -41,8 +41,8 @@ const threePartsLogin = (type: string) => {
     response_mode: 'web_message',
   };
   const connIds: any = {
-    Gitee: '6226d91103d81d8654673f1b',
-    GitHub: '6226db30c8e30db1518cc4aa',
+    Gitee: '658a93971008d6c7e0bc5bc0',
+    GitHub: '658a836f19a1edc70c8398d6',
   };
   Object.assign(params, { ext_idp_conn_id: connIds[type] });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {

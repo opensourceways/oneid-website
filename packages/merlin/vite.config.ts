@@ -32,7 +32,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/oneid/': {
-        target: 'https://modelfoundry.test.osinfra.cn/',
+        target: 'https://modelfoundry-oneid.test.osinfra.cn/',
         secure: false,
         changeOrigin: true,
       },
