@@ -10,9 +10,9 @@ RUN pnpm build:merlin
 
 FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.22.0-22.03-lts
 
-COPY --from=Builder /home/modelfoundry-usercenter/web/dist/euler /usr/share/nginx/html/
+COPY --from=Builder /home/modelfoundry-usercenter/web/dist/merlin /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
-COPY ./deploy/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./deploy/merlin/nginx.conf /etc/nginx/nginx.conf
 
 
 ENV RUN_USER nginx
