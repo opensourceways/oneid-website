@@ -15,11 +15,7 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background-color: var(--o-color-bg1);
-  background-image: url(../../../assets/login_background.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: left;
+  background-color: rgb(247, 247, 247);
   .card {
     width: 420px;
     margin: 0 auto;
