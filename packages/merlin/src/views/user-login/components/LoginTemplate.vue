@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import IconGithub from '~icons/app/icon-github.svg';
 import IconGitee from '~icons/app/icon-gitee.svg';
-import IconOpenAtom from '~icons/app/icon-openatom.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
-import { computed, onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
+import { onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { getUrlByParams } from 'shared/utils/utils';
 import { useCommonData } from 'shared/stores/common';
-import { ONLY_LOGIN_ID } from '@/shared/const';
 
 type TYPE = 'login' | 'register';
 const props = defineProps({
@@ -108,11 +106,6 @@ onUnmounted(() => {
   // 移除监听
   window.removeEventListener('message', loginFun);
 });
-const showFooter = computed(
-  () =>
-    type.value === 'login' &&
-    !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
-);
 </script>
 <template>
   <ContentTemplate>
@@ -129,7 +122,7 @@ const showFooter = computed(
         </template>
       </LoginForm>
     </template>
-    <template v-if="showFooter" #footer>
+    <template #footer>
       <div class="app-footer">
         <div class="divider">
           <div class="line"></div>

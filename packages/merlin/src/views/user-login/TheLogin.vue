@@ -4,7 +4,6 @@ import {
   queryToken,
   checkLoginAccount,
 } from 'shared/api/api-login';
-import PadAccount from 'shared/components/PadAccount.vue';
 import { useI18n } from 'shared/i18n';
 import {
   getLogoutSession,
@@ -13,20 +12,20 @@ import {
   setLogoutSession,
 } from 'shared/utils/login';
 import { ElMessage } from 'element-plus';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
-import Verify from 'shared/verifition/Verify.vue';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { getVerifyImgSize } from 'shared/utils/utils';
-import { ONLY_LOGIN_ID } from '@/shared/const';
+import Verify from 'shared/verifition/Verify.vue';
+import PadAccount from 'shared/components/PadAccount.vue';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
-const visible = ref(false);
+
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
@@ -35,15 +34,10 @@ const goRegister = () => {
     query: route.query,
   });
 };
-const goResetPwd = () => {
-  router.push({
-    path: '/resetPwd',
-    query: route.query,
-  });
-};
 const verify = ref();
 const { loginParams } = useCommonData();
 
+const visible = ref(false);
 // 控制补全框内容
 const padUserinfo = reactive({
   username: '',
@@ -54,7 +48,7 @@ const padUserinfo = reactive({
 const isNotPadUserinfo = (data: any): boolean => {
   const { username, email_exist: emailExist = false, email = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  const hasEmail = true;
+  const hasEmail = Boolean(emailExist || email);
   if (!name || !hasEmail) {
     padUserinfo.username = name;
     padUserinfo.emailExist = hasEmail;
@@ -156,17 +150,9 @@ const threePartLogin = (res: any) => {
     loginSuccess(data?.data);
   });
 };
-
 const cancelPad = () => {
-  if (loginParams.value.response_mode === 'query' || !padUserinfo.username) {
-    logout();
-  } else {
-    doSuccess();
-  }
+  logout();
 };
-const showSwitch = computed(
-  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
-);
 </script>
 <template>
   <LoginTemplate
@@ -174,12 +160,7 @@ const showSwitch = computed(
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
   >
-    <template v-if="showSwitch" #switch>
-      <div style="flex: 1">
-        <a style="display: inline" @click="goResetPwd()">
-          {{ i18n.FORGET_PWD }}
-        </a>
-      </div>
+    <template #switch>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>

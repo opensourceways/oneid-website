@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { computed, PropType, reactive, ref, toRefs, watch } from 'vue';
+import { PropType, reactive, ref, toRefs, computed } from 'vue';
 import { useI18n } from 'shared/i18n';
 import {
   formValidator,
   doValidatorForm,
   asyncBlur,
   getVerifyImgSize,
+  getPwdRules,
+  getUsernammeRules,
 } from 'shared/utils/utils';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from 'shared/components/LoginTabs.vue';
 import PwdInput from 'shared/components/PwdInput.vue';
-import { getPwdRules, getUsernammeRules } from 'shared/utils/utils';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
-import { ONLY_LOGIN_ID } from '@/shared/const';
 
 type TYPE = 'login' | 'register';
 const props = defineProps({
@@ -28,9 +28,9 @@ const props = defineProps({
 
 const formRef = ref<FormInstance>();
 
-const selectLoginType = ref('password');
+const selectLoginType = ref('code');
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit', 'threePartLogin']);
 
 // 外部校验方法
 const validator = (fields?: string[] | string) => {
@@ -41,14 +41,13 @@ defineExpose({ validator });
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams } = useCommonData();
-
 // 表单值
 const form = reactive({
   username: '',
   account: '',
   code: '',
-  password: '',
   policy: [],
+  password: '',
 } as any);
 
 // 验证码限制重发
@@ -104,11 +103,11 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
 // 手机或邮箱合法校验
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
-    if (type.value === 'register' && selectLoginType.value === 'password') {
-      if (EMAIL_REG.test(value)) {
+    if (type.value === 'register') {
+      if (PHONE_REG.test(value)) {
         callback();
       } else {
-        callback(i18n.value.ENTER_VAILD_EMAIL);
+        callback(i18n.value.ENTER_VAILD_PHONE);
       }
     } else {
       if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
@@ -117,15 +116,6 @@ const validatorAccount = (rule: any, value: any, callback: any) => {
         callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
       }
     }
-  }
-};
-
-// checkbox校验
-const validatorCheckbox = (rule: any, value: any, callback: any) => {
-  if (!value || !value.length) {
-    callback(i18n.value.PLEASE_CHECK_PRIVACY);
-  } else {
-    callback();
   }
 };
 
@@ -141,6 +131,14 @@ const validatorPwd = (rule: any, value: any, callback: any) => {
           value.includes(form.account.split('').reverse().join('')))))
   ) {
     callback(i18n.value.PWD_USERNAME_VAILD);
+  } else {
+    callback();
+  }
+};
+// checkbox校验
+const validatorCheckbox = (rule: any, value: any, callback: any) => {
+  if (!value || !value.length) {
+    callback(i18n.value.PLEASE_CHECK_PRIVACY);
   } else {
     callback();
   }
@@ -215,47 +213,15 @@ const goToOtherPage = (type: string) => {
   const url = `${origin}/${lang.value}/other/${type}`;
   window.open(url, '_blank');
 };
-const hiddenRestrictedTipArr = [import.meta.env?.VITE_OPENEULER_APPID];
-const showRestrictedTip = computed(
-  () => !hiddenRestrictedTipArr.includes(loginParams.value.client_id)
-);
 const accountPlaceholder = computed(() => {
-  if (type.value === 'register' && selectLoginType.value === 'password') {
-    return i18n.value.ENTER_YOUR_EMAIL;
-  } else if (type.value === 'login' && selectLoginType.value === 'password') {
-    return i18n.value.ENTER_YOUR_ACCOUNT;
+  if (type.value === 'register') {
+    return i18n.value.ENTER_YOUR_PHONE;
   } else {
     return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
   }
 });
-const loginTabSelect = () => {
-  formRef.value?.resetFields();
-  disableCode.value = false;
-  disableCodeInput.value = true;
-};
-const showSwitch = ref(true);
-watch(
-  () => loginParams.value.client_id,
-  () => {
-    showSwitch.value = !ONLY_LOGIN_ID.includes(
-      loginParams.value.client_id as string
-    );
-    if (!showSwitch.value) {
-      selectLoginType.value = 'code';
-    }
-  },
-  {
-    immediate: true,
-  }
-);
 </script>
 <template>
-  <LoginTabs
-    v-if="showSwitch"
-    v-model="selectLoginType"
-    :type="type"
-    @select="loginTabSelect"
-  ></LoginTabs>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
     <el-form-item
       v-if="type === 'register'"
