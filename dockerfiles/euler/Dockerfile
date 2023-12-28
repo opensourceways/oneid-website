@@ -8,7 +8,7 @@ RUN pnpm install
 
 RUN pnpm build:euler
 
-FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.22.0-22.03-lts
+FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.24.0-22.03-lts-sp1 as NginxBuilder
 
 COPY --from=Builder /home/openeuler-usercenter/web/dist/euler /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
