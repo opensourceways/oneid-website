@@ -1,5 +1,7 @@
 import { request } from '../plugins/axios';
 import type { AxiosResponse } from '../plugins/axios';
+import { getHeaderConfig } from './util';
+import { AxiosRequestHeaders } from 'axios';
 
 /**
  * 获取用户信息
@@ -8,7 +10,7 @@ export function queryUser(params: any) {
   const url = '/oneid/personal/center/user';
 
   return request
-    .get(url, { global: true, params })
+    .get(url, { global: true, params, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -19,7 +21,7 @@ export function modifyUser(body: any, params?: any) {
   const url = '/oneid/update/baseInfo';
 
   return request
-    .post(url, body, { params, global: true })
+    .post(url, body, { params, global: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -28,13 +30,13 @@ export function modifyUser(body: any, params?: any) {
  */
 export function modifyPhoto(params: any) {
   const url = '/oneid/update/photo';
-
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+  } as AxiosRequestHeaders;
   return request
     .post(url, params, {
       global: true,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      headers,
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -46,7 +48,7 @@ export function sendCode(params: any) {
   const url = '/oneid/sendcode';
 
   return request
-    .get(url, { global: true, params })
+    .get(url, { global: true, params, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -74,6 +76,7 @@ export function sendUnbindCode(params: any) {
     .get(url, {
       global: true,
       params: param,
+      ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -85,7 +88,7 @@ export function modifyAccount(params: any) {
   const url = '/oneid/update/account';
 
   return request
-    .get(url, { global: true, params })
+    .get(url, { global: true, params, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -109,6 +112,7 @@ export function bindAccount(params: any) {
     .get(url, {
       global: true,
       params: param,
+      ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -133,6 +137,7 @@ export function unbindAccount(params: any) {
     .get(url, {
       global: true,
       params: param,
+      ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -146,6 +151,7 @@ export function linkAccount() {
   return request
     .get(url, {
       global: true,
+      ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -159,6 +165,7 @@ export function unlinkAccount(params: any) {
     .get(url, {
       global: true,
       params,
+      ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
 }
@@ -171,7 +178,7 @@ export function deleteAccount(
   const url = '/oneid/delete/user';
 
   return request
-    .get(url, { global: true, params })
+    .get(url, { global: true, params, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -180,19 +187,25 @@ export function deleteAccount(
  */
 export function userLink(params: any) {
   const url = '/oneid/user/link';
-  return request.post(url, params).then((res: AxiosResponse) => res.data);
+  return request
+    .post(url, params, getHeaderConfig())
+    .then((res: AxiosResponse) => res.data);
 }
 /**
  * 个人中心三方账号解绑
  */
 export function userUnlink(params: any) {
   const url = '/oneid/user/unlink';
-  return request.post(url, params).then((res: AxiosResponse) => res.data);
+  return request
+    .post(url, params, getHeaderConfig())
+    .then((res: AxiosResponse) => res.data);
 }
 /**
  * 修改密码
  */
 export function updatePassword(params: any) {
   const url = '/oneid/update/password';
-  return request.post(url, params).then((res: AxiosResponse) => res.data);
+  return request
+    .post(url, params, getHeaderConfig())
+    .then((res: AxiosResponse) => res.data);
 }
