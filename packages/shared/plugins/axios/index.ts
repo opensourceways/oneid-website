@@ -3,7 +3,7 @@ import axios from 'axios';
 import type {
   AxiosError,
   AxiosInstance,
-  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
   AxiosResponse,
   AxiosStatic,
 } from 'axios';
@@ -14,7 +14,7 @@ import { callBackErrMessage } from '../../utils/utils';
 import { getUserAuth, tokenFailIndicateLogin } from '../../utils/login';
 import { LoadingInstance } from 'element-plus/es/components/loading/src/loading';
 
-interface RequestConfig<D = any> extends AxiosRequestConfig {
+interface RequestConfig<D = any> extends InternalAxiosRequestConfig {
   data?: D;
   $doException?: boolean;
   $ignoreLoading?: boolean; // 是否出现loading框

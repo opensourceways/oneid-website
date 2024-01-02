@@ -1,5 +1,6 @@
 import { request } from '../plugins/axios';
 import type { AxiosResponse } from '../plugins/axios';
+import { getHeaderConfig } from './util';
 
 /**
  * 判断用户名或者账号是否存在
@@ -8,7 +9,12 @@ export function accountExists(params: any) {
   const url = '/oneid/account/exists';
 
   return request
-    .get(url, { global: true, $doException: true, params })
+    .get(url, {
+      global: true,
+      $doException: true,
+      params,
+      ...getHeaderConfig(),
+    })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -19,7 +25,7 @@ export function checkLoginAccount(params: any) {
   const url = '/oneid/captcha/checkLogin';
 
   return request
-    .get(url, { global: true, params })
+    .get(url, { global: true, params, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -30,7 +36,7 @@ export function sendCodeCaptcha(params: any) {
   const url = '/oneid/captcha/sendCode';
 
   return request
-    .get(url, { global: true, params })
+    .get(url, { global: true, params, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -58,7 +64,7 @@ export function accountLoginPost(params: any) {
 export function queryCourse(params: object) {
   const url = '/oneid/user/permission';
   return request
-    .get(url, { params, global: true })
+    .get(url, { params, global: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 /**
@@ -67,7 +73,7 @@ export function queryCourse(params: object) {
 export function refreshUser(params: object) {
   const url = '/oneid/user/refresh';
   return request
-    .get(url, { params, global: true })
+    .get(url, { params, global: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 /**
@@ -76,7 +82,7 @@ export function refreshUser(params: object) {
 export function queryToken(params: object) {
   const url = '/oneid/token/apply';
   return request
-    .get(url, { params, global: true })
+    .get(url, { params, global: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 /**
@@ -84,7 +90,9 @@ export function queryToken(params: object) {
  */
 export function queryIDToken(params: any) {
   const url = '/oneid/logout';
-  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+  return request
+    .get(url, { params, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
 }
 
 /**
@@ -101,7 +109,7 @@ export function reqGet(data: any) {
 export function reqCheck(data: any) {
   const url = '/oneid/captcha/check';
   return request
-    .post(url, data, { $doException: true })
+    .post(url, data, { $doException: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -111,7 +119,7 @@ export function reqCheck(data: any) {
 export function appVerify(params: any) {
   const url = '/oneid/app/verify';
   return request
-    .get(url, { params, global: true })
+    .get(url, { params, global: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -121,7 +129,12 @@ export function appVerify(params: any) {
 export function authorizeOidc(params: any) {
   const url = '/oneid/oidc/auth';
   return request
-    .get(url, { params, global: true, $doException: true })
+    .get(url, {
+      params,
+      global: true,
+      $doException: true,
+      ...getHeaderConfig(),
+    })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -146,7 +159,9 @@ export function providerLink(params: any) {
  */
 export function providerRegister(params: any) {
   const url = '/oneid/provider/register';
-  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+  return request
+    .get(url, { params, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
 }
 
 /**
@@ -154,7 +169,9 @@ export function providerRegister(params: any) {
  */
 export function getPublicKey(params: any) {
   const url = '/oneid/public/key';
-  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+  return request
+    .get(url, { params, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
 }
 
 /**
