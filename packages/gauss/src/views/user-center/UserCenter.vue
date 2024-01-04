@@ -56,7 +56,7 @@ onMounted(() => {
   width: 100%;
   height: 280px;
   background-image: url('../../assets/banner.png');
-  background-size: 100%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: left;
   .title {

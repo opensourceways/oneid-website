@@ -59,10 +59,9 @@
           @touchstart="start"
           @mousedown="start"
         >
-          <i
-            :class="['verify-icon iconfont', iconClass]"
-            :style="{ color: iconColor }"
-          ></i>
+          <OIcon class="verify-icon" :style="{ color: iconColor }">
+            <component :is="iconComponent"></component>
+          </OIcon>
           <div
             v-if="type === '2'"
             class="verify-sub-block"
@@ -108,6 +107,9 @@ import {
   toRefs,
   getCurrentInstance,
 } from 'vue';
+import IconRight from '~icons/app/icon-chevron-right.svg';
+import IconCancel from '~icons/app/icon-cancel.svg';
+import IconDone from '~icons/app/icon-done.svg';
 //  "captchaType":"blockPuzzle",
 export default {
   name: 'VerifySlide',
@@ -191,7 +193,7 @@ export default {
       moveBlockBackgroundColor = ref(undefined),
       leftBarBorderColor = ref('#ddd'),
       iconColor = ref(undefined),
-      iconClass = ref('icon-right'),
+      iconComponent = ref(IconRight),
       status = ref(false), // 鼠标状态
       isEnd = ref(false), // 是够验证完成
       showRefresh = ref(true),
@@ -230,10 +232,10 @@ export default {
       leftBarWidth.value = undefined;
       transitionWidth.value = 'width .3s';
 
-      leftBarBorderColor.value = '#ddd';
-      moveBlockBackgroundColor.value = '#fff';
-      iconColor.value = '#000';
-      iconClass.value = 'icon-right';
+      leftBarBorderColor.value = '#707070';
+      moveBlockBackgroundColor.value = undefined;
+      iconColor.value = undefined;
+      iconComponent.value = IconRight;
       isEnd.value = false;
 
       getPictrue();
@@ -260,9 +262,9 @@ export default {
       startMoveTime.value = +new Date(); //  开始滑动的时间
       if (isEnd.value === false) {
         const colors = {
-          openeuler: '#002fa7',
-          opengauss: '#7d32ea',
-          mindspore: '#0d8dff',
+          openeuler: '#00288d',
+          opengauss: '#6e1be8',
+          mindspore: '#0080f2',
         };
         const color = colors[import.meta.env?.VITE_COMMUNITY || 'openeuler'];
         text.value = '';
@@ -333,7 +335,7 @@ export default {
               moveBlockBackgroundColor.value = '#6dc335';
               leftBarBorderColor.value = '#6dc335';
               iconColor.value = '#fff';
-              iconClass.value = 'icon-check';
+              iconComponent.value = IconDone;
               showRefresh.value = false;
               isEnd.value = true;
               if (mode.value === 'pop') {
@@ -367,7 +369,7 @@ export default {
               moveBlockBackgroundColor.value = '#f3524d';
               leftBarBorderColor.value = '#f3524d';
               iconColor.value = '#fff';
-              iconClass.value = 'icon-close';
+              iconComponent.value = IconCancel;
               passFlag.value = false;
               setTimeout(function () {
                 refresh();
@@ -383,7 +385,7 @@ export default {
             moveBlockBackgroundColor.value = '#f3524d';
             leftBarBorderColor.value = '#f3524d';
             iconColor.value = '#fff';
-            iconClass.value = 'icon-close';
+            iconComponent.value = IconCancel;
             passFlag.value = false;
             setTimeout(function () {
               refresh();
@@ -471,7 +473,7 @@ export default {
       moveBlockBackgroundColor,
       leftBarBorderColor,
       iconColor,
-      iconClass,
+      iconComponent,
       status, // 鼠标状态
       isEnd, // 是够验证完成
       showRefresh,
