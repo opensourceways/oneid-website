@@ -203,11 +203,11 @@ export default {
   color: #fff;
 }
 .suc-bg {
-  background-color: rgba(92, 184, 92, 0.5);
+  background-color: rgba(109, 195, 53, 0.5);
   filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7f5CB85C, endcolorstr=#7f5CB85C);
 }
 .err-bg {
-  background-color: rgba(217, 83, 79, 0.5);
+  background-color: rgba(243, 82, 77, 0.5);
   filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7fD9534F, endcolorstr=#7fD9534F);
 }
 .tips-enter,
@@ -294,7 +294,7 @@ export default {
 }
 
 .verify-bar-area .verify-move-block:hover {
-  background-color: #337ab7;
+  background-color: var(--o-color-brand2);
   color: #ffffff;
 }
 
@@ -352,7 +352,7 @@ export default {
 }
 
 .verify-bar-area .verify-move-block .verify-icon {
-  font-size: 18px;
+  font-size: 40px;
 }
 
 .verify-bar-area .verify-msg {
