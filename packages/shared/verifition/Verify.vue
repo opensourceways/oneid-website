@@ -189,7 +189,7 @@ export default {
   height: 100vh;
   background: rgba(0, 0, 0, 0.3);
   /* display: none; */
-  transition: all 0.5s;
+  transition: all 0.2s;
   touch-action: none;
   touch-action: pan-y;
 }
@@ -216,7 +216,7 @@ export default {
 }
 .tips-enter-active,
 .tips-leave-active {
-  transition: bottom 0.5s;
+  transition: bottom 0.2s;
 }
 /* ---------------------------- */
 /*常规验证码*/
@@ -281,6 +281,7 @@ export default {
 }
 
 .verify-bar-area .verify-move-block {
+  transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1);
   position: absolute;
   top: 0px;
   left: 0;
@@ -307,7 +308,12 @@ export default {
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
-  border: 1px solid #ddd;
+  border: 1px solid var(--o-color-border1);
+  transition: border-color 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.verify-bar-area .verify-left-bar:hover {
+  border-color: var(--o-color-brand2);
 }
 
 .verify-img-panel {
@@ -353,6 +359,7 @@ export default {
 
 .verify-bar-area .verify-move-block .verify-icon {
   font-size: 40px;
+  transition: color 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .verify-bar-area .verify-msg {

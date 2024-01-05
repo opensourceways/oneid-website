@@ -191,7 +191,7 @@ export default {
       leftBarWidth = ref(undefined),
       // 移动中样式
       moveBlockBackgroundColor = ref(undefined),
-      leftBarBorderColor = ref('#ddd'),
+      leftBarBorderColor = ref(undefined),
       iconColor = ref(undefined),
       iconComponent = ref(IconRight),
       status = ref(false), // 鼠标状态
@@ -226,13 +226,13 @@ export default {
       showRefresh.value = true;
       finishText.value = '';
 
-      transitionLeft.value = 'left .3s';
+      transitionLeft.value = 'left .2s';
       moveBlockLeft.value = 0;
 
       leftBarWidth.value = undefined;
-      transitionWidth.value = 'width .3s';
+      transitionWidth.value = 'width .2s';
 
-      leftBarBorderColor.value = '#707070';
+      leftBarBorderColor.value = undefined;
       moveBlockBackgroundColor.value = undefined;
       iconColor.value = undefined;
       iconComponent.value = IconRight;
