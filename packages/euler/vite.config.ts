@@ -36,6 +36,11 @@ export default defineConfig({
         secure: false,
         changeOrigin: true,
       },
+      '/openeuler/': {
+        target: 'https://gitee.com/',
+        secure: false,
+        changeOrigin: true,
+      },
     },
   },
 });
