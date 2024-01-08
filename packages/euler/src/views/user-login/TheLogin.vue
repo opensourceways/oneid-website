@@ -5,6 +5,7 @@ import {
   checkLoginAccount,
 } from 'shared/api/api-login';
 import PadAccount from 'shared/components/PadAccount.vue';
+import AgreePrivacy from 'shared/components/AgreePrivacy.vue';
 import { useI18n } from 'shared/i18n';
 import {
   getLogoutSession,
@@ -27,6 +28,7 @@ import { ONLY_LOGIN_ID } from '@/shared/const';
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
 const visible = ref(false);
+const privacyVisible = ref(false);
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
@@ -52,13 +54,23 @@ const padUserinfo = reactive({
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  const { username, email_exist: emailExist = false, email = '' } = data || {};
+  const {
+    username,
+    email_exist: emailExist = false,
+    email = '',
+    oneidPrivacyAccepted = '',
+  } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
   const hasEmail = true;
   if (!name || !hasEmail) {
     padUserinfo.username = name;
     padUserinfo.emailExist = hasEmail;
     visible.value = true;
+    return false;
+  } else if (
+    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
+  ) {
+    privacyVisible.value = true;
     return false;
   }
   return true;
@@ -194,6 +206,11 @@ const showSwitch = computed(
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
+  <AgreePrivacy
+    v-model="privacyVisible"
+    @success="doSuccess"
+    @cancel="logout"
+  ></AgreePrivacy>
   <Verify
     ref="verify"
     mode="pop"
