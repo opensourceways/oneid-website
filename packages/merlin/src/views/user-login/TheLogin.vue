@@ -41,17 +41,14 @@ const visible = ref(false);
 // 控制补全框内容
 const padUserinfo = reactive({
   username: '',
-  emailExist: false,
 });
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  const { username, email_exist: emailExist = false, email = '' } = data || {};
+  const { username } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  const hasEmail = Boolean(emailExist || email);
-  if (!name || !hasEmail) {
+  if (!name) {
     padUserinfo.username = name;
-    padUserinfo.emailExist = hasEmail;
     visible.value = true;
     return false;
   }
@@ -171,7 +168,6 @@ const cancelPad = () => {
   <PadAccount
     v-model="visible"
     :username="padUserinfo.username"
-    :email-exist="padUserinfo.emailExist"
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
