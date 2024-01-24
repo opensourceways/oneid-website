@@ -100,7 +100,7 @@ export function queryIDToken(params: any) {
  */
 export function reqGet(data: any) {
   const url = '/oneid/captcha/get';
-  return request.post(url, data).then((res: AxiosResponse) => res.data);
+  return request.post(url, data, { $doException: true, ...getHeaderConfig() }).then((res: AxiosResponse) => res.data);
 }
 
 /**
