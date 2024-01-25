@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "shared": "workspace:^",
-    "unplugin-icons": "^0.14.0"
+    "unplugin-icons": "^0.18.2"
   }
 }
