@@ -50,6 +50,7 @@ const { loginParams } = useCommonData();
 const padUserinfo = reactive({
   username: '',
   emailExist: false,
+  phoneExist: false,
 });
 
 // 判断是否需要补全内容
@@ -57,14 +58,26 @@ const isNotPadUserinfo = (data: any): boolean => {
   const {
     username,
     email_exist: emailExist = false,
+    phone_exist: phoneExist = false,
     email = '',
+    phone='',
     oneidPrivacyAccepted = '',
   } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  const hasEmail = true;
-  if (!name || !hasEmail) {
+  let hasEmail = true;
+  let hasPhone = true;
+  if (route.query?.complementation) {
+    const complementation = route.query?.complementation;
+    if (complementation === 'phone') {
+      hasPhone = Boolean(phoneExist || phone)
+    } else if (complementation === 'email') {
+      hasEmail = Boolean(emailExist || email);
+    }
+  }
+  if (!name || !hasEmail || !hasPhone) {
     padUserinfo.username = name;
     padUserinfo.emailExist = hasEmail;
+    padUserinfo.phoneExist = hasPhone;
     visible.value = true;
     return false;
   } else if (
@@ -203,6 +216,7 @@ const showSwitch = computed(
     v-model="visible"
     :username="padUserinfo.username"
     :email-exist="padUserinfo.emailExist"
+    :phone-exist="padUserinfo.phoneExist"
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
