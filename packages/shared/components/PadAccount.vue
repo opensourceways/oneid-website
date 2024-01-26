@@ -2,7 +2,7 @@
 import { useI18n } from '../i18n';
 import { reactive, ref, toRefs } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { EMAIL_REG } from '../const/common.const';
+import { EMAIL_REG, PHONE_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
 import {
   formValidator,
@@ -31,8 +31,12 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  phoneExist: {
+    type: Boolean,
+    default: true,
+  },
 });
-const { modelValue, username, emailExist } = toRefs(props);
+const { modelValue, username, emailExist, phoneExist } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
 const { loginParams } = useCommonData();
 const i18n = useI18n();
@@ -44,6 +48,7 @@ const verify = ref();
 const form = reactive({
   username: '',
   email: '',
+  phone: '',
   code: '',
 } as any);
 // 用户名校验
@@ -67,13 +72,22 @@ const emailRules = reactive<FormItemRule[]>([
     trigger: 'blur',
   },
 ]);
+// 手机校验
+const phoneRules = reactive<FormItemRule[]>([
+  ...requiredRules,
+  {
+    pattern: PHONE_REG,
+    message: i18n.value.ENTER_VAILD_PHONE,
+    trigger: 'blur',
+  },
+]);
 
 // 验证码限制重发
 const disableCode = ref(false);
 // 获取验证码
-const getcode = (formEl: FormInstance | undefined) => {
+const getcode = (formEl: FormInstance | undefined, field: string) => {
   if (!formEl) return;
-  formValidator(formEl, 'email').subscribe((valid) => {
+  formValidator(formEl, field).subscribe((valid) => {
     if (valid) {
       verify.value.show();
     } else {
@@ -87,6 +101,10 @@ const verifySuccess = (data: any) => {
     channel: 'channel_bind_email',
     captchaVerification: data.captchaVerification,
   };
+  if (!phoneExist.value) {
+    param.account = form.phone;
+    param.channel = 'channel_bind_phone';
+  }
   sendCode(param).then(() => {
     ElMessage.success({
       showClose: true,
@@ -119,7 +137,7 @@ const putUserName = () => {
 // 补全邮箱
 const putEmail = () => {
   return new Observable((observer) => {
-    if (emailExist.value) {
+    if (emailExist.value && phoneExist.value) {
       observer.next(true);
       observer.complete();
       return;
@@ -128,6 +146,10 @@ const putEmail = () => {
       account_type: 'email',
       account: form.email,
       code: form.code,
+    };
+    if (!phoneExist.value) {
+      param.account = form.phone;
+      param.account_type = 'phone';
     };
     bindAccount(param)
       .then(() => {
@@ -204,6 +226,27 @@ const cancelPad = () => {
           @blur="asyncBlur(formRef, 'username')"
         />
       </el-form-item>
+      <el-form-item v-if="!phoneExist" prop="phone" :rules="phoneRules">
+        <OInput
+          v-model.trim="form.phone"
+          :placeholder="i18n.ENTER_YOUR_PHONE"
+          @blur="asyncBlur(formRef, 'phone')"
+        />
+      </el-form-item>
+      <el-form-item v-if="!phoneExist" prop="code" :rules="rules">
+        <div class="code">
+          <OInput
+            v-model.trim="form.code"
+            :placeholder="i18n.ENTER_RECEIVED_CODE"
+          />
+          <CountdownButton
+            v-model="disableCode"
+            class="btn"
+            size="small"
+            @click="getcode(formRef, 'phone')"
+          />
+        </div>
+      </el-form-item>
       <el-form-item v-if="!emailExist" prop="email" :rules="emailRules">
         <OInput
           v-model.trim="form.email"
@@ -221,7 +264,7 @@ const cancelPad = () => {
             v-model="disableCode"
             class="btn"
             size="small"
-            @click="getcode(formRef)"
+            @click="getcode(formRef, 'email')"
           />
         </div>
       </el-form-item>

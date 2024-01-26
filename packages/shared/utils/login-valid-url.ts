@@ -7,7 +7,7 @@ export function validLoginUrl(query?: LoginParams) {
     const { loginParams } = useCommonData();
     const param = {
       client_id: query?.client_id || loginParams.value.client_id,
-      redirect_uri: query?.redirect_uri || loginParams.value.redirect_uri,
+      redirect_uri: getValidUrl(query?.redirect_uri || loginParams.value.redirect_uri),
       community: import.meta.env?.VITE_COMMUNITY,
     };
     appVerify(param)
@@ -18,4 +18,16 @@ export function validLoginUrl(query?: LoginParams) {
         location.replace('/notfound');
       });
   });
+}
+
+const getValidUrl = (url: any) => {
+  try {
+    const newUrl = new URL(url);
+    if (newUrl.origin === url) {
+      return `${url}/`;
+    }
+    return url;
+  } catch (error) {
+    location.replace('/notfound');
+  }
 }
