@@ -1,8 +1,6 @@
 import { queryCourse, queryIDToken, refreshUser } from '../api/api-login';
 import { useLogin } from '../stores/login';
 import { storeToRefs } from 'pinia';
-import { AuthenticationClient } from 'authing-js-sdk';
-import { IObject } from '../@types/interface';
 
 const LOGIN_KEYS = {
   USER_TOKEN: '_U_T_',
@@ -52,6 +50,11 @@ export function getUserAuth() {
   };
 }
 
+function getLogoutUrl(param: { host: string, idToken: string, redirectUri: string }) {
+  const { host, idToken, redirectUri } = param;
+  return `${host}/oidc/session/end?id_token_hint=${idToken}&post_logout_redirect_uri=${redirectUri}`
+}
+
 // 退出登录
 export function logout(
   param: any = { community: import.meta.env?.VITE_COMMUNITY },
@@ -59,33 +62,25 @@ export function logout(
 ) {
   if (param.idToken) {
     saveUserAuth();
-    const client1 = createClient(param.community);
-    const logoutUrl = client1.buildLogoutUrl({
-      expert: true,
-      redirectUri,
+    const params = {
+      host: import.meta.env?.VITE_OPENEULER_APPHOST,
       idToken: param.idToken,
-    });
-    window.location.href = logoutUrl;
+      redirectUri,
+    }
+    window.location.href = getLogoutUrl(params);
     return;
   }
   queryIDToken(param)
     .then((res: any) => {
       saveUserAuth();
       if (['openeuler', 'mindspore'].includes(param.community)) {
-        const idToken = res.data.id_token;
-        const appId = res.data.client_id;
         const appHost = res.data.client_identifier;
-        const client1 = new AuthenticationClient({
-          appId: appId || import.meta.env?.VITE_OPENEULER_APPID,
-          appHost: `https://${appHost || 'datastat'}.authing.cn`,
-          redirectUri: `${window?.location?.origin}${window?.location?.pathname}`,
-        });
-        const logoutUrl = client1.buildLogoutUrl({
-          expert: true,
+        const params = {
+          host: `https://${appHost || 'datastat'}.authing.cn`,
+          idToken: res.data.id_token,
           redirectUri: encodeURIComponent(location.href),
-          idToken,
-        });
-        window.location.href = logoutUrl;
+        }
+        window.location.href = getLogoutUrl(params);
       } else {
         window.location.href = redirectUri;
       }
@@ -101,32 +96,6 @@ export function goToHome() {
   window.location.href = '/';
 }
 
-export function createClient(
-  community = import.meta.env?.VITE_COMMUNITY,
-  url?: string
-) {
-  const lang = getLanguage();
-  const obj: IObject = {
-    openeuler: {
-      appId: import.meta.env?.VITE_OPENEULER_APPID,
-      appHost: import.meta.env?.VITE_OPENEULER_APPHOST,
-      redirectUri:
-        url || `${window?.location?.origin}${window?.location?.pathname}`,
-      lang: lang.language,
-    },
-    mindspore: {
-      appId: import.meta.env?.VITE_OPENEULER_APPID,
-      appHost: import.meta.env?.VITE_OPENEULER_APPHOST,
-      redirectUri:
-        url || `${window?.location?.origin}${window?.location?.pathname}`,
-      lang: lang.language,
-    },
-  };
-  if (obj[community]) {
-    return new AuthenticationClient(obj[community]);
-  }
-  return new AuthenticationClient(obj.openeuler);
-}
 export function showGuard() {
   const origin = import.meta.env.VITE_LOGIN_ORIGIN;
   const { lang } = getLanguage();
