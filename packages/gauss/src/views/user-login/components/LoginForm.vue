@@ -46,6 +46,12 @@ const form = reactive({
   policy: [],
 } as any);
 
+// 外部校验方法
+const validator = (fields?: string[] | string) => {
+  return formValidator(formRef.value, fields);
+};
+defineExpose({ validator });
+
 // 验证码限制重发
 const disableCode = ref(false);
 // 验证码限制输入

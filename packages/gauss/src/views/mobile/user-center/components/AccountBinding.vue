@@ -5,6 +5,8 @@ import ContentBox from './ContentBox.vue';
 import AppDialog from './AppDialog.vue';
 import IconMail from '~icons/app/icon-mail.svg';
 import IconPhone from '~icons/app/icon-phone.svg';
+import IconGithub from '~icons/app/icon-github.svg';
+import IconGitee from '~icons/app/icon-gitee.svg';
 import {
   AccountOperateKey,
   AllAccountDialogConfig,
@@ -12,6 +14,7 @@ import {
   BindAccountParams,
 } from 'shared/@types/usercenter.interface';
 import { useCommon, useCommonData } from 'shared/stores/common';
+import useThirdParty from 'shared/composables/useThirdParty';
 import {
   bindAccount,
   modifyAccount,
@@ -24,10 +27,21 @@ import { getCommunityParams } from '@/shared/utils';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
+import { getThirdpartyList, unbindByThirdparty } from 'shared/api/api-thirdparty';
 const router = useRouter();
 const i18n = useI18n();
 const store = useCommon();
-const { userInfo } = useCommonData();
+const { userInfo, loginParams } = useCommonData();
+const bindThirdSuccess = () => {
+  ElMessage.success({
+      showClose: true,
+      message: i18n.value.BIND_SUCCESS,
+    });
+    store.initUserInfo(getCommunityParams(true));
+}
+const thirdParty = useThirdParty({
+  success: bindThirdSuccess,
+})
 const accountData = ref([
   {
     key: 'email',
@@ -44,12 +58,51 @@ const accountData = ref([
     value: '',
   },
 ]);
+const icons = [
+  {
+    key: 'github',
+    icon: IconGithub,
+    label: 'Github',
+    value: '',
+  },
+  {
+    key: 'gitee',
+    icon: IconGitee,
+    label: 'Gitee',
+    value: '',
+  },
+];
+const threeAccountData = ref<any[]>([]);
+const queryThirdList = () => {
+  getThirdpartyList({ client_id: loginParams.value.client_id as string }).then(
+    (res) => {
+      const { data = {} } = res;
+      threeAccountData.value = icons.reduce((pre, next) => {
+        if (data?.[next.key]) {
+          pre.push(Object.assign(next, { connection_id: data?.[next.key], value: '' }));
+        }
+        return pre;
+      }, [] as any);
+      if (userInfo.value?.identities?.length) {
+        threeAccountData.value.forEach((item) => {
+          userInfo.value?.identities.forEach((it: IObject) => {
+            if (item.key === it.provider) {
+              item.value = it.username;
+              Object.assign(item, it);
+            }
+          });
+        });
+      }
+    }
+  );
+};
 const initData = () => {
   accountData.value.forEach((item: IObject) => {
     if (item.key in userInfo.value) {
       item.value = userInfo.value[item.key];
     }
   });
+  queryThirdList();
 };
 onMounted(() => {
   store.initUserInfo(getCommunityParams(true));
@@ -246,6 +299,26 @@ const config: AllAccountDialogConfig = {
       unbindAccountFuc(data);
     },
   },
+  unbind_github: {
+    key: 'unbind_github',
+    account_type: 'github',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
+    content: 'SURE_UNBIND',
+    confirm: (data: BindAccountParams) => {
+      unbindSocial(data.account_type);
+    },
+  },
+  unbind_gitee: {
+    key: 'unbind_gitee',
+    account_type: 'gitee',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
+    content: 'SURE_UNBIND',
+    confirm: (data: BindAccountParams) => {
+      unbindSocial(data.account_type);
+    },
+  },
 };
 const showDialog = (str: string, key: string) => {
   if (!userInfo.value.phone && str === 'unbind') {
@@ -259,6 +332,23 @@ const showDialog = (str: string, key: string) => {
 };
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
+};
+
+const bindSocial = (data: any) => {
+  thirdParty.bind(data);
+};
+const unbindSocial = (provider: string) => {
+  const param = {
+    provider,
+  };
+  unbindByThirdparty(param).then(() => {
+    ElMessage.success({
+      showClose: true,
+      message: i18n.value.UNBIND_SUCCESS,
+    });
+    vilible.value = false;
+    store.initUserInfo(getCommunityParams(true));
+  });
 };
 </script>
 <template>
@@ -310,6 +400,38 @@ const goToTree = () => {
                 class="opt-btn default-btn"
                 @click="showDialog('bind', item.key)"
               >
+                {{ i18n.BIND }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="box_m">
+          <div class="box_m-title">{{ i18n.THIRD_ACCOUNT }}</div>
+          <div
+            v-for="(item, index) in threeAccountData"
+            :key="item.key"
+            class="opt-item"
+            :class="{ itemGap: index }"
+          >
+            <div class="center">
+              <OIcon class="icon">
+                <component :is="item.icon"></component>
+              </OIcon>
+              <span style="font-size: 14px">{{ item.label }}</span>
+              <span v-if="item.value">
+                ：
+                <span class="opt-label">{{ item.value }}</span>
+              </span>
+            </div>
+            <div class="center">
+              <div
+                v-if="item.value"
+                class="opt-btn grey-btn"
+                @click="showDialog('unbind', item.key)"
+              >
+                {{ i18n.UNBIND_EMAIL }}
+              </div>
+              <div v-else class="opt-btn default-btn" @click="bindSocial(item)">
                 {{ i18n.BIND }}
               </div>
             </div>

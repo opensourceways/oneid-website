@@ -192,4 +192,7 @@ export default {
   MIDDLE: 'Middle',
   STRONG: 'Strong',
   VERY_STRONG: 'Very strong',
+  BACK: 'Back',
+  BIND_EXIST_ACCOUNT: 'Bind to an existing account',
+  CREATE_ACCOUNT: 'Create an account',
 };

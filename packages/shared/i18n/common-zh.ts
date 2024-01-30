@@ -188,4 +188,7 @@ export default {
   MIDDLE: '一般',
   STRONG: '强',
   VERY_STRONG: '非常强',
+  BACK: '返回',
+  BIND_EXIST_ACCOUNT: '绑定到已有账号',
+  CREATE_ACCOUNT: '新建账号',
 };

@@ -4,6 +4,7 @@ import TheLogin from '@/views/user-login/TheLogin.vue';
 import TheLogout from '@/views/user-login/TheLogout.vue';
 import TheRegister from '@/views/user-login/TheRegister.vue';
 import TheResetPwd from '@/views/user-login/TheResetPwd.vue';
+import TheThirdParty from 'shared/components/TheThirdParty.vue';
 import NotFound from 'shared/components/NotFound.vue';
 import { useCommon } from 'shared/stores/common';
 import { LoginParams } from 'shared/@types/interface';
@@ -36,6 +37,11 @@ export const routes = [
     path: '/register',
     name: 'register',
     component: TheRegister,
+  },
+  {
+    path: '/third-party/:id',
+    name: 'third-party',
+    component: TheThirdParty,
   },
   {
     path: '/notfound',
