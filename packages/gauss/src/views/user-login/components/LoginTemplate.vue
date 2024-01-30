@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
-import { PropType, toRefs } from 'vue';
+import ThirdLoginBtns from 'shared/components/ThirdLoginBtns.vue';
+import { PropType, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
 
 type TYPE = 'login' | 'register';
@@ -12,6 +13,7 @@ const props = defineProps({
   },
 });
 
+const loginForm = ref();
 const emit = defineEmits(['submit']);
 
 const { type } = toRefs(props);
@@ -19,6 +21,15 @@ const i18n = useI18n();
 
 const submit = (form: any) => {
   emit('submit', form);
+};
+const thirdLogin = (fn: any) => {
+  loginForm.value?.validator('policy').subscribe((valid: boolean) => {
+    if (valid) {
+      fn();
+    } else {
+      return false;
+    }
+  });
 };
 </script>
 <template>
@@ -30,20 +41,14 @@ const submit = (form: any) => {
       <slot name="switch"></slot>
     </template>
     <template #body>
-      <LoginForm :type="type" @submit="submit">
+      <LoginForm ref="loginForm" :type="type" @submit="submit">
         <template #btn>
           <slot name="btn"></slot>
         </template>
       </LoginForm>
     </template>
+    <template v-if="type === 'login'" #footer>
+      <ThirdLoginBtns @third-login="thirdLogin"></ThirdLoginBtns>
+    </template>
   </ContentTemplate>
 </template>
-<style lang="scss" scoped>
-.gap {
-  margin-left: var(--o-spacing-h2);
-}
-.icon {
-  font-size: var(--o-font-size-h3);
-  cursor: pointer;
-}
-</style>
