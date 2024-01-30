@@ -12,6 +12,7 @@ export function accountExists(params: any) {
     .get(url, {
       global: true,
       $doException: true,
+      $ignoreLoading: true,
       params,
       ...getHeaderConfig(),
     })
@@ -25,7 +26,7 @@ export function checkLoginAccount(params: any) {
   const url = '/oneid/captcha/checkLogin';
 
   return request
-    .get(url, { global: true, $doException: true, params, ...getHeaderConfig() })
+    .get(url, { global: true, $ignoreLoading: true, params, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -36,7 +37,7 @@ export function sendCodeCaptcha(params: any) {
   const url = '/oneid/captcha/sendCode';
 
   return request
-    .get(url, { global: true, $doException: true, params, ...getHeaderConfig() })
+    .get(url, { global: true, $ignoreLoading: true, params, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -64,7 +65,7 @@ export function accountLoginPost(params: any) {
 export function queryCourse(params: object) {
   const url = '/oneid/user/permission';
   return request
-    .get(url, { params, $doException: true, global: true, ...getHeaderConfig() })
+    .get(url, { params, global: true, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 /**
@@ -73,7 +74,7 @@ export function queryCourse(params: object) {
 export function refreshUser(params: object) {
   const url = '/oneid/user/refresh';
   return request
-    .get(url, { params, global: true, $doException: true, ...getHeaderConfig() })
+    .get(url, { params, global: true, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 /**
@@ -82,7 +83,7 @@ export function refreshUser(params: object) {
 export function queryToken(params: object) {
   const url = '/oneid/token/apply';
   return request
-    .get(url, { params, global: true, $doException: true, ...getHeaderConfig() })
+    .get(url, { params, global: true, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 /**
@@ -91,7 +92,7 @@ export function queryToken(params: object) {
 export function queryIDToken(params: any) {
   const url = '/oneid/logout';
   return request
-    .get(url, { params, $doException: true, ...getHeaderConfig() })
+    .get(url, { params, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -100,7 +101,7 @@ export function queryIDToken(params: any) {
  */
 export function reqGet(data: any) {
   const url = '/oneid/captcha/get';
-  return request.post(url, data, { $doException: true, ...getHeaderConfig() }).then((res: AxiosResponse) => res.data);
+  return request.post(url, data, { $doException: true, $ignoreLoading: true, ...getHeaderConfig() }).then((res: AxiosResponse) => res.data);
 }
 
 /**
@@ -119,7 +120,7 @@ export function reqCheck(data: any) {
 export function appVerify(params: any) {
   const url = '/oneid/app/verify';
   return request
-    .get(url, { params, $doException: true, global: true, ...getHeaderConfig() })
+    .get(url, { params, global: true, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -160,7 +161,7 @@ export function providerLink(params: any) {
 export function providerRegister(params: any) {
   const url = '/oneid/provider/register';
   return request
-    .get(url, { params, $doException: true, ...getHeaderConfig() })
+    .get(url, { params, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -170,7 +171,7 @@ export function providerRegister(params: any) {
 export function getPublicKey(params: any) {
   const url = '/oneid/public/key';
   return request
-    .get(url, { params, $doException: true, ...getHeaderConfig() })
+    .get(url, { params, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
