@@ -169,7 +169,7 @@ const cancelPad = () => {
     <template #footer>
       <div class="footer">
         <OButton size="small" @click="cancelPad">{{ i18n.CANCEL }}</OButton>
-        <OButton size="small" type="primary" @click="putUser(formRef)">{{
+        <OButton size="small" @click="putUser(formRef)">{{
           i18n.CONFIRM
         }}</OButton>
       </div>
