@@ -64,13 +64,14 @@ const close = () => {
 };
 const agreeUrl = `${
   import.meta.env.VITE_OPENEULER_WEBSITE
-}/zh/other/search/agreement/`;
+}/zh/agreement/search/`;
 </script>
 <template>
   <el-dialog
     v-model="modelValue"
     :draggable="true"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
     :width="getFitWidth(540)"
     :before-close="close"
     :show-close="false"
@@ -81,9 +82,9 @@ const agreeUrl = `${
     </template>
     <div class="main-content">
       <div>
-        终止openEuler社区搜索服务
+        终止
         <a :href="agreeUrl" rel="noopener noreferrer" target="_blank">
-          用户协议
+          《openEuler社区搜索服务用户协议》
         </a>
       </div>
       <div class="delete-tips">{{ i18n.DELETE_ENTER }}</div>

@@ -53,6 +53,7 @@ const close = () => {
     v-model="modelValue"
     :draggable="true"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
     :width="getFitWidth(540)"
     :before-close="close"
     :show-close="false"
