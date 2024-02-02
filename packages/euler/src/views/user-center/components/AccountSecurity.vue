@@ -36,7 +36,7 @@ const agreeVilible = ref(false);
 
 const agreeUrl = `${
   import.meta.env.VITE_OPENEULER_WEBSITE
-}/zh/other/search/agreement/`;
+}/zh/agreement/search/`;
 </script>
 <template>
   <ContentBox>
@@ -55,9 +55,9 @@ const agreeUrl = `${
         <div class="tips">
           <div class="tips-title">终止协议</div>
           <div class="tips-content">
-            终止openEuler社区搜索服务
+            终止
             <a :href="agreeUrl" rel="noopener noreferrer" target="_blank">
-              用户协议
+              《openEuler社区搜索服务用户协议》
             </a>
           </div>
         </div>

@@ -10,7 +10,7 @@ export function queryUser(params: any) {
   const url = '/oneid/personal/center/user';
 
   return request
-    .get(url, { global: true, params, ...getHeaderConfig() })
+    .get(url, { global: true, params, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -48,7 +48,7 @@ export function sendCode(params: any) {
   const url = '/oneid/sendcode';
 
   return request
-    .get(url, { global: true, params, ...getHeaderConfig() })
+    .get(url, { global: true, params, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -76,6 +76,7 @@ export function sendUnbindCode(params: any) {
     .get(url, {
       global: true,
       params: param,
+      $ignoreLoading: true,
       ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
@@ -88,7 +89,7 @@ export function modifyAccount(params: any) {
   const url = '/oneid/update/account';
 
   return request
-    .get(url, { global: true, params, ...getHeaderConfig() })
+    .get(url, { global: true, params, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -112,6 +113,7 @@ export function bindAccount(params: any) {
     .get(url, {
       global: true,
       params: param,
+      $ignoreLoading: true,
       ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
@@ -137,6 +139,7 @@ export function unbindAccount(params: any) {
     .get(url, {
       global: true,
       params: param,
+      $ignoreLoading: true,
       ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
@@ -151,6 +154,7 @@ export function linkAccount() {
   return request
     .get(url, {
       global: true,
+      $ignoreLoading: true,
       ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
@@ -165,6 +169,7 @@ export function unlinkAccount(params: any) {
     .get(url, {
       global: true,
       params,
+      $ignoreLoading: true,
       ...getHeaderConfig(),
     })
     .then((res: AxiosResponse) => res.data);
@@ -178,7 +183,7 @@ export function deleteAccount(
   const url = '/oneid/delete/user';
 
   return request
-    .get(url, { global: true, params, ...getHeaderConfig() })
+    .get(url, { global: true, params, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
