@@ -74,16 +74,16 @@ const isNotPadUserinfo = (data: any): boolean => {
       hasEmail = Boolean(emailExist || email);
     }
   }
-  if (!name || !hasEmail || !hasPhone) {
+  if (
+    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
+  ) {
+    privacyVisible.value = true;
+    return false;
+  } else if (!name || !hasEmail || !hasPhone) {
     padUserinfo.username = name;
     padUserinfo.emailExist = hasEmail;
     padUserinfo.phoneExist = hasPhone;
     visible.value = true;
-    return false;
-  } else if (
-    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
-  ) {
-    privacyVisible.value = true;
     return false;
   }
   return true;
