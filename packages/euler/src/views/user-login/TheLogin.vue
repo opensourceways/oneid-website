@@ -189,6 +189,16 @@ const cancelPad = () => {
     doSuccess();
   }
 };
+
+const agreePrivacy = () => {
+  isLogined().then((bool) => {
+    if (bool) {
+      if (isNotPadUserinfo(bool)) {
+        haveLoggedIn();
+      }
+    }
+  });
+}
 const showSwitch = computed(
   () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
 );
@@ -222,7 +232,7 @@ const showSwitch = computed(
   ></PadAccount>
   <AgreePrivacy
     v-model="privacyVisible"
-    @success="doSuccess"
+    @success="agreePrivacy"
     @cancel="logout"
   ></AgreePrivacy>
   <Verify
