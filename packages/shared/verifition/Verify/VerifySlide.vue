@@ -265,8 +265,9 @@ export default {
           openeuler: '#00288d',
           opengauss: '#6e1be8',
           mindspore: '#0080f2',
+          openmerlin: '#121212',
         };
-        const color = colors[import.meta.env?.VITE_COMMUNITY || 'openeuler'];
+        const color = colors[import.meta.env?.VITE_IS_OPENMERLIN ? 'openmerlin' : import.meta.env?.VITE_COMMUNITY];
         text.value = '';
         moveBlockBackgroundColor.value = color;
         leftBarBorderColor.value = color;

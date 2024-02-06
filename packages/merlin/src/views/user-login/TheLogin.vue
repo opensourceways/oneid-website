@@ -22,6 +22,7 @@ import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { getVerifyImgSize } from 'shared/utils/utils';
 import Verify from 'shared/verifition/Verify.vue';
 import PadAccount from 'shared/components/PadAccount.vue';
+import AgreePrivacy from 'shared/components/AgreePrivacy.vue';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
@@ -36,7 +37,7 @@ const goRegister = () => {
 };
 const verify = ref();
 const { loginParams } = useCommonData();
-
+const privacyVisible = ref(false);
 const visible = ref(false);
 // 控制补全框内容
 const padUserinfo = reactive({
@@ -45,11 +46,16 @@ const padUserinfo = reactive({
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  const { username } = data || {};
+  const { username, oneidPrivacyAccepted = '', } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
   if (!name) {
     padUserinfo.username = name;
     visible.value = true;
+    return false;
+  } else if (
+    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
+  ) {
+    privacyVisible.value = true;
     return false;
   }
   return true;
@@ -171,6 +177,11 @@ const cancelPad = () => {
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
+  <AgreePrivacy
+    v-model="privacyVisible"
+    @success="doSuccess"
+    @cancel="cancelPad"
+  ></AgreePrivacy>
   <Verify
     ref="verify"
     mode="pop"
