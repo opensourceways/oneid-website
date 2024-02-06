@@ -36,11 +36,6 @@ export default defineConfig({
         secure: false,
         changeOrigin: true,
       },
-      '/openmerlin/': {
-        target: 'raw.githubusercontent.com/',
-        secure: false,
-        changeOrigin: true,
-      },
     },
   },
 });
