@@ -71,8 +71,8 @@ watch(
   (value) => {
     if (value) {
       if (import.meta.env?.VITE_IS_OPENMERLIN) {
-        privacyData.value = merlinprivacy;
-        legalData.value = merlinlegal;
+        privacyData.value = useMarkdown().mkit(merlinprivacy);
+        legalData.value = useMarkdown().mkit(merlinlegal);
       } else {
         getContentFromFileUrl(
           import.meta.env?.VITE_ONEID_PRIVACY_URL,
