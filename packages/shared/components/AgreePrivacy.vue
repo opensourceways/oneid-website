@@ -69,13 +69,13 @@ watch(
   (value) => {
     if (value) {
       getContentFromFileUrl(
-        '/openeuler/openEuler-portal/raw/master/app/zh/other/privacy/index.md',
+        import.meta.env?.VITE_ONEID_PRIVACY_URL,
         (val) => {
           privacyData.value = useMarkdown().mkit(val);
         }
       );
       getContentFromFileUrl(
-        '/openeuler/openEuler-portal/raw/master/app/zh/other/legal/index.md',
+        import.meta.env?.VITE_ONEID_LEGAL_URL,
         (val) => {
           legalData.value = useMarkdown().mkit(val);
         }

@@ -4,11 +4,13 @@ import App from './App.vue';
 import { router } from './router';
 import ElementPlus from 'element-plus';
 import OpenDesign from 'opendesign';
+import VueDOMPurifyHTML from 'vue-dompurify-html';
 import '@/shared/styles/index.scss';
 import 'shared/styles/index.scss';
 
 const app = createApp(App);
 
+app.use(VueDOMPurifyHTML);
 app.use(router);
 app.use(createPinia());
 app.use(ElementPlus);

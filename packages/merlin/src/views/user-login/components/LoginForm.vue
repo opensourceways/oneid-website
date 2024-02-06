@@ -210,7 +210,7 @@ const changeAccount = (formEl: FormInstance | undefined) => {
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
-  const url = `${origin}/${lang.value}/other/${type}`;
+  const url = `${origin}/${type}/`;
   window.open(url, '_blank');
 };
 const accountPlaceholder = computed(() => {
@@ -279,7 +279,7 @@ const accountPlaceholder = computed(() => {
         :show-password="type === 'register'"
       />
     </el-form-item>
-    <el-form-item prop="policy" :rules="policyRules">
+    <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
       <div class="checkbox">
         <OCheckboxGroup
           v-model="form.policy"
