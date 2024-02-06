@@ -279,7 +279,7 @@ const accountPlaceholder = computed(() => {
         :show-password="type === 'register'"
       />
     </el-form-item>
-    <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
+    <el-form-item prop="policy" :rules="policyRules">
       <div class="checkbox">
         <OCheckboxGroup
           v-model="form.policy"

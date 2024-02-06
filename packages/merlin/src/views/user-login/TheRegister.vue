@@ -25,7 +25,8 @@ const register = async (form: any) => {
     code: form.code,
     client_id: loginParams.value.client_id,
     community: import.meta.env?.VITE_COMMUNITY,
-    oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
+    // oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
+    accept_term: 0,
   };
   if (form.password) {
     const password = await getRsaEncryptWord(form.password);
