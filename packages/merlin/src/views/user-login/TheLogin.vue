@@ -52,11 +52,11 @@ const isNotPadUserinfo = (data: any): boolean => {
     padUserinfo.username = name;
     visible.value = true;
     return false;
-  // } else if (
-  //   oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
-  // ) {
-  //   privacyVisible.value = true;
-  //   return false;
+  } else if (
+    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
+  ) {
+    privacyVisible.value = true;
+    return false;
   }
   return true;
 };
