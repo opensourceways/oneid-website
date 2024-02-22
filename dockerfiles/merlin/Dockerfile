@@ -13,7 +13,6 @@ FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.24.0-22.03
 COPY --from=Builder /home/modelfoundry-usercenter/web/dist/merlin /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
 COPY ./deploy/merlin/nginx.conf /etc/nginx/nginx.conf
-RUN cat /etc/nginx/nginx.conf
 
 ENV RUN_USER nginx
 ENV RUN_GROUP nginx
