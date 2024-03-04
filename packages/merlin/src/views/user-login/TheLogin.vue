@@ -11,7 +11,7 @@ import {
   logout,
   setLogoutSession,
 } from 'shared/utils/login';
-import { ElMessage } from 'element-plus';
+import { OLink, useMessage } from '@opensig/opendesign';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
@@ -21,11 +21,12 @@ import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { getVerifyImgSize } from 'shared/utils/utils';
 import Verify from 'shared/verifition/Verify.vue';
-import PadAccount from 'shared/components/PadAccount.vue';
-import AgreePrivacy from 'shared/components/AgreePrivacy.vue';
+import PadAccount from '@/components/PadAccount.vue';
+import AgreePrivacy from '@/components/AgreePrivacy.vue';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
+const message = useMessage();
 
 const router = useRouter();
 const route = useRoute();
@@ -81,9 +82,8 @@ onMounted(() => {
 
 // 登录成功提示
 const doSuccess = () => {
-  ElMessage.success({
-    showClose: true,
-    message: i18n.value.LOGIN_SUCCESS,
+  message.success({
+    content: i18n.value.LOGIN_SUCCESS,
   });
   setLogoutSession();
   haveLoggedIn();
@@ -166,7 +166,7 @@ const cancelPad = () => {
     <template #switch>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
-      <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
+      <OLink @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ i18n.LOGIN }} </template>

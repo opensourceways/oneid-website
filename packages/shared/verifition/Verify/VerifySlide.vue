@@ -102,6 +102,7 @@ import {
   onMounted,
   reactive,
   ref,
+  shallowRef,
   watch,
   nextTick,
   toRefs,
@@ -193,7 +194,7 @@ export default {
       moveBlockBackgroundColor = ref(undefined),
       leftBarBorderColor = ref(undefined),
       iconColor = ref(undefined),
-      iconComponent = ref(IconRight),
+      iconComponent = shallowRef(IconRight),
       status = ref(false), // 鼠标状态
       isEnd = ref(false), // 是够验证完成
       showRefresh = ref(true),
