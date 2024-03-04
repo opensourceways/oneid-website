@@ -8,6 +8,6 @@
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--o-color-bg1);
+  background-color: var(--o-color-fill1);
 }
 </style>

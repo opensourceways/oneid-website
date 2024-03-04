@@ -19,9 +19,9 @@
   .card {
     width: 420px;
     margin: 0 auto;
-    padding: var(--o-spacing-h2);
-    background-color: var(--o-color-text2);
-    box-shadow: var(--o-shadow-l1);
+    padding: 40px;
+    background-color: var(--o-color-fill2);
+    box-shadow: var(--o-shadow-1);
   }
 }
 </style>

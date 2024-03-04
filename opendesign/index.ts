@@ -4,7 +4,6 @@ import './style/variable.scss';
 
 import { Button } from './button';
 import { Icon } from './icon';
-import { Tabs, TabPane } from './tabs';
 import { Input } from './input';
 import { Checkbox, CheckboxGroup } from './checkbox';
 import { Switch } from './switch';
@@ -15,8 +14,6 @@ const components = [
   CheckboxGroup,
   Icon,
   Input,
-  Tabs,
-  TabPane,
   Switch,
 ];
 export default {

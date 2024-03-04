@@ -7,6 +7,7 @@ import { onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { getUrlByParams } from 'shared/utils/utils';
 import { useCommonData } from 'shared/stores/common';
+import { OIcon } from '@opensig/opendesign';
 
 type TYPE = 'login' | 'register';
 const props = defineProps({
@@ -146,14 +147,14 @@ onUnmounted(() => {
 </template>
 <style lang="scss" scoped>
 .gap {
-  margin-left: var(--o-spacing-h2);
+  margin-left: 40px;
 }
 .icon {
-  font-size: var(--o-font-size-h3);
+  font-size: 36px;
   cursor: pointer;
 }
 .app-footer {
-  padding-top: var(--o-spacing-h4);
+  padding-top: 24px;
   .divider {
     display: grid;
     grid-template-columns: auto max-content auto;
@@ -161,18 +162,17 @@ onUnmounted(() => {
     align-items: center;
     .line {
       width: 100%;
-      border-top: 1px solid var(--o-color-division1);
+      border-top: 1px solid var(--o-color-info4);
     }
     .other {
-      padding-left: var(--o-spacing-h5);
-      padding-right: var(--o-spacing-h5);
-      font-size: var(--o-font-size-h8);
-      line-height: var(--o-line-height-h8);
-      color: var(--o-color-text4);
+      padding-left: 16px;
+      padding-right: 16px;
+      @include text1;
+      color: var(--o-color-info2);
     }
   }
   .three-parts {
-    padding-top: var(--o-spacing-h4);
+    padding-top: 24px;
     display: flex;
     justify-content: center;
   }

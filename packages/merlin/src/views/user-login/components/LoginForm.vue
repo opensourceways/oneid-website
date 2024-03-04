@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import CountdownButton from 'shared/components/CountdownButton.vue';
-import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
+import CountdownButton from '@/components/CountdownButton.vue';
+import { FormInstance, FormItemRule } from 'element-plus';
 import { PropType, reactive, ref, toRefs, computed } from 'vue';
 import { useI18n } from 'shared/i18n';
+import { OInput, OButton, OCheckbox, OLink, useMessage } from '@opensig/opendesign';
 import {
   formValidator,
   doValidatorForm,
@@ -13,8 +14,6 @@ import {
 } from 'shared/utils/utils';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
-import LoginTabs from 'shared/components/LoginTabs.vue';
-import PwdInput from 'shared/components/PwdInput.vue';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 
@@ -25,6 +24,8 @@ const props = defineProps({
     default: 'login',
   },
 });
+
+const message = useMessage();
 
 const formRef = ref<FormInstance>();
 
@@ -84,9 +85,8 @@ const verifySuccess = (data: any) => {
   sendCodeCaptcha(param).then(() => {
     disableCode.value = true;
     disableCodeInput.value = false;
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.SEND_SUCCESS,
+    message.success({
+      content: i18n.value.SEND_SUCCESS,
     });
   });
 };
@@ -196,6 +196,8 @@ const submit = (formEl: FormInstance | undefined) => {
 const blur = (formEl: FormInstance | undefined, field: string) => {
   if (type.value === 'register') {
     asyncBlur(formEl, field);
+  } else {
+    formValidator(formEl, field).subscribe();
   }
 };
 
@@ -257,49 +259,35 @@ const accountPlaceholder = computed(() => {
       <div class="code">
         <OInput
           v-model.trim="form.code"
+          @blur="blur(formRef, 'code')"
           :placeholder="i18n.ENTER_RECEIVED_CODE"
           :disabled="type === 'register' ? false : disableCodeInput"
         />
         <CountdownButton
           v-model="disableCode"
-          class="btn"
-          size="small"
           @click="getcode(formRef)"
         />
       </div>
     </el-form-item>
-    <el-form-item
-      v-if="selectLoginType === 'password'"
-      prop="password"
-      :rules="type === 'register' ? passwordRules : rules"
-    >
-      <PwdInput
-        v-model="form.password"
-        :placeholder="i18n.INTER_PWD"
-        :show-password="type === 'register'"
-      />
-    </el-form-item>
     <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
       <div class="checkbox">
-        <OCheckboxGroup
-          v-model="form.policy"
-          @change="doValidatorForm(formRef, 'policy')"
-        >
-          <OCheckbox value="1"></OCheckbox>
-        </OCheckboxGroup>
+        <OCheckbox 
+            value="1" v-model="form.policy"
+            @change="doValidatorForm(formRef, 'policy')">
+        </OCheckbox>
         <span>
           <span class="cursor" @click="changeCheckBox(formRef)">
             {{ i18n.READ_ADN_AGREE }}
           </span>
           <span>&nbsp;</span>
-          <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
+          <OLink @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
           {{ i18n.AND }}
-          <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
+          <OLink @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
         </span>
       </div>
     </el-form-item>
     <el-form-item>
-      <OButton type="primary" class="login-btn" @click="submit(formRef)">
+      <OButton color="primary" variant="solid" size="large" class="login-btn" @click="submit(formRef)">
         <slot name="btn"> {{ i18n.LOGIN }} </slot>
       </OButton>
     </el-form-item>
@@ -313,17 +301,17 @@ const accountPlaceholder = computed(() => {
   ></Verify>
 </template>
 <style lang="scss" scoped>
+.o-input {
+  width: 100%;
+}
 .code {
   display: grid;
   grid-template-columns: auto max-content;
   width: 100%;
-  grid-gap: var(--o-spacing-h9);
+  grid-gap: 6px;
 }
 .cursor {
   cursor: pointer;
-}
-.btn {
-  height: 38px;
 }
 .login-btn {
   width: 100%;
@@ -333,20 +321,10 @@ const accountPlaceholder = computed(() => {
   display: grid;
   grid-template-columns: auto auto;
   align-items: start;
-  color: var(--o-color-text1);
-  font-size: var(--o-font-size-text);
-  line-height: var(--o-line-height-text);
+  color: var(--o-color-info1);
+  @include tip1;
   .o-checkbox-group {
     padding-top: 3px;
-  }
-}
-:deep(.el-form-item.is-error .el-input__wrapper) {
-  box-shadow: 0 0 0 1px var(--o-color-error1) inset;
-}
-.el-form-item {
-  margin-bottom: 28px;
-  @media (max-width: 1100px) {
-    margin-bottom: 40px;
   }
 }
 </style>

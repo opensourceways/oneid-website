@@ -29,9 +29,9 @@
 .main {
   width: 420px;
   margin: 0 auto;
-  padding: var(--o-spacing-h2);
-  background-color: var(--o-color-text2);
-  box-shadow: var(--o-shadow-l1);
+  padding: 40px;
+  background-color: var(--o-color-fill2);
+  box-shadow: var(--o-shadow-1);
 }
 
 .app-header {
@@ -39,18 +39,16 @@
   justify-content: center;
 
   .header-title {
-    font-size: var(--o-font-size-h5);
-    line-height: var(--o-line-height-h5);
-    color: var(--o-color-text1);
+    @include h2;
+    color: var(--o-color-info1);
   }
 }
 .app-body {
-  padding-top: var(--o-spacing-h4);
+  padding-top: 24px;
 }
 .switch {
   display: flex;
   justify-content: end;
-  font-size: var(--o-font-size-text);
-  line-height: var(--o-line-height-text);
+  @include tip1;
 }
 </style>
