@@ -67,11 +67,6 @@ onMounted(() => {
         }
       } else if (!getLogoutSession()) {
         setLogoutSession(true);
-        window.location.href = `${
-          import.meta.env?.VITE_LOGIN_USERPOOL
-        }/login/profile/logout?app_id=${
-          loginParams.value.client_id
-        }&redirect_uri=${location.href.replaceAll('&', '%26')}`;
       }
     });
   });
