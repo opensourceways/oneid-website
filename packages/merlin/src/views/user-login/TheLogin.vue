@@ -57,7 +57,7 @@ const isNotPadUserinfo = (data: any): boolean => {
     oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
   ) {
     privacyVisible.value = true;
-    return true;
+    return false;
   }
   return true;
 };
@@ -172,11 +172,11 @@ const cancelPad = () => {
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
-  <!-- <AgreePrivacy
+  <AgreePrivacy
     v-model="privacyVisible"
     @success="doSuccess"
     @cancel="cancelPad"
-  ></AgreePrivacy> -->
+  ></AgreePrivacy>
   <Verify
     ref="verify"
     mode="pop"
