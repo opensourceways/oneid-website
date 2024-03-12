@@ -48,7 +48,7 @@
 }
 .switch {
   display: flex;
-  justify-content: end;
+  justify-content: center;
   @include tip1;
 }
 </style>
