@@ -256,18 +256,20 @@ const accountPlaceholder = computed(() => {
       prop="code"
       :rules="rules"
     >
-      <div class="code">
-        <OInput
-          v-model.trim="form.code"
-          @blur="blur(formRef, 'code')"
-          :placeholder="i18n.ENTER_RECEIVED_CODE"
-          :disabled="type === 'register' ? false : disableCodeInput"
-        />
-        <CountdownButton
-          v-model="disableCode"
-          @click="getcode(formRef)"
-        />
-      </div>
+      <OInput
+        v-model.trim="form.code"
+        @blur="blur(formRef, 'code')"
+        :placeholder="i18n.ENTER_RECEIVED_CODE"
+        :disabled="type === 'register' ? false : disableCodeInput"
+      >
+        <template #suffix>
+          <CountdownButton
+            v-model="disableCode"
+            @click="getcode(formRef)"
+            variant="text"
+          />
+        </template>
+      </OInput>
     </el-form-item>
     <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
       <div class="checkbox">
@@ -303,12 +305,6 @@ const accountPlaceholder = computed(() => {
 <style lang="scss" scoped>
 .o-input {
   width: 100%;
-}
-.code {
-  display: grid;
-  grid-template-columns: auto max-content;
-  width: 100%;
-  grid-gap: 6px;
 }
 .cursor {
   cursor: pointer;
