@@ -93,7 +93,11 @@ export function logout(
 
 // 跳转首页
 export function goToHome() {
-  window.location.href = '/';
+  if (import.meta.env?.VITE_IS_OPENMERLIN) {
+    window.location.reload();
+  } else {
+    window.location.href = '/';
+  }
 }
 
 export function showGuard() {
