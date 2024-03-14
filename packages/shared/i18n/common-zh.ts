@@ -191,4 +191,7 @@ export default {
   BACK: '返回',
   BIND_EXIST_ACCOUNT: '绑定到已有账号',
   CREATE_ACCOUNT: '新建账号',
+  CANCEL_SIGN: '取消签署',
+  CANCEL_SIGN_OF: '取消签署',
+  CANCEL_SIGN_OF_LOGOUT: '，确认后将退出登录',
 };

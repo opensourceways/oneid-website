@@ -5,8 +5,6 @@ import { FormInstance, FormItemRule } from 'element-plus';
 import { formValidator, getFitWidth, doValidatorForm } from '../utils/utils';
 import { useMarkdown } from '../utils/useMarkdown';
 import { modifyUser } from '../api/api-center';
-import merlinlegal from '../assets/markdown/legal.md?raw'
-import merlinprivacy from '../assets/markdown/privacy.md?raw'
 
 const props = defineProps({
   modelValue: {
@@ -70,23 +68,18 @@ watch(
   () => modelValue.value,
   (value) => {
     if (value) {
-      if (import.meta.env?.VITE_IS_OPENMERLIN) {
-        privacyData.value = useMarkdown().mkit(merlinprivacy);
-        legalData.value = useMarkdown().mkit(merlinlegal);
-      } else {
-        getContentFromFileUrl(
-          import.meta.env?.VITE_ONEID_PRIVACY_URL,
-          (val) => {
-            privacyData.value = useMarkdown().mkit(val);
-          }
-        );
-        getContentFromFileUrl(
-          import.meta.env?.VITE_ONEID_LEGAL_URL,
-          (val) => {
-            legalData.value = useMarkdown().mkit(val);
-          }
-        );
-      }
+      getContentFromFileUrl(
+        import.meta.env?.VITE_ONEID_PRIVACY_URL,
+        (val) => {
+          privacyData.value = useMarkdown().mkit(val);
+        }
+      );
+      getContentFromFileUrl(
+        import.meta.env?.VITE_ONEID_LEGAL_URL,
+        (val) => {
+          legalData.value = useMarkdown().mkit(val);
+        }
+      );
     }
   },
   {

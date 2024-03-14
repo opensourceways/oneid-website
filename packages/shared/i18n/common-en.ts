@@ -195,4 +195,7 @@ export default {
   BACK: 'Back',
   BIND_EXIST_ACCOUNT: 'Bind to an existing account',
   CREATE_ACCOUNT: 'Create an account',
+  CANCEL_SIGN: 'Cancel signature',
+  CANCEL_SIGN_OF: 'Cancel the signing of',
+  CANCEL_SIGN_OF_LOGOUT: '. After confirmation, you will log out.',
 };

@@ -4,7 +4,7 @@ import { useI18n } from 'shared/i18n';
 import ContentBox from './ContentBox.vue';
 import { deleteAccount } from 'shared/api/api-center';
 import { ElMessage } from 'element-plus';
-import { saveUserAuth, useStoreData, refreshInfo } from 'shared/utils/login';
+import { saveUserAuth, useStoreData, refreshInfo, logout } from 'shared/utils/login';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
@@ -12,6 +12,7 @@ import { useCommon, useCommonData } from 'shared/stores/common';
 import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
 import ModifyPwd from 'shared/components/ModifyPwd.vue';
 import DeleteAgreeModal from 'shared/components/DeleteAgreeModal.vue';
+import DeletePrivacyModal from 'shared/components/DeletePrivacyModal.vue';
 const store = useCommon();
 const router = useRouter();
 const i18n = useI18n();
@@ -38,12 +39,19 @@ const confirm = () => {
 
 const pwdVilible = ref(false);
 const agreeVilible = ref(false);
+const privacyVilible = ref(false);
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
 };
 const agreeUrl = `${
   import.meta.env.VITE_OPENEULER_WEBSITE
 }/zh/agreement/search/`;
+// 隐私政策、法律声明
+const goToOtherPage = (type: string) => {
+  const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
+  const url = `${origin}/${lang.value}/other/${type}`;
+  window.open(url, '_blank');
+};
 </script>
 <template>
   <AppHeader />
@@ -81,6 +89,20 @@ const agreeUrl = `${
           </div>
           <div class="btn gap">
             <OButton size="small" @click="agreeVilible = true"> 终止 </OButton>
+          </div>
+        </template>
+        <template v-if="guardAuthClient.oneidPrivacyAccepted">
+          <div class="tips">
+            <div class="tips-title">{{ i18n.CANCEL_SIGN }}</div>
+            <div class="tips-content">
+              {{ i18n.CANCEL_SIGN_OF }}
+              <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
+              {{ i18n.AND }}
+              <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
+            </div>
+          </div>
+          <div class="btn gap">
+            <OButton size="small" @click="privacyVilible = true"> {{ i18n.CANCEL_SIGN }} </OButton>
           </div>
         </template>
         <div class="tips red">

@@ -6,8 +6,9 @@ import { deleteAccount } from 'shared/api/api-center';
 import ModifyPwd from 'shared/components/ModifyPwd.vue';
 import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
 import DeleteAgreeModal from 'shared/components/DeleteAgreeModal.vue';
+import DeletePrivacyModal from 'shared/components/DeletePrivacyModal.vue';
 import { ElMessage } from 'element-plus';
-import { saveUserAuth, useStoreData, refreshInfo } from 'shared/utils/login';
+import { saveUserAuth, useStoreData, refreshInfo, logout } from 'shared/utils/login';
 import { useCommonData } from 'shared/stores/common';
 
 const i18n = useI18n();
@@ -33,10 +34,17 @@ const confirm = () => {
 
 const pwdVilible = ref(false);
 const agreeVilible = ref(false);
+const privacyVilible = ref(false);
 
 const agreeUrl = `${
   import.meta.env.VITE_OPENEULER_WEBSITE
 }/zh/agreement/search/`;
+// 隐私政策、法律声明
+const goToOtherPage = (type: string) => {
+  const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
+  const url = `${origin}/${lang.value}/other/${type}`;
+  window.open(url, '_blank');
+};
 </script>
 <template>
   <ContentBox>
@@ -65,6 +73,20 @@ const agreeUrl = `${
           终止
         </OButton>
       </template>
+      <template v-if="guardAuthClient.oneidPrivacyAccepted">
+        <div class="tips">
+          <div class="tips-title">{{ i18n.CANCEL_SIGN }}</div>
+          <div class="tips-content">
+            {{ i18n.CANCEL_SIGN_OF }}
+            <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
+            {{ i18n.AND }}
+            <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
+          </div>
+        </div>
+        <OButton size="small" class="btn gap" @click="privacyVilible = true">
+          {{ i18n.CANCEL_SIGN }}
+        </OButton>
+      </template>
       <div class="tips red">
         <div class="tips-title">{{ i18n.DELETE_ACCOUNT }}</div>
         <div class="tips-content">{{ i18n.DELETE_ACCOUNT_TIPS }}</div>
@@ -79,6 +101,10 @@ const agreeUrl = `${
     v-model="agreeVilible"
     @submit="refreshInfo"
   ></DeleteAgreeModal>
+  <DeletePrivacyModal
+    v-model="privacyVilible"
+    @submit="logout()"
+  ></DeletePrivacyModal>
   <ModifyPwd v-model="pwdVilible"></ModifyPwd>
 </template>
 <style lang="scss" scoped>
