@@ -3,7 +3,7 @@ import { useLogin } from '../stores/login';
 import { storeToRefs } from 'pinia';
 
 const LOGIN_KEYS = {
-  USER_TOKEN: '_U_T_',
+  USER_TOKEN: 'openmind-test_U_T_',
   USER_INFO: '_U_I_',
 };
 
