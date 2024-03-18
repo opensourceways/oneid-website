@@ -9,9 +9,8 @@ const LOGIN_KEYS = {
 
 function setCookie(cname: string, cvalue: string, isDelete?: boolean) {
   const deleteStr = isDelete ? 'max-age=0; ' : '';
-  const domain = import.meta.env.VITE_COOKIE_DOMAIN;
-  const domainStr = domain ? `domain=${domain}` : ''
-  const expires = `${deleteStr}path=/; ${domainStr}`;
+  const domain = import.meta.env.VITE_COOKIE_DOMAIN || location.hostname;
+  const expires = `${deleteStr}path=/; domain=${domain}`;
   try {
     document.cookie = `${cname}=${cvalue}; ${expires}`;
   } catch (error) {}
