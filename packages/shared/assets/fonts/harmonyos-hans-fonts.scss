@@ -1,0 +1,63 @@
+$font-path: '@/assets/fonts';
+
+// 鸿蒙中文字体
+@font-face {
+  font-family: 'HarmonyOS-Hans';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src:
+    local('HarmonyOSHans'),
+    url($font-path + '/HarmonyOS/HarmonyOS_Sans_SC_Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'HarmonyOS-Hans';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src:
+    local('HarmonyOSHans Medium'),
+    url($font-path + '/HarmonyOS/HarmonyOS_Sans_SC_Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'HarmonyOS-Hans';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src:
+    local('HarmonyOSHans Bold'),
+    url($font-path + '/HarmonyOS/HarmonyOS_Sans_SC_Bold.woff2') format('woff2');
+}
+
+// 鸿蒙斜体
+@font-face {
+  font-family: 'HarmonyOS-Hans';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src:
+    local('HarmonyOSSans'),
+    url($font-path + '/HarmonyOS/HarmonyOS_Sans_Regular_Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'HarmonyOS-Hans';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src:
+    local('HarmonyOSSans Medium'),
+    url($font-path + '/HarmonyOS/HarmonyOS_Sans_Medium_Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'HarmonyOS-Hans';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src:
+    local('HarmonyOSSans Bold'),
+    url($font-path + '/HarmonyOS/HarmonyOS_Sans_Bold_Italic.woff2') format('woff2');
+}

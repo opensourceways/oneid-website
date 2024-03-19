@@ -13,6 +13,7 @@ import '@/shared/style/theme/dark.token.css';
 import '@/shared/style/theme/index.scss';
 import '@/shared/style/markdown.scss';
 import '@/shared/style/element/index.scss';
+import 'shared/assets/fonts/harmonyos-hans-fonts.scss';
 import { initRound } from '@opensig/opendesign';
 
 initRound('pill');

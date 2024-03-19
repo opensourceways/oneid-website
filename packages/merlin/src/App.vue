@@ -1,4 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getOS } from 'shared/utils/utils';
+
+const addOSTag = () => {
+  const os = getOS();
+  document.documentElement.dataset.system = os.toLowerCase();
+};
+addOSTag();
+</script>
 
 <template>
   <router-view />
