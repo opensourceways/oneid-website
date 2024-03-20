@@ -126,6 +126,7 @@ export default {
   SAME_PHONE: '新手机号与已绑定手机号相同。',
   ENTER_USERINFO: '请补充用户信息',
   ENTER_USERNAME: '请输入用户名',
+  ENTER_USERID: '请输入用户ID',
   LOGIN_SUCCESS: '登录成功',
   NO_ACCOUNT: '没有账号？',
   REGISTER_NOW: '立即注册',

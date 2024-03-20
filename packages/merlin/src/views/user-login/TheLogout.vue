@@ -7,12 +7,11 @@ const route = useRoute();
 onMounted(() => {
   validLoginUrl().then(() => {
     const redirectUri = route.query.redirect_uri as string;
-    const idToken = route.query.id_token as string;
     if (redirectUri) {
       const { token } = getUserAuth();
       if (token) {
         logout(
-          { community: import.meta.env?.VITE_COMMUNITY, idToken },
+          { community: import.meta.env?.VITE_COMMUNITY },
           redirectUri
         );
       } else {
