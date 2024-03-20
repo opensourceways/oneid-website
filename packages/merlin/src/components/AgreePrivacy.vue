@@ -148,6 +148,9 @@ const dlgAction: DialogActionT[] = [
     margin-bottom: 0;
   }
 }
+.cursor {
+  cursor: pointer;
+}
 .checkbox {
   display: grid;
   grid-template-columns: auto auto;

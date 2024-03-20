@@ -10,6 +10,7 @@ import type {
 import handleError from './handleError';
 import setConfig from './setConfig';
 import { ElLoading, ElMessage } from 'element-plus';
+import { useMessage } from '@opensig/opendesign';
 import { callBackErrMessage } from '../../utils/utils';
 import { getUserAuth, tokenFailIndicateLogin } from '../../utils/login';
 import { LoadingInstance } from 'element-plus/es/components/loading/src/loading';
@@ -178,9 +179,16 @@ const responseInterceptorId = request.interceptors.response.use(
       }
       const notReportErrorMsgs = ['token expires'];
       if (!notReportErrorMsgs.includes((err.response?.data as any)?.message)) {
-        ElMessage.error({
-          showClose: true,
-          message: _msg,
+        if (!import.meta.env?.VITE_IS_OPENMERLIN) {
+          ElMessage.error({
+            showClose: true,
+            message: _msg,
+          });
+          return;
+        }
+        const message = useMessage();
+        message.danger({
+          content: _msg,
         });
       }
     }
