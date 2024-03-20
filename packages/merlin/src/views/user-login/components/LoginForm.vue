@@ -232,7 +232,7 @@ const accountPlaceholder = computed(() => {
     >
       <OInput
         v-model.trim="form.username"
-        :placeholder="i18n.ENTER_USERNAME"
+        :placeholder="i18n.ENTER_USERID"
         @blur="blur(formRef, 'username')"
       />
     </el-form-item>

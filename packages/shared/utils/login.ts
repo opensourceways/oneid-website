@@ -73,7 +73,7 @@ export function logout(
   queryIDToken(param)
     .then((res: any) => {
       saveUserAuth();
-      if (['openeuler', 'mindspore'].includes(param.community)) {
+      if (['mindspore'].includes(param.community)) {
         const appHost = res.data.client_identifier;
         const params = {
           host: `https://${appHost || 'datastat'}.authing.cn`,

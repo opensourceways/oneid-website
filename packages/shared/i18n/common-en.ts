@@ -126,6 +126,7 @@ export default {
   SAME_PHONE: 'Same as the bound mobile number.',
   ENTER_USERINFO: 'Please add the user info',
   ENTER_USERNAME: 'User name',
+  ENTER_USERID: 'User ID',
   LOGIN_SUCCESS: 'Login successful',
   NO_ACCOUNT: 'No account?',
   REGISTER_NOW: 'Register',
