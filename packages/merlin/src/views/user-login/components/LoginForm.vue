@@ -53,8 +53,6 @@ const form = reactive({
 
 // 验证码限制重发
 const disableCode = ref(false);
-// 验证码限制输入
-const disableCodeInput = ref(true);
 const verify = ref();
 // 获取验证码
 const getcode = (formEl: FormInstance | undefined) => {
@@ -84,7 +82,6 @@ const verifySuccess = (data: any) => {
   };
   sendCodeCaptcha(param).then(() => {
     disableCode.value = true;
-    disableCodeInput.value = false;
     message.success({
       content: i18n.value.SEND_SUCCESS,
     });
@@ -231,6 +228,7 @@ const accountPlaceholder = computed(() => {
       :rules="userNameRules"
     >
       <OInput
+        size="large"
         v-model.trim="form.username"
         :placeholder="i18n.ENTER_USERID"
         @blur="blur(formRef, 'username')"
@@ -245,6 +243,7 @@ const accountPlaceholder = computed(() => {
       "
     >
       <OInput
+        size="large"
         v-model.trim="form.account"
         :placeholder="accountPlaceholder"
         @blur="blur(formRef, 'account')"
@@ -257,10 +256,11 @@ const accountPlaceholder = computed(() => {
       :rules="rules"
     >
       <OInput
+        :clearable="false"
+        size="large"
         v-model.trim="form.code"
         @blur="blur(formRef, 'code')"
         :placeholder="i18n.ENTER_RECEIVED_CODE"
-        :disabled="type === 'register' ? false : disableCodeInput"
       >
         <template #suffix>
           <CountdownButton
@@ -281,7 +281,6 @@ const accountPlaceholder = computed(() => {
           <span class="cursor" @click="changeCheckBox(formRef)">
             {{ i18n.READ_ADN_AGREE }}
           </span>
-          <span>&nbsp;</span>
           <OLink @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
           {{ i18n.AND }}
           <OLink @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
@@ -318,6 +317,7 @@ const accountPlaceholder = computed(() => {
   grid-template-columns: auto auto;
   align-items: start;
   color: var(--o-color-info1);
+  white-space: nowrap;
   @include tip1;
   .o-checkbox-group {
     padding-top: 3px;

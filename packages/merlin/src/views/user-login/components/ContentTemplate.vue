@@ -24,12 +24,13 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background-color: rgb(247, 247, 247);
+  background-color: #F4F5F7;
 }
 .main {
-  width: 420px;
+  width: 480px;
   margin: 0 auto;
-  padding: 40px;
+  border-radius: 16px;
+  padding: 48px 80px;
   background-color: var(--o-color-fill2);
   box-shadow: var(--o-shadow-1);
 }
@@ -39,7 +40,8 @@
   justify-content: center;
 
   .header-title {
-    @include h2;
+    @include h1;
+    font-weight: 600;
     color: var(--o-color-info1);
   }
 }
@@ -50,5 +52,10 @@
   display: flex;
   justify-content: center;
   @include tip1;
+}
+:deep(.o-link-normal) {
+    --link-color: var(--o-color-link1);
+    --link-color-hover: var(--o-color-link2);
+    --link-color-active: var(--o-color-link3);
 }
 </style>
