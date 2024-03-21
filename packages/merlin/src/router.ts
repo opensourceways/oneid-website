@@ -3,6 +3,7 @@ import TheLogin from '@/views/user-login/TheLogin.vue';
 import TheLogout from '@/views/user-login/TheLogout.vue';
 import TheRegister from '@/views/user-login/TheRegister.vue';
 import NotFound from '@/components/NotFound.vue';
+import TheResetPwd from '@/views/user-login/TheResetPwd.vue';
 import { useCommon } from 'shared/stores/common';
 import { LoginParams } from 'shared/@types/interface';
 export const routes = [
@@ -25,6 +26,11 @@ export const routes = [
     path: '/notfound',
     name: 'notfound',
     component: NotFound,
+  },
+  {
+    path: '/resetPwd',
+    name: 'resetPwd',
+    component: TheResetPwd,
   },
 ];
 

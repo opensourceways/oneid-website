@@ -15,11 +15,12 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background-color: rgb(247, 247, 247);
+  background-color: var(--o-color-fill1);
   .card {
-    width: 420px;
+    width: 480px;
     margin: 0 auto;
-    padding: 40px;
+    border-radius: 16px;
+    padding: 48px 80px;
     background-color: var(--o-color-fill2);
     box-shadow: var(--o-shadow-1);
   }

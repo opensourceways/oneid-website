@@ -36,6 +36,12 @@ const goRegister = () => {
     query: route.query,
   });
 };
+const goResetPwd = () => {
+  router.push({
+    path: '/resetPwd',
+    query: route.query,
+  });
+};
 const verify = ref();
 const { loginParams } = useCommonData();
 const privacyVisible = ref(false);
@@ -159,6 +165,11 @@ const cancelPad = () => {
     @three-part-login="threePartLogin"
   >
     <template #switch>
+      <div style="flex: 1">
+        <a style="display: inline" @click="goResetPwd()">
+          {{ i18n.FORGET_PWD }}
+        </a>
+      </div>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <OLink @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
