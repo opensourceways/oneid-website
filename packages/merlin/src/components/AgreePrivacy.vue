@@ -3,7 +3,7 @@ import { useI18n } from 'shared/i18n';
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import { FormInstance, FormItemRule } from 'element-plus';
 import { formValidator, doValidatorForm } from 'shared/utils/utils';
-import { OScroller, OCheckbox, ODialog, DialogActionT } from '@opensig/opendesign';
+import { OScroller, OCheckbox, ODialog, DialogActionT, OLink } from '@opensig/opendesign';
 import { useMarkdown } from 'shared/utils/useMarkdown';
 import { modifyUser } from 'shared/api/api-center';
 import merlinlegal from '@/assets/markdown/legal.md?raw'
@@ -20,6 +20,7 @@ const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
 const i18n = useI18n();
 const formRef = ref<FormInstance>();
+const scroller = ref();
 
 // 表单值
 const form = reactive({
@@ -105,12 +106,16 @@ const dlgAction: DialogActionT[] = [
     },
   },
 ];
+
+const scroll = (id: string) => {
+  scroller.value.scrollTo({ top: document.getElementById(id)?.offsetTop || 0, behavior: 'smooth' });
+} 
 </script>
 <template>
   <ODialog :scroller="false"  v-model:visible="modelValue" :actions="dlgAction" size="large">
-    <OScroller style="height: 400px" wrapClass="markdown-body" showType="always">
-      <div v-dompurify-html="privacyData"></div>
-      <div v-dompurify-html="legalData"></div>
+    <OScroller ref="scroller" style="height: 400px" wrapClass="markdown-body" showType="always">
+      <div id="privacy" v-dompurify-html="privacyData"></div>
+      <div id="legal" v-dompurify-html="legalData"></div>
     </OScroller>
     <el-form
       ref="formRef"
@@ -132,9 +137,9 @@ const dlgAction: DialogActionT[] = [
               {{ i18n.READ_ADN_AGREE }}
             </span>
             <span>&nbsp;</span>
-            <span>{{ i18n.PRIVACY_POLICY }}</span>
+            <OLink @click="scroll('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
             {{ i18n.AND }}
-            <span>{{ i18n.LEGAL_NOTICE }}</span>
+            <OLink @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
           </span>
         </div>
       </el-form-item>
