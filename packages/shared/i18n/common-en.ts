@@ -144,6 +144,7 @@ export default {
   ENTER_YOUR_EMAIL: 'Email address',
   ENTER_YOUR_EMAIL_OR_PHONE: 'Email address or mobile number',
   ENTER_YOUR_ACCOUNT: 'Mobile number, username or email address',
+  ENTER_YOUR_ACCOUNT_ID: 'Mobile number, user ID or email address',
   ENTER_RECEIVED_CODE: 'Verification code',
   READ_ADN_AGREE: 'I have read and agree to the',
   PRIVACY_POLICY: 'Privacy Statement',

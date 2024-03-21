@@ -24,7 +24,7 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background-color: #F4F5F7;
+  background-color: var(--o-color-fill1);
 }
 .main {
   width: 480px;

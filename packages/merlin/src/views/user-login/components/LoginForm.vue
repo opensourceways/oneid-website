@@ -14,6 +14,7 @@ import {
 } from 'shared/utils/utils';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
+import LoginTabs from 'shared/components/LoginTabs.vue';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 
@@ -213,14 +214,25 @@ const goToOtherPage = (type: string) => {
   window.open(url, '_blank');
 };
 const accountPlaceholder = computed(() => {
-  if (type.value === 'register') {
+  if (type.value === 'login' && selectLoginType.value === 'password') {
+    return i18n.value.ENTER_YOUR_ACCOUNT_ID;
+  } else if (type.value === 'register') {
     return i18n.value.ENTER_YOUR_PHONE;
   } else {
     return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
   }
 });
+const loginTabSelect = () => {
+  formRef.value?.resetFields();
+  disableCode.value = false;
+};
 </script>
 <template>
+  <LoginTabs
+    v-model="selectLoginType"
+    :type="type"
+    @select="loginTabSelect"
+  ></LoginTabs>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
     <el-form-item
       v-if="type === 'register'"
@@ -270,6 +282,18 @@ const accountPlaceholder = computed(() => {
           />
         </template>
       </OInput>
+    </el-form-item>
+    <el-form-item
+      v-if="selectLoginType === 'password'"
+      prop="password"
+      :rules="type === 'register' ? passwordRules : rules"
+    >
+      <OInput
+        size="large"
+        type="password"
+        v-model="form.password"
+        :placeholder="i18n.INTER_PWD"
+      />
     </el-form-item>
     <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
       <div class="checkbox">
