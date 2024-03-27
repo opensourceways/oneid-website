@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CountdownButton from '@/components/CountdownButton.vue';
 import { FormInstance, FormItemRule } from 'element-plus';
-import { PropType, reactive, ref, toRefs, computed } from 'vue';
+import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { OInput, OButton, OCheckbox, OLink, useMessage } from '@opensig/opendesign';
 import {
@@ -226,6 +226,19 @@ const loginTabSelect = () => {
   formRef.value?.resetFields();
   disableCode.value = false;
 };
+
+// 键盘回车登录
+const enterSubmit = (e: { key: string; }) => {
+  if (type.value === 'login' && e.key === 'Enter') {
+    submit(formRef.value);
+  }
+}
+onMounted(() => {
+  window.addEventListener('keydown', enterSubmit);
+});
+onUnmounted(() => {
+  window.removeEventListener('keydown', enterSubmit);
+});
 </script>
 <template>
   <LoginTabs
