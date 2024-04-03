@@ -14,7 +14,7 @@ const props = defineProps({
 const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'click']);
 const num = ref(0);
-let timer: NodeJS.Timer;
+let timer: NodeJS.Timeout;
 
 // 验证码重发限制60s
 const limitedToResend = (num: Ref<number>) => {
