@@ -17,6 +17,7 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     NotFound: typeof import('./src/components/NotFound.vue')['default']
     PadAccount: typeof import('./src/components/PadAccount.vue')['default']
+    ResetPwd: typeof import('./src/components/ResetPwd.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
