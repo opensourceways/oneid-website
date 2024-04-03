@@ -98,8 +98,6 @@ const dlgAction: DialogActionT[] = [
   {
     id: 'ok',
     label: i18n.value.CONFIRM,
-    color: 'primary',
-    variant: 'solid',
     size: 'large',
     onClick: () => {
       putUser(formRef.value);
