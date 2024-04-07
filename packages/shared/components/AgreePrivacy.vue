@@ -5,6 +5,7 @@ import { FormInstance, FormItemRule } from 'element-plus';
 import { formValidator, getFitWidth, doValidatorForm } from '../utils/utils';
 import { useMarkdown } from '../utils/useMarkdown';
 import { modifyUser } from '../api/api-center';
+import { useCommonData } from '../stores/common';
 
 const props = defineProps({
   modelValue: {
@@ -13,6 +14,7 @@ const props = defineProps({
   },
 });
 
+const { lang } = useCommonData();
 const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
 const i18n = useI18n();
@@ -69,13 +71,13 @@ watch(
   (value) => {
     if (value) {
       getContentFromFileUrl(
-        import.meta.env?.VITE_ONEID_PRIVACY_URL,
+        lang.value === 'zh' ? import.meta.env?.VITE_ONEID_PRIVACY_URL : import.meta.env?.VITE_ONEID_PRIVACY_URL_EN,
         (val) => {
           privacyData.value = useMarkdown().mkit(val);
         }
       );
       getContentFromFileUrl(
-        import.meta.env?.VITE_ONEID_LEGAL_URL,
+        lang.value === 'zh' ? import.meta.env?.VITE_ONEID_LEGAL_URL : import.meta.env?.VITE_ONEID_LEGAL_URL_EN,
         (val) => {
           legalData.value = useMarkdown().mkit(val);
         }
