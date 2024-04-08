@@ -215,7 +215,6 @@ const showSwitch = computed(
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
-    <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
   <PadAccount
     v-model="visible"

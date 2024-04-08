@@ -3,6 +3,17 @@ import { LoginParams } from '../@types/interface';
 import { useCommonData } from '../stores/common';
 import { ElMessage } from 'element-plus';
 
+function toHttps(url: string) {
+  let str;
+  try {
+    const _url = new URL(url);
+    _url.protocol = 'https:';
+    str = _url.toString();
+  } catch (error) {
+    str = url;
+  }
+  return str;
+}
 export function haveLoggedIn() {
   const { loginParams } = useCommonData();
   switch (loginParams.value.response_mode) {
@@ -10,7 +21,7 @@ export function haveLoggedIn() {
       getOidcUri(loginParams.value);
       break;
     default:
-      location.href = loginParams.value.redirect_uri || '';
+      location.href = toHttps(loginParams.value.redirect_uri || '');
   }
 }
 
@@ -25,7 +36,7 @@ function getOidcUri(query: LoginParams) {
   authorizeOidc(param)
     .then((data) => {
       if (data?.body) {
-        location.href = data.body;
+        location.href = toHttps(data.body);
       }
     })
     .catch((err) => {
