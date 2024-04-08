@@ -43,7 +43,7 @@ const goResetPwd = () => {
   });
 };
 const verify = ref();
-const { loginParams } = useCommonData();
+const { loginParams, selectLoginType } = useCommonData();
 const privacyVisible = ref(false);
 const visible = ref(false);
 // 控制补全框内容
@@ -164,7 +164,7 @@ const cancelPad = () => {
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
   >
-    <template #switch>
+    <template #switch v-if="selectLoginType === 'password'">
       <div style="flex: 1">
         <a style="display: inline" @click="goResetPwd()">
           {{ i18n.FORGET_PWD }}
@@ -175,7 +175,7 @@ const cancelPad = () => {
       <OLink @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
-    <template #btn> {{ i18n.LOGIN }} </template>
+    <template #btn> {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }} </template>
   </LoginTemplate>
   <PadAccount
     v-model="visible"

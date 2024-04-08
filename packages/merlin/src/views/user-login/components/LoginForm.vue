@@ -30,8 +30,6 @@ const message = useMessage();
 
 const formRef = ref<FormInstance>();
 
-const selectLoginType = ref('code');
-
 const emit = defineEmits(['submit', 'threePartLogin']);
 
 // 外部校验方法
@@ -42,7 +40,7 @@ defineExpose({ validator });
 
 const { type } = toRefs(props);
 const i18n = useI18n();
-const { lang, loginParams } = useCommonData();
+const { lang, loginParams, selectLoginType } = useCommonData();
 // 表单值
 const form = reactive({
   username: '',
