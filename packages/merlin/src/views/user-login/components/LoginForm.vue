@@ -99,18 +99,10 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
 // 手机或邮箱合法校验
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
-    if (type.value === 'register') {
-      if (PHONE_REG.test(value)) {
-        callback();
-      } else {
-        callback(i18n.value.ENTER_VAILD_PHONE);
-      }
+    if (PHONE_REG.test(value)) {
+      callback();
     } else {
-      if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
-        callback();
-      } else {
-        callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
-      }
+      callback(i18n.value.ENTER_VAILD_PHONE);
     }
   }
 };
@@ -214,10 +206,8 @@ const goToOtherPage = (type: string) => {
 const accountPlaceholder = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
     return i18n.value.ENTER_YOUR_ACCOUNT_ID;
-  } else if (type.value === 'register') {
-    return i18n.value.ENTER_YOUR_PHONE;
   } else {
-    return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
+    return i18n.value.ENTER_YOUR_PHONE;
   }
 });
 const loginTabSelect = () => {
