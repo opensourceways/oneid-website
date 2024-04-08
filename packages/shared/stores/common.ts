@@ -47,6 +47,8 @@ export const useCommon = defineStore('common', () => {
       }`;
     });
   };
+
+  const selectLoginType = ref<'password' | 'code'>('password');
   return {
     lang,
     changeLang,
@@ -55,6 +57,7 @@ export const useCommon = defineStore('common', () => {
     theme,
     userInfo,
     initUserInfo,
+    selectLoginType,
   };
 });
 

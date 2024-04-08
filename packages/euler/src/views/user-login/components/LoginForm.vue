@@ -28,8 +28,6 @@ const props = defineProps({
 
 const formRef = ref<FormInstance>();
 
-const selectLoginType = ref('password');
-
 const emit = defineEmits(['submit']);
 
 // 外部校验方法
@@ -40,7 +38,7 @@ defineExpose({ validator });
 
 const { type } = toRefs(props);
 const i18n = useI18n();
-const { lang, loginParams } = useCommonData();
+const { lang, loginParams, selectLoginType } = useCommonData();
 
 // 表单值
 const form = reactive({
