@@ -44,7 +44,7 @@ const goResetPwd = () => {
   });
 };
 const verify = ref();
-const { loginParams } = useCommonData();
+const { loginParams, selectLoginType } = useCommonData();
 
 // 控制补全框内容
 const padUserinfo = reactive({
@@ -195,7 +195,7 @@ const agreePrivacy = () => {
   });
 }
 const showSwitch = computed(
-  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) && selectLoginType.value === 'password'
 );
 </script>
 <template>
