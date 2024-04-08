@@ -67,6 +67,7 @@ export default {
   LOGOUT: '退出登录',
   PLEASE: '请先',
   LOGIN: '登录',
+  LOGIN_REGISTER: '登录/注册',
   FOOTER: {
     ATOM_TEXT:
       'openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目',

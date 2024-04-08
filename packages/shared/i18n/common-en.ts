@@ -67,7 +67,8 @@ export default {
   CONFIRM: 'Confirm',
   LOGOUT: 'Logout',
   PLEASE: 'Please',
-  LOGIN: 'login',
+  LOGIN: 'Login',
+  LOGIN_REGISTER: 'Login / Register',
   FOOTER: {
     ATOM_TEXT:
       'openEuler is an open source project incubated and operated by the OpenAtom Foundation.',
