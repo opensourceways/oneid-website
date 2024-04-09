@@ -157,13 +157,13 @@ const cancelPad = () => {
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
   >
-    <template #switch v-if="false">
+    <template #switch>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
-    <template #btn> {{ i18n.LOGIN_REGISTER }} </template>
+    <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
   <PadAccount
     v-model="visible"
