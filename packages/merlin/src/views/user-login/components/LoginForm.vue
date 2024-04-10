@@ -31,9 +31,13 @@ const emit = defineEmits(['submit', 'threePartLogin']);
 
 // 外部校验方法
 const validator = (fields?: string[] | string) => {
-  return formRef.value?.validate(fields);
+  return formValidator(formRef.value, fields);
 };
 defineExpose({ validator });
+
+const doValidator = (fields?: string[] | string) => {
+  formValidator(formRef.value, fields).subscribe();
+}
 
 const { type } = toRefs(props);
 const i18n = useI18n();
@@ -90,7 +94,7 @@ const changeCheckBox = () => {
   } else {
     form.policy.push('1');
   }
-  validator('policy');
+  doValidator('policy');
 };
 
 // 校验密码不能包含用户名及其逆序
@@ -275,7 +279,7 @@ onUnmounted(() => {
       <div class="checkbox">
         <OCheckbox 
             value="1" v-model="form.policy"
-            @change="validator('policy')">
+            @change="doValidator('policy')">
         </OCheckbox>
         <span>
           <span class="cursor" @click="changeCheckBox()">
