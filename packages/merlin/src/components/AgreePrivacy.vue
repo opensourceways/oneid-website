@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import { onMounted, reactive, ref, toRefs } from 'vue';
-import { FormInstance, FormItemRule } from 'element-plus';
-import { formValidator, doValidatorForm } from 'shared/utils/utils';
-import { OScroller, OCheckbox, ODialog, DialogActionT, OLink } from '@opensig/opendesign';
+import { OScroller, OCheckbox, ODialog, DialogActionT, OLink, OForm, OFormItem } from '@opensig/opendesign';
+import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
+import {
+  formValidator,
+} from 'shared/utils/rules';
 import { useMarkdown } from 'shared/utils/useMarkdown';
 import { modifyUser } from 'shared/api/api-center';
 import merlinlegal from '@/assets/markdown/legal.md?raw'
@@ -19,7 +21,7 @@ const props = defineProps({
 const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
 const i18n = useI18n();
-const formRef = ref<FormInstance>();
+const formRef = ref<InstanceType<typeof OForm>>();
 const scroller = ref();
 
 // 表单值
@@ -28,18 +30,19 @@ const form = reactive({
 } as any);
 
 // checkbox校验
-const validatorCheckbox = (rule: any, value: any, callback: any) => {
+const validatorCheckbox: ValidatorT = (value: Array<string>) => {
   if (!value || !value.length) {
-    callback(i18n.value.PLEASE_CHECK_PRIVACY);
-  } else {
-    callback();
+    return {
+      type: 'danger',
+      message: useI18n().value.PLEASE_CHECK_PRIVACY,
+    };
   }
 };
 // 隐私声明校验
-const policyRules = reactive<FormItemRule[]>([
+const policyRules = reactive<RulesT[]>([
   {
     validator: validatorCheckbox,
-    trigger: 'change',
+    triggers: 'change',
   },
 ]);
 const privacyData = ref('');
@@ -60,19 +63,18 @@ const doSuccess = () => {
   close();
 };
 
-const changeCheckBox = (formEl: FormInstance | undefined) => {
+const changeCheckBox = () => {
   if (form.policy.length) {
     form.policy = [];
   } else {
     form.policy.push('1');
   }
-  doValidatorForm(formEl, 'policy');
+  formRef.value?.validate('policy');
 };
 
-const putUser = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formValidator(formEl).subscribe((data) => {
-    if (data) {
+const putUser = () => {
+  formValidator(formRef.value, 'policy').subscribe((valid) => {
+    if (valid) {
       modifyUser({
         oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
       }).then(() => {
@@ -100,7 +102,7 @@ const dlgAction: DialogActionT[] = [
     label: i18n.value.CONFIRM,
     size: 'large',
     onClick: () => {
-      putUser(formRef.value);
+      putUser();
     },
   },
 ];
@@ -115,23 +117,23 @@ const scroll = (id: string) => {
       <div id="privacy" v-dompurify-html="privacyData"></div>
       <div id="legal" v-dompurify-html="legalData"></div>
     </OScroller>
-    <el-form
+    <OForm
       ref="formRef"
       label-width="0"
       :model="form"
       class="form"
       @submit.prevent=""
     >
-      <el-form-item prop="policy" :rules="policyRules">
+      <OFormItem field="policy" :rules="policyRules">
         <div class="checkbox">
           <OCheckbox
             value="1"
             v-model="form.policy"
-            @change="doValidatorForm(formRef, 'policy')"
+            @change="formRef?.validate('policy')"
           >
           </OCheckbox>
           <span>
-            <span class="cursor" @click="changeCheckBox(formRef)">
+            <span class="cursor" @click="changeCheckBox()">
               {{ i18n.READ_ADN_AGREE }}
             </span>
             <span>&nbsp;</span>
@@ -140,15 +142,19 @@ const scroll = (id: string) => {
             <OLink @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
           </span>
         </div>
-      </el-form-item>
-    </el-form>
+      </OFormItem>
+    </OForm>
   </ODialog>
 </template>
 <style lang="scss" scoped>
 .form {
   margin-top: 32px;
-  .el-form-item {
-    margin-bottom: 0;
+  --form-label-main-gap: 0;
+  .o-form-item:last-child {
+    margin-bottom: var(--form-item-gap);
+  }
+  .o-form-item-danger {
+    margin-bottom: 0 !important;
   }
 }
 .cursor {

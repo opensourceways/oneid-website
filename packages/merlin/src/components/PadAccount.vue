@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import { reactive, ref, toRefs } from 'vue';
-import { FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import { OInput, useMessage, ODialog, DialogActionT } from '@opensig/opendesign';
+import { OInput, useMessage, ODialog, DialogActionT, OForm, OFormItem } from '@opensig/opendesign';
+import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 import {
-  formValidator,
-  getUsernammeRules,
   getVerifyImgSize,
-  asyncBlur,
 } from 'shared/utils/utils';
+import {
+  getUsernammeRules, validatorEmail, validatorEmpty, validatorPhone, formValidator
+} from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
 import { useCommonData } from 'shared/stores/common';
 import { bindAccount, modifyUser, sendCode } from 'shared/api/api-center';
@@ -42,7 +42,7 @@ const { loginParams } = useCommonData();
 const i18n = useI18n();
 const message = useMessage();
 
-const formRef = ref<FormInstance>();
+const formRef = ref<InstanceType<typeof OForm>>();
 const verify = ref();
 
 // 表单值
@@ -53,42 +53,38 @@ const form = reactive({
   code: '',
 } as any);
 // 用户名校验
-const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
+const userNameRules = reactive<RulesT[]>(getUsernammeRules());
 
 // 空值校验
-const requiredRules: FormItemRule[] = [
+const requiredRules: RulesT[] = [
   {
-    required: true,
-    message: i18n.value.NOT_EMPTY,
-    trigger: 'blur',
+    validator: validatorEmpty,
+    triggers: 'blur',
   },
 ];
 const rules = ref(requiredRules);
 // 邮箱校验
-const emailRules = reactive<FormItemRule[]>([
+const emailRules = reactive<RulesT[]>([
   ...requiredRules,
   {
-    pattern: EMAIL_REG,
-    message: i18n.value.ENTER_VAILD_EMAIL,
-    trigger: 'blur',
+    validator: validatorEmail,
+    triggers: 'blur',
   },
 ]);
 // 手机校验
-const phoneRules = reactive<FormItemRule[]>([
+const phoneRules = reactive<RulesT[]>([
   ...requiredRules,
   {
-    pattern: PHONE_REG,
-    message: i18n.value.ENTER_VAILD_PHONE,
-    trigger: 'blur',
+    validator: validatorPhone,
+    triggers: 'blur',
   },
 ]);
 
 // 验证码限制重发
 const disableCode = ref(false);
 // 获取验证码
-const getcode = (formEl: FormInstance | undefined, field: string) => {
-  if (!formEl) return;
-  formValidator(formEl, field).subscribe((valid) => {
+const getcode = (field: string) => {
+  formValidator(formRef.value, field).subscribe((valid) => {
     if (valid) {
       verify.value.show();
     } else {
@@ -173,7 +169,7 @@ const doSuccess = () => {
   close();
 };
 
-const putUser = (formEl: FormInstance | undefined) => {
+const putUser = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (!formEl) return;
   formValidator(formEl)
     .pipe(
@@ -225,61 +221,64 @@ const dlgAction: DialogActionT[] = [
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
     </template>
-    <el-form
+    <OForm
       ref="formRef"
       label-width="0"
       :model="form"
       class="form"
       @submit.prevent=""
     >
-      <el-form-item v-if="!username" prop="username" :rules="userNameRules">
+      <OFormItem v-if="!username" prop="username" :rules="userNameRules">
         <OInput
           v-model.trim="form.username"
           :placeholder="i18n.ENTER_USERNAME"
-          @blur="asyncBlur(formRef, 'username')"
         />
-      </el-form-item>
-      <el-form-item v-if="!phoneExist" prop="phone" :rules="phoneRules">
+      </OFormItem>
+      <OFormItem v-if="!phoneExist" prop="phone" :rules="phoneRules">
         <OInput
           v-model.trim="form.phone"
           :placeholder="i18n.ENTER_YOUR_PHONE"
-          @blur="asyncBlur(formRef, 'phone')"
         />
-      </el-form-item>
-      <el-form-item v-if="!phoneExist" prop="code" :rules="rules">
+      </OFormItem>
+      <OFormItem v-if="!phoneExist" prop="code" :rules="rules">
         <div class="code">
           <OInput
             v-model.trim="form.code"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
-            @blur="asyncBlur(formRef, 'code')"
-          />
-          <CountdownButton
-            v-model="disableCode"
-            @click="getcode(formRef, 'phone')"
-          />
+          >
+            <template #suffix>
+              <CountdownButton
+                v-model="disableCode"
+                @click="getcode('phone')"
+                size="small"
+              />
+            </template>
+          </OInput>
         </div>
-      </el-form-item>
-      <el-form-item v-if="!emailExist" prop="email" :rules="emailRules">
+      </OFormItem>
+      <OFormItem v-if="!emailExist" prop="email" :rules="emailRules">
         <OInput
           v-model.trim="form.email"
           :placeholder="i18n.ENTER_YOUR_EMAIL"
-          @blur="asyncBlur(formRef, 'email')"
         />
-      </el-form-item>
-      <el-form-item v-if="!emailExist" prop="code" :rules="rules">
+      </OFormItem>
+      <OFormItem v-if="!emailExist" prop="code" :rules="rules">
         <div class="code">
           <OInput
             v-model.trim="form.code"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
-            @blur="asyncBlur(formRef, 'code')"
-          />
-          <CountdownButton
-            v-model="disableCode"
-            @click="getcode(formRef, 'email')"
-          />
+          >
+            <template #suffix>
+              <CountdownButton
+                v-model="disableCode"
+                @click="getcode('email')"
+                size="small"
+              />
+            </template>
+          </OInput>
         </div>
-      </el-form-item>
-    </el-form>
+      </OFormItem>
+    </OForm>
   </ODialog>
   <Verify
     v-if="modelValue"

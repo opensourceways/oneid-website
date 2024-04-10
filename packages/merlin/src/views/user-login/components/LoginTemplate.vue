@@ -125,6 +125,11 @@ onUnmounted(() => {
     </template>
     <template #footer v-if="type === 'login'">
       <div class="app-footer">
+        <div class="divider">
+          <div class="line"></div>
+          <div class="other">{{ i18n.THREE_PART_LOGIN }}</div>
+          <div class="line"></div>
+        </div>
         <div class="three-parts">
           <div
             v-for="(item, index) in icons"
@@ -149,8 +154,26 @@ onUnmounted(() => {
   cursor: pointer;
 }
 .app-footer {
-  padding-top: 40px;
+  padding-top: 24px;
+  .divider {
+    display: grid;
+    grid-template-columns: auto max-content auto;
+    justify-items: center;
+    align-items: center;
+    .line {
+      width: 100%;
+      border-top: 1px solid var(--o-color-division1);
+    }
+    .other {
+      padding-left: var(--o-spacing-h5);
+      padding-right: var(--o-spacing-h5);
+      font-size: var(--o-font-size-h8);
+      line-height: var(--o-line-height-h8);
+      color: var(--o-color-text4);
+    }
+  }
   .three-parts {
+    padding-top: var(--o-spacing-h4);
     display: flex;
     justify-content: center;
   }

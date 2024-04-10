@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import { reactive, ref } from 'vue';
-import { FormInstance, FormItemRule } from 'element-plus';
-import { OInput, OButton, useMessage } from '@opensig/opendesign';
+import { OInput, OButton, useMessage, OForm, OFormItem } from '@opensig/opendesign';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import CountdownButton from './CountdownButton.vue';
 import { resetPwd, resetPwdVerify, sendCodeCaptcha } from 'shared/api/api-login';
-import { formValidator, getPwdRules, getVerifyImgSize } from 'shared/utils/utils';
+import { getVerifyImgSize } from 'shared/utils/utils';
+import { getPwdRules, validatorEmpty, formValidator } from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
 import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { useRoute, useRouter } from 'vue-router';
+import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 
 const { loginParams } = useCommonData();
 const i18n = useI18n();
@@ -25,7 +26,7 @@ const goLogin = () => {
   });
 };
 
-const formRef = ref<FormInstance>();
+const formRef = ref<InstanceType<typeof OForm>>();
 // 表单值
 const form = reactive({
   account: '',
@@ -34,49 +35,49 @@ const form = reactive({
   confirmPwd: '',
 } as any);
 
-// 空值校验
-const requiredRules: FormItemRule[] = [
+const requiredRules: RulesT[] = [
   {
-    required: true,
-    message: i18n.value.NOT_EMPTY,
-    trigger: 'blur',
+    validator: validatorEmpty,
+    triggers: 'blur',
   },
 ];
 const rules = ref(requiredRules);
 // 手机或邮箱合法校验
-const validatorAccount = (rule: any, value: any, callback: any) => {
+const validatorAccount: ValidatorT = (value: string) => {
   if (value) {
-    if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
-      callback();
-    } else {
-      callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
+    if (!EMAIL_REG.test(value) && !PHONE_REG.test(value)) {
+      return {
+        type: 'danger',
+        message: i18n.value.ENTER_VAILD_EMAIL_OR_PHONE,
+      };
     }
   }
 };
 
 // 账户校验
-const accountRules = reactive<FormItemRule[]>([
+const accountRules = reactive<RulesT[]>([
   ...requiredRules,
   {
     validator: validatorAccount,
-    trigger: 'blur',
+    triggers: 'blur',
   },
 ]);
-const passwordRules = ref<FormItemRule[]>([...requiredRules, ...getPwdRules()]);
+const passwordRules = ref<RulesT[]>([...requiredRules, ...getPwdRules()]);
 
 // 确认密码校验
-const validatorConfirmPwd = (rule: any, value: any, callback: any) => {
-  if (value === form.password) {
-    callback();
-  } else {
-    callback(i18n.value.CONFIRM_NOT_MATCH_PWD);
+const validatorConfirmPwd: ValidatorT = (value: string) => {
+  if (value !== form.password) {
+    return {
+      type: 'danger',
+      message: i18n.value.CONFIRM_NOT_MATCH_PWD,
+    };
   }
 };
-const confirmPwdRules = reactive<FormItemRule[]>([
+const confirmPwdRules = reactive<RulesT[]>([
   ...requiredRules,
   {
     validator: validatorConfirmPwd,
-    trigger: ['change', 'blur'],
+    triggers: ['change', 'blur'],
   },
 ]);
 
@@ -84,7 +85,7 @@ const confirmPwdRules = reactive<FormItemRule[]>([
 const disableCode = ref(false);
 const verify = ref();
 // 获取验证码
-const getcode = (formEl: FormInstance | undefined) => {
+const getcode = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (!formEl) return;
   formValidator(formEl, 'account').subscribe((valid) => {
     if (valid) {
@@ -112,7 +113,8 @@ const verifySuccess = (data: any) => {
 };
 // 获取到重置token
 const resetToken = ref('');
-const nextStep = (formEl: FormInstance | undefined) => {
+const nextStep = (formEl: InstanceType<typeof OForm> | undefined) => {
+  if (!formEl) return;
   formValidator(formEl).subscribe((valid) => {
     if (valid) {
       const param = {
@@ -129,7 +131,8 @@ const nextStep = (formEl: FormInstance | undefined) => {
     }
   });
 };
-const confirm = (formEl: FormInstance | undefined) => {
+const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
+  if (!formEl) return;
   formValidator(formEl).subscribe(async (valid) => {
     if (valid) {
       const newPwd = await getRsaEncryptWord(form.password);
@@ -162,7 +165,7 @@ const confirm = (formEl: FormInstance | undefined) => {
 </script>
 <template>
   <h5 class="header">{{ i18n.RESET_PWD }}</h5>
-  <el-form
+  <OForm
     ref="formRef"
     label-width="0"
     :model="form"
@@ -170,45 +173,45 @@ const confirm = (formEl: FormInstance | undefined) => {
     @submit.prevent=""
   >
     <span v-if="!resetToken">
-      <el-form-item prop="account" :rules="accountRules">
+      <OFormItem field="account" :rules="accountRules">
         <OInput
           v-model="form.account"
           size="large"
           :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
           @input="formRef?.resetFields('code')"
         />
-      </el-form-item>
-      <el-form-item prop="code" :rules="rules">
+      </OFormItem>
+      <OFormItem field="code" :rules="rules">
         <OInput v-model="form.code" size="large" :placeholder="i18n.ENTER_RECEIVED_CODE">
           <template #suffix>
             <CountdownButton
               v-model="disableCode"
               @click="getcode(formRef)"
-              variant="text"
+              size="small"
             />
           </template>
         </OInput>
-      </el-form-item>
+      </OFormItem>
     </span>
     <span v-else>
-      <el-form-item prop="password" :rules="passwordRules">
+      <OFormItem field="password" :rules="passwordRules">
         <OInput
           v-model="form.password"
           size="large"
           :placeholder="i18n.INTER_NEW_PWD"
           type="password"
         />
-      </el-form-item>
-      <el-form-item prop="confirmPwd" :rules="confirmPwdRules">
+      </OFormItem>
+      <OFormItem field="confirmPwd" :rules="confirmPwdRules">
         <OInput
           v-model="form.confirmPwd"
           size="large"
           :placeholder="i18n.CONFIRM_NEW_PWD"
           type="password"
         />
-      </el-form-item>
+      </OFormItem>
     </span>
-  </el-form>
+  </OForm>
   <div class="footer">
     <OButton size="large" @click="goLogin">
       {{ i18n.RETURN_LOGIN }}
@@ -248,6 +251,15 @@ const confirm = (formEl: FormInstance | undefined) => {
   display: flex;
   justify-content: center;
   column-gap: var(--o-spacing-h5);
-  padding-top: var(--o-spacing-h5);
+}
+.form {
+  --form-label-main-gap: 0;
+  --form-item-gap: 40px;
+  .o-form-item:last-child {
+    margin-bottom: var(--form-item-gap);
+  }
+  .o-form-item-danger {
+    margin-bottom: 0 !important;
+  }
 }
 </style>

@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import CountdownButton from '@/components/CountdownButton.vue';
-import { FormInstance, FormItemRule } from 'element-plus';
 import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { OInput, OButton, OCheckbox, OLink, useMessage } from '@opensig/opendesign';
+import { OInput, OButton, OCheckbox, OLink, useMessage, OForm, OFormItem } from '@opensig/opendesign';
+import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 import {
-  formValidator,
-  doValidatorForm,
-  asyncBlur,
   getVerifyImgSize,
-  getPwdRules,
-  getUsernammeRules,
 } from 'shared/utils/utils';
+import {
+  getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator,
+} from 'shared/utils/rules';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from 'shared/components/LoginTabs.vue';
-import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 
 type TYPE = 'login' | 'register';
@@ -28,13 +25,13 @@ const props = defineProps({
 
 const message = useMessage();
 
-const formRef = ref<FormInstance>();
+const formRef = ref<InstanceType<typeof OForm>>();
 
 const emit = defineEmits(['submit', 'threePartLogin']);
 
 // 外部校验方法
 const validator = (fields?: string[] | string) => {
-  return formValidator(formRef.value, fields);
+  return formRef.value?.validate(fields);
 };
 defineExpose({ validator });
 
@@ -54,7 +51,7 @@ const form = reactive({
 const disableCode = ref(false);
 const verify = ref();
 // 获取验证码
-const getcode = (formEl: FormInstance | undefined) => {
+const getcode = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (!formEl) return;
   formValidator(formEl, 'account').subscribe((valid) => {
     if (valid) {
@@ -87,28 +84,17 @@ const verifySuccess = (data: any) => {
   });
 };
 
-const changeCheckBox = (formEl: FormInstance | undefined) => {
+const changeCheckBox = () => {
   if (form.policy.length) {
     form.policy = [];
   } else {
     form.policy.push('1');
   }
-  doValidatorForm(formEl, 'policy');
-};
-
-// 手机或邮箱合法校验
-const validatorAccount = (rule: any, value: any, callback: any) => {
-  if (value) {
-    if (PHONE_REG.test(value)) {
-      callback();
-    } else {
-      callback(i18n.value.ENTER_VAILD_PHONE);
-    }
-  }
+  validator('policy');
 };
 
 // 校验密码不能包含用户名及其逆序
-const validatorPwd = (rule: any, value: any, callback: any) => {
+const validatorPwd: ValidatorT = (value: string) => {
   if (
     value &&
     ((form.username &&
@@ -118,61 +104,61 @@ const validatorPwd = (rule: any, value: any, callback: any) => {
         (value.includes(form.account) ||
           value.includes(form.account.split('').reverse().join('')))))
   ) {
-    callback(i18n.value.PWD_USERNAME_VAILD);
-  } else {
-    callback();
+    return {
+      type: 'danger',
+      message: useI18n().value.PWD_USERNAME_VAILD,
+    }
   }
 };
 // checkbox校验
-const validatorCheckbox = (rule: any, value: any, callback: any) => {
+const validatorCheckbox: ValidatorT = (value: Array<string>) => {
   if (!value || !value.length) {
-    callback(i18n.value.PLEASE_CHECK_PRIVACY);
-  } else {
-    callback();
+    return {
+      type: 'danger',
+      message: useI18n().value.PLEASE_CHECK_PRIVACY,
+    };
   }
 };
 
 // 空值校验
-const requiredRules: FormItemRule[] = [
+const requiredRules: RulesT[] = [
   {
-    required: true,
-    message: i18n.value.NOT_EMPTY,
-    trigger: 'blur',
+    validator: validatorEmpty,
+    triggers: 'blur',
   },
 ];
 const rules = ref(requiredRules);
 
 // 用户名校验
-const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
-const passwordRules = ref<FormItemRule[]>([
+const userNameRules = reactive<RulesT[]>(getUsernammeRules());
+const passwordRules = ref<RulesT[]>([
   ...requiredRules,
   ...getPwdRules(),
   {
     validator: validatorPwd,
-    trigger: ['change', 'blur'],
+    triggers: ['change', 'blur'],
   },
 ]);
 
 // 账户校验
-const accountRules = reactive<FormItemRule[]>([
+const accountRules = reactive<RulesT[]>([
   ...requiredRules,
   {
-    validator: validatorAccount,
-    trigger: 'blur',
+    validator: validatorPhone,
+    triggers: 'blur',
   },
 ]);
 
 // 隐私声明校验
-const policyRules = reactive<FormItemRule[]>([
+const policyRules = reactive<RulesT[]>([
   {
     validator: validatorCheckbox,
-    trigger: 'change',
+    triggers: 'change',
   },
 ]);
 
-const submit = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formValidator(formEl).subscribe((valid) => {
+const submit = () => {
+  formValidator(formRef.value).subscribe((valid) => {
     if (valid) {
       emit('submit', form);
     } else {
@@ -181,16 +167,8 @@ const submit = (formEl: FormInstance | undefined) => {
   });
 };
 
-const blur = (formEl: FormInstance | undefined, field: string) => {
-  if (type.value === 'register') {
-    asyncBlur(formEl, field);
-  } else {
-    formValidator(formEl, field).subscribe();
-  }
-};
-
 // 改变账户值，重置code或pwd
-const changeAccount = (formEl: FormInstance | undefined) => {
+const changeAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   formEl?.resetFields('code');
   if (type.value === 'login') {
     formEl?.resetFields('password');
@@ -218,7 +196,7 @@ const loginTabSelect = () => {
 // 键盘回车登录
 const enterSubmit = (e: { key: string; }) => {
   if (type.value === 'login' && e.key === 'Enter') {
-    submit(formRef.value);
+    submit();
   }
 }
 onMounted(() => {
@@ -234,21 +212,20 @@ onUnmounted(() => {
     :type="type"
     @select="loginTabSelect"
   ></LoginTabs>
-  <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
-    <el-form-item
+  <OForm ref="formRef" label-width="0" :model="form" class="form" style="max-width: 460px">
+    <OFormItem
       v-if="type === 'register'"
-      prop="username"
+      field="username"
       :rules="userNameRules"
     >
       <OInput
         size="large"
         v-model.trim="form.username"
         :placeholder="i18n.ENTER_USERID"
-        @blur="blur(formRef, 'username')"
       />
-    </el-form-item>
-    <el-form-item
-      prop="account"
+    </OFormItem>
+    <OFormItem
+      field="account"
       :rules="
         type === 'login' && selectLoginType === 'password'
           ? rules
@@ -259,34 +236,32 @@ onUnmounted(() => {
         size="large"
         v-model.trim="form.account"
         :placeholder="accountPlaceholder"
-        @blur="blur(formRef, 'account')"
         @input="changeAccount(formRef)"
       />
-    </el-form-item>
-    <el-form-item
+    </OFormItem>
+    <OFormItem
       v-if="selectLoginType === 'code' || type === 'register'"
-      prop="code"
+      field="code"
       :rules="rules"
     >
       <OInput
         :clearable="false"
         size="large"
         v-model.trim="form.code"
-        @blur="blur(formRef, 'code')"
         :placeholder="i18n.ENTER_RECEIVED_CODE"
       >
         <template #suffix>
           <CountdownButton
             v-model="disableCode"
             @click="getcode(formRef)"
-            variant="text"
+            size="small"
           />
         </template>
       </OInput>
-    </el-form-item>
-    <el-form-item
+    </OFormItem>
+    <OFormItem
       v-if="selectLoginType === 'password'"
-      prop="password"
+      field="password"
       :rules="type === 'register' ? passwordRules : rules"
     >
       <OInput
@@ -295,15 +270,15 @@ onUnmounted(() => {
         v-model="form.password"
         :placeholder="i18n.INTER_PWD"
       />
-    </el-form-item>
-    <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
+    </OFormItem>
+    <OFormItem v-if="type === 'register'" field="policy" :rules="policyRules">
       <div class="checkbox">
         <OCheckbox 
             value="1" v-model="form.policy"
-            @change="doValidatorForm(formRef, 'policy')">
+            @change="validator('policy')">
         </OCheckbox>
         <span>
-          <span class="cursor" @click="changeCheckBox(formRef)">
+          <span class="cursor" @click="changeCheckBox()">
             {{ i18n.READ_ADN_AGREE }}
           </span>
           <OLink @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
@@ -311,13 +286,13 @@ onUnmounted(() => {
           <OLink @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
         </span>
       </div>
-    </el-form-item>
-    <el-form-item>
-      <OButton color="primary" variant="solid" size="large" class="login-btn" @click="submit(formRef)">
+    </OFormItem>
+    <OFormItem>
+      <OButton color="primary" variant="solid" size="large" class="login-btn" @click="submit()">
         <slot name="btn"> {{ i18n.LOGIN }} </slot>
       </OButton>
-    </el-form-item>
-  </el-form>
+    </OFormItem>
+  </OForm>
   <Verify
     ref="verify"
     mode="pop"
@@ -346,6 +321,15 @@ onUnmounted(() => {
   @include tip1;
   .o-checkbox-group {
     padding-top: 3px;
+  }
+}
+.form {
+  --form-label-main-gap: 0;
+  .o-form-item:last-child {
+    margin-bottom: var(--form-item-gap);
+  }
+  .o-form-item-danger {
+    margin-bottom: 0 !important;
   }
 }
 </style>
