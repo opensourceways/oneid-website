@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted, Ref, ref, toRefs, useAttrs, watch } from 'vue';
 import { useI18n, useI18nStr } from 'shared/i18n';
-import { OButton } from '@opensig/opendesign';
+import { OLink } from '@opensig/opendesign';
 
 const attrs = useAttrs();
 const i18n = useI18n();
@@ -51,8 +51,8 @@ const clickBtn = () => {
 };
 </script>
 <template>
-  <OButton v-bind="attrs" :disabled="modelValue" @click="clickBtn">{{
+  <OLink v-bind="attrs" :disabled="modelValue" @click="clickBtn">{{
     modelValue ? useI18nStr('TRY_AGAIN', [num]).value : i18n.SEN_CODE
-  }}</OButton>
+  }}</OLink>
 </template>
 <style lang="scss" scoped></style>

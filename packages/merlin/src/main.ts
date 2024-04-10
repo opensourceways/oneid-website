@@ -2,7 +2,6 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import { router } from './router';
-import ElementPlus from 'element-plus';
 import OpenDesign from 'opendesign';
 import VueDOMPurifyHTML from 'vue-dompurify-html';
 import '@/shared/styles/index.scss';
@@ -12,7 +11,6 @@ import '@/shared/style/theme/default-light.token.css';
 import '@/shared/style/theme/dark.token.css';
 import '@/shared/style/theme/index.scss';
 import '@/shared/style/markdown.scss';
-import '@/shared/style/element/index.scss';
 import 'shared/assets/fonts/harmonyos-hans-fonts.scss';
 import { initRound } from '@opensig/opendesign';
 
@@ -22,7 +20,6 @@ const app = createApp(App);
 app.use(VueDOMPurifyHTML);
 app.use(router);
 app.use(createPinia());
-app.use(ElementPlus);
 app.use(OpenDesign);
 
 app.mount('#app');
