@@ -17,6 +17,7 @@ import LoginTabs from 'shared/components/LoginTabs.vue';
 import PwdInput from 'shared/components/PwdInput.vue';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
+import { ONLY_LOGIN_ID } from '@/shared/const';
 
 type TYPE = 'login' | 'register';
 const props = defineProps({
@@ -100,10 +101,14 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
   doValidatorForm(formEl, 'policy');
 };
 
+const onlyLogin = computed(
+  () => ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+);
+
 // 手机或邮箱合法校验
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
-    if (type.value === 'register') {
+    if (!onlyLogin.value) {
       if (PHONE_REG.test(value)) {
         callback();
       } else {
@@ -216,7 +221,7 @@ const docsUrl = computed(
   () => `${import.meta.env?.VITE_MINDSPORE_DOCS}/zh/appendix/platlicense/`
 );
 const accountPlaceholder = computed(() => {
-  if (type.value === 'register') {
+  if (!onlyLogin.value) {
     return i18n.value.ENTER_YOUR_PHONE;
   } else {
     return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;

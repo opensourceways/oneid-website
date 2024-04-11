@@ -12,7 +12,7 @@ import {
   setLogoutSession,
 } from 'shared/utils/login';
 import { ElMessage } from 'element-plus';
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
@@ -22,6 +22,7 @@ import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { getVerifyImgSize } from 'shared/utils/utils';
 import Verify from 'shared/verifition/Verify.vue';
 import PadAccount from 'shared/components/PadAccount.vue';
+import { ONLY_LOGIN_ID } from '@/shared/const';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
@@ -150,6 +151,9 @@ const threePartLogin = (res: any) => {
 const cancelPad = () => {
   logout();
 };
+const onlyLogin = computed(
+  () => ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+);
 </script>
 <template>
   <LoginTemplate
@@ -157,13 +161,13 @@ const cancelPad = () => {
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
   >
-    <template #switch>
+    <template #switch v-if="false">
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
-    <template #btn> {{ i18n.LOGIN }} </template>
+    <template #btn> {{ onlyLogin ? i18n.LOGIN : i18n.LOGIN_REGISTER }} </template>
   </LoginTemplate>
   <PadAccount
     v-model="visible"
