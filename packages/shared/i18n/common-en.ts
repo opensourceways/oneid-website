@@ -79,6 +79,10 @@ export default {
     COPY_RIGHT: 'Copyright © 2023 openEuler. All rights reserved.',
     COPY_RIGHT_GAUSS: 'Copyright © openGauss 2023. All rights reserved.',
     COPY_RIGHT_MINDSPORE: 'Copyright © 2023 MindSpore. All rights reserved.',
+    COPY_RIGHT_OPENMIND: 'Copyright © 2024 openMind. All rights reserved.',
+    PRIVACY_POLICY: 'Privacy Statement',
+    LEGAL_NOTICE: 'Legal Notice',
+    ABOUT_COOKIE: 'About cookies',
     RIGHT_LIST: [
       {
         NAME: 'Trademark',

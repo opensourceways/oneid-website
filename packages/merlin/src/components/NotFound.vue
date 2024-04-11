@@ -16,7 +16,7 @@
   flex-direction: column;
   @include h4;
   color: var(--o-color-info1);
-  height: 100vh;
+  height: inherit;
   background-color: rgb(247, 247, 247);
   .nofound-text {
     margin-top: 16px;
