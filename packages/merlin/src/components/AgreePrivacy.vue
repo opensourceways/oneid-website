@@ -112,7 +112,7 @@ const scroll = (id: string) => {
 } 
 </script>
 <template>
-  <ODialog :scroller="false"  v-model:visible="modelValue" :actions="dlgAction" size="large">
+  <ODialog v-model:visible="modelValue" :actions="dlgAction" size="large">
     <OScroller ref="scroller" style="height: 400px" wrapClass="markdown-body" showType="always">
       <div id="privacy" v-dompurify-html="privacyData"></div>
       <div id="legal" v-dompurify-html="legalData"></div>
