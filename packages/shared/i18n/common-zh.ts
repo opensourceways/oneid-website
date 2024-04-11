@@ -78,6 +78,10 @@ export default {
     COPY_RIGHT: '版权所有 © 2023 openEuler 保留一切权利',
     COPY_RIGHT_GAUSS: '版权所有 ©  openGauss 2023 保留一切权利',
     COPY_RIGHT_MINDSPORE: '版权所有 © 2023 MindSpore 保留一切权利',
+    COPY_RIGHT_OPENMIND: '版权所有 © 2024 openMind 保留一切权利',
+    PRIVACY_POLICY: '隐私政策',
+    LEGAL_NOTICE: '法律声明',
+    ABOUT_COOKIE: '关于cookies',
     RIGHT_LIST: [
       {
         NAME: '品牌',
