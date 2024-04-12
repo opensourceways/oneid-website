@@ -26,8 +26,15 @@ function getCookie(cname: string) {
   }
   return '';
 }
+
+// 全量删除cookie
 function deleteCookie(cname: string) {
-  setCookie(cname, 'null', true);
+  const domain = location.hostname;
+  const arr = domain.split('.');
+  for (let i = arr.length - 1; i >= 0; i--) {
+    const domain = `.${arr.slice(i).join('.')}`;
+    document.cookie = `${cname}='null'; max-age=0; path=/; domain=${domain}`;
+  }
 }
 
 // 存储用户id及token，用于下次登录
