@@ -11,7 +11,7 @@ onMounted(() => {
       const { token } = getUserAuth();
       if (token) {
         logout(
-          { community: import.meta.env?.VITE_COMMUNITY },
+          { },
           redirectUri
         );
       } else {

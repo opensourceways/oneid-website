@@ -102,7 +102,6 @@ const verifySuccess = (data: any) => {
     account: form.account,
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
-    community: import.meta.env?.VITE_COMMUNITY,
   };
   sendCodeCaptcha(param).then(() => {
     disableCode.value = true;
@@ -119,7 +118,6 @@ const nextStep = (formEl: InstanceType<typeof OForm> | undefined) => {
     if (valid) {
       const param = {
         client_id: loginParams.value.client_id,
-        community: import.meta.env?.VITE_COMMUNITY,
         account: form.account,
         code: form.code,
       };
@@ -138,7 +136,6 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
       const newPwd = await getRsaEncryptWord(form.password);
       const param = {
         client_id: loginParams.value.client_id,
-        community: import.meta.env?.VITE_COMMUNITY,
         pwd_reset_token: resetToken.value,
         new_pwd: newPwd,
       };
