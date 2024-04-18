@@ -30,7 +30,10 @@ export function getRsaEncryptWord(
   word: string | string[]
 ): Promise<string | string[]> {
   return new Promise((resolve, reject) => {
-    getPublicKey({ community: import.meta.env?.VITE_COMMUNITY }).then((res) => {
+    const param = import.meta.env?.VITE_IS_OPENMERLIN ? {} : {
+      community: import.meta.env?.VITE_COMMUNITY,
+    };
+    getPublicKey(param).then((res) => {
       const publicKey = res?.data?.rsa?.publicKey || res?.data;
       if (publicKey) {
         const keyword = publicKey.includes('-----BEGIN PUBLIC KEY-----')

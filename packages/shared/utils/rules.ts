@@ -52,8 +52,12 @@ export const validatorSameName = async (value: string) => {
     const param: any = {
       username: value,
       client_id: loginParams.value.client_id,
-      community: import.meta.env?.VITE_COMMUNITY,
     };
+    if (!import.meta.env?.VITE_IS_OPENMERLIN) {
+      Object.assign(param, {
+        community: import.meta.env?.VITE_COMMUNITY,
+      })
+    }
     const res = await accountExists(param)
       .then(() => {
         return {

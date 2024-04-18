@@ -69,7 +69,7 @@ const isNotPadUserinfo = (data: any): boolean => {
 };
 onMounted(() => {
   validLoginUrl().then(() => {
-    isLogined().then((bool) => {
+    isLogined({}).then((bool) => {
       if (bool) {
         if (isNotPadUserinfo(bool)) {
           haveLoggedIn();
@@ -99,7 +99,6 @@ const loginSuccess = (data: any) => {
 
 const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
-    community: import.meta.env?.VITE_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
     client_id: loginParams.value.client_id,
@@ -125,7 +124,6 @@ const formCopy = ref(null);
 const chenckLogin = (form: any) => {
   formCopy.value = form;
   const param = {
-    community: import.meta.env?.VITE_COMMUNITY,
     account: form.account,
   };
   checkLoginAccount(param).then((data) => {
@@ -146,7 +144,6 @@ const threePartLogin = (res: any) => {
   const param = {
     code: code,
     permission: 'sigRead',
-    community: import.meta.env?.VITE_COMMUNITY,
     redirect,
     client_id: loginParams.value.client_id,
   };
