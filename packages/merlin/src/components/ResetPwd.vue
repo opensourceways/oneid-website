@@ -242,7 +242,7 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
   font-weight: 600;
   color: var(--o-color-info1);
   text-align: center;
-  padding-bottom: 28px;
+  padding-bottom: 24px;
 }
 .footer {
   display: flex;
@@ -252,7 +252,7 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
 .form {
   --form-label-main-gap: 0;
   .o-form-item:last-child {
-    margin-bottom: var(--form-item-gap);
+    margin-bottom: 32px;
   }
   .o-form-item-danger {
     margin-bottom: 0 !important;

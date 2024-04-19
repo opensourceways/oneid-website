@@ -12,7 +12,7 @@ import {
 } from 'shared/utils/rules';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
-import LoginTabs from 'shared/components/LoginTabs.vue';
+import LoginTabs from '@/components/LoginTabs.vue';
 import { useCommonData } from 'shared/stores/common';
 
 type TYPE = 'login' | 'register';
@@ -210,11 +210,6 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <LoginTabs
-    v-model="selectLoginType"
-    :type="type"
-    @select="loginTabSelect"
-  ></LoginTabs>
   <OForm ref="formRef" label-width="0" :model="form" class="form" style="max-width: 460px">
     <OFormItem
       v-if="type === 'register'"
@@ -274,6 +269,13 @@ onUnmounted(() => {
         :placeholder="i18n.INTER_PWD"
       />
     </OFormItem>
+    <LoginTabs
+      v-if="type === 'login'"
+      v-model="selectLoginType"
+      :type="type"
+      @select="loginTabSelect"
+      style="margin-bottom: 24px"
+    ></LoginTabs>
     <OFormItem v-if="type === 'register'" field="policy" :rules="policyRules">
       <div class="checkbox">
         <OCheckbox 
