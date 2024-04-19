@@ -11,7 +11,7 @@ import {
   logout,
   setLogoutSession,
 } from 'shared/utils/login';
-import { OLink, useMessage } from '@opensig/opendesign';
+import { OLink, useMessage, ODivider } from '@opensig/opendesign';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
@@ -171,14 +171,9 @@ const agreePrivacy = () => {
     @three-part-login="threePartLogin"
   >
     <template #switch v-if="selectLoginType === 'password'">
-      <div style="flex: 1">
-        <a style="display: inline" @click="goResetPwd()">
-          {{ i18n.FORGET_PWD }}
-        </a>
-      </div>
-      {{ i18n.NO_ACCOUNT }}
-      &nbsp;
       <OLink @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
+      <ODivider direction="v" />
+      <OLink @click="goResetPwd()">{{ i18n.FORGET_PWD }}</OLink>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }} </template>

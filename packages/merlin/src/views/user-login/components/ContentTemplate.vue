@@ -16,11 +16,6 @@ import LoginCard from './LoginCard.vue';
     </div>
     <slot name="footer"></slot>
   </LoginCard>
-  <div class="all">
-    <div class="main">
-      
-    </div>
-  </div>
 </template>
 <style lang="scss" scoped>
 
@@ -40,7 +35,9 @@ import LoginCard from './LoginCard.vue';
 .switch {
   display: flex;
   justify-content: center;
+  align-items: center;
   @include tip1;
+  height: 22px;
 }
 :deep(.o-link-normal) {
     --link-color: var(--o-color-link1);
