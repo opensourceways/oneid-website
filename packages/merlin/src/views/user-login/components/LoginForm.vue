@@ -186,7 +186,7 @@ const goToOtherPage = (type: string) => {
 };
 const accountPlaceholder = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
-    return i18n.value.ENTER_YOUR_ACCOUNT_ID;
+    return i18n.value.ENTER_YOUR_ACCOUNT;
   } else {
     return i18n.value.ENTER_YOUR_PHONE;
   }
@@ -224,7 +224,7 @@ onUnmounted(() => {
       <OInput
         size="large"
         v-model.trim="form.username"
-        :placeholder="i18n.ENTER_USERID"
+        :placeholder="i18n.ENTER_USERNAME"
       />
     </OFormItem>
     <OFormItem

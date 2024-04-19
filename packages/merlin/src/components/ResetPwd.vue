@@ -251,7 +251,6 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
 }
 .form {
   --form-label-main-gap: 0;
-  --form-item-gap: 40px;
   .o-form-item:last-child {
     margin-bottom: var(--form-item-gap);
   }
