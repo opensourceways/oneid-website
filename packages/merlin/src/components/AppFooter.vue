@@ -4,7 +4,8 @@ import { useI18n } from 'shared/i18n';
 
 const i18n = useI18n();
 const jump = (type: string) => {
-  location.href = `${import.meta.env.VITE_OPENEULER_WEBSITE}/${type}`;
+  const opener = window.open(`${import.meta.env.VITE_OPENEULER_WEBSITE}/${type}`, '_blank');
+  if (opener) opener.opener = null;
 };
 </script>
 

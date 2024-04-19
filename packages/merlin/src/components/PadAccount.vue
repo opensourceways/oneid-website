@@ -299,4 +299,13 @@ const dlgAction: DialogActionT[] = [
   width: 100%;
   grid-gap: 6px;
 }
+.form {
+  --form-label-main-gap: 0;
+  .o-form-item:last-child {
+    margin-bottom: var(--form-item-gap);
+  }
+  .o-form-item-danger {
+    margin-bottom: 0 !important;
+  }
+}
 </style>

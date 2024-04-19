@@ -55,14 +55,14 @@ const padUserinfo = reactive({
 const isNotPadUserinfo = (data: any): boolean => {
   const { username, oneidPrivacyAccepted = '', } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  if (!name) {
-    padUserinfo.username = name;
-    visible.value = true;
-    return false;
-  } else if (
+  if (
     oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
   ) {
     privacyVisible.value = true;
+    return false;
+  } else if (!name) {
+    padUserinfo.username = name;
+    visible.value = true;
     return false;
   }
   return true;
@@ -154,6 +154,15 @@ const threePartLogin = (res: any) => {
 const cancelPad = () => {
   logout();
 };
+const agreePrivacy = () => {
+  isLogined({}).then((bool) => {
+    if (bool) {
+      if (isNotPadUserinfo(bool)) {
+        haveLoggedIn();
+      }
+    }
+  });
+}
 </script>
 <template>
   <LoginTemplate
@@ -182,7 +191,7 @@ const cancelPad = () => {
   ></PadAccount>
   <AgreePrivacy
     v-model="privacyVisible"
-    @success="doSuccess"
+    @success="agreePrivacy"
     @cancel="cancelPad"
   ></AgreePrivacy>
   <Verify

@@ -65,14 +65,14 @@ function getLogoutUrl(param: { host: string, idToken: string, redirectUri: strin
 // 退出登录
 export function logout(
   param: any = { community: import.meta.env?.VITE_COMMUNITY },
-  redirectUri = window?.location?.origin
+  redirectUri?: string,
 ) {
   if (param.idToken) {
     saveUserAuth();
     const params = {
       host: import.meta.env?.VITE_OPENEULER_APPHOST,
       idToken: param.idToken,
-      redirectUri,
+      redirectUri: redirectUri || location.origin,
     }
     window.location.href = getLogoutUrl(params);
     return;
@@ -89,12 +89,16 @@ export function logout(
         }
         window.location.href = getLogoutUrl(params);
       } else {
-        window.location.href = redirectUri;
+        window.location.href = redirectUri || location.origin;
       }
     })
     .catch(() => {
       saveUserAuth();
-      window.location.href = redirectUri;
+      if (redirectUri) {
+        window.location.href = redirectUri;
+      } else {
+        goToHome();
+      }
     });
 }
 
