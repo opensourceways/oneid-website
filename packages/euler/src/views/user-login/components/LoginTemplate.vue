@@ -2,6 +2,7 @@
 import IconGithub from '~icons/app/icon-github.svg';
 import IconGitee from '~icons/app/icon-gitee.svg';
 import IconOpenAtom from '~icons/app/icon-openatom.svg';
+// import IconWeChat from '~icons/app/icon-wechat.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
 import { computed, onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
@@ -43,7 +44,8 @@ const threePartsLogin = (type: string) => {
   const connIds: any = {
     Gitee: '6226d91103d81d8654673f1b',
     GitHub: '6226db30c8e30db1518cc4aa',
-    OpenAtom: '63c0bfd4c88ee67bcf1959b4',
+    OpenAtom: '6607b16cb5fd97506e8cde93',
+    // WeChat: '662605f0fd03c1fba569a6ce',
   };
   Object.assign(params, { ext_idp_conn_id: connIds[type] });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
@@ -83,6 +85,13 @@ const icons = [
       threePartsLogin(type);
     },
   },
+  // {
+  //   key: 'WeChat',
+  //   icon: IconWeChat,
+  //   onClick: (type: string) => {
+  //     threePartsLogin(type);
+  //   },
+  // },
 ];
 
 const loginFun = (e: MessageEvent) => {
