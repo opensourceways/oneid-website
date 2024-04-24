@@ -269,13 +269,14 @@ onUnmounted(() => {
         :placeholder="i18n.INTER_PWD"
       />
     </OFormItem>
-    <LoginTabs
-      v-if="type === 'login'"
-      v-model="selectLoginType"
-      :type="type"
-      @select="loginTabSelect"
-      style="margin-bottom: 24px"
-    ></LoginTabs>
+    <div v-if="type === 'login'" class="login-tabs">
+      <LoginTabs
+        v-model="selectLoginType"
+        :type="type"
+        @select="loginTabSelect"
+        class="login-tab"
+      ></LoginTabs>
+    </div>
     <OFormItem v-if="type === 'register'" field="policy" :rules="policyRules">
       <div class="checkbox">
         <OCheckbox 
@@ -328,10 +329,19 @@ onUnmounted(() => {
     padding-top: 3px;
   }
 }
+.login-tabs {
+  margin-bottom: 14px;
+  height: 22px;
+  position: relative;
+  .login-tab {
+    position: absolute;
+    top: -4px;
+  }
+}
 .form {
   --form-label-main-gap: 0;
   .o-form-item:last-child {
-    margin-bottom: var(--form-item-gap);
+    margin-bottom: 12px;
   }
   .o-form-item-danger {
     margin-bottom: 0 !important;

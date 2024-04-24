@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getOS } from 'shared/utils/utils';
+import { OScroller } from '@opensig/opendesign';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 
@@ -12,10 +13,12 @@ addOSTag();
 
 <template>
   <AppHeader class="ly-header"/>
-  <main class="ly-main">
-    <router-view />
-  </main>
-  <AppFooter class="ly-footer" />
+  <OScroller show-type="hover">
+    <main class="ly-main">
+      <router-view />
+    </main>
+    <AppFooter class="ly-footer" />
+  </OScroller>
 </template>
 
 <style lang="scss">
@@ -71,8 +74,16 @@ addOSTag();
   z-index: var(--layout-header-zIndex);
 }
 
-.ly-main {
+.o-scroller {
   padding-top: var(--layout-header-height);
+  height: 100vh;
+  --scrollbar-height: calc(100vh - var(--layout-header-height) * 2 - 10px);
+  :deep(.o-scroller-container) {
+    scroll-padding-top: var(--layout-header-height);
+  }
+}
+
+.ly-main {
   min-height: var(--layout-content-min-height);
   background-color: var(--o-color-fill1);
 }
