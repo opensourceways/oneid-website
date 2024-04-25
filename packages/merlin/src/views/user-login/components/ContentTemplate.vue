@@ -24,7 +24,7 @@ import LoginCard from './LoginCard.vue';
   justify-content: center;
 
   .header-title {
-    @include h1;
+    @include h2;
     font-weight: 600;
     color: var(--o-color-info1);
   }

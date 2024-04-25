@@ -10,6 +10,9 @@ import { useMarkdown } from 'shared/utils/useMarkdown';
 import { modifyUser } from 'shared/api/api-center';
 import merlinlegal from '@/assets/markdown/legal.md?raw'
 import merlinprivacy from '@/assets/markdown/privacy.md?raw'
+import merlinlegalEn from '@/assets/markdown/legal_en.md?raw'
+import merlinprivacyEn from '@/assets/markdown/privacy_en.md?raw'
+import { useCommonData } from 'shared/stores/common';
 
 const props = defineProps({
   modelValue: {
@@ -18,6 +21,7 @@ const props = defineProps({
   },
 });
 
+const { lang } = useCommonData();
 const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
 const i18n = useI18n();
@@ -49,8 +53,13 @@ const privacyData = ref('');
 const legalData = ref('');
 
 onMounted(() => {
-  privacyData.value = useMarkdown().mkit(merlinprivacy);
-  legalData.value = useMarkdown().mkit(merlinlegal);
+  if (lang.value === 'zh') {
+    privacyData.value = useMarkdown().mkit(merlinprivacy);
+    legalData.value = useMarkdown().mkit(merlinlegal);
+  } else {
+    privacyData.value = useMarkdown().mkit(merlinprivacyEn);
+    legalData.value = useMarkdown().mkit(merlinlegalEn);
+  }
 })
 
 const close = () => {

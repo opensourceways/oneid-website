@@ -323,7 +323,6 @@ onUnmounted(() => {
   grid-template-columns: auto auto;
   align-items: start;
   color: var(--o-color-info1);
-  white-space: nowrap;
   @include tip1;
   .o-checkbox-group {
     padding-top: 3px;
