@@ -43,5 +43,6 @@ import LoginCard from './LoginCard.vue';
     --link-color: var(--o-color-link1);
     --link-color-hover: var(--o-color-link2);
     --link-color-active: var(--o-color-link3);
+    padding: 0;
 }
 </style>
