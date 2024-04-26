@@ -152,7 +152,7 @@ const threePartLogin = (res: any) => {
   });
 };
 const cancelPad = () => {
-  logout();
+  logout({}, location.href);
 };
 const agreePrivacy = () => {
   isLogined({}).then((bool) => {
