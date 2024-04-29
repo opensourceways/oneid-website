@@ -122,7 +122,14 @@ const putUserName = () => {
       observer.complete();
       return;
     }
-    modifyUser({ username: form.username })
+    let param;
+    if (import.meta.env?.VITE_COMMUNITY === 'opengauss') {
+      param = {
+        community: import.meta.env?.VITE_COMMUNITY,
+        client_id: loginParams.value.client_id,
+      }
+    }
+    modifyUser({ username: form.username }, param)
       .then(() => {
         observer.next(true);
         observer.complete();
