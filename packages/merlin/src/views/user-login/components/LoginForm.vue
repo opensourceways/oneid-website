@@ -231,6 +231,7 @@ onUnmounted(() => {
       "
     >
       <OInput
+        id="e2e_login_account"
         size="large"
         v-model.trim="form.account"
         :placeholder="accountPlaceholder"
@@ -263,6 +264,7 @@ onUnmounted(() => {
       :rules="type === 'register' ? passwordRules : rules"
     >
       <OInput
+        id="e2e_login_password"
         size="large"
         type="password"
         v-model="form.password"
@@ -294,7 +296,7 @@ onUnmounted(() => {
       </div>
     </OFormItem>
     <OFormItem>
-      <OButton color="primary" variant="solid" size="large" class="login-btn" @click="submit()">
+      <OButton id="e2e_login_submit" color="primary" variant="solid" size="large" class="login-btn" @click="submit()">
         <slot name="btn"> {{ i18n.LOGIN }} </slot>
       </OButton>
     </OFormItem>
