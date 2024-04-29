@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { accountLoginPost, checkLoginAccount } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
-import { isLogined } from 'shared/utils/login';
+import { isLogined, logout } from 'shared/utils/login';
 import { getCommunityParams } from '@/shared/utils';
 import { ElMessage } from 'element-plus';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
@@ -13,12 +13,14 @@ import Verify from 'shared/verifition/Verify.vue';
 import { getVerifyImgSize } from 'shared/utils/utils';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { ONLY_LOGIN_ID } from '@/shared/const';
+import PadAccount from 'shared/components/PadAccount.vue';
 import { useCommonData } from 'shared/stores/common';
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
 const { loginParams } = useCommonData();
 const router = useRouter();
 const route = useRoute();
+const visible = ref(false);
 const goRegister = () => {
   router.push({
     path: '/register',
@@ -31,11 +33,28 @@ const goResetPwd = () => {
     query: route.query,
   });
 };
+// 控制补全框内容
+const padUserinfo = reactive({
+  username: '',
+});
+// 判断是否需要补全内容
+const isNotPadUserinfo = (data: any): boolean => {
+  const { username } = data || {};
+  const name = !username || username.startsWith('oauth2_') ? '' : username;
+  if (!name) {
+    padUserinfo.username = name;
+    visible.value = true;
+    return false;
+  }
+  return true;
+};
 onMounted(() => {
   validLoginUrl().then(() => {
     isLogined(getCommunityParams(true)).then((bool) => {
       if (bool) {
-        haveLoggedIn();
+        if (isNotPadUserinfo(bool)) {
+          haveLoggedIn();
+        }
       }
     });
   });
@@ -52,7 +71,9 @@ const doSuccess = () => {
 
 // 登录成功处理函数
 const loginSuccess = (data: any) => {
-  doSuccess();
+  if (isNotPadUserinfo(data)) {
+    doSuccess();
+  }
 };
 
 const login = async (form: any, captchaVerification?: string) => {
@@ -100,6 +121,9 @@ const verifySuccess = (data: any) => {
 const showSwitch = computed(
   () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
 );
+const cancelPad = () => {
+  logout(undefined, location.href);
+};
 </script>
 <template>
   <LoginTemplate ref="loginTemplate" @submit="chenckLogin">
@@ -123,5 +147,11 @@ const showSwitch = computed(
     :img-size="getVerifyImgSize()"
     @success="verifySuccess"
   ></Verify>
+  <PadAccount
+    v-model="visible"
+    :username="padUserinfo.username"
+    @success="doSuccess"
+    @cancel="cancelPad"
+  ></PadAccount>
 </template>
 <style lang="scss" scoped></style>
