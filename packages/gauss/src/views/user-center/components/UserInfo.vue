@@ -108,7 +108,7 @@ const getSubmitParams = (formEl: FormInstance | undefined) => {
         const param: IObject = data.value.reduce((pre, next) => {
           if (
             !next.disabled &&
-            next.key in userInfo.value &&
+            (next.key || userInfo.value[next.key]) &&
             form[next.key] !== userInfo.value[next.key]
           ) {
             pre[next.key] = form[next.key];

@@ -122,7 +122,7 @@ const showSwitch = computed(
   () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
 );
 const cancelPad = () => {
-  logout(undefined, location.href);
+  logout(getCommunityParams(true), location.href);
 };
 </script>
 <template>
