@@ -45,11 +45,14 @@ const jump = (type: string) => {
 
 .footer-content {
   width: 100%;
-  height: 100%;
   border-top: 1px solid var(--o-color-control1);
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @include respond-to('phone') {
+    flex-direction: column;
+    justify-content: space-around;
+  }
 }
 </style>
