@@ -391,3 +391,7 @@ export const getOS = () => {
     return OS.WINDOWS;
   }
 };
+
+export function isWeChat(){
+  return /MicroMessenger/i.test(window.navigator.userAgent);
+}

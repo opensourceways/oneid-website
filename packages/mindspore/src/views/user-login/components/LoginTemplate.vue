@@ -6,7 +6,7 @@ import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
 import { computed, onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { getUrlByParams } from 'shared/utils/utils';
+import { getUrlByParams, isWeChat } from 'shared/utils/utils';
 import { useCommonData } from 'shared/stores/common';
 import { ONLY_LOGIN_ID } from '@/shared/const';
 
@@ -113,7 +113,8 @@ onUnmounted(() => {
 const showFooter = computed(
   () =>
     type.value === 'login' &&
-    !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+    !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) &&
+    !isWeChat()
 );
 </script>
 <template>
