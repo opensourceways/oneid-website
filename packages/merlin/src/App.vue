@@ -25,7 +25,6 @@ addOSTag();
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-width: 1200px;
 
   --layout-header-height: 64px;
   --layout-header-zIndex: 101;
