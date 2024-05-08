@@ -14,7 +14,7 @@
           alt=""
           style="width: 100%; height: 100%; display: block"
         />
-        <div v-show="showRefresh" class="verify-refresh" @click="refresh">
+        <div v-show="showRefresh" class="verify-refresh" @click="refresh" @touchstart.prevent="refresh">
           <i class="iconfont icon-refresh"></i>
         </div>
         <transition name="tips">
@@ -56,8 +56,8 @@
             left: moveBlockLeft,
             transition: transitionLeft,
           }"
-          @touchstart="start"
-          @mousedown="start"
+          @touchstart.prevent="start"
+          @mousedown.prevent="start"
         >
           <OIcon class="verify-icon" :style="{ color: iconColor }">
             <component :is="iconComponent"></component>

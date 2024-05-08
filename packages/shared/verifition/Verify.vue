@@ -1,12 +1,12 @@
 <template>
-  <div v-show="showBox" :class="mode == 'pop' ? 'mask' : ''">
+  <div v-show="showBox" :class="mode == 'pop' ? 'mask' : ''" @touchstart.prevent="() => {}">
     <div
       :class="mode == 'pop' ? 'verifybox' : ''"
       :style="{ 'max-width': parseInt(imgSize.width) + 30 + 'px' }"
     >
       <div v-if="mode == 'pop'" class="verifybox-top">
         {{ i18n.PLEASE_DRAG_SLIDER }}
-        <span class="verifybox-close" @click="closeBox">
+        <span class="verifybox-close" @click="closeBox" @touchstart.prevent="closeBox">
           <i class="iconfont icon-close"></i>
         </span>
       </div>

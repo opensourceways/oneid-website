@@ -11,6 +11,7 @@ import {
   USERNAME_REG,
 } from '../const/common.const';
 import { accountExists } from '../api/api-login';
+import { testIsPhone } from './helper';
 
 // 返回接口报错信息
 export function callBackErrMessage(err: any) {
@@ -276,10 +277,10 @@ export function validatorExistAccount(
 
 export function getVerifyImgSize() {
   let width = 400;
-  const height = 200;
-  const innerWidth = window.innerWidth;
-  if (innerWidth - 28 < 400) {
-    width = innerWidth - 30;
+  let height = 200;
+  if (testIsPhone()) {
+    width = 300;
+    height = 150;
   }
   return {
     width: width + 'px',
