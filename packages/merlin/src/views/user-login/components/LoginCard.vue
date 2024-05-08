@@ -30,6 +30,9 @@ import logo from '@/assets/logo.svg';
     padding: 26px 80px 36px;
     background-color: var(--o-color-fill2);
     box-shadow: var(--o-shadow-1);
+    @include respond-to('phone') {
+      padding: 24px;
+    }
     .logo {
       text-align: center;
       margin-bottom: 16px;
