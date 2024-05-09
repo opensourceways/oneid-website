@@ -179,7 +179,7 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
         />
       </OFormItem>
       <OFormItem field="code" :rules="rules">
-        <OInput v-model="form.code" size="large" :placeholder="i18n.ENTER_RECEIVED_CODE">
+        <OInput v-model="form.code" size="large" :placeholder="i18n.ENTER_RECEIVED_CODE" maxlength="6">
           <template #suffix>
             <CountdownButton
               v-model="disableCode"

@@ -227,6 +227,7 @@ const showCode = computed(() => {
             <OInput
               v-model.trim="form.oldcode"
               :placeholder="codePlaceholder"
+              maxlength="6"
             />
             <CountdownButton
               v-model="oldaccountNum"
@@ -254,7 +255,7 @@ const showCode = computed(() => {
           :rules="rules"
         >
           <div class="code">
-            <OInput v-model.trim="form.code" :placeholder="codePlaceholder" />
+            <OInput v-model.trim="form.code" :placeholder="codePlaceholder" maxlength="6" />
             <CountdownButton
               v-model="accountNum"
               class="btn"

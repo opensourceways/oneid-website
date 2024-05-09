@@ -248,6 +248,7 @@ onUnmounted(() => {
         size="large"
         v-model.trim="form.code"
         :placeholder="i18n.ENTER_RECEIVED_CODE"
+        maxlength="6"
       >
         <template #suffix>
           <CountdownButton

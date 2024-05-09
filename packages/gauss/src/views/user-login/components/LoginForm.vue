@@ -267,6 +267,7 @@ watch(
           <OInput
             v-model.trim="form.code"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
+            maxlength="6"
           />
           <CountdownButton
             v-model="disableCode"
@@ -302,6 +303,7 @@ watch(
             v-model.trim="form.code"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
             :disabled="disableCodeInput"
+            maxlength="6"
           />
           <CountdownButton
             v-model="disableCode"

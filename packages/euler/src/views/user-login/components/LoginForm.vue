@@ -281,6 +281,7 @@ watch(
           v-model.trim="form.code"
           :placeholder="i18n.ENTER_RECEIVED_CODE"
           :disabled="type === 'register' ? false : disableCodeInput"
+          maxlength="6"
         />
         <CountdownButton
           v-model="disableCode"
