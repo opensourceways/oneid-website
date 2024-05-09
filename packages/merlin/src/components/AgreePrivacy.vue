@@ -99,19 +99,19 @@ const cancelPad = () => {
 };
 const dlgAction: DialogActionT[] = [
   {
-    id: 'cancel',
-    label: i18n.value.CANCEL,
-    size: 'large',
-    onClick: () => {
-      cancelPad();
-    },
-  },
-  {
     id: 'ok',
     label: i18n.value.CONFIRM,
     size: 'large',
     onClick: () => {
       putUser();
+    },
+  },
+  {
+    id: 'cancel',
+    label: i18n.value.CANCEL,
+    size: 'large',
+    onClick: () => {
+      cancelPad();
     },
   },
 ];
