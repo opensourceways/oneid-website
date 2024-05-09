@@ -179,7 +179,7 @@ const confirm = (formEl: FormInstance | undefined) => {
       </el-form-item>
       <el-form-item prop="code" :rules="rules">
         <div class="code">
-          <OInput v-model="form.code" :placeholder="i18n.ENTER_RECEIVED_CODE" />
+          <OInput v-model="form.code" :placeholder="i18n.ENTER_RECEIVED_CODE" maxlength="6"/>
           <CountdownButton
             v-model="disableCode"
             class="btn"

@@ -245,6 +245,7 @@ const cancelPad = () => {
           <OInput
             v-model.trim="form.code"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
+            maxlength="6"
           />
           <CountdownButton
             v-model="disableCode"
@@ -266,6 +267,7 @@ const cancelPad = () => {
           <OInput
             v-model.trim="form.code"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
+            maxlength="6"
           />
           <CountdownButton
             v-model="disableCode"

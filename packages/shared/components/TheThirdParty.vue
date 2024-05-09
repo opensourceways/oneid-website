@@ -217,6 +217,7 @@ const bindAccountSuccess = () => {
                 v-model.trim="form.code"
                 :placeholder="i18n.ENTER_RECEIVED_CODE"
                 :disabled="disableCodeInput"
+                maxlength="6"
               />
               <CountdownButton
                 v-model="disableCode"

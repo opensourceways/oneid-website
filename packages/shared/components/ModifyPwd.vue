@@ -249,6 +249,7 @@ const confirm = (formEl: FormInstance | undefined) => {
             <OInput
               v-model="form.code"
               :placeholder="i18n.ENTER_RECEIVED_CODE"
+              maxlength="6"
             />
             <CountdownButton
               v-model="disableCode"
