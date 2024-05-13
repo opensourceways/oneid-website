@@ -48,6 +48,11 @@ export default defineConfig({
         secure: false,
         changeOrigin: true,
       },
+      '/statement/': {
+        target: 'https://openmind.test.osinfra.cn/',
+        secure: false,
+        changeOrigin: true,
+      },
     },
   },
 });

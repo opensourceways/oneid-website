@@ -217,7 +217,7 @@ const dlgAction: DialogActionT[] = [
 ];
 </script>
 <template>
-  <ODialog v-model:visible="modelValue" :actions="dlgAction">
+  <ODialog v-model:visible="modelValue" :actions="dlgAction" hideClose :maskClose="false">
     <template #header>
       <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
     </template>

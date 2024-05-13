@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import {reactive, ref, toRefs, watch } from 'vue';
 import { OScroller, OCheckbox, ODialog, DialogActionT, OLink, OForm, OFormItem } from '@opensig/opendesign';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 import {
@@ -8,10 +8,7 @@ import {
 } from 'shared/utils/rules';
 import { useMarkdown } from 'shared/utils/useMarkdown';
 import { modifyUser } from 'shared/api/api-center';
-import merlinlegal from '@/assets/markdown/legal.md?raw'
-import merlinprivacy from '@/assets/markdown/privacy.md?raw'
-import merlinlegalEn from '@/assets/markdown/legal_en.md?raw'
-import merlinprivacyEn from '@/assets/markdown/privacy_en.md?raw'
+import { getPrivacyDocs } from 'shared/api/api-docs';
 import { useCommonData } from 'shared/stores/common';
 
 const props = defineProps({
@@ -52,15 +49,19 @@ const policyRules = reactive<RulesT[]>([
 const privacyData = ref('');
 const legalData = ref('');
 
-onMounted(() => {
-  if (lang.value === 'zh') {
-    privacyData.value = useMarkdown().mkit(merlinprivacy);
-    legalData.value = useMarkdown().mkit(merlinlegal);
-  } else {
-    privacyData.value = useMarkdown().mkit(merlinprivacyEn);
-    legalData.value = useMarkdown().mkit(merlinlegalEn);
-  }
-})
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val) {
+      const arr = lang.value === 'zh' ? ['privacy.md', 'legal.md'] : ['privacy_en.md', 'legal_en.md'];
+      Promise.all(arr.map((item) => getPrivacyDocs(item))).then((res) => {
+        privacyData.value = useMarkdown().mkit(res[0]);
+        legalData.value = useMarkdown().mkit(res[1]);
+      });
+    }
+  },
+  { immediate: true }
+)
 
 const close = () => {
   emit('update:modelValue', false);
@@ -121,7 +122,7 @@ const scroll = (id: string) => {
 } 
 </script>
 <template>
-  <ODialog v-model:visible="modelValue" :actions="dlgAction" size="large">
+  <ODialog v-model:visible="modelValue" :actions="dlgAction" hideClose :maskClose="false" size="large">
     <OScroller ref="scroller" style="height: 400px" wrapClass="markdown-body" showType="always">
       <div id="privacy" v-dompurify-html="privacyData"></div>
       <div id="legal" v-dompurify-html="legalData"></div>
