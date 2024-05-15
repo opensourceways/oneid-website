@@ -1,7 +1,7 @@
 /* base */
 html,
 body {
-  --font_family: Roboto 'Helvetica', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica', 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   -webkit-text-size-adjust: none;
@@ -16,42 +16,6 @@ body {
   overflow: hidden;
   @include text1;
   @include scrollbar;
-}
-
-/* 字体规范
-
-*/
-[data-system='windows'] {
-  &,
-  body {
-    --font_family: 'HarmonyOS-Hans', Arial, 'Micrisift YaHei', sans-serif !important
-  ;
-  }
-}
-
-[data-system='iso'],
-[data-system='macos'] {
-  &,
-  body {
-    --font_family: 'Helvetica Neue', 'Helvetica', 'PingFang SC', 'PingFang TC', 'PingFang HK', -apple-system, sans-serif !important
-  ;
-  }
-}
-
-[data-system='harmonyos'] {
-  &,
-  body {
-    --font_family: system-ui, sans-serif !important
-  ;
-  }
-}
-
-[data-system='android'] {
-  &,
-  body {
-    --font_family: Roboto, system-ui, sans-serif !important
-  ;
-  }
 }
 
 *,

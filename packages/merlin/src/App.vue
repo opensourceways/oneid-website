@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { getOS } from 'shared/utils/utils';
 import { OScroller } from '@opensig/opendesign';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 
-const addOSTag = () => {
-  const os = getOS();
-  document.documentElement.dataset.system = os.toLowerCase();
-};
-addOSTag();
 </script>
 
 <template>
