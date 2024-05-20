@@ -298,13 +298,6 @@
   /**
    * @name 
    * @type palette
-   * @group huaweired
-   * @description 
-   */
-  --o-red-huawei: 199, 0, 11;
-  /**
-   * @name 
-   * @type palette
    * @group gray
    * @description 
    */
@@ -1421,7 +1414,7 @@
    * @group shadow
    * @description 用于卡片悬浮阴影
    */
-  --o-shadow-2: 0 4px 24px rgba(var(--o-mixedgray-13), 0.1);
+  --o-shadow-2: 0 2px 24px rgba(var(--o-mixedgray-13), 0.15);
   /**
    * @name 阴影3
    * @type shadow
@@ -1813,21 +1806,21 @@
    * @group radius
    * @description 中尺寸圆角
    */
-  --o-radius-m: 12px;
+  --o-radius-m: 8px;
   /**
    * @name 大尺寸圆角
    * @type size
    * @group radius
    * @description 大尺寸圆角
    */
-  --o-radius-l: 16px;
+  --o-radius-l: 8px;
   /**
    * @name 大尺寸圆角
    * @type size
    * @group radius
    * @description 大尺寸圆角,一般用于卡片
    */
-  --o-radius-xl: 24px;
+  --o-radius-xl: 8px;
   /**
    * @name 超小尺寸控件圆角
    * @type size
@@ -1848,14 +1841,14 @@
    * @group radius_control
    * @description 中尺寸控件圆角(组件使用)
    */
-  --o-radius_control-m: 12px;
+  --o-radius_control-m: 8px;
   /**
    * @name 大尺寸控件圆角
    * @type size
    * @group radius_control
    * @description 大尺寸控件圆角(组件使用)
    */
-  --o-radius_control-l: 16px;
+  --o-radius_control-l: 8px;
   /**
    * @name 持续时间
    * @type animation

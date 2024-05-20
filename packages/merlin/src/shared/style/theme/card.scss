@@ -1,5 +1,17 @@
 @use './mixin.scss' as *;
 
+.o-card {
+  --card-cover-radius: var(--o-radius_control-xs);
+}
+
+.o-card {
+  .o-card-cover {
+    .o-figure {
+      --figure-radius: var(--o-radius_control-xs);
+    }
+  }
+}
+
 .o-card-detail-limited {
   --card-detail-mask-bg-color: var(--o-color-control-light);
   --card-detail-mask-width: 4em;
