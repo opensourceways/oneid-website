@@ -16,28 +16,3 @@
     --tag-color: rgb(var(--o-red-huawei));
   }
 }
-
-.o-tag-normal.c-tag-normal-inverse {
-  --tag-color: var(--o-color-white);
-  --tag-bg-color: rgba(var(--o-mixedgray-14), 0.2);
-  --tag-bd-color: transparent;
-}
-
-.o-tag-normal.c-tag-unstart {
-  --tag-color: var(--o-color-white);
-  --tag-bg-color: rgba(var(--o-mixedgray-14), 0.4);
-  --tag-bd-color: transparent;
-}
-
-.o-tag-normal.c-tag-processing {
-  --tag-color: var(--o-color-white);
-  --tag-bg-color: rgba(var(--o-blue-6));
-  --tag-bd-color: rgba(var(--o-blue-6));
-}
-
-.c-tag-activity,
-.c-tag-mind {
-  --tag-color: var(--o-color-white);
-  background: linear-gradient(90deg, rgb(var(--ak-color-band-start)) 0%, rgb(var(--ak-color-band-end)) 100%);
-  border: none;
-}

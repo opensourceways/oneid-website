@@ -15,10 +15,10 @@ const goHome = () => {
 
 <style lang="scss" scoped>
 .logo {
-  height: 32px;
+  height: 38px;
 
   @include respond-to('<=pad') {
-    height: 24px;
+    height: 30px;
   }
 }
 </style>

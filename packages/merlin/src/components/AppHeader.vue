@@ -31,20 +31,19 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .app-header {
-  min-width: 1344px;
+  min-width: 1200px;
   color: var(--o-color-info1);
-  background-color: var(--o-color-fill2);
+  background-color: rgba(var(--o-mixedgray-1));
 }
 
 .app-header-wrap {
   position: relative;
   height: 100%;
-  backdrop-filter: blur(5px);
   &::before {
     top: 0;
     bottom: 0;
     right: 0;
-    box-shadow: var(--o-shadow-1);
+    box-shadow: 0 3px 8px rgba(var(--o-mixedgray-14), 0.05);
     content: '';
     left: 0;
     pointer-events: none;

@@ -1,80 +1,54 @@
-@use '@/shared/style/mixin/screen.scss' as *;
+@use '@/assets/style/mixin/screen.scss' as *;
 
-.tag-blue1 {
-  background: rgba(5, 142, 240, 0.15);
-  color: #058ef0;
-
-  &.hoverable {
-    @include hover {
-      background: rgba(5, 142, 240, 0.25);
-    }
-
-    &:active {
-      background: rgba(5, 142, 240, 0.15);
-    }
-  }
-
-  &.is-checked {
-    background: transparent !important;
-    border: 1px solid #058ef0 !important;
-  }
-}
 
 .tag-blue2 {
-  background: rgba(57, 103, 250, 0.15);
-  color: #3967fa;
-
-  &.hoverable {
-    @include hover {
-      background: rgba(57, 103, 250, 0.25);
-    }
-
-    &:active {
-      background: rgba(57, 103, 250, 0.15);
-    }
+  @include hover() {
+    background-color: rgba(2, 186, 216, 0.1) !important;
   }
-
-  &.is-checked {
-    background: transparent !important;
-    border: 1px solid #3967fa !important;
+  &.active {
+    background-color: rgba(2, 186, 216, 0.1);
+    border-color: #02bad8;
+  }
+}
+.tag-yellow1 {
+  @include hover() {
+    background-color: rgba(240, 113, 10, 0.1) !important;
+  }
+  &.active {
+    background-color: rgba(240, 113, 10, 0.1);
+    border-color: #f0710a;
   }
 }
 
 .tag-purple1 {
-  background: rgba(128, 113, 222, 0.15);
-  color: #8071de;
-
-  &.hoverable {
-    @include hover {
-      background: rgba(128, 113, 222, 0.25);
-    }
-
-    &:active {
-      background: rgba(128, 113, 222, 0.15);
-    }
+  @include hover() {
+    background-color: rgba(73, 101, 242, 0.1) !important;
   }
-
-  &.is-checked {
-    background: transparent !important;
-    border: 1px solid #8071de !important;
+  &.active {
+    background-color: rgba(73, 101, 242, 0.1);
+    border-color: #4965f2;
   }
 }
 
 .tag-green1 {
-  background: rgba(11, 177, 81, 0.15);
-  color: #0bb151;
-
-  &.hoverable {
-    @include hover {
-      background: rgba(11, 177, 81, 0.25);
-    }
-
-    &:active {
-      background: rgba(11, 177, 81, 0.15);
-    }
+  @include hover() {
+    background-color: rgba(11, 177, 81, 0.1) !important;
   }
-  &.is-checked {
-    background: transparent !important;
-    border: 1px solid #0bb151 !important;
+  &.active {
+    background-color: rgba(11, 177, 81, 0.1);
+    border-color: #0bb151;
+  }
+}
+.tag-black1 {
+  color: var(--o-color-info2);
+}
+
+.tag-pink1 {
+  @include hover() {
+    background-color: rgb(199, 37, 212, 0.1) !important;
+  }
+  &.active {
+    background-color: rgb(199, 37, 212, 0.1);
+    border-color: #c725d4;
   }
 }

@@ -1,4 +1,4 @@
-@use '@/shared/style/mixin/screen.scss' as *;
+@use '@/assets/style/mixin/screen.scss' as *;
 
 // 一级数据展示
 @mixin display1 {
@@ -239,5 +239,31 @@
   @include respond-to('phone') {
     font-size: 10px;
     line-height: 16px;
+  }
+}
+// 提示文本1
+@mixin tip1-response-max-height {
+  font-size: 14px;
+  line-height: 22px;
+  max-height: 44px;
+  @include respond-to('laptop') {
+    font-size: 12px;
+    line-height: 18px;
+    max-height: 36px;
+  }
+  @include respond-to('pad_h') {
+    font-size: 12px;
+    line-height: 18px;
+    max-height: 36px;
+  }
+  @include respond-to('pad_v') {
+    font-size: 12px;
+    line-height: 18px;
+    max-height: 36px;
+  }
+  @include respond-to('phone') {
+    font-size: 10px;
+    line-height: 16px;
+    max-height: 32px;
   }
 }
