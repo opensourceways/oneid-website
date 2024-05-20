@@ -1,4 +1,4 @@
-@use '@/assets/style/mixin/screen.scss' as *;
+@use '@/shared/style/mixin/screen.scss' as *;
 
 @mixin in-dark {
   [data-o-theme='dark'] {
