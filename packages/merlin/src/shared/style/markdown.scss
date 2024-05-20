@@ -110,8 +110,8 @@
       display: block;
       width: 24px;
       height: 24px;
-      -webkit-mask-image: url(@/assets/svg-icons/icon-copy-text.svg);
-      mask-image: url(@/assets/svg-icons/icon-copy-text.svg);
+      -webkit-mask-image: url(~icons/app/icon-copy-text.svg);
+      mask-image: url(~icons/app/icon-copy-text.svg);
       -webkit-mask-size: cover;
       background-color: var(--o-color-primary1);
       --gradient: linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--o-color-fill3));
