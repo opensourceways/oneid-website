@@ -167,6 +167,7 @@ export default {
     '只能由字母、数字、汉字、(.),&组成。必须以字母、数字或者汉字开头，不能以(),&结尾',
   VERIFY_SUCCESS: '[0]s验证成功',
   VERIFY_FAILED: '验证失败',
+  VERIFY_FAILED_INVALID: '验证已失效，请重新获取',
   SWIPE_RIGHT: '向右滑动完成验证',
   PWD_VAILD:
     '密码长度为8到20个字符，必须包含英文、数字与特殊字符(!@%^-_=+[{}]:,./?)',

@@ -1,7 +1,6 @@
 <template>
   <div style="position: relative">
     <div
-      v-if="type === '2'"
       class="verify-img-out"
       :style="{ height: parseInt(setSize.imgHeight) + vSpace + 'px' }"
     >
@@ -9,22 +8,24 @@
         class="verify-img-panel"
         :style="{ width: setSize.imgWidth, height: setSize.imgHeight }"
       >
-        <img
-          :src="'data:image/png;base64,' + backImgBase"
-          alt=""
-          style="width: 100%; height: 100%; display: block"
-        />
-        <div v-show="showRefresh" class="verify-refresh" @click="refresh" @touchstart.prevent="refresh">
-          <i class="iconfont icon-refresh"></i>
-        </div>
-        <transition name="tips">
-          <span
-            v-if="tipWords"
-            class="verify-tips"
-            :class="passFlag ? 'suc-bg' : 'err-bg'"
-            >{{ tipWords }}</span
-          >
-        </transition>
+        <template v-if="backImgBase">
+          <img
+            :src="'data:image/png;base64,' + backImgBase"
+            alt=""
+            style="width: 100%; height: 100%; display: block"
+          />
+          <div v-show="showRefresh" class="verify-refresh" @click="refresh" @touchstart.prevent="refresh">
+            <i class="iconfont icon-refresh"></i>
+          </div>
+          <transition name="tips">
+            <span
+              v-if="tipWords"
+              class="verify-tips"
+              :class="passFlag ? 'suc-bg' : 'err-bg'"
+              >{{ tipWords }}</span
+            >
+          </transition>
+        </template>
       </div>
     </div>
     <!-- 公共部分 -->
@@ -63,7 +64,6 @@
             <component :is="iconComponent"></component>
           </OIcon>
           <div
-            v-if="type === '2'"
             class="verify-sub-block"
             :style="{
               width: Math.floor((parseInt(setSize.imgWidth) * 47) / 310) + 'px',
@@ -73,6 +73,7 @@
             }"
           >
             <img
+              v-if="blockBackImgBase"
               :src="'data:image/png;base64,' + blockBackImgBase"
               alt=""
               style="
@@ -118,10 +119,6 @@ export default {
     captchaType: {
       type: String,
     },
-    type: {
-      type: String,
-      default: '1',
-    },
     // 弹出式pop，固定fixed
     mode: {
       type: String,
@@ -164,7 +161,7 @@ export default {
     },
   },
   setup(props, context) {
-    const { mode, captchaType, vSpace, imgSize, barSize, type, blockSize } =
+    const { mode, captchaType, vSpace, imgSize, barSize, blockSize } =
       toRefs(props);
     const i18n = useI18n();
     const explain = computed(() => i18n.value.SWIPE_RIGHT);
@@ -377,7 +374,11 @@ export default {
                 refresh();
               }, 1000);
               proxy.$parent.$emit('error', proxy);
-              tipWords.value = i18n.value.VERIFY_FAILED;
+              const codeToMsg = {
+                6111: 'VERIFY_FAILED',
+                6110: 'VERIFY_FAILED_INVALID',
+              };
+              tipWords.value = i18n.value?.[codeToMsg[res?.repCode]] || i18n.value.VERIFY_FAILED;
               setTimeout(() => {
                 tipWords.value = '';
               }, 1000);
@@ -444,9 +445,6 @@ export default {
         end();
       });
     }
-    watch(type, () => {
-      init();
-    });
     onMounted(() => {
       // 禁止拖拽
       init();

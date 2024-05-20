@@ -167,7 +167,8 @@ export default {
   COMPANY_VAILD:
     'Only letters, digits, Chinese, (.) ,& are allowed. It must start with a letter, digit, or Chinese and cannot end with a (),&',
   VERIFY_SUCCESS: 'The verification succeeds in [0]s.',
-  VERIFY_FAILED: 'verification failed.',
+  VERIFY_FAILED: 'Verification failed.',
+  VERIFY_FAILED_INVALID: 'Validation expired.',
   SWIPE_RIGHT: 'Swipe right to complete the verification.',
   PWD_VAILD:
     'The password must contain 8 to 20 characters, including letters, digits, and special characters(!@%^-_=+[{}]:,./?).',
