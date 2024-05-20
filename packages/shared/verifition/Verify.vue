@@ -1,5 +1,5 @@
 <template>
-  <div v-show="showBox" :class="mode == 'pop' ? 'mask' : ''" @touchstart.prevent="() => {}">
+  <div v-if="clickShow" :class="mode == 'pop' ? 'mask' : ''" @touchstart.prevent="() => {}">
     <div
       :class="mode == 'pop' ? 'verifybox' : ''"
       :style="{ 'max-width': parseInt(imgSize.width) + 30 + 'px' }"
@@ -20,7 +20,6 @@
           v-if="componentType"
           ref="instance"
           :captcha-type="captchaType"
-          :type="verifyType"
           :figure="figure"
           :arith="arith"
           :mode="mode"
@@ -86,58 +85,20 @@ export default {
     },
   },
   setup(props) {
-    const { captchaType, mode } = toRefs(props);
     const i18n = useI18n();
     const clickShow = ref(false);
-    const verifyType = ref(undefined);
-    const componentType = ref(undefined);
+    const componentType = ref('VerifySlide');
 
-    const instance = ref({});
-
-    const showBox = computed(() => {
-      if (mode.value === 'pop') {
-        return clickShow.value;
-      } else {
-        return true;
-      }
-    });
-    /**
-     * refresh
-     * @description 刷新
-     * */
-    const refresh = () => {
-      if (instance.value.refresh) {
-        instance.value.refresh();
-      }
-    };
     const closeBox = () => {
       clickShow.value = false;
-      refresh();
     };
     const show = () => {
-      if (mode.value === 'pop') {
-        clickShow.value = true;
-      }
+      clickShow.value = true;
     };
-    watchEffect(() => {
-      switch (captchaType.value) {
-        case 'blockPuzzle':
-          verifyType.value = '2';
-          componentType.value = 'VerifySlide';
-          break;
-        case 'clickWord':
-          verifyType.value = '';
-          componentType.value = 'VerifyPoints';
-          break;
-      }
-    });
 
     return {
       clickShow,
-      verifyType,
       componentType,
-      instance,
-      showBox,
       closeBox,
       show,
       i18n,
