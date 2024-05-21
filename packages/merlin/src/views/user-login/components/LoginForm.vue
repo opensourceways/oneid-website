@@ -291,7 +291,7 @@ onUnmounted(() => {
             {{ i18n.READ_ADN_AGREE }}
           </span>
           <OLink @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
-          {{ i18n.AND }}
+          <span>{{ lang === 'zh' ? i18n.AND : '&nbsp;' + i18n.AND + '&nbsp;' }}</span>
           <OLink @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
         </span>
       </div>
