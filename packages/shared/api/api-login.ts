@@ -53,10 +53,10 @@ export function accountRegisterPost(params: any) {
 /**
  * 邮箱或者手机号登录
  */
-export function accountLoginPost(params: any) {
+export function accountLoginPost(params: any, config = {}) {
   const url = '/oneid/login';
 
-  return request.post(url, params).then((res: AxiosResponse) => res.data);
+  return request.post(url, params, { ...config, ...getHeaderConfig() }).then((res: AxiosResponse) => res.data);
 }
 
 /**

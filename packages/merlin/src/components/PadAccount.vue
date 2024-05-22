@@ -9,7 +9,7 @@ import {
   getVerifyImgSize,
 } from 'shared/utils/utils';
 import {
-  getUsernammeRules, validatorEmail, validatorEmpty, validatorPhone, formValidator
+  getUsernammeRules, validatorEmail, validatorEmpty, validatorPhone, formValidator, getCodeRules
 } from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
 import { useCommonData } from 'shared/stores/common';
@@ -55,33 +55,32 @@ const form = reactive({
 // 用户名校验
 const userNameRules = reactive<RulesT[]>(getUsernammeRules());
 
-// 空值校验
-const requiredRules: RulesT[] = [
-  {
-    validator: validatorEmpty,
-    triggers: 'blur',
-  },
-];
-const rules = ref(requiredRules);
+const codeRules = reactive<RulesT[]>(getCodeRules());
 // 邮箱校验
 const emailRules = reactive<RulesT[]>([
-  ...requiredRules,
+  {
+    validator: validatorEmpty('ENTER_YOUR_EMAIL'),
+    triggers: 'change',
+  },
   {
     validator: validatorEmail,
-    triggers: 'blur',
+    triggers: 'change',
   },
 ]);
 // 手机校验
 const phoneRules = reactive<RulesT[]>([
-  ...requiredRules,
+  {
+    validator: validatorEmpty('ENTER_YOUR_PHONE'),
+    triggers: 'change',
+  },
   {
     validator: validatorPhone,
-    triggers: 'blur',
+    triggers: 'change',
   },
 ]);
 
 // 验证码限制重发
-const disableCode = ref(false);
+const disableCode = ref(true);
 // 获取验证码
 const getcode = (field: string) => {
   formValidator(formRef.value, field).subscribe((valid) => {
@@ -215,6 +214,16 @@ const dlgAction: DialogActionT[] = [
     },
   },
 ];
+// 账户失焦，判断发送验证码按钮是否禁用
+const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
+  if (!form.account) {
+    disableCode.value = true;
+  } else {
+    formValidator(formEl, 'phone').subscribe((valid) => {
+      disableCode.value = !valid;
+    });
+  }
+};
 </script>
 <template>
   <ODialog v-model:visible="modelValue" :actions="dlgAction" hideClose :maskClose="false">
@@ -238,9 +247,10 @@ const dlgAction: DialogActionT[] = [
         <OInput
           v-model.trim="form.phone"
           :placeholder="i18n.ENTER_YOUR_PHONE"
+          @blur="blurAccount(formRef)"
         />
       </OFormItem>
-      <OFormItem v-if="!phoneExist" prop="code" :rules="rules">
+      <OFormItem v-if="!phoneExist" prop="code" :rules="codeRules">
         <div class="code">
           <OInput
             v-model.trim="form.code"
@@ -263,7 +273,7 @@ const dlgAction: DialogActionT[] = [
           :placeholder="i18n.ENTER_YOUR_EMAIL"
         />
       </OFormItem>
-      <OFormItem v-if="!emailExist" prop="code" :rules="rules">
+      <OFormItem v-if="!emailExist" prop="code" :rules="codeRules">
         <div class="code">
           <OInput
             v-model.trim="form.code"

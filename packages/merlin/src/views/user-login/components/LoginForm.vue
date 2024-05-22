@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CountdownButton from '@/components/CountdownButton.vue';
-import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted } from 'vue';
+import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted, inject, watch } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { OInput, OButton, OCheckbox, OLink, useMessage, OForm, OFormItem } from '@opensig/opendesign';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
@@ -8,7 +8,7 @@ import {
   getVerifyImgSize,
 } from 'shared/utils/utils';
 import {
-  getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator,
+  getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator, getCodeRules,
 } from 'shared/utils/rules';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
@@ -24,6 +24,36 @@ const props = defineProps({
 });
 
 const message = useMessage();
+
+// 登录失败输入框变红
+const loginErr: any = inject('loginErr');
+watch(
+  () => loginErr,
+  (val) => {
+    if (val.value) {
+      if (val.value === 'E00052') {
+        const inputs = document.getElementsByClassName('login-pwd-input');
+        inputs[0].classList.add('login-pwd-input-danger');
+        inputs[1].classList.add('login-pwd-input-danger');
+      }
+      if (val.value === 'E0002') {
+        const inputs = document.getElementsByClassName('login-code-input');
+        inputs[0].classList.add('o-input-danger');
+      }
+      loginErr.value = '';
+    }
+  },
+  {
+    deep: true,
+  }
+)
+// 重置登录失败输入框变红
+const resetLoginErr = () => {
+  const inputs = document.getElementsByClassName('login-pwd-input-danger');
+  for (let i = 0; i < inputs.length; i++) {
+    inputs[i].classList.remove('login-pwd-input-danger');
+  }
+}
 
 const formRef = ref<InstanceType<typeof OForm>>();
 
@@ -52,7 +82,7 @@ const form = reactive({
 } as any);
 
 // 验证码限制重发
-const disableCode = ref(false);
+const disableCode = ref(true);
 const verify = ref();
 // 获取验证码
 const getcode = (formEl: InstanceType<typeof OForm> | undefined) => {
@@ -123,32 +153,54 @@ const validatorCheckbox: ValidatorT = (value: Array<string>) => {
   }
 };
 
-// 空值校验
-const requiredRules: RulesT[] = [
+const loginAccountRuless = ref([
   {
-    validator: validatorEmpty,
-    triggers: 'blur',
+    validator: validatorEmpty('ENTER_YOUR_ACCOUNT'),
+    triggers: 'change',
   },
-];
-const rules = ref(requiredRules);
+  {
+    validator: (value) => {
+      if (value && value.length < 3) {
+        return {
+          type: 'danger',
+          message: useI18n().value.ACCOUNT_CONTAIN_CHARACTER,
+        }
+      }
+    },
+    triggers: 'change',
+  },
+]);
 
 // 用户名校验
 const userNameRules = reactive<RulesT[]>(getUsernammeRules());
+const codeRules = reactive<RulesT[]>(getCodeRules());
+const loginPwdRules = reactive<RulesT[]>([
+  {
+    validator: validatorEmpty('INTER_PWD'),
+    triggers: 'change',
+  },
+]);
 const passwordRules = ref<RulesT[]>([
-  ...requiredRules,
+  {
+    validator: validatorEmpty('INTER_PWD'),
+    triggers: 'change',
+  },
   ...getPwdRules(),
   {
     validator: validatorPwd,
-    triggers: ['change', 'blur'],
+    triggers: 'change',
   },
 ]);
 
 // 账户校验
 const accountRules = reactive<RulesT[]>([
-  ...requiredRules,
+  {
+    validator: validatorEmpty('ENTER_YOUR_PHONE'),
+    triggers: 'change',
+  },
   {
     validator: validatorPhone,
-    triggers: 'blur',
+    triggers: 'change',
   },
 ]);
 
@@ -178,6 +230,18 @@ const changeAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   }
 };
 
+// 账户失焦，判断发送验证码按钮是否禁用
+const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
+  if (!form.account) {
+    disableCode.value = true;
+  } else {
+    formValidator(formEl, 'account').subscribe((valid) => {
+      disableCode.value = !valid;
+    });
+  }
+  resetLoginErr()
+};
+
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
@@ -193,7 +257,8 @@ const accountPlaceholder = computed(() => {
 });
 const loginTabSelect = () => {
   formRef.value?.resetFields();
-  disableCode.value = false;
+  disableCode.value = true;
+  resetLoginErr();
 };
 
 // 键盘回车登录
@@ -226,28 +291,31 @@ onUnmounted(() => {
       field="account"
       :rules="
         type === 'login' && selectLoginType === 'password'
-          ? rules
+          ? loginAccountRuless
           : accountRules
       "
     >
       <OInput
         id="e2e_login_account"
+        class="login-pwd-input"
         size="large"
         v-model.trim="form.account"
         :placeholder="accountPlaceholder"
         @input="changeAccount(formRef)"
+        @blur="blurAccount(formRef)"
       />
     </OFormItem>
     <OFormItem
       v-if="selectLoginType === 'code' || type === 'register'"
       field="code"
-      :rules="rules"
+      :rules="codeRules"
     >
       <OInput
         :clearable="false"
         size="large"
         v-model.trim="form.code"
         :placeholder="i18n.ENTER_RECEIVED_CODE"
+        class="login-code-input"
         maxlength="6"
       >
         <template #suffix>
@@ -262,14 +330,16 @@ onUnmounted(() => {
     <OFormItem
       v-if="selectLoginType === 'password'"
       field="password"
-      :rules="type === 'register' ? passwordRules : rules"
+      :rules="type === 'register' ? passwordRules : loginPwdRules"
     >
       <OInput
         id="e2e_login_password"
+        class="login-pwd-input"
         size="large"
         type="password"
         v-model="form.password"
         :placeholder="i18n.INTER_PWD"
+        @blur="resetLoginErr"
       />
     </OFormItem>
     <div v-if="type === 'login'" class="login-tabs">
@@ -348,5 +418,11 @@ onUnmounted(() => {
   .o-form-item-danger {
     margin-bottom: 0 !important;
   }
+}
+.login-pwd-input-danger {
+  --input-bd-color: var(--o-color-danger1);
+  --input-bd-color-hover: var(--o-color-danger2);
+  --input-bd-color-focus: var(--o-color-danger3);
+  --input-bd-color-disabled: var(--o-color-danger4);
 }
 </style>

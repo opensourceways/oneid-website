@@ -8,6 +8,7 @@ import {
   PWD_REG,
   PWD_REPEAT_REG,
   USERNAME_REG,
+  CODE_REG,
 } from '../const/common.const';
 import { useCommonData } from "../stores/common";
 import { accountExists } from '../api/api-login';
@@ -16,18 +17,21 @@ import { Observable } from "rxjs";
 import { OForm } from "@opensig/opendesign";
 
 // 空值校验
-export const validatorEmpty: ValidatorT = (value: string) => {
-  if (!value) {
-    return {
-      type: 'danger',
-      message: useI18n().value.NOT_EMPTY,
-    };
+export const validatorEmpty = (str?: string) => {
+  const fn: ValidatorT = (value: string) => {
+    if (!value) {
+      return {
+        type: 'danger',
+        message: str ? useI18n().value[str] : useI18n().value.NOT_EMPTY,
+      };
+    }
   }
+  return fn;
 };
 
 // 手机号校验
 export const validatorPhone: ValidatorT = (value: string) => {
-  if (!PHONE_REG.test(value)) {
+  if (value && !PHONE_REG.test(value)) {
     return {
       type: 'danger',
       message: useI18n().value.ENTER_VAILD_PHONE,
@@ -37,7 +41,7 @@ export const validatorPhone: ValidatorT = (value: string) => {
 
 // 邮箱校验
 export const validatorEmail: ValidatorT = (value: string) => {
-  if (!EMAIL_REG.test(value)) {
+  if (value && !EMAIL_REG.test(value)) {
     return {
       type: 'danger',
       message: useI18n().value.ENTER_VAILD_EMAIL,
@@ -79,25 +83,25 @@ export const getPwdRules = ():RulesT[] => {
   return [
     {
       validator: (value: string) => {
-        if (!PWD_REG.test(value)) {
+        if (value && !PWD_REG.test(value)) {
           return {
             type: 'danger',
             message: useI18n().value.PWD_VAILD,
           }
         }
       },
-      triggers: ['change', 'blur'],
+      triggers: 'change',
     },
     {
       validator: (value: string) => {
-        if (!PWD_REPEAT_REG.test(value)) {
+        if (value && !PWD_REPEAT_REG.test(value)) {
           return {
             type: 'danger',
             message: useI18n().value.PWD_REPEAT_VAILD,
           }
         }
       },
-      triggers: ['change', 'blur'],
+      triggers: 'change',
     },
   ];
 }
@@ -106,11 +110,14 @@ export const getPwdRules = ():RulesT[] => {
 export const getUsernammeRules = (): RulesT[] => {
   return [
     {
-      validator: validatorEmpty,
-      triggers: 'blur',
+      validator: validatorEmpty('ENTER_USERNAME'),
+      triggers: 'change',
     },
     {
       validator: (value: string) => {
+        if (!value) {
+          return;
+        }
         if (value.length < 3 || value.length > 20) {
           return {
             type: 'danger',
@@ -118,10 +125,13 @@ export const getUsernammeRules = (): RulesT[] => {
           }
         }
       },
-      triggers: 'blur',
+      triggers: 'change',
     },
     {
       validator: (value: string) => {
+        if (!value) {
+          return;
+        }
         if (!USERNAME_REG.test(value)) {
           return {
             type: 'danger',
@@ -129,11 +139,32 @@ export const getUsernammeRules = (): RulesT[] => {
           }
         }
       },
-      triggers: 'blur',
+      triggers: 'change',
     },
     {
       validator: validatorSameName as unknown as ValidatorT,
-      triggers: 'blur',
+      triggers: 'change',
+    },
+  ];
+}
+
+// 验证码校验
+export const getCodeRules = ():RulesT[] => {
+  return [
+    {
+      validator: validatorEmpty('ENTER_RECEIVED_CODE'),
+      triggers: 'change',
+    },
+    {
+      validator: (value: string) => {
+        if (value && !CODE_REG.test(value)) {
+          return {
+            type: 'danger',
+            message: useI18n().value.ENTER_SIX_CODE,
+          }
+        }
+      },
+      triggers: 'change',
     },
   ];
 }

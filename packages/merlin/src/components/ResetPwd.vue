@@ -6,7 +6,7 @@ import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import CountdownButton from './CountdownButton.vue';
 import { resetPwd, resetPwdVerify, sendCodeCaptcha } from 'shared/api/api-login';
 import { getVerifyImgSize } from 'shared/utils/utils';
-import { getPwdRules, validatorEmpty, formValidator } from 'shared/utils/rules';
+import { getPwdRules, validatorEmpty, formValidator, getCodeRules } from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
 import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
@@ -35,13 +35,7 @@ const form = reactive({
   confirmPwd: '',
 } as any);
 
-const requiredRules: RulesT[] = [
-  {
-    validator: validatorEmpty,
-    triggers: 'blur',
-  },
-];
-const rules = ref(requiredRules);
+const codeRules = reactive<RulesT[]>(getCodeRules());
 // 手机或邮箱合法校验
 const validatorAccount: ValidatorT = (value: string) => {
   if (value) {
@@ -56,13 +50,22 @@ const validatorAccount: ValidatorT = (value: string) => {
 
 // 账户校验
 const accountRules = reactive<RulesT[]>([
-  ...requiredRules,
+  {
+    validator: validatorEmpty('ENTER_YOUR_EMAIL_OR_PHONE'),
+    triggers: 'change',
+  },
   {
     validator: validatorAccount,
-    triggers: 'blur',
+    triggers: 'change',
   },
 ]);
-const passwordRules = ref<RulesT[]>([...requiredRules, ...getPwdRules()]);
+const passwordRules = ref<RulesT[]>([
+  {
+    validator: validatorEmpty('INTER_NEW_PWD'),
+    triggers: 'change',
+  },
+  ...getPwdRules(),
+]);
 
 // 确认密码校验
 const validatorConfirmPwd: ValidatorT = (value: string) => {
@@ -74,15 +77,18 @@ const validatorConfirmPwd: ValidatorT = (value: string) => {
   }
 };
 const confirmPwdRules = reactive<RulesT[]>([
-  ...requiredRules,
+  {
+    validator: validatorEmpty('CONFIRM_NEW_PWD'),
+    triggers: 'change',
+  },
   {
     validator: validatorConfirmPwd,
-    triggers: ['change', 'blur'],
+    triggers: 'change',
   },
 ]);
 
 // 验证码限制重发
-const disableCode = ref(false);
+const disableCode = ref(true);
 const verify = ref();
 // 获取验证码
 const getcode = (formEl: InstanceType<typeof OForm> | undefined) => {
@@ -159,6 +165,16 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
     }
   });
 };
+// 账户失焦，判断发送验证码按钮是否禁用
+const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
+  if (!form.account) {
+    disableCode.value = true;
+  } else {
+    formValidator(formEl, 'account').subscribe((valid) => {
+      disableCode.value = !valid;
+    });
+  }
+};
 </script>
 <template>
   <h5 class="header">{{ i18n.RESET_PWD }}</h5>
@@ -176,9 +192,10 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
           size="large"
           :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
           @input="formRef?.resetFields('code')"
+          @blur="blurAccount(formRef)"
         />
       </OFormItem>
-      <OFormItem field="code" :rules="rules">
+      <OFormItem field="code" :rules="codeRules">
         <OInput v-model="form.code" size="large" :placeholder="i18n.ENTER_RECEIVED_CODE" maxlength="6">
           <template #suffix>
             <CountdownButton
