@@ -12,14 +12,14 @@ import {
   setLogoutSession,
 } from 'shared/utils/login';
 import { OLink, useMessage, ODivider } from '@opensig/opendesign';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, provide } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
-import { getVerifyImgSize } from 'shared/utils/utils';
+import { getVerifyImgSize, callBackErrMessage } from 'shared/utils/utils';
 import Verify from 'shared/verifition/Verify.vue';
 import PadAccount from '@/components/PadAccount.vue';
 import AgreePrivacy from '@/components/AgreePrivacy.vue';
@@ -97,6 +97,9 @@ const loginSuccess = (data: any) => {
   }
 };
 
+// 登录失败输入框变红
+const code = ref('')
+provide('loginErr', code);
 const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
     permission: 'sigRead',
@@ -113,8 +116,13 @@ const login = async (form: any, captchaVerification?: string) => {
   } else {
     param.code = form.code;
   }
-  accountLoginPost(param).then((data: any) => {
+  accountLoginPost(param, { $doException: true }).then((data: any) => {
     loginSuccess(data?.data);
+  }).catch((err) => {
+    message.danger({
+      content: callBackErrMessage(err),
+    });
+    code.value = err.response.data.msg.code;
   });
 };
 

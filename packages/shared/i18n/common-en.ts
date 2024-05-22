@@ -151,6 +151,7 @@ export default {
   ENTER_YOUR_ACCOUNT: 'Mobile number, username or email address',
   ENTER_YOUR_ACCOUNT_ID: 'Mobile number, user ID or email address',
   ENTER_RECEIVED_CODE: 'Verification code',
+  ENTER_SIX_CODE: '6-digit verification code',
   READ_ADN_AGREE: 'I have read and agree to the',
   PRIVACY_POLICY: 'Privacy Statement',
   AND: 'and',
@@ -158,6 +159,7 @@ export default {
   RESTRICTED_TIPS:
     'Note: If access is restricted,please contact liuyang@openeuler.sh',
   THREE_PART_LOGIN: 'Use Third-Party Account',
+  ACCOUNT_CONTAIN_CHARACTER: 'Cannot be less than 3 characters.',
   CONTAIN_CHARACTER: 'Contain 3 to 20 characters.',
   COMPANY_CONTAIN_CHARACTER: 'Contain 2 to 100 characters.',
   USERNAME_VAILD:

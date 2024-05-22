@@ -1,7 +1,9 @@
 export const EMAIL_REG =
   /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,6}$/;
 
-export const PHONE_REG = /^(\+)?[0-9]{1,15}$/;
+export const PHONE_REG = /^(\+)?[0-9]{6,15}$/;
+
+export const CODE_REG = /^[0-9]{6}$/;
 
 export const USERNAME_REG = /^[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]$/;
 

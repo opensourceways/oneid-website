@@ -17,7 +17,7 @@ const num = ref(0);
 let timer: NodeJS.Timeout;
 
 // 验证码重发限制60s
-const limitedToResend = (num: Ref<number>) => {
+const limitedToResend = () => {
   num.value = 60;
   timer && clearInterval(timer);
   timer = setInterval(() => {
@@ -31,28 +31,27 @@ const limitedToResend = (num: Ref<number>) => {
   }, 1000);
 };
 
-watch(
-  () => modelValue.value,
-  (value) => {
-    if (value) {
-      limitedToResend(num);
-    }
-  }
-);
-
 onUnmounted(() => {
   timer && clearInterval(timer);
 });
 
 const clickBtn = () => {
   if (!modelValue.value) {
+    watch(
+      () => modelValue.value,
+      (value) => {
+        if (value && !num.value) {
+          limitedToResend();
+        }
+      }
+    );
     emit('click');
   }
 };
 </script>
 <template>
-  <OLink v-bind="attrs" :disabled="modelValue" @click="clickBtn">{{
-    modelValue ? useI18nStr('TRY_AGAIN', [num]).value : i18n.SEN_CODE
+  <OLink v-bind="attrs" :disabled="Boolean(num) || modelValue" @click="clickBtn">{{
+    num ? useI18nStr('TRY_AGAIN', [num]).value : i18n.SEN_CODE
   }}</OLink>
 </template>
 <style lang="scss" scoped></style>
