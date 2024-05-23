@@ -179,9 +179,9 @@ const agreePrivacy = () => {
     @three-part-login="threePartLogin"
   >
     <template #switch v-if="selectLoginType === 'password'">
-      <OLink hover-underline @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
+      <OLink color="primary" hover-underline @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
       <ODivider direction="v" />
-      <OLink hover-underline @click="goResetPwd()">{{ i18n.FORGET_PWD }}</OLink>
+      <OLink color="primary" hover-underline @click="goResetPwd()">{{ i18n.FORGET_PWD }}</OLink>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }} </template>

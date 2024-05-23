@@ -321,6 +321,7 @@ onUnmounted(() => {
         <template #suffix>
           <CountdownButton
             v-model="disableCode"
+            color="primary"
             @click="getcode(formRef)"
             size="small"
           />
@@ -360,9 +361,9 @@ onUnmounted(() => {
           <span class="cursor" @click="changeCheckBox()">
             {{ i18n.READ_ADN_AGREE }}
           </span>
-          <OLink @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
+          <OLink color="primary" @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
           <span>{{ lang === 'zh' ? i18n.AND : '&nbsp;' + i18n.AND + '&nbsp;' }}</span>
-          <OLink @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
+          <OLink color="primary" @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
         </span>
       </div>
     </OFormItem>
