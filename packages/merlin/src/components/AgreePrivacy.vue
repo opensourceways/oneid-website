@@ -147,9 +147,9 @@ const scroll = (id: string) => {
               {{ i18n.READ_ADN_AGREE }}
             </span>
             <span>&nbsp;</span>
-            <OLink @click="scroll('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
+            <OLink hover-underline @click="scroll('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
             {{ i18n.AND }}
-            <OLink @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
+            <OLink hover-underline @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
           </span>
         </div>
       </OFormItem>

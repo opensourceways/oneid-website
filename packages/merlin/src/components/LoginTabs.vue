@@ -27,7 +27,7 @@ const select = (key: string) => {
 };
 </script>
 <template>
-  <OLink size="small" @click="select(modelValue)">{{ i18n[labelMap[modelValue]] }}</OLink>
+  <OLink size="small" @click="select(modelValue)" hover-underline>{{ i18n[labelMap[modelValue]] }}</OLink>
 </template>
 <style lang="scss" scoped>
 
