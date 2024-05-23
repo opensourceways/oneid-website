@@ -1,7 +1,3 @@
-.o-rate-primary {
-  --rate-color-selected: rgb(var(--o-red-huawei));
-}
-
 .o-rate-icon-bottom {
   .o-icon-star {
     path {
@@ -35,19 +31,4 @@
       }
     }
   }
-}
-
-.c-star-full {
-  color: rgb(var(--o-red-huawei)) !important;
-}
-
-.c-star-empty {
-  color: var(--o-color-info4) !important;
-}
-
-.c-star-label {
-  color: var(--o-color-info2);
-  font-size: var(--o-font_size-tip1);
-  line-height: var(--o-line_height-tip1);
-  margin-left: 8px;
 }
