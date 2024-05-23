@@ -200,6 +200,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
           <template #suffix>
             <CountdownButton
               v-model="disableCode"
+              color="primary"
               @click="getcode(formRef)"
               size="small"
             />

@@ -259,6 +259,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
           >
             <template #suffix>
               <CountdownButton
+                color="primary"
                 v-model="disableCode"
                 @click="getcode('phone')"
                 size="small"
@@ -282,6 +283,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
           >
             <template #suffix>
               <CountdownButton
+                color="primary"
                 v-model="disableCode"
                 @click="getcode('email')"
                 size="small"

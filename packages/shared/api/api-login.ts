@@ -92,7 +92,7 @@ export function queryToken(params: object) {
 export function queryIDToken(params: any) {
   const url = '/oneid/logout';
   return request
-    .get(url, { params, $ignoreLoading: true, ...getHeaderConfig() })
+    .get(url, { params, $ignoreLoading: true, $doException: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
