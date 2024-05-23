@@ -11,9 +11,7 @@ import '@/shared/style/theme/default-light.token.css';
 import '@/shared/style/theme/dark.token.css';
 import '@/shared/style/theme/index.scss';
 import '@/shared/style/markdown.scss';
-import { initRound } from '@opensig/opendesign';
 
-initRound('pill');
 const app = createApp(App);
 
 app.use(VueDOMPurifyHTML);
