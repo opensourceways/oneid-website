@@ -1,19 +1,5 @@
 @use './mixin.scss' as *;
 
-.o-select {
-  .o-select-arrow {
-    transition: all var(--o-duration-m1) var(--o-easing-standard-in);
-    &.active {
-      transform: none;
-    }
-  }
-  @include hover {
-    .o-select-arrow {
-      transform: rotate(-180deg);
-    }
-  }
-}
-
 .o-select-clear {
   transform: none !important;
 }

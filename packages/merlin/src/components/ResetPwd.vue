@@ -228,18 +228,19 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
     </span>
   </OForm>
   <div class="footer">
-    <OButton size="large" @click="goLogin">
+    <OButton size="large" color="primary" @click="goLogin">
       {{ i18n.RETURN_LOGIN }}
     </OButton>
     <OButton
       v-if="!resetToken"
       size="large"
-      type="primary"
+      color="primary"
+      variant="outline"
       @click="nextStep(formRef)"
     >
       {{ i18n.NEXT_STEP }}
     </OButton>
-    <OButton v-else size="large" type="primary" @click="confirm(formRef)">
+    <OButton v-else size="large" color="primary" @click="confirm(formRef)">
       {{ i18n.CONFIRM }}
     </OButton>
   </div>

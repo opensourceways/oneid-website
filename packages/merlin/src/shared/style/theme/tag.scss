@@ -7,12 +7,3 @@
     --tag-bd-color: var(--o-color-control1);
   }
 }
-
-.o-tag-primary {
-  --tag-bg-color: rgb(var(--o-red-huawei));
-  --tag-bd-color: rgb(var(--o-red-huawei));
-
-  &.o-tag-outline {
-    --tag-color: rgb(var(--o-red-huawei));
-  }
-}
