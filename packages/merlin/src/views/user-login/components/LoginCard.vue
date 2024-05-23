@@ -26,7 +26,7 @@ import logo from '@/assets/logo.svg';
   .card {
     width: 480px;
     margin: 0 auto;
-    border-radius: 16px;
+    border-radius: 8px;
     padding: 26px 80px 36px;
     background-color: var(--o-color-fill2);
     box-shadow: var(--o-shadow-1);
