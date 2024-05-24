@@ -42,7 +42,7 @@ const padUserinfo = reactive({
 const isNotPadUserinfo = (data: any): boolean => {
   const { username, company } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  if (!name && !company) {
+  if (!name || !company) {
     padUserinfo.username = name;
     padUserinfo.companyExist = Boolean(company);
     visible.value = true;
