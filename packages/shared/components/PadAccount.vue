@@ -129,7 +129,7 @@ const verifySuccess = (data: any) => {
 // 补全用户名
 const putUserName = () => {
   return new Observable((observer) => {
-    if (username.value) {
+    if (username.value && companyExist.value) {
       observer.next(true);
       observer.complete();
       return;
@@ -141,7 +141,14 @@ const putUserName = () => {
         client_id: loginParams.value.client_id,
       }
     }
-    modifyUser({ username: form.username }, param)
+    const info = {};
+    if (form.username) {
+      Object.assign(info, { username: form.username })
+    }
+    if (form.company) {
+      Object.assign(info, { company: form.company })
+    }
+    modifyUser(info, param)
       .then(() => {
         observer.next(true);
         observer.complete();
