@@ -17,7 +17,7 @@ import PadAccount from 'shared/components/PadAccount.vue';
 import { useCommonData } from 'shared/stores/common';
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
-const { loginParams } = useCommonData();
+const { loginParams, selectLoginType } = useCommonData();
 const router = useRouter();
 const route = useRoute();
 const visible = ref(false);
@@ -36,13 +36,15 @@ const goResetPwd = () => {
 // 控制补全框内容
 const padUserinfo = reactive({
   username: '',
+  companyExist: true,
 });
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  const { username } = data || {};
+  const { username, company } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  if (!name) {
+  if (!name && !company) {
     padUserinfo.username = name;
+    padUserinfo.companyExist = Boolean(company);
     visible.value = true;
     return false;
   }
@@ -119,7 +121,7 @@ const verifySuccess = (data: any) => {
   login(formCopy.value, data.captchaVerification);
 };
 const showSwitch = computed(
-  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) && selectLoginType.value === 'password'
 );
 const cancelPad = () => {
   logout(getCommunityParams(true), location.href);
@@ -138,7 +140,6 @@ const cancelPad = () => {
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
-    <template #btn> {{ i18n.LOGIN }} </template>
   </LoginTemplate>
   <Verify
     ref="verify"
@@ -150,6 +151,7 @@ const cancelPad = () => {
   <PadAccount
     v-model="visible"
     :username="padUserinfo.username"
+    :companyExist="padUserinfo.companyExist"
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
