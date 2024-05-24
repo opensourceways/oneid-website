@@ -28,13 +28,12 @@ const props = defineProps({
     default: 'login',
   },
 });
-const selectLoginType = ref('password');
 
 const emit = defineEmits(['submit']);
 
 const { type } = toRefs(props);
 const i18n = useI18n();
-const { lang, loginParams } = useCommonData();
+const { lang, loginParams, selectLoginType } = useCommonData();
 const formRef = ref<FormInstance>();
 // 表单值
 const form = reactive({
@@ -348,7 +347,7 @@ watch(
     </el-form-item>
     <el-form-item>
       <OButton type="primary" class="login-btn" @click="submit(formRef)">
-        <slot name="btn"> {{ i18n.LOGIN }} </slot>
+        <slot name="btn"> {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }} </slot>
       </OButton>
     </el-form-item>
   </el-form>

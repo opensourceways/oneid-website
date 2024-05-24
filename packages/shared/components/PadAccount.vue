@@ -10,6 +10,7 @@ import {
   getUsernammeRules,
   getVerifyImgSize,
   asyncBlur,
+  getCompanyRules,
 } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
@@ -27,6 +28,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  companyExist: {
+    type: Boolean,
+    default: true,
+  },
   emailExist: {
     type: Boolean,
     default: true,
@@ -36,7 +41,7 @@ const props = defineProps({
     default: true,
   },
 });
-const { modelValue, username, emailExist, phoneExist } = toRefs(props);
+const { modelValue, username, companyExist, emailExist, phoneExist } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
 const { loginParams } = useCommonData();
 const i18n = useI18n();
@@ -47,6 +52,7 @@ const verify = ref();
 // 表单值
 const form = reactive({
   username: '',
+  company: '',
   email: '',
   phone: '',
   code: '',
@@ -62,6 +68,12 @@ const requiredRules: FormItemRule[] = [
     trigger: 'blur',
   },
 ];
+
+// 公司校验
+const companyRules = reactive<FormItemRule[]>([
+  ...requiredRules,
+  ...getCompanyRules(),
+]);
 const rules = ref(requiredRules);
 // 邮箱校验
 const emailRules = reactive<FormItemRule[]>([
@@ -231,6 +243,13 @@ const cancelPad = () => {
           v-model.trim="form.username"
           :placeholder="i18n.ENTER_USERNAME"
           @blur="asyncBlur(formRef, 'username')"
+        />
+      </el-form-item>
+      <el-form-item v-if="!companyExist" prop="company" :rules="companyRules">
+        <OInput
+          v-model.trim="form.company"
+          :placeholder="i18n.ENTER_COMPANY"
+          @blur="asyncBlur(formRef, 'company')"
         />
       </el-form-item>
       <el-form-item v-if="!phoneExist" prop="phone" :rules="phoneRules">
