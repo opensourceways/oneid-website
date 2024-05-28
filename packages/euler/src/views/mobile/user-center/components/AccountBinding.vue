@@ -65,7 +65,7 @@ const resetThreeAccountData = () => {
       value: '',
     },
     {
-      key: 'openatom',
+      key: 'atomgit',
       icon: IconOpenAtom,
       label: 'OpenAtom',
       value: '',
@@ -306,7 +306,7 @@ const config: AllAccountDialogConfig = {
   },
   unbind_openatom: {
     key: 'unbind_openatom',
-    account_type: 'openatom',
+    account_type: 'atomgit',
     field: 'change',
     header: 'UNBIND_EMAIL',
     content: 'SURE_UNBIND',
@@ -340,7 +340,7 @@ const bindSocial = (key: string) => {
       const obj: any = {
         github: 'social_github',
         gitee: 'enterprise_gitee',
-        openatom: 'enterprise_openatom',
+        atomgit: 'enterprise_openatom',
       };
       const findone = data.find((item: any) => item.name === obj[key]);
       if (findone && bindWindow) {

@@ -3,6 +3,10 @@ import { LoginParams } from '../@types/interface';
 import { useCommonData } from '../stores/common';
 import { ElMessage } from 'element-plus';
 
+const oidcNeedAuthAppIds = [
+  '664f32319b6c3c39a476a540'
+]
+
 function toHttps(url: string) {
   let str;
   try {
@@ -18,14 +22,20 @@ export function haveLoggedIn() {
   const { loginParams } = useCommonData();
   switch (loginParams.value.response_mode) {
     case 'query':
-      getOidcUri(loginParams.value);
+      if (oidcNeedAuthAppIds.includes(loginParams.value.client_id || '')) {
+        const url = new URL(window.location.href);
+        url.pathname = '/authorization'
+        location.href = url.toString();
+      } else {
+        getOidcUri(loginParams.value);
+      }
       break;
     default:
       location.href = toHttps(loginParams.value.redirect_uri || '');
   }
 }
 
-function getOidcUri(query: LoginParams) {
+export function getOidcUri(query: LoginParams) {
   const param = {
     client_id: query.client_id,
     redirect_uri: query.redirect_uri,

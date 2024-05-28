@@ -4,6 +4,7 @@ import TheLogin from '@/views/user-login/TheLogin.vue';
 import TheLogout from '@/views/user-login/TheLogout.vue';
 import TheRegister from '@/views/user-login/TheRegister.vue';
 import TheResetPwd from '@/views/user-login/TheResetPwd.vue';
+import TheAuthorization from '@/views/user-login/TheAuthorization.vue';
 import NotFound from 'shared/components/NotFound.vue';
 import { useCommon } from 'shared/stores/common';
 import { LoginParams } from 'shared/@types/interface';
@@ -107,6 +108,11 @@ export const routes = [
     name: 'resetPwd',
     component: TheResetPwd,
   },
+  {
+    path: '/authorization',
+    name: 'authorization',
+    component: TheAuthorization,
+  },
 ];
 
 export const router = createRouter({
@@ -123,7 +129,7 @@ router.beforeEach((to, from, next) => {
     changeLang('zh');
   }
   // 登录与注册需校验url参数
-  if (['/login', '/register', '/resetPwd', '/logout'].includes(to.path)) {
+  if (['/login', '/register', '/resetPwd', '/logout', '/authorization'].includes(to.path)) {
     if (to.query && to.query.redirect_uri) {
       saveLoginParams(to.query as unknown as LoginParams);
     }
