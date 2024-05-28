@@ -14,5 +14,7 @@
 }
 
 .o-svg-icon {
-  transform: none !important;
+  &.o-icon-close {
+    transform: none !important;
+  }
 }
