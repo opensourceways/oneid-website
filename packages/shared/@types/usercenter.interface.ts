@@ -13,7 +13,7 @@ export type AccountOperateKey =
   | 'unbind_github'
   | 'unbind_gitee'
   | 'unbind_openatom';
-type AccountType = 'email' | 'phone' | 'github' | 'gitee' | 'atomgit';
+type AccountType = 'email' | 'phone' | 'github' | 'gitee' | 'openatom';
 type AccountField = 'change' | 'verify';
 type Callback<T> = (data: T) => void;
 
