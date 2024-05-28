@@ -303,7 +303,7 @@ const config: AllAccountDialogConfig = {
   },
   unbind_openatom: {
     key: 'unbind_openatom',
-    account_type: 'atomgit',
+    account_type: 'openatom',
     field: 'change',
     header: 'UNBIND_EMAIL',
     content: 'SURE_UNBIND',
