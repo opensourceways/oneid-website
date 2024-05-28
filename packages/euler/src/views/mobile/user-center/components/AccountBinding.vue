@@ -65,7 +65,7 @@ const resetThreeAccountData = () => {
       value: '',
     },
     {
-      key: 'atomgit',
+      key: 'openatom',
       icon: IconOpenAtom,
       label: 'OpenAtom',
       value: '',
@@ -340,7 +340,7 @@ const bindSocial = (key: string) => {
       const obj: any = {
         github: 'social_github',
         gitee: 'enterprise_gitee',
-        atomgit: 'enterprise_openatom',
+        openatom: 'enterprise_openatom',
       };
       const findone = data.find((item: any) => item.name === obj[key]);
       if (findone && bindWindow) {
