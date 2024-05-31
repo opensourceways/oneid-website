@@ -299,6 +299,7 @@ onUnmounted(() => {
         id="e2e_login_account"
         class="login-pwd-input"
         size="large"
+        :title="accountPlaceholder"
         v-model.trim="form.account"
         :placeholder="accountPlaceholder"
         @input="changeAccount(formRef)"
