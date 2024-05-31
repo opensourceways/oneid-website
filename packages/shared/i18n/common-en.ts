@@ -67,8 +67,8 @@ export default {
   CONFIRM: 'Confirm',
   LOGOUT: 'Logout',
   PLEASE: 'Please',
-  LOGIN: 'Login',
-  LOGIN_REGISTER: 'Login / Register',
+  LOGIN: 'Log in',
+  LOGIN_REGISTER: 'Log in / Register',
   FOOTER: {
     ATOM_TEXT:
       'openEuler is an open source project incubated and operated by the OpenAtom Foundation.',
@@ -80,7 +80,7 @@ export default {
     COPY_RIGHT_GAUSS: 'Copyright © openGauss 2023. All rights reserved.',
     COPY_RIGHT_MINDSPORE: 'Copyright © 2023 MindSpore. All rights reserved.',
     COPY_RIGHT_OPENMIND: 'Copyright © 2024 openMind. All rights reserved.',
-    PRIVACY_POLICY: 'Privacy Statement',
+    PRIVACY_POLICY: 'Privacy Policy',
     LEGAL_NOTICE: 'Legal Notice',
     ABOUT_COOKIE: 'About cookies',
     RIGHT_LIST: [
@@ -141,7 +141,7 @@ export default {
   RETURN_LOGIN: 'Log in',
   ACCOUNT_REGISTER: 'Account Registration',
   REGISTER: 'Register',
-  ENTER_VAILD_EMAIL_OR_PHONE: 'Invalid email address or mobile number',
+  ENTER_VAILD_EMAIL_OR_PHONE: 'Invalid email address or mobile number.',
   ACCOUNT_NOT_EXIST: 'Account not found',
   PLEASE_CHECK_PRIVACY: 'Please read the privacy statement',
   PLEASE_DRAG_SLIDER: 'Slide for verification',
@@ -153,7 +153,7 @@ export default {
   ENTER_RECEIVED_CODE: 'Verification code',
   ENTER_SIX_CODE: '6-digit verification code',
   READ_ADN_AGREE: 'I have read and agree to the',
-  PRIVACY_POLICY: 'Privacy Statement',
+  PRIVACY_POLICY: 'Privacy Policy',
   AND: 'and',
   LEGAL_NOTICE: 'Legal Notice',
   RESTRICTED_TIPS:

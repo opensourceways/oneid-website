@@ -143,7 +143,7 @@ export default {
   ENTER_YOUR_EMAIL_OR_PHONE: 'Email address or mobile number',
   ENTER_RECEIVED_CODE: 'Verification code',
   READ_ADN_AGREE: 'I have read and agree to the',
-  PRIVACY_POLICY: 'Privacy Statement',
+  PRIVACY_POLICY: 'Privacy Policy',
   AND: 'and',
   LEGAL_NOTICE: 'Legal Notice',
   THREE_PART_LOGIN: 'Use Third-Party Account',
