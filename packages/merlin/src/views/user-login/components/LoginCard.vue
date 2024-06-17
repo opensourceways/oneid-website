@@ -37,7 +37,7 @@ import logo from '@/assets/logo.svg';
       text-align: center;
       margin-bottom: 16px;
       img {
-        width: 48px;
+        height: 48px;
       }
     }
   }
