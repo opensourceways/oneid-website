@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import {reactive, ref, toRefs, watch } from 'vue';
-import { OScroller, OCheckbox, ODialog, DialogActionT, OLink, OForm, OFormItem } from '@opensig/opendesign';
+import { OScroller, OCheckbox, ODialog, OLink, OForm, OFormItem, OButton } from '@opensig/opendesign';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 import {
   formValidator,
@@ -98,62 +98,50 @@ const cancelPad = () => {
   emit('cancel');
   close();
 };
-const dlgAction: DialogActionT[] = [
-  {
-    id: 'ok',
-    label: i18n.value.CONFIRM,
-    size: 'large',
-    onClick: () => {
-      putUser();
-    },
-  },
-  {
-    id: 'cancel',
-    label: i18n.value.CANCEL,
-    size: 'large',
-    onClick: () => {
-      cancelPad();
-    },
-  },
-];
 
 const scroll = (id: string) => {
   scroller.value.scrollTo({ top: document.getElementById(id)?.offsetTop || 0, behavior: 'smooth' });
 } 
 </script>
 <template>
-  <ODialog v-model:visible="modelValue" :actions="dlgAction" hideClose :maskClose="false" size="large">
-    <OScroller ref="scroller" style="height: 400px" wrapClass="markdown-body" showType="always">
+  <ODialog v-model:visible="modelValue" hideClose :maskClose="false" size="large">
+    <OScroller ref="scroller" style="height: 100%" wrapClass="markdown-body" showType="always">
       <div id="privacy" v-dompurify-html="privacyData"></div>
       <div id="legal" v-dompurify-html="legalData"></div>
     </OScroller>
-    <OForm
-      ref="formRef"
-      label-width="0"
-      :model="form"
-      class="form"
-      @submit.prevent=""
-    >
-      <OFormItem field="policy" :rules="policyRules">
-        <div class="checkbox">
-          <OCheckbox
-            value="1"
-            v-model="form.policy"
-            @change="formRef?.validate('policy')"
-          >
-          </OCheckbox>
-          <span>
-            <span class="cursor" @click="changeCheckBox()">
-              {{ i18n.READ_ADN_AGREE }}
+    <template #footer>
+      <OForm
+        ref="formRef"
+        label-width="0"
+        :model="form"
+        class="form"
+        @submit.prevent=""
+      >
+        <OFormItem field="policy" :rules="policyRules">
+          <div class="checkbox">
+            <OCheckbox
+              value="1"
+              v-model="form.policy"
+              @change="formRef?.validate('policy')"
+            >
+            </OCheckbox>
+            <span>
+              <span class="cursor" @click="changeCheckBox()">
+                {{ i18n.READ_ADN_AGREE }}
+              </span>
+              <span>&nbsp;</span>
+              <OLink hover-underline @click="scroll('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
+              {{ i18n.AND }}
+              <OLink hover-underline @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
             </span>
-            <span>&nbsp;</span>
-            <OLink hover-underline @click="scroll('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
-            {{ i18n.AND }}
-            <OLink hover-underline @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
-          </span>
-        </div>
-      </OFormItem>
-    </OForm>
+          </div>
+        </OFormItem>
+      </OForm>
+      <div class="o-dlg-actions">
+        <OButton size="large" @click="putUser()" class="o-dlg-btn">{{ i18n.CONFIRM }}</OButton>
+        <OButton size="large" @click="cancelPad()" class="o-dlg-btn">{{ i18n.CANCEL }}</OButton>
+      </div>
+    </template>
   </ODialog>
 </template>
 <style lang="scss" scoped>
@@ -173,7 +161,7 @@ const scroll = (id: string) => {
 .checkbox {
   display: grid;
   grid-template-columns: auto auto;
-  align-items: start;
+  align-items: center;
   color: var(--o-color-info1);
   @include tip1;
 }
