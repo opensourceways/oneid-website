@@ -161,9 +161,13 @@ export default {
   THREE_PART_LOGIN: 'Use Third-Party Account',
   ACCOUNT_CONTAIN_CHARACTER: 'Cannot be less than 3 characters.',
   CONTAIN_CHARACTER: 'Contain 3 to 20 characters.',
+  USERNAME_CONTAIN_CHARACTER: 'Contain 3 to 40 characters.',
   COMPANY_CONTAIN_CHARACTER: 'Contain 2 to 100 characters.',
   USERNAME_VAILD:
     'Include only letters,digits,and special characters(_-). It must start with a letter and cannot end with an special characters(_-).',
+  USERNAME_VAILD1:
+    'Include only letters,digits,and special characters(_-.). It must start with a letter and cannot end with an special characters(_-.).',
+  USERNAME_REPEAT_VAILD: "The special characters(_-.) can't be used 2 times or more in a row.",
   NICKNAME_VAILD:
     'Contain 3 to 20 characters. include only letters, digits, Chinese and special characters(_-). it must start with a letter or Chinese. cannot end with special characters(_-)',
   COMPANY_VAILD:

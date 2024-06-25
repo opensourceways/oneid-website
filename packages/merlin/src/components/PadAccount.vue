@@ -117,7 +117,7 @@ const putUserName = () => {
       observer.complete();
       return;
     }
-    modifyUser({ username: form.username })
+    modifyUser({ username: form.username, community: import.meta.env?.VITE_COMMUNITY })
       .then(() => {
         observer.next(true);
         observer.complete();

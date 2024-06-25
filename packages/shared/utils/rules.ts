@@ -7,7 +7,8 @@ import {
   PHONE_REG,
   PWD_REG,
   PWD_REPEAT_REG,
-  USERNAME_REG,
+  USERNAME_REG1,
+  USERNAME_REPEAT_REG,
   CODE_REG,
 } from '../const/common.const';
 import { useCommonData } from "../stores/common";
@@ -118,10 +119,10 @@ export const getUsernammeRules = (): RulesT[] => {
         if (!value) {
           return;
         }
-        if (value.length < 3 || value.length > 20) {
+        if (value.length < 3 || value.length > 40) {
           return {
             type: 'danger',
-            message: useI18n().value.CONTAIN_CHARACTER,
+            message: useI18n().value.USERNAME_CONTAIN_CHARACTER,
           }
         }
       },
@@ -132,10 +133,16 @@ export const getUsernammeRules = (): RulesT[] => {
         if (!value) {
           return;
         }
-        if (!USERNAME_REG.test(value)) {
+        if (!USERNAME_REG1.test(value)) {
           return {
             type: 'danger',
-            message: useI18n().value.USERNAME_VAILD,
+            message: useI18n().value.USERNAME_VAILD1,
+          }
+        }
+        if (!USERNAME_REPEAT_REG.test(value)) {
+          return {
+            type: 'danger',
+            message: useI18n().value.USERNAME_REPEAT_VAILD,
           }
         }
       },
