@@ -1,13 +1,11 @@
 import { computed } from 'vue';
 import zh from './common-zh';
 import en from './common-en';
-import ru from './common-ru';
 import { useCommon } from '../stores/common';
 
 const i18n: { [key: string]: any } = {
   zh,
   en,
-  ru,
 };
 
 export function useI18n() {

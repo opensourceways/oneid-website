@@ -160,9 +160,13 @@ export default {
   THREE_PART_LOGIN: '第三方账号登录',
   ACCOUNT_CONTAIN_CHARACTER: '账号长度不少于3个字符',
   CONTAIN_CHARACTER: '长度必须为3到20个字符',
+  USERNAME_CONTAIN_CHARACTER: '长度必须为3到40个字符',
   COMPANY_CONTAIN_CHARACTER: '长度必须为2到100个字符',
   USERNAME_VAILD:
     '只能由字母、数字、特殊字符(_-)组成，必须以字母开头，不能以特殊字符(_-)结尾',
+  USERNAME_VAILD1:
+    '只能由字母、数字、特殊字符(_-.)组成，必须以字母开头，不能以特殊字符(_-.)结尾',
+  USERNAME_REPEAT_VAILD: '不能包含2个及以上连续的特殊字符(_-.)',
   NICKNAME_VAILD:
     '请输入3到20个字符。只能由字母、数字、汉字或者特殊字符(_-)组成。必须以字母或者汉字开头，不能以特殊字符(_-)结尾',
   COMPANY_VAILD:
