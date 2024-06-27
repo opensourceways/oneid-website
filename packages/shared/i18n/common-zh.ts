@@ -95,10 +95,6 @@ export default {
         NAME: '法律声明',
         URL: '/other/legal/',
       },
-      {
-        NAME: '服务状态',
-        URL: 'https://status.openeuler.org/',
-      },
     ],
     RIGHT_LIST_GAUSS: [
       {
@@ -116,10 +112,6 @@ export default {
       {
         NAME: '关于我们',
         URL: '/aboutUs/',
-      },
-      {
-        NAME: '服务状态',
-        URL: 'https://status.opengauss.org/',
       },
     ],
     LINKS: [],

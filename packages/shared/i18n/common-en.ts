@@ -96,10 +96,6 @@ export default {
         NAME: 'Legal Notice',
         URL: '/other/legal/',
       },
-      {
-        NAME: 'Service Status',
-        URL: 'https://status.openeuler.org/',
-      },
     ],
     RIGHT_LIST_GAUSS: [
       {
@@ -117,10 +113,6 @@ export default {
       {
         NAME: 'About Us',
         URL: '/aboutUs/',
-      },
-      {
-        NAME: 'Service Status',
-        URL: 'https://status.opengauss.org/',
       },
     ],
     QR_CODE: 'WeChat Subscription',
