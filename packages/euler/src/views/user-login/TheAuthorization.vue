@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// import ResetPwd from 'shared/components/ResetPwd.vue';
 import { useCommonData } from 'shared/stores/common';
 import { logout } from 'shared/utils/login';
 import { getOidcUri } from 'shared/utils/login-success';

@@ -166,38 +166,38 @@ export default {
     const i18n = useI18n();
     const explain = computed(() => i18n.value.SWIPE_RIGHT);
     const { proxy } = getCurrentInstance();
-    const secretKey = ref(''), // 后端返回的ase加密秘钥
-      passFlag = ref(''), // 是否通过的标识
-      backImgBase = ref(''), // 验证码背景图片
-      blockBackImgBase = ref(''), // 验证滑块的背景图片
-      backToken = ref(''), // 后端返回的唯一token值
-      startMoveTime = ref(''), // 移动开始的时间
-      endMovetime = ref(''), // 移动结束的时间
-      tipsBackColor = ref(''), // 提示词的背景颜色
-      tipWords = ref(''),
-      text = ref(''),
-      finishText = ref(''),
-      setSize = reactive({
+    const secretKey = ref(''); // 后端返回的ase加密秘钥
+    const passFlag = ref(''); // 是否通过的标识
+    const backImgBase = ref(''); // 验证码背景图片
+    const blockBackImgBase = ref(''); // 验证滑块的背景图片
+    const backToken = ref(''); // 后端返回的唯一token值
+    const startMoveTime = ref(''); // 移动开始的时间
+    const endMovetime = ref(''); // 移动结束的时间
+    const tipsBackColor = ref(''); // 提示词的背景颜色
+    const tipWords = ref('');
+    const text = ref('');
+    const finishText = ref('');
+    const setSize = reactive({
         imgHeight: 0,
         imgWidth: 0,
         barHeight: 0,
         barWidth: 0,
-      }),
-      top = ref(0),
-      left = ref(0),
-      moveBlockLeft = ref(undefined),
-      leftBarWidth = ref(undefined),
+      });
+    const top = ref(0);
+    const left = ref(0);
+    const moveBlockLeft = ref(undefined);
+    const leftBarWidth = ref(undefined);
       // 移动中样式
-      moveBlockBackgroundColor = ref(undefined),
-      leftBarBorderColor = ref(undefined),
-      iconColor = ref(undefined),
-      iconComponent = shallowRef(IconRight),
-      status = ref(false), // 鼠标状态
-      isEnd = ref(false), // 是够验证完成
-      showRefresh = ref(true),
-      transitionLeft = ref(''),
-      transitionWidth = ref(''),
-      startLeft = ref(0);
+    const moveBlockBackgroundColor = ref(undefined);
+    const leftBarBorderColor = ref(undefined);
+    const iconColor = ref(undefined);
+    const iconComponent = shallowRef(IconRight);
+    const status = ref(false); // 鼠标状态
+    const isEnd = ref(false); // 是够验证完成
+    const showRefresh = ref(true);
+    const transitionLeft = ref('');
+    const transitionWidth = ref('');
+    const startLeft = ref(0);
 
     const barArea = computed(() => {
       return proxy.$el.querySelector('.verify-bar-area');
@@ -257,7 +257,7 @@ export default {
       startLeft.value = Math.floor(
         x - barArea.value.getBoundingClientRect().left
       );
-      startMoveTime.value = +new Date(); //  开始滑动的时间
+      startMoveTime.value = Number(new Date()); //  开始滑动的时间
       if (isEnd.value === false) {
         const colors = {
           openeuler: '#00288d',
@@ -310,7 +310,7 @@ export default {
 
     // 鼠标松开
     function end() {
-      endMovetime.value = +new Date();
+      endMovetime.value = Number(new Date());
       // 判断是否重合
       if (status.value && isEnd.value === false) {
         let moveLeftDistance = parseInt(
@@ -370,7 +370,7 @@ export default {
               iconColor.value = '#fff';
               iconComponent.value = IconCancel;
               passFlag.value = false;
-              setTimeout(function () {
+              setTimeout(() => {
                 refresh();
               }, 1000);
               proxy.$parent.$emit('error', proxy);
@@ -390,7 +390,7 @@ export default {
             iconColor.value = '#fff';
             iconComponent.value = IconCancel;
             passFlag.value = false;
-            setTimeout(function () {
+            setTimeout(() => {
               refresh();
             }, 1000);
             proxy.$parent.$emit('error', proxy);
@@ -415,33 +415,33 @@ export default {
         proxy.$parent.$emit('ready', proxy);
       });
 
-      window.removeEventListener('touchmove', function (e) {
+      window.removeEventListener('touchmove', (e) => {
         move(e);
       });
-      window.removeEventListener('mousemove', function (e) {
-        move(e);
-      });
-
-      // 鼠标松开
-      window.removeEventListener('touchend', function () {
-        end();
-      });
-      window.removeEventListener('mouseup', function () {
-        end();
-      });
-
-      window.addEventListener('touchmove', function (e) {
-        move(e);
-      });
-      window.addEventListener('mousemove', function (e) {
+      window.removeEventListener('mousemove', (e) => {
         move(e);
       });
 
       // 鼠标松开
-      window.addEventListener('touchend', function () {
+      window.removeEventListener('touchend', () => {
         end();
       });
-      window.addEventListener('mouseup', function () {
+      window.removeEventListener('mouseup', () => {
+        end();
+      });
+
+      window.addEventListener('touchmove', (e) => {
+        move(e);
+      });
+      window.addEventListener('mousemove', (e) => {
+        move(e);
+      });
+
+      // 鼠标松开
+      window.addEventListener('touchend', () => {
+        end();
+      });
+      window.addEventListener('mouseup', () => {
         end();
       });
     }
