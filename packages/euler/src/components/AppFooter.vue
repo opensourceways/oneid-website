@@ -17,11 +17,11 @@ import LogoCsdn from '@/assets/footer/csdn.png';
 import Logo51cto from '@/assets/footer/51cto.png';
 
 // 英文、俄文友情链接
-import LogoRedditSquare from '@/assets/footer/reddit-square@2x.png';
-import LogoBilibili2 from '@/assets/footer/bilibili@2x.png';
-import LogoLinkedin from '@/assets/footer/linkedin@2x.png';
-import LogoYoutube from '@/assets/footer/youtube@2x.png';
-import LogoTwitter from '@/assets/footer/twitter@2x.png';
+import LogoRedditSquare from '@/assets/footer/reddit-square_2x.png';
+import LogoBilibili2 from '@/assets/footer/bilibili_2x.png';
+import LogoLinkedin from '@/assets/footer/linkedin_2x.png';
+import LogoYoutube from '@/assets/footer/youtube_2x.png';
+import LogoTwitter from '@/assets/footer/twitter_2x.png';
 
 // 公众号、小助手
 import CodeTitleXzs from '@/assets/footer/img-xzs.png';
