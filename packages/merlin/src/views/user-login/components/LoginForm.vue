@@ -8,12 +8,13 @@ import {
   getVerifyImgSize,
 } from 'shared/utils/utils';
 import {
-  getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator, getCodeRules,
+  getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator, getCodeRules, validatorEmail,
 } from 'shared/utils/rules';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from '@/components/LoginTabs.vue';
 import { useCommonData } from 'shared/stores/common';
+import { ONLY_LOGIN_ID } from '@/shared/const';
 
 type TYPE = 'login' | 'register';
 const props = defineProps({
@@ -193,7 +194,7 @@ const passwordRules = ref<RulesT[]>([
 ]);
 
 // 账户校验
-const accountRules = reactive<RulesT[]>([
+const phoneRules = reactive<RulesT[]>([
   {
     validator: validatorEmpty('ENTER_YOUR_PHONE'),
     triggers: 'change',
@@ -203,6 +204,27 @@ const accountRules = reactive<RulesT[]>([
     triggers: 'change',
   },
 ]);
+// 账户校验
+const emailRules = reactive<RulesT[]>([
+  {
+    validator: validatorEmpty('ENTER_YOUR_EMAIL'),
+    triggers: 'change',
+  },
+  {
+    validator: validatorEmail,
+    triggers: 'change',
+  },
+]);
+
+const accountRules = computed(() => {
+  if (type.value === 'login' && selectLoginType.value === 'password') {
+    return loginAccountRuless;
+  } else if (!showSwitch.value) {
+    return emailRules;
+  } else {
+    return phoneRules;
+  }
+})
 
 // 隐私声明校验
 const policyRules = reactive<RulesT[]>([
@@ -251,6 +273,8 @@ const goToOtherPage = (type: string) => {
 const accountPlaceholder = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
     return i18n.value.ENTER_YOUR_ACCOUNT;
+  } else if (!showSwitch.value) {
+    return i18n.value.ENTER_YOUR_EMAIL;
   } else {
     return i18n.value.ENTER_YOUR_PHONE;
   }
@@ -273,6 +297,21 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', enterSubmit);
 });
+const showSwitch = ref(true);
+watch(
+  () => loginParams.value.client_id,
+  () => {
+    showSwitch.value = !ONLY_LOGIN_ID.includes(
+      loginParams.value.client_id as string
+    );
+    if (!showSwitch.value) {
+      selectLoginType.value = 'code';
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 <template>
   <OForm ref="formRef" label-width="0" :model="form" class="form" style="max-width: 460px">
@@ -289,11 +328,7 @@ onUnmounted(() => {
     </OFormItem>
     <OFormItem
       field="account"
-      :rules="
-        type === 'login' && selectLoginType === 'password'
-          ? loginAccountRuless
-          : accountRules
-      "
+      :rules="accountRules"
     >
       <OInput
         id="e2e_login_account"
@@ -344,7 +379,7 @@ onUnmounted(() => {
         @blur="resetLoginErr"
       />
     </OFormItem>
-    <div v-if="type === 'login'" class="login-tabs">
+    <div v-if="type === 'login' && showSwitch" class="login-tabs">
       <LoginTabs
         v-model="selectLoginType"
         :type="type"
