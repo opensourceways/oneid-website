@@ -19,7 +19,7 @@
   height: inherit;
   background-color: rgb(247, 247, 247);
   .nofound-text {
-    margin-top: 16px;
+    margin-top: 23vh;
   }
   .nofound-img {
     height: 300px;

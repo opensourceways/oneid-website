@@ -17,10 +17,16 @@ const useThirdParty = (config?: ThirdPartyConfig) => {
       t: new Date().getTime(),
     };
     setSessionStorage('TP_PARAM', JSON.stringify(params));
+    let width = 500;
+    let height = 700;
+    if (data.key === 'gitee') {
+      width = 1263;
+    }
     windowOpener.value = window.open(
       getUrlByParams(url, params),
       '_blank',
-      `width=500,height=700,left=${(screen.width - 500) / 2},top=${(screen.height - 700) / 2
+      `width=${width},height=${height},left=${(screen.width - width) / 2},top=${
+        (screen.height - height) / 2
       }`
     );
   }

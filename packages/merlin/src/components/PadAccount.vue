@@ -199,6 +199,7 @@ const dlgAction: DialogActionT[] = [
             ? i18n.value.LOGOUT
             : i18n.value.CANCEL,
     size: 'large',
+    variant: 'outline',
     onClick: () => {
       cancelPad();
     },
@@ -206,8 +207,7 @@ const dlgAction: DialogActionT[] = [
   {
     id: 'ok',
     label: i18n.value.CONFIRM,
-    color: 'primary',
-    variant: 'solid',
+    variant: 'outline',
     size: 'large',
     onClick: () => {
       putUser(formRef.value);
