@@ -50,11 +50,16 @@ const threePartsLogin = (type: string) => {
   Object.assign(params, { ext_idp_conn_id: connIds[type] });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
     if (valid) {
+      let width = 500;
+      let height = 700;
+      if (type === 'Gitee') {
+        width = 1263;
+      }
       window.open(
         getUrlByParams(url, params),
         '_blank',
-        `width=500,height=700,left=${(screen.width - 500) / 2},top=${
-          (screen.height - 700) / 2
+        `width=${width},height=${height},left=${(screen.width - width) / 2},top=${
+          (screen.height - height) / 2
         }`
       );
     } else {
