@@ -82,6 +82,8 @@ export default {
     PRIVACY_POLICY: '隐私政策',
     LEGAL_NOTICE: '法律声明',
     ABOUT_COOKIE: '关于cookies',
+    INFRINGEMENT: '内容审查与侵权投诉政策',
+    FEEDBACK: '问题反馈',
     RIGHT_LIST: [
       {
         NAME: '品牌',

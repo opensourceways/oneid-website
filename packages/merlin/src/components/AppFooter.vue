@@ -22,6 +22,10 @@ const jump = (type: string) => {
           <OLink @click="jump('legal')" class="legal">{{ i18n.FOOTER.LEGAL_NOTICE }}</OLink>
           <ODivider direction="v" darker />
           <OLink @click="jump('cookie')" class="cookie">{{ i18n.FOOTER.ABOUT_COOKIE }}</OLink>
+          <ODivider direction="v" darker />
+          <OLink @click="jump('review-and-complaint')">{{ i18n.FOOTER.INFRINGEMENT }}</OLink>
+          <ODivider direction="v" darker />
+          <OLink @click="jump('feedback')">{{ i18n.FOOTER.FEEDBACK }}</OLink>
         </div>
       </div>
     </div>
