@@ -83,6 +83,8 @@ export default {
     PRIVACY_POLICY: 'Privacy Policy',
     LEGAL_NOTICE: 'Legal Notice',
     ABOUT_COOKIE: 'About cookies',
+    INFRINGEMENT: 'Content Review and Complaint Policy',
+    FEEDBACK: '问题反馈',
     RIGHT_LIST: [
       {
         NAME: 'Trademark',
