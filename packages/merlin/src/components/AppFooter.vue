@@ -3,10 +3,7 @@ import { ODivider, OLink } from '@opensig/opendesign';
 import { useI18n } from 'shared/i18n';
 
 const i18n = useI18n();
-const jump = (type: string) => {
-  const opener = window.open(`${import.meta.env.VITE_OPENEULER_WEBSITE}/${type}`, '_blank');
-  if (opener) opener.opener = null;
-};
+const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
 </script>
 
 <template>
@@ -17,15 +14,15 @@ const jump = (type: string) => {
           <span class="copyright">{{ i18n.FOOTER.COPY_RIGHT_OPENMIND }}</span>
         </div>
         <div class="footer-right">
-          <OLink @click="jump('privacy')" class="privacy">{{ i18n.FOOTER.PRIVACY_POLICY }}</OLink>
+          <OLink :href="WEB_URL + '/privacy'" class="privacy" target="_blank">{{ i18n.FOOTER.PRIVACY_POLICY }}</OLink>
           <ODivider direction="v" darker />
-          <OLink @click="jump('legal')" class="legal">{{ i18n.FOOTER.LEGAL_NOTICE }}</OLink>
+          <OLink :href="WEB_URL + '/legal'" class="legal" target="_blank">{{ i18n.FOOTER.LEGAL_NOTICE }}</OLink>
           <ODivider direction="v" darker />
-          <OLink @click="jump('cookie')" class="cookie">{{ i18n.FOOTER.ABOUT_COOKIE }}</OLink>
+          <OLink :href="WEB_URL + '/cookie'" class="cookie" target="_blank">{{ i18n.FOOTER.ABOUT_COOKIE }}</OLink>
           <ODivider direction="v" darker />
-          <OLink @click="jump('review-and-complaint')">{{ i18n.FOOTER.INFRINGEMENT }}</OLink>
+          <OLink :href="WEB_URL + '/review-and-complaint'" target="_blank">{{ i18n.FOOTER.INFRINGEMENT }}</OLink>
           <ODivider direction="v" darker />
-          <OLink @click="jump('feedback')">{{ i18n.FOOTER.FEEDBACK }}</OLink>
+          <OLink :href="WEB_URL + '/feedback'" target="_blank">{{ i18n.FOOTER.FEEDBACK }}</OLink>
         </div>
       </div>
     </div>
