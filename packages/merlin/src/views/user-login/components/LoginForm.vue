@@ -433,7 +433,8 @@ watch(
   grid-template-columns: auto auto;
   align-items: start;
   color: var(--o-color-info1);
-  @include tip1;
+  font-size: 14px;
+  line-height: 22px;
   .o-checkbox-group {
     padding-top: 3px;
   }

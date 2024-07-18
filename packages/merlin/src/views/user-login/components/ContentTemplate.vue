@@ -36,7 +36,8 @@ import LoginCard from './LoginCard.vue';
   display: flex;
   justify-content: center;
   align-items: center;
-  @include tip1;
+  font-size: 14px;
+  line-height: 22px;
   height: 22px;
 }
 </style>
