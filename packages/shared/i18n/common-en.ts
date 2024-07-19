@@ -84,7 +84,7 @@ export default {
     LEGAL_NOTICE: 'Legal Notice',
     ABOUT_COOKIE: 'About cookies',
     INFRINGEMENT: 'Content Review and Complaint Policy',
-    FEEDBACK: '问题反馈',
+    FEEDBACK: 'Report an Issue',
     RIGHT_LIST: [
       {
         NAME: 'Trademark',
