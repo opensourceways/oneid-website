@@ -100,15 +100,16 @@ const cancelPad = () => {
 };
 
 const scroll = (id: string) => {
-  scroller.value.scrollTo({ top: document.getElementById(id)?.offsetTop || 0, behavior: 'smooth' });
+  const div = document.querySelector('.privacy-dialog .o-scroller-container');
+  div?.scrollTo({ top: (document.getElementById(id)?.offsetTop || 0) - 50, behavior: 'smooth' });
 } 
 </script>
 <template>
-  <ODialog v-model:visible="modelValue" hideClose :maskClose="false" size="large">
-    <OScroller ref="scroller" style="height: 100%" wrapClass="markdown-body" showType="always">
+  <ODialog v-model:visible="modelValue" hideClose :maskClose="false" size="large" main-class="privacy-dialog">
+    <div class="markdown-body">
       <div id="privacy" v-dompurify-html="privacyData"></div>
       <div id="legal" v-dompurify-html="legalData"></div>
-    </OScroller>
+    </div>
     <template #footer>
       <OForm
         ref="formRef"
@@ -130,9 +131,9 @@ const scroll = (id: string) => {
                 {{ i18n.READ_ADN_AGREE }}
               </span>
               <span>&nbsp;</span>
-              <OLink hover-underline @click="scroll('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
+              <OLink color="primary" @click="scroll('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
               {{ i18n.AND }}
-              <OLink hover-underline @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
+              <OLink color="primary" @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
             </span>
           </div>
         </OFormItem>
