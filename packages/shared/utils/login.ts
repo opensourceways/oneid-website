@@ -104,7 +104,7 @@ export function logout(
 
 // 跳转首页
 export function goToHome() {
-  if (import.meta.env?.VITE_IS_OPENMERLIN) {
+  if (['/login', '/register', '/resetPwd', '/logout', '/authorization'].includes(location.pathname)) {
     window.location.reload();
   } else {
     window.location.href = '/';
