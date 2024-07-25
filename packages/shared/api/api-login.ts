@@ -65,7 +65,7 @@ export function accountLoginPost(params: any, config = {}) {
 export function queryCourse(params: object) {
   const url = '/oneid/user/permission';
   return request
-    .get(url, { params, global: true, $ignoreLoading: true, ...getHeaderConfig() })
+    .get(url, { params, global: true, $ignoreLoading: true, $doException: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 /**
