@@ -5,6 +5,11 @@
   font-size: var(--o-font-size-text);
   line-height: var(--o-line-height-text);
   cursor: pointer;
+  &:hover {
+    .o-checkbox-icon {
+      border-color: var(--o-color-brand1);
+    }
+  }
 
   input[type='checkbox'] {
     position: absolute;
@@ -33,6 +38,7 @@
   &.o-checkbox-checked {
     .o-checkbox-icon {
       background-color: var(--o-color-brand1);
+      border: 1px solid var(--o-color-brand1);
     }
   }
 }
