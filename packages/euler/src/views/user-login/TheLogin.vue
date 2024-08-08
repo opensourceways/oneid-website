@@ -135,6 +135,7 @@ const login = async (form: any, captchaVerification?: string) => {
     param.password = password;
   } else {
     param.code = form.code;
+    param.oneidPrivacyAccepted = import.meta.env?.VITE_ONEID_PRIVACYACCEPTED;
   }
   accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);

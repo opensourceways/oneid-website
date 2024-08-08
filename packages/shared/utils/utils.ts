@@ -9,6 +9,7 @@ import {
   PWD_REG,
   PWD_REPEAT_REG,
   USERNAME_REG,
+  EMAIL_REG,
 } from '../const/common.const';
 import { accountExists } from '../api/api-login';
 import { testIsPhone } from './helper';
@@ -318,4 +319,19 @@ export function isSendCodeEmail(mail: string): boolean {
 
 export function isWeChat(){
   return /MicroMessenger/i.test(window.navigator.userAgent);
+}
+
+/**
+ *  对象进行脱敏
+ * @param value 对象值
+ * @param isMask 是否脱敏
+ */
+ export function maskUserInfo(value: string, isMask: boolean = false) {
+  if (isMask && value) {
+    if (EMAIL_REG.test(value)) {
+      return value.replace(/^(.{1}).*?(@.*)$/, '$1****$2');
+    }
+    return value.replace(/(\+?\w{1})\w*(\w{1})/, '$1****$2');
+  }
+  return value;
 }

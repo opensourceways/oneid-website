@@ -302,7 +302,7 @@ watch(
         :show-password="type === 'register'"
       />
     </el-form-item>
-    <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
+    <el-form-item v-if="type === 'register' || selectLoginType === 'code'" prop="policy" :rules="policyRules">
       <div class="checkbox">
         <OCheckboxGroup
           v-model="form.policy"
