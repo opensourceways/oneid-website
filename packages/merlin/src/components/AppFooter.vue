@@ -23,8 +23,6 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
           <br v-if="testIsPhone()" />
           <ODivider v-else direction="v" darker />
           <OLink :href="WEB_URL + '/review-and-complaint'" target="_blank">{{ i18n.FOOTER.INFRINGEMENT }}</OLink>
-          <ODivider direction="v" darker />
-          <OLink :href="WEB_URL + '/feedback'" target="_blank">{{ i18n.FOOTER.FEEDBACK }}</OLink>
         </div>
       </div>
     </div>
