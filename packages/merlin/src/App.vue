@@ -54,7 +54,8 @@ import AppFooter from '@/components/AppFooter.vue';
 
     --layout-content-padding: 24px;
 
-    --layout-footer-height: 48px;
+    --layout-footer-height: 108px;
+    --layout-content-min-height: calc(100vh - var(--layout-header-height))
   }
 }
 </style>

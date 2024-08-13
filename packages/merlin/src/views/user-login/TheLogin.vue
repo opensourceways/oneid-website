@@ -11,7 +11,7 @@ import {
   logout,
   setLogoutSession,
 } from 'shared/utils/login';
-import { OLink, useMessage, ODivider } from '@opensig/opendesign';
+import { OLink, useMessage, ODivider, OButton } from '@opensig/opendesign';
 import { onMounted, reactive, ref, provide } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
@@ -20,6 +20,7 @@ import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { getVerifyImgSize, callBackErrMessage } from 'shared/utils/utils';
+import { useTestIsPhone } from 'shared/utils/helper';
 import Verify from 'shared/verifition/Verify.vue';
 import PadAccount from '@/components/PadAccount.vue';
 import AgreePrivacy from '@/components/AgreePrivacy.vue';
@@ -171,6 +172,7 @@ const agreePrivacy = () => {
     }
   });
 }
+const isphone = useTestIsPhone();
 </script>
 <template>
   <LoginTemplate
@@ -179,9 +181,16 @@ const agreePrivacy = () => {
     @three-part-login="threePartLogin"
   >
     <template #switch v-if="selectLoginType === 'password'">
-      <OLink color="primary" hover-underline @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
-      <ODivider direction="v" />
-      <OLink color="primary" hover-underline @click="goResetPwd()">{{ i18n.FORGET_PWD }}</OLink>
+      <template v-if="isphone">
+        <OButton color="primary" variant="outline" size="large" class="login-btn" @click="goRegister">
+          {{ i18n.REGISTER_NOW }}
+        </OButton>
+      </template>
+      <template v-else>
+        <OLink color="primary" hover-underline @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
+        <ODivider direction="v" />
+        <OLink color="primary" hover-underline @click="goResetPwd()">{{ i18n.FORGET_PWD }}</OLink>
+      </template>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
     <template #btn> {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }} </template>
@@ -205,4 +214,10 @@ const agreePrivacy = () => {
     @success="verifySuccess"
   ></Verify>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.login-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+}
+</style>

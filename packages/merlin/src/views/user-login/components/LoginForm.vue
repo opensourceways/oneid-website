@@ -7,9 +7,11 @@ import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 import {
   getVerifyImgSize,
 } from 'shared/utils/utils';
+import { useRoute, useRouter } from 'vue-router';
 import {
   getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator, getCodeRules, validatorEmail,
 } from 'shared/utils/rules';
+import { useTestIsPhone } from 'shared/utils/helper';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from '@/components/LoginTabs.vue';
@@ -25,6 +27,9 @@ const props = defineProps({
 });
 
 const message = useMessage();
+const router = useRouter();
+const route = useRoute();
+const isphone = useTestIsPhone()
 
 // 登录失败输入框变红
 const loginErr: any = inject('loginErr');
@@ -312,6 +317,13 @@ watch(
     immediate: true,
   }
 );
+
+const goResetPwd = () => {
+  router.push({
+    path: '/resetPwd',
+    query: route.query,
+  });
+};
 </script>
 <template>
   <OForm ref="formRef" label-width="0" :model="form" class="form" style="max-width: 460px">
@@ -386,6 +398,14 @@ watch(
         @select="loginTabSelect"
         class="login-tab"
       ></LoginTabs>
+      <OLink 
+        v-if="isphone && selectLoginType === 'password'"
+        class="login-tab  login-tab-right" 
+        color="primary" 
+        size="small" 
+        hover-underline 
+        @click="goResetPwd()"
+      >{{ i18n.FORGET_PWD }}</OLink>
     </div>
     <OFormItem v-if="type === 'register'" field="policy" :rules="policyRules">
       <div class="checkbox">
@@ -446,6 +466,9 @@ watch(
   .login-tab {
     position: absolute;
     top: -4px;
+  }
+  .login-tab-right {
+    right: 0;
   }
 }
 .form {

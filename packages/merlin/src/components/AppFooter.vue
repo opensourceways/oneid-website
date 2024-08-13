@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ODivider, OLink } from '@opensig/opendesign';
 import { useI18n } from 'shared/i18n';
-import { testIsPhone } from 'shared/utils/helper';
+import { useTestIsPhone } from 'shared/utils/helper';
 
 const i18n = useI18n();
+const isPhone = useTestIsPhone();
 const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
 </script>
 
@@ -20,7 +21,10 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
           <OLink :href="WEB_URL + '/legal'" class="legal" target="_blank">{{ i18n.FOOTER.LEGAL_NOTICE }}</OLink>
           <ODivider direction="v" darker />
           <OLink :href="WEB_URL + '/cookie'" class="cookie" target="_blank">{{ i18n.FOOTER.ABOUT_COOKIE }}</OLink>
-          <br v-if="testIsPhone()" />
+          <template v-if="isPhone">
+            <br />
+            <br />
+          </template>
           <ODivider v-else direction="v" darker />
           <OLink :href="WEB_URL + '/review-and-complaint'" target="_blank">{{ i18n.FOOTER.INFRINGEMENT }}</OLink>
         </div>
@@ -34,6 +38,7 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
   color: var(--o-color-info3);
   @include tip1;
   height: 100%;
+  text-align: center;
 }
 
 .app-footer-wrap {
@@ -46,13 +51,13 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
 
 .footer-content {
   width: 100%;
-  border-top: 1px solid var(--o-color-control1);
+  border-top: 1px solid var(--o-color-division1);
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   @include respond-to('phone') {
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: space-around;
   }
 }
