@@ -39,5 +39,9 @@ import LoginCard from './LoginCard.vue';
   font-size: 14px;
   line-height: 22px;
   height: 22px;
+  @include respond-to('phone') {
+    flex-grow: 1;
+    align-items: start;
+  }
 }
 </style>

@@ -34,6 +34,11 @@ import logo from '@/assets/logo.svg';
     box-shadow: var(--o-shadow-1);
     @include respond-to('phone') {
       padding: 24px;
+      background-color: var(--o-color-fill1);
+      box-shadow: none;
+      height: calc(var(--layout-content-min-height) - 32px);
+      display: flex;
+      flex-direction: column;
     }
     .logo {
       text-align: center;
