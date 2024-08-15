@@ -10,8 +10,9 @@ import {
   PWD_REPEAT_REG,
   USERNAME_REG,
 } from '../const/common.const';
-import { accountExists } from '../api/api-login';
+import { accountExists, queryPrivacyVersion } from '../api/api-login';
 import { testIsPhone } from './helper';
+import { useLogin } from '../stores/login';
 
 // 返回接口报错信息
 export function callBackErrMessage(err: any) {
@@ -318,4 +319,17 @@ export function isSendCodeEmail(mail: string): boolean {
 
 export function isWeChat(){
   return /MicroMessenger/i.test(window.navigator.userAgent);
+}
+
+export async function getPrivacyVersion() {
+  const { oneidPrivacyAccepted, setOneidPrivacyAccepted } = useLogin();
+  if (oneidPrivacyAccepted) {
+    return oneidPrivacyAccepted;
+  }
+  const data = await queryPrivacyVersion()
+  if (data?.data?.oneidPrivacyAccepted) {
+    setOneidPrivacyAccepted(data.data.oneidPrivacyAccepted)
+    return data.data.oneidPrivacyAccepted
+  }
+  return 'none';
 }

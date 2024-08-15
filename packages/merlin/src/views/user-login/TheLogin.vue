@@ -19,7 +19,7 @@ import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
-import { getVerifyImgSize, callBackErrMessage } from 'shared/utils/utils';
+import { getVerifyImgSize, callBackErrMessage, getPrivacyVersion } from 'shared/utils/utils';
 import { useTestIsPhone } from 'shared/utils/helper';
 import Verify from 'shared/verifition/Verify.vue';
 import PadAccount from '@/components/PadAccount.vue';
@@ -53,11 +53,12 @@ const padUserinfo = reactive({
 });
 
 // 判断是否需要补全内容
-const isNotPadUserinfo = (data: any): boolean => {
+const isNotPadUserinfo = async (data: any): Promise<boolean> => {
   const { username, oneidPrivacyAccepted = '', } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
+  const oneidPrivacyAccepted1 = await getPrivacyVersion();
   if (
-    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
+    oneidPrivacyAccepted !== oneidPrivacyAccepted1
   ) {
     privacyVisible.value = true;
     return false;
@@ -70,9 +71,9 @@ const isNotPadUserinfo = (data: any): boolean => {
 };
 onMounted(() => {
   validLoginUrl().then(() => {
-    isLogined({}).then((bool) => {
+    isLogined({}).then(async (bool) => {
       if (bool) {
-        if (isNotPadUserinfo(bool)) {
+        if (await isNotPadUserinfo(bool)) {
           haveLoggedIn();
         }
       } else if (!getLogoutSession()) {
@@ -92,8 +93,8 @@ const doSuccess = () => {
 };
 
 // 登录成功处理函数
-const loginSuccess = (data: any) => {
-  if (isNotPadUserinfo(data)) {
+const loginSuccess = async (data: any) => {
+  if (await isNotPadUserinfo(data)) {
     doSuccess();
   }
 };
@@ -164,9 +165,9 @@ const cancelPad = () => {
   logout({}, location.href);
 };
 const agreePrivacy = () => {
-  isLogined({}).then((bool) => {
+  isLogined({}).then(async (bool) => {
     if (bool) {
-      if (isNotPadUserinfo(bool)) {
+      if (await isNotPadUserinfo(bool)) {
         haveLoggedIn();
       }
     }

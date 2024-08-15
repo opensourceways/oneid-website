@@ -60,6 +60,15 @@ export function accountLoginPost(params: any, config = {}) {
 }
 
 /**
+ * 获取隐私版本号
+ */
+export function queryPrivacyVersion() {
+  const url = '/oneid/privacy/version';
+  return request
+    .get(url, { global: true, $ignoreLoading: true, $doException: true, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
  * 获取授权的相关回调链接
  */
 export function queryCourse(params: object) {

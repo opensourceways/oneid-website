@@ -7,6 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { useCommonData } from 'shared/stores/common';
 import { OLink, useMessage } from '@opensig/opendesign';
+import { getPrivacyVersion } from 'shared/utils/utils';
 const loginTemplate = ref<any>(null);
 const router = useRouter();
 const route = useRoute();
@@ -20,12 +21,13 @@ const goLogin = () => {
 };
 const { loginParams } = useCommonData();
 const register = async (form: any) => {
+  const oneidPrivacyAccepted = await getPrivacyVersion();
   const param: any = {
     username: form.username,
     account: form.account,
     code: form.code,
     client_id: loginParams.value.client_id,
-    oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
+    oneidPrivacyAccepted,
     community: import.meta.env?.VITE_COMMUNITY,
   };
   if (form.password) {
