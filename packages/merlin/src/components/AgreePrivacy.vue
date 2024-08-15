@@ -10,6 +10,7 @@ import { useMarkdown } from 'shared/utils/useMarkdown';
 import { modifyUser } from 'shared/api/api-center';
 import { getPrivacyDocs } from 'shared/api/api-docs';
 import { useCommonData } from 'shared/stores/common';
+import { getPrivacyVersion } from 'shared/utils/utils';
 
 const props = defineProps({
   modelValue: {
@@ -83,10 +84,11 @@ const changeCheckBox = () => {
 };
 
 const putUser = () => {
-  formValidator(formRef.value, 'policy').subscribe((valid) => {
+  formValidator(formRef.value, 'policy').subscribe(async (valid) => {
     if (valid) {
+      const oneidPrivacyAccepted = await getPrivacyVersion();
       modifyUser({
-        oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
+        oneidPrivacyAccepted,
       }).then(() => {
         doSuccess();
       });
