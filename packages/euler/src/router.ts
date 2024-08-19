@@ -122,7 +122,7 @@ export const router = createRouter({
 
 // 路由守卫，可在此处进行页面权限处理
 router.beforeEach((to, from, next) => {
-  const { changeLang, saveLoginParams } = useCommon();
+  const { changeLang, saveLoginParams, setSelectLoginType } = useCommon();
   if (to.path.startsWith('/en/') || to.query?.lang === 'en') {
     changeLang('en');
   } else if (to.path.startsWith('/zh/') || to.query?.lang === 'zh') {
@@ -132,6 +132,11 @@ router.beforeEach((to, from, next) => {
   if (['/login', '/register', '/resetPwd', '/logout', '/authorization'].includes(to.path)) {
     if (to.query && to.query.redirect_uri) {
       saveLoginParams(to.query as unknown as LoginParams);
+    }
+  }
+  if (['/login'].includes(to.path)) {
+    if (to.query?.loginType) {
+      setSelectLoginType(to.query.loginType as 'password' | 'code');
     }
   }
   next();
