@@ -7,7 +7,7 @@ import IconMoon from '~icons/app/icon-moon-outline.svg';
 import { getCookie, setCookie } from '../utils/login';
 
 // 风格切换
-const APPEARANCE_KEY = `${import.meta.env?.VITE_COMMUNITY}-theme-appearance`;
+const APPEARANCE_KEY = `${import.meta.env?.VITE_COMMUNITY === 'openeuler' ? 'openEuler' : import.meta.env?.VITE_COMMUNITY}-theme-appearance`;
 
 const commonStore = useCommon();
 
