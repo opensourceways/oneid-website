@@ -7,15 +7,16 @@ const LOGIN_KEYS = {
   USER_INFO: '_U_I_',
 };
 
-function setCookie(cname: string, cvalue: string, isDelete?: boolean) {
-  const deleteStr = isDelete ? 'max-age=0; ' : '';
+export function setCookie(cname: string, cvalue: string, haveMaxAge?: boolean) {
+  // 过期时间统一半年
+  const maxAgeStr = haveMaxAge ? 'max-age=15552000; ' : '';
   const domain = import.meta.env.VITE_COOKIE_DOMAIN || location.hostname;
-  const expires = `${deleteStr}path=/; domain=${domain}`;
+  const expires = `${maxAgeStr}path=/; domain=${domain}`;
   try {
     document.cookie = `${cname}=${cvalue}; ${expires}`;
   } catch (error) {}
 }
-function getCookie(cname: string) {
+export function getCookie(cname: string) {
   const name = `${cname}=`;
   const ca = document.cookie.split(';');
   for (let i = 0; i < ca.length; i++) {

@@ -4,9 +4,10 @@ import { useCommon } from '../stores/common';
 
 import IconSun from '~icons/app/icon-sun-outline.svg';
 import IconMoon from '~icons/app/icon-moon-outline.svg';
+import { getCookie, setCookie } from '../utils/login';
 
 // 风格切换
-const APPEARANCE_KEY = 'vitepress-theme-appearance';
+const APPEARANCE_KEY = `${import.meta.env?.VITE_COMMUNITY}-theme-appearance`;
 
 const commonStore = useCommon();
 
@@ -14,11 +15,12 @@ const isLight = computed(() => (commonStore.theme === 'light' ? true : false));
 const changeTheme = () => {
   const theme = commonStore.theme === 'dark' ? 'light' : 'dark';
   commonStore.theme = theme;
-  localStorage.setItem(APPEARANCE_KEY, theme);
+  setCookie(APPEARANCE_KEY, theme, true);
 };
 
 onMounted(() => {
-  const theme = localStorage.getItem(APPEARANCE_KEY);
+  localStorage.removeItem('vitepress-theme-appearance');
+  const theme = getCookie(APPEARANCE_KEY);
   commonStore.theme = theme === 'dark' ? 'dark' : 'light';
 });
 
@@ -30,7 +32,7 @@ watch(
     const documentElement = document.documentElement;
     val === 'light' && documentElement.classList.remove('dark');
     val === 'dark' && documentElement.classList.add(val);
-    localStorage.setItem(APPEARANCE_KEY, val);
+    setCookie(APPEARANCE_KEY, val, true);
   }
 );
 </script>
