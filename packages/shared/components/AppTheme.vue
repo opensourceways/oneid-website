@@ -20,7 +20,16 @@ const changeTheme = () => {
 
 onMounted(() => {
   localStorage.removeItem('vitepress-theme-appearance');
-  const theme = getCookie(APPEARANCE_KEY);
+  let theme;
+  if (!getCookie(APPEARANCE_KEY)) {
+    const prefereDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    theme = prefereDark ? 'dark' : 'light';
+  } else {
+    theme = getCookie(APPEARANCE_KEY);
+  }
+
   commonStore.theme = theme === 'dark' ? 'dark' : 'light';
 });
 
