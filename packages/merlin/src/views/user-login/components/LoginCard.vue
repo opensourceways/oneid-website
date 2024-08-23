@@ -8,7 +8,6 @@ import logo from '@/assets/logo.svg';
     <div class="card">
       <div class="logo">
         <img alt="openMind" :src="logo" />
-        <OTag variant="outline" size="small" class="logo-tag">Beta</OTag>
       </div>
       <slot></slot>
     </div>
@@ -45,16 +44,6 @@ import logo from '@/assets/logo.svg';
       margin-bottom: 16px;
       img {
         height: 48px;
-      }
-      .logo-tag {
-        margin-top: -16px;
-        cursor: default;
-        @include respond-to('<=pad') {
-          margin-top: -8px;
-          --tag-height: 12px;
-          --tag-text-size: 10px;
-          --tag-padding: 0 2px;
-        }
       }
     }
   }

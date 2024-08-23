@@ -14,6 +14,9 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
       <div class="footer-content">
         <div class="footer-left">
           <span class="copyright">{{ i18n.FOOTER.COPY_RIGHT_OPENMIND }}</span>
+          <br v-if="isPhone"/>
+          <ODivider v-else direction="v" darker />
+          <OLink href="https://beian.miit.gov.cn/" target="_blank" color="normal">京ICP备2021034366号</OLink>
         </div>
         <div class="footer-right">
           <OLink :href="WEB_URL + '/privacy'" class="privacy" target="_blank">{{ i18n.FOOTER.PRIVACY_POLICY }}</OLink>
@@ -27,6 +30,8 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
           </template>
           <ODivider v-else direction="v" darker />
           <OLink :href="WEB_URL + '/review-and-complaint'" target="_blank">{{ i18n.FOOTER.INFRINGEMENT }}</OLink>
+          <ODivider direction="v" darker />
+          <OLink :href="WEB_URL + '/api/swagger/index.html'" target="_blank">{{ i18n.FOOTER.API }}</OLink>
         </div>
       </div>
     </div>
@@ -47,6 +52,15 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
   margin: auto;
   padding-left: var(--layout-content-padding);
   padding-right: var(--layout-content-padding);
+}
+
+.footer-left {
+  a {
+    color: var(--o-color-info3);
+    @include hover {
+      color: var(--o-color-info1);
+    }
+  }
 }
 
 .footer-content {

@@ -1,5 +1,6 @@
 export default {
   USER_CENTER: '个人中心',
+  MODELERS: '魔乐社区',
   INFO: '基本信息',
   IDENTITY: '账号绑定',
   SECURITY: '账号安全',
@@ -78,11 +79,12 @@ export default {
     COPY_RIGHT: '版权所有 © 2023 openEuler 保留一切权利',
     COPY_RIGHT_GAUSS: '版权所有 ©  openGauss 2023 保留一切权利',
     COPY_RIGHT_MINDSPORE: '版权所有 © 2023 MindSpore 保留一切权利',
-    COPY_RIGHT_OPENMIND: '版权所有 © 2024 openMind 保留一切权利',
+    COPY_RIGHT_OPENMIND: '版权所有 © 2024 魔乐社区 保留一切权利',
     PRIVACY_POLICY: '隐私政策',
     LEGAL_NOTICE: '法律声明',
     ABOUT_COOKIE: '关于cookies',
     INFRINGEMENT: '内容审查与侵权投诉政策',
+    API: 'API参考',
     FEEDBACK: '问题反馈',
     RIGHT_LIST: [
       {
