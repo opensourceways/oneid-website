@@ -10,9 +10,10 @@ import { IObject } from 'shared/@types/interface';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
-import { getUsernammeRules } from 'shared/utils/utils';
+import { getUsernammeRules, maskUserInfo, getCompanyRules, getNicknammeRules, formValidator } from 'shared/utils/utils';
+import MaskEye from 'shared/components/MaskEye.vue';
 const router = useRouter();
-const formRef1 = ref<FormInstance[]>();
+const formRef1 = ref<FormInstance>();
 const props = defineProps({
   userInfo: {
     type: Object,
@@ -28,48 +29,51 @@ const data = ref([
   {
     key: 'username',
     label: useI18nStr('USER_NAME'),
-    value: '',
     disabled: true,
+    rules: getUsernammeRules(),
   },
   {
     key: 'email',
     label: useI18nStr('EMAIL'),
-    value: '',
     placeholder: '-',
     disabled: true,
+    isMask: true,
   },
   {
     key: 'phoneCountry',
     label: useI18nStr('PHONE'),
-    value: '',
     placeholder: '-',
     disabled: true,
+    isMask: true,
   },
   {
     key: 'signedUp',
     label: useI18nStr('SIGNED_UP'),
-    value: '',
     disabled: true,
   },
   {
     key: 'nickname',
     label: useI18nStr('NICKNAME'),
-    value: '',
     placeholder: useI18nStr('ENTER_NICKNAME'),
     disabled: false,
+    rules: getNicknammeRules(),
   },
   {
     key: 'company',
     label: useI18nStr('COMPANY'),
-    value: '',
     placeholder: useI18nStr('ENTER_COMPANY'),
     disabled: false,
+    rules: getCompanyRules(),
   },
 ]);
 
 // 表单值
 const form = reactive({
-  username: '',
+  email: '',
+  phone: '',
+  signedUp: '',
+  nickname: '',
+  company: '',
 } as any);
 
 // 显示注册时间
@@ -85,7 +89,7 @@ const getTimeData = (time: string): string => {
 };
 
 // 获取下发参数
-const getSubmitParams = (formEl: FormInstance[] | undefined) => {
+const getSubmitParams = (formEl: FormInstance | undefined) => {
   return new Observable((observer) => {
     if (!formEl) {
       observer.next({});
@@ -95,17 +99,17 @@ const getSubmitParams = (formEl: FormInstance[] | undefined) => {
     const param: IObject = data.value.reduce((pre, next) => {
       if (
         !next.disabled &&
-        next.key in userInfo.value &&
-        next.value !== userInfo.value[next.key]
+        (next.key || userInfo.value[next.key]) &&
+        form[next.key] !== userInfo.value[next.key]
       ) {
-        pre[next.key] = next.value;
+        pre[next.key] = form[next.key];
       }
       return pre;
     }, {} as IObject);
-    if (!userInfo.value.username) {
-      formEl[0].validate((valid: boolean) => {
+    const keys = Object.keys(param);
+    if (keys.length) {
+      formValidator(formEl, keys).subscribe((valid) => {
         if (valid) {
-          Object.assign(param, { username: form.username });
           observer.next(param);
           observer.complete();
         } else {
@@ -114,13 +118,13 @@ const getSubmitParams = (formEl: FormInstance[] | undefined) => {
         }
       });
     } else {
-      observer.next(param);
+      observer.next({});
       observer.complete();
     }
   });
 };
 
-const submit = (formEl: FormInstance[] | undefined) => {
+const submit = (formEl: FormInstance | undefined) => {
   getSubmitParams(formEl).subscribe((param: any) => {
     if (Object.keys(param).length) {
       modifyUser(param).then(() => {
@@ -134,8 +138,6 @@ const submit = (formEl: FormInstance[] | undefined) => {
   });
 };
 
-// 用户名校验
-const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
 const goToTree = () => {
   router.push(`/${store.lang}/mobile/profile`);
 };
@@ -144,9 +146,9 @@ const initData = () => {
   data.value.forEach((item: IObject) => {
     if (item.key in userInfo.value) {
       if (item.key === 'signedUp') {
-        item.value = getTimeData(userInfo.value[item.key]);
+        form[item.key] = getTimeData(userInfo.value[item.key]);
       } else {
-        item.value = userInfo.value[item.key] || '';
+        form[item.key] = userInfo.value[item.key] || '';
       }
     }
   });
@@ -178,38 +180,42 @@ onMounted(() => {
       ><span style="font-size: 16px">{{ i18n.INFO }}</span>
     </div>
     <ContentBox>
-      <!-- <template #header>
-      {{ i18n.INFO }}
-    </template> -->
       <template #content>
-        <div v-for="item in data" :key="item.key" class="info-item">
-          <p class="info-label">{{ item.label }}</p>
-          <el-form
-            v-if="item.key === 'username' && !item.value"
-            ref="formRef1"
-            label-width="0"
-            :model="form"
+        <el-form
+          ref="formRef1"
+          label-width="0"
+          :model="form"
+        >
+          <el-form-item
+            v-for="item in data" :key="item.key"
+            :prop="item.key"
+            :rules="item.rules"
+            class="info-form-pd"
+            :inline-message="true"
           >
-            <el-form-item
-              prop="username"
-              :rules="userNameRules"
-              class="info-form-pd"
-            >
+            <div class="info-item">
+              <p class="info-label">{{ item.label }}</p>
+              <template v-if="userInfo[item.key] && Object.prototype.hasOwnProperty.call(item, 'isMask')">
+                <OInput
+                  :value="maskUserInfo(userInfo[item.key], item.isMask)"
+                  class="info-input"
+                  :disabled="item.disabled"
+                  :placeholder="item.placeholder"
+                />
+                <OIcon class="icon-eye">
+                  <MaskEye v-model="item.isMask"></MaskEye>
+                </OIcon>
+              </template>
               <OInput
-                v-model="form.username"
+                v-else
+                v-model="form[item.key]"
                 class="info-input"
-                :placeholder="i18n.ENTER_USERNAME"
+                :disabled="item.disabled"
+                :placeholder="item.placeholder"
               />
-            </el-form-item>
-          </el-form>
-          <OInput
-            v-else
-            v-model="item.value"
-            class="info-input info-pd"
-            :disabled="item.disabled"
-            :placeholder="item.placeholder"
-          />
-        </div>
+            </div>
+          </el-form-item>
+        </el-form>
         <OButton
           class="btn"
           size="small"
@@ -227,7 +233,7 @@ onMounted(() => {
 .info-item {
   display: flex;
   background-color: var(--o-color-bg2);
-  margin-bottom: 16px;
+  width: 100%;
   align-items: center;
   .info-label {
     font-size: 14px;
@@ -235,17 +241,14 @@ onMounted(() => {
     font-weight: 400;
     min-width: 80px;
     height: 54px;
-    // margin-bottom: var(--o-spacing-h5);
     margin-left: 16px;
     display: flex;
     align-items: center;
   }
-  .info-form-pd {
-    padding-bottom: var(--o-spacing-h9);
-  }
-  .info-pd {
-    // padding-bottom: var(--o-spacing-h4);
-  }
+}
+.icon-eye {
+  font-size: 16px;
+  margin-right: 4px;
 }
 .btn {
   margin-top: var(--o-spacing-h4);

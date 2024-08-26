@@ -125,7 +125,6 @@ const login = async (form: any, captchaVerification?: string) => {
     permission: 'sigRead',
     account: form.account,
     client_id: loginParams.value.client_id,
-    accept_term: 0,
   };
   if (captchaVerification) {
     param.captchaVerification = captchaVerification;
@@ -135,6 +134,7 @@ const login = async (form: any, captchaVerification?: string) => {
     param.password = password;
   } else {
     param.code = form.code;
+    param.oneidPrivacyAccepted = import.meta.env?.VITE_ONEID_PRIVACYACCEPTED;
   }
   accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);
