@@ -85,6 +85,7 @@ export default {
     LEGAL_NOTICE: 'Legal Notice',
     ABOUT_COOKIE: 'About cookies',
     INFRINGEMENT: 'Content Review and Complaint Policy',
+    USER_SERVICE: 'Terms of Use',
     CHANGElOG: 'Changelog',
     API: 'API Reference',
     FEEDBACK: 'Report an Issue',

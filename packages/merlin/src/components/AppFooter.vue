@@ -19,20 +19,24 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
           <OLink href="https://beian.miit.gov.cn/" target="_blank" color="normal">京ICP备2021034366号</OLink>
         </div>
         <div class="footer-right">
+          <OLink :href="WEB_URL + '/terms-of-use'" target="_blank">{{ i18n.FOOTER.USER_SERVICE }}</OLink>
+          <ODivider direction="v" darker />
           <OLink :href="WEB_URL + '/privacy'" class="privacy" target="_blank">{{ i18n.FOOTER.PRIVACY_POLICY }}</OLink>
           <ODivider direction="v" darker />
           <OLink :href="WEB_URL + '/legal'" class="legal" target="_blank">{{ i18n.FOOTER.LEGAL_NOTICE }}</OLink>
-          <ODivider direction="v" darker />
-          <OLink :href="WEB_URL + '/cookies'" class="cookie" target="_blank">{{ i18n.FOOTER.ABOUT_COOKIE }}</OLink>
           <template v-if="isPhone">
-            <br />
             <br />
           </template>
           <ODivider v-else direction="v" darker />
+          <OLink :href="WEB_URL + '/cookies'" class="cookie" target="_blank">{{ i18n.FOOTER.ABOUT_COOKIE }}</OLink>
+          <ODivider direction="v" darker />
           <OLink :href="WEB_URL + '/review-and-complaint'" target="_blank">{{ i18n.FOOTER.INFRINGEMENT }}</OLink>
-          <ODivider direction="v" darker />
-          <OLink :href="WEB_URL + '/changelog'" target="_blank">{{ i18n.FOOTER.CHANGElOG }}</OLink>
-          <ODivider direction="v" darker />
+          <template v-if="isPhone">
+            <br />
+          </template>
+          <ODivider v-else direction="v" darker />
+          <!-- <OLink :href="WEB_URL + '/changelog'" target="_blank">{{ i18n.FOOTER.CHANGElOG }}</OLink>
+          <ODivider direction="v" darker /> -->
           <OLink :href="WEB_URL + '/api/swagger/index.html'" target="_blank">{{ i18n.FOOTER.API }}</OLink>
         </div>
       </div>
