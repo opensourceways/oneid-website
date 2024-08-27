@@ -418,8 +418,10 @@ const goResetPwd = () => {
             {{ i18n.READ_ADN_AGREE }}
           </span>
           <OLink color="primary" @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
-          <span>{{ lang === 'zh' ? i18n.AND : '&nbsp;' + i18n.AND + '&nbsp;' }}</span>
+          <span>、</span>
           <OLink color="primary" @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
+          <span>{{ lang === 'zh' ? i18n.AND : '&nbsp;' + i18n.AND + '&nbsp;' }}</span>
+          <OLink color="primary" @click="goToOtherPage('terms-of-use')">{{ i18n.FOOTER.USER_SERVICE }}</OLink>
         </span>
       </div>
     </OFormItem>

@@ -49,15 +49,17 @@ const policyRules = reactive<RulesT[]>([
 ]);
 const privacyData = ref('');
 const legalData = ref('');
+const termsData = ref('');
 
 watch(
   () => props.modelValue,
   (val) => {
     if (val) {
-      const arr = lang.value === 'zh' ? ['privacy.md', 'legal.md'] : ['privacy_en.md', 'legal_en.md'];
+      const arr = lang.value === 'zh' ? ['privacy.md', 'legal.md', 'terms_of_use.md'] : ['privacy_en.md', 'legal_en.md', 'terms_of_use_en.md'];
       Promise.all(arr.map((item) => getPrivacyDocs(item))).then((res) => {
         privacyData.value = useMarkdown().mkit(res[0]);
         legalData.value = useMarkdown().mkit(res[1]);
+        termsData.value = useMarkdown().mkit(res[2]);
       });
     }
   },
@@ -111,6 +113,7 @@ const scroll = (id: string) => {
     <div class="markdown-body">
       <div id="privacy" v-dompurify-html="privacyData"></div>
       <div id="legal" v-dompurify-html="legalData"></div>
+      <div id="terms-of-use" v-dompurify-html="termsData"></div>
     </div>
     <template #footer>
       <OForm
@@ -134,8 +137,10 @@ const scroll = (id: string) => {
               </span>
               <span>&nbsp;</span>
               <OLink color="primary" @click="scroll('privacy')">{{ i18n.PRIVACY_POLICY }}</OLink>
-              {{ i18n.AND }}
+              {{ '、' }}
               <OLink color="primary" @click="scroll('legal')">{{ i18n.LEGAL_NOTICE }}</OLink>
+              {{ i18n.AND }}
+              <OLink color="primary" @click="scroll('terms-of-use')">{{ i18n.FOOTER.USER_SERVICE }}</OLink>
             </span>
           </div>
         </OFormItem>
