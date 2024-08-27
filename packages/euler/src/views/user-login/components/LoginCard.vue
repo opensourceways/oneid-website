@@ -28,4 +28,9 @@
     box-shadow: var(--o-shadow-l1);
   }
 }
+:root.dark {
+  .login-card {
+    background-image: url(../../../assets/login_background_dark.jpg);
+  }
+}
 </style>
