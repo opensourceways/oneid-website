@@ -2,6 +2,7 @@
 
 <template>
   <div class="nofound">
+    <img src="@/assets/empty.svg" class="nofound-img" />
     <p class="nofound-text">
       <slot name="title"> 回调地址redirect_uri不匹配 </slot>
     </p>
@@ -18,8 +19,9 @@
   color: var(--o-color-info1);
   height: inherit;
   background-color: rgb(247, 247, 247);
+  min-height: calc(100vh - 339px);
   .nofound-text {
-    margin-top: 23vh;
+    margin-top: var(--o-spacing-h5);
   }
   .nofound-img {
     height: 300px;
