@@ -85,7 +85,8 @@ export default {
     LEGAL_NOTICE: 'Legal Notice',
     ABOUT_COOKIE: 'About cookies',
     INFRINGEMENT: 'Content Review and Complaint Policy',
-    API: 'API参考',
+    CHANGElOG: 'Changelog',
+    API: 'API Reference',
     FEEDBACK: 'Report an Issue',
     RIGHT_LIST: [
       {
