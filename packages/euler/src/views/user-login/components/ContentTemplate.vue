@@ -1,45 +1,25 @@
 <script setup lang="ts">
 import LoginLanguage from 'shared/components/LoginLanguage.vue';
+import LoginCard from './LoginCard.vue';
 </script>
 <template>
-  <div class="all">
-    <div class="main">
-      <div class="app-header">
-        <div class="header-title">
-          <slot name="headerTitle"></slot>
-        </div>
+  <LoginCard>
+    <div class="app-header">
+      <div class="header-title">
+        <slot name="headerTitle"></slot>
       </div>
-      <div class="app-body">
-        <slot name="body"></slot>
-      </div>
-      <div class="switch">
-        <slot name="switch"></slot>
-      </div>
-      <slot name="footer"></slot>
-      <LoginLanguage></LoginLanguage>
     </div>
-  </div>
+    <div class="app-body">
+      <slot name="body"></slot>
+    </div>
+    <div class="switch">
+      <slot name="switch"></slot>
+    </div>
+    <slot name="footer"></slot>
+    <LoginLanguage></LoginLanguage>
+  </LoginCard>
 </template>
 <style lang="scss" scoped>
-.all {
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  background-color: var(--o-color-bg1);
-  background-image: url(../../../assets/login_background.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: left;
-}
-.main {
-  width: 420px;
-  margin: 0 auto;
-  padding: var(--o-spacing-h2);
-  background-color: var(--o-color-text2);
-  box-shadow: var(--o-shadow-l1);
-}
 
 .app-header {
   display: flex;
