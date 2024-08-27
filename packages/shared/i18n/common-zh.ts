@@ -84,6 +84,7 @@ export default {
     LEGAL_NOTICE: '法律声明',
     ABOUT_COOKIE: '关于cookies',
     INFRINGEMENT: '内容审查与侵权投诉政策',
+    CHANGElOG: '更新日志',
     API: 'API参考',
     FEEDBACK: '问题反馈',
     RIGHT_LIST: [

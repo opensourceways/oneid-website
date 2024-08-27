@@ -23,13 +23,15 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
           <ODivider direction="v" darker />
           <OLink :href="WEB_URL + '/legal'" class="legal" target="_blank">{{ i18n.FOOTER.LEGAL_NOTICE }}</OLink>
           <ODivider direction="v" darker />
-          <OLink :href="WEB_URL + '/cookie'" class="cookie" target="_blank">{{ i18n.FOOTER.ABOUT_COOKIE }}</OLink>
+          <OLink :href="WEB_URL + '/cookies'" class="cookie" target="_blank">{{ i18n.FOOTER.ABOUT_COOKIE }}</OLink>
           <template v-if="isPhone">
             <br />
             <br />
           </template>
           <ODivider v-else direction="v" darker />
           <OLink :href="WEB_URL + '/review-and-complaint'" target="_blank">{{ i18n.FOOTER.INFRINGEMENT }}</OLink>
+          <ODivider direction="v" darker />
+          <OLink :href="WEB_URL + '/changelog'" target="_blank">{{ i18n.FOOTER.CHANGElOG }}</OLink>
           <ODivider direction="v" darker />
           <OLink :href="WEB_URL + '/api/swagger/index.html'" target="_blank">{{ i18n.FOOTER.API }}</OLink>
         </div>

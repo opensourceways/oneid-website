@@ -22,10 +22,10 @@ import AppFooter from '@/components/AppFooter.vue';
 
   --layout-header-height: 64px;
   --layout-header-zIndex: 101;
-  --layout-header-max-width: 1344px;
+  --layout-header-max-width: 1440px;
   --layout-header-padding: 12px;
 
-  --layout-content-max-width: 1344px;
+  --layout-content-max-width: 1440px;
   --layout-content-padding: 12px;
 
   --layout-footer-height: 80px;
