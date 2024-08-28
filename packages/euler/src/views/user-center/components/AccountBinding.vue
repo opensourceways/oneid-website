@@ -25,7 +25,8 @@ import {
 } from 'shared/api/api-center';
 import { ElMessage } from 'element-plus';
 import { IObject } from 'shared/@types/interface';
-import { isSendCodeEmail } from 'shared/utils/utils';
+import MaskEye from 'shared/components/MaskEye.vue';
+import { isSendCodeEmail, maskUserInfo } from 'shared/utils/utils';
 
 const i18n = useI18n();
 const store = useCommon();
@@ -37,6 +38,7 @@ const accountData = ref([
     label: useI18nStr('EMAIL'),
     operate: [],
     value: '',
+    isMask: true,
   },
   {
     key: 'phone',
@@ -44,6 +46,7 @@ const accountData = ref([
     label: useI18nStr('PHONE'),
     operate: ['unbind'],
     value: '',
+    isMask: true,
   },
 ]);
 const threeAccountData = ref([] as IObject[]);
@@ -410,15 +413,18 @@ watch(
           class="opt-item"
           :class="{ itemGap: index }"
         >
-          <div class="center">
+          <div class="center left-content">
             <OIcon class="icon">
               <component :is="item.icon"></component>
             </OIcon>
             <span>{{ item.label }}</span>
-            <span v-if="item.value">
+            <span v-if="item.value" class="content-info">
               ：
-              <span class="opt-label">{{ item.value }}</span>
+              <span class="opt-label">{{ maskUserInfo(item.value, item.isMask) }}</span>
             </span>
+            <OIcon class="icon" v-if="item.value">
+              <MaskEye v-model="item.isMask"></MaskEye>
+            </OIcon>
           </div>
           <div class="center">
             <div
@@ -508,6 +514,13 @@ watch(
     }
     .modify {
       margin-left: var(--o-spacing-h4);
+    }
+    .left-content {
+      min-width: 50%;
+      .content-info {
+        flex-grow: 1;
+        margin-right: 8px;
+      }
     }
   }
 }

@@ -28,7 +28,8 @@ import { IObject } from 'shared/@types/interface';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useRouter } from 'vue-router';
-import { isSendCodeEmail } from 'shared/utils/utils';
+import MaskEye from 'shared/components/MaskEye.vue';
+import { isSendCodeEmail, maskUserInfo } from 'shared/utils/utils';
 const router = useRouter();
 const i18n = useI18n();
 const store = useCommon();
@@ -40,6 +41,7 @@ const accountData = ref([
     label: useI18nStr('EMAIL'),
     operate: [],
     value: '',
+    isMask: true,
   },
   {
     key: 'phone',
@@ -47,6 +49,7 @@ const accountData = ref([
     label: useI18nStr('PHONE'),
     operate: ['unbind'],
     value: '',
+    isMask: true,
   },
 ]);
 const threeAccountData = ref([] as IObject[]);
@@ -437,7 +440,10 @@ watch(
               <OIcon class="icon">
                 <component :is="item.icon"></component>
               </OIcon>
-              <div class="opt-label overflow">{{ item.value }}</div>
+              <div class="opt-label overflow">{{ maskUserInfo(item.value, item.isMask) }}</div>
+              <OIcon class="icon-eye" v-if="item.value">
+                <MaskEye v-model="item.isMask"></MaskEye>
+              </OIcon>
             </div>
             <div class="center">
               <div
@@ -476,11 +482,7 @@ watch(
               <OIcon class="icon">
                 <component :is="item.icon"></component>
               </OIcon>
-              <span style="font-size: 14px">{{ item.label }}</span>
-              <span v-if="item.value">
-                ：
-                <span class="opt-label">{{ item.value }}</span>
-              </span>
+              <span class="opt-label overflow">{{ item.value }}</span>
             </div>
             <div class="center">
               <div
@@ -529,8 +531,12 @@ watch(
       color: var(--o-color-neutral5);
       font-size: 14px;
     }
+    .icon-eye {
+      font-size: 16px;
+      margin-left: 8px;
+    }
     .overflow {
-      max-width: 58vw;
+      width: 44vw;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
