@@ -154,6 +154,7 @@ export default {
   PRIVACY_POLICY: '《隐私政策》',
   AND: '与',
   LEGAL_NOTICE: '《法律声明》',
+  USER_SERVICE: '《用户服务协议》',
   THREE_PART_LOGIN: '第三方账号登录',
   ACCOUNT_CONTAIN_CHARACTER: '账号长度不少于3个字符',
   CONTAIN_CHARACTER: '长度必须为3到20个字符',
