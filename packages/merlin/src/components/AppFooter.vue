@@ -35,8 +35,8 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
             <br />
           </template>
           <ODivider v-else direction="v" darker />
-          <!-- <OLink :href="WEB_URL + '/changelog'" target="_blank">{{ i18n.FOOTER.CHANGElOG }}</OLink>
-          <ODivider direction="v" darker /> -->
+          <OLink :href="WEB_URL + '/changelog'" target="_blank">{{ i18n.FOOTER.CHANGElOG }}</OLink>
+          <ODivider direction="v" darker />
           <OLink :href="WEB_URL + '/api/swagger/index.html'" target="_blank">{{ i18n.FOOTER.API }}</OLink>
         </div>
       </div>
@@ -76,6 +76,7 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   @include respond-to('phone') {
     flex-direction: column-reverse;
     justify-content: space-around;
