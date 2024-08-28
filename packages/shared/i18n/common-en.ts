@@ -154,6 +154,7 @@ export default {
   PRIVACY_POLICY: 'Privacy Policy',
   AND: 'and',
   LEGAL_NOTICE: 'Legal Notice',
+  USER_SERVICE: 'Terms of Use',
   THREE_PART_LOGIN: 'Use Third-Party Account',
   ACCOUNT_CONTAIN_CHARACTER: 'Cannot be less than 3 characters.',
   CONTAIN_CHARACTER: 'Contain 3 to 20 characters.',
