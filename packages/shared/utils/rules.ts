@@ -11,9 +11,6 @@ import {
   USERNAME_REPEAT_REG,
   CODE_REG,
 } from '../const/common.const';
-import { useCommonData } from "../stores/common";
-import { accountExists } from '../api/api-login';
-import { callBackErrMessage } from "./utils";
 import { Observable } from "rxjs";
 import { OForm } from "@opensig/opendesign";
 
@@ -49,35 +46,6 @@ export const validatorEmail: ValidatorT = (value: string) => {
     };
   }
 };
-
-// 用户名重名校验
-export const validatorSameName = async (value: string) => {
-  if (value) {
-    const { loginParams } = useCommonData();
-    const param: any = {
-      username: value,
-      client_id: loginParams.value.client_id,
-    };
-    if (!import.meta.env?.VITE_IS_OPENMERLIN) {
-      Object.assign(param, {
-        community: import.meta.env?.VITE_COMMUNITY,
-      })
-    }
-    const res = await accountExists(param)
-      .then(() => {
-        return {
-          type: 'success',
-        };
-      })
-      .catch((err: any) => {
-        return {
-          type: 'danger',
-          message: callBackErrMessage(err),
-        }
-      }) as ValidatorResultT;
-    return res;
-  }
-}
 
 // 密码校验
 export const getPwdRules = ():RulesT[] => {
@@ -146,10 +114,6 @@ export const getUsernammeRules = (): RulesT[] => {
           }
         }
       },
-      triggers: 'change',
-    },
-    {
-      validator: validatorSameName as unknown as ValidatorT,
       triggers: 'change',
     },
   ];

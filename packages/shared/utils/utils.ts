@@ -11,7 +11,7 @@ import {
   USERNAME_REG,
   EMAIL_REG,
 } from '../const/common.const';
-import { accountExists, queryPrivacyVersion } from '../api/api-login';
+import { queryPrivacyVersion } from '../api/api-login';
 import { testIsPhone } from './helper';
 import { useLogin } from '../stores/login';
 
@@ -185,27 +185,6 @@ export function getPwdRules(): FormItemRule[] {
   ];
 }
 
-// 用户名重名校验
-export function validatorSameName(rule: any, value: any): void | Promise<void> {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      const { loginParams } = useCommonData();
-      const param: any = {
-        username: value,
-        client_id: loginParams.value.client_id,
-        community: import.meta.env?.VITE_COMMUNITY,
-      };
-      accountExists(param)
-        .then(() => {
-          resolve();
-        })
-        .catch((err: any) => {
-          reject(callBackErrMessage(err));
-        });
-    });
-  }
-}
-
 export function getUsernammeRules(): FormItemRule[] {
   return [
     {
@@ -224,57 +203,7 @@ export function getUsernammeRules(): FormItemRule[] {
       message: useI18nStr('USERNAME_VAILD') as unknown as string,
       trigger: 'blur',
     },
-    {
-      asyncValidator: validatorSameName,
-      trigger: 'none',
-    },
   ];
-}
-
-// 手机或邮箱重名校验
-export function validatorSameAccount(
-  rule: any,
-  value: any
-): void | Promise<void> {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      const { loginParams } = useCommonData();
-      accountExists({
-        account: value,
-        client_id: loginParams.value.client_id,
-        community: import.meta.env?.VITE_COMMUNITY,
-      })
-        .then(() => {
-          resolve();
-        })
-        .catch((err: any) => {
-          reject(callBackErrMessage(err));
-        });
-    });
-  }
-}
-
-// 手机或邮箱是否存在校验
-export function validatorExistAccount(
-  rule: any,
-  value: any
-): void | Promise<void> {
-  if (value) {
-    return new Promise((resolve, reject) => {
-      const { loginParams } = useCommonData();
-      accountExists({
-        account: value,
-        client_id: loginParams.value.client_id,
-        community: import.meta.env?.VITE_COMMUNITY,
-      })
-        .then(() => {
-          reject(useI18nStr('ACCOUNT_NOT_EXIST').value);
-        })
-        .catch(() => {
-          resolve();
-        });
-    });
-  }
 }
 
 export function getVerifyImgSize() {

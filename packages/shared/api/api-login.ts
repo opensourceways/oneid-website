@@ -2,22 +2,6 @@ import { request } from '../plugins/axios';
 import type { AxiosResponse } from '../plugins/axios';
 import { getHeaderConfig } from './util';
 
-/**
- * 判断用户名或者账号是否存在
- */
-export function accountExists(params: any) {
-  const url = '/oneid/account/exists';
-
-  return request
-    .get(url, {
-      global: true,
-      $doException: true,
-      $ignoreLoading: true,
-      params,
-      ...getHeaderConfig(),
-    })
-    .then((res: AxiosResponse) => res.data);
-}
 
 /**
  * 发送验证码
