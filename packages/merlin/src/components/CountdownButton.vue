@@ -15,7 +15,7 @@ const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'click']);
 const num = ref(0);
 let timer: NodeJS.Timeout;
-
+let stopwatch: () => void;
 // 验证码重发限制60s
 const limitedToResend = () => {
   num.value = 60;
@@ -27,6 +27,7 @@ const limitedToResend = () => {
       num.value = 0;
       emit('update:modelValue', false);
       clearInterval(timer);
+      stopwatch();
     }
   }, 1000);
 };
@@ -37,7 +38,7 @@ onUnmounted(() => {
 
 const clickBtn = () => {
   if (!modelValue.value) {
-    watch(
+    stopwatch = watch(
       () => modelValue.value,
       (value) => {
         if (value && !num.value) {

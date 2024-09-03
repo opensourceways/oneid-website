@@ -76,9 +76,9 @@ export default {
     ATOM_MO: '/atom-mo.png',
     MAIL: 'contact@openeuler.io',
     MAIL_GAUSS: 'contact@opengauss.org',
-    COPY_RIGHT: '版权所有 © 2023 openEuler 保留一切权利',
-    COPY_RIGHT_GAUSS: '版权所有 ©  openGauss 2023 保留一切权利',
-    COPY_RIGHT_MINDSPORE: '版权所有 © 2023 MindSpore 保留一切权利',
+    COPY_RIGHT: '版权所有 © 2024 openEuler 保留一切权利',
+    COPY_RIGHT_GAUSS: '版权所有 ©  openGauss 2024 保留一切权利',
+    COPY_RIGHT_MINDSPORE: '版权所有 © 2024 MindSpore 保留一切权利',
     COPY_RIGHT_OPENMIND: '版权所有 © 2024 魔乐社区 保留一切权利',
     PRIVACY_POLICY: '隐私政策',
     LEGAL_NOTICE: '法律声明',
@@ -206,4 +206,20 @@ export default {
   CANCEL_SIGN: '取消签署',
   CANCEL_SIGN_OF: '取消签署',
   CANCEL_SIGN_OF_LOGOUT: '，确认后将退出登录',
+  cookie: {
+    title: 'openEuler社区重视您的隐私',
+    desc: '我们在本网站上使用Cookie，包括第三方Cookie，以便网站正常运行和提升浏览体验。单击“全部接受”即表示您同意这些目的；单击“全部拒绝”即表示您拒绝非必要的Cookie；单击“管理Cookie”以选择接受或拒绝某些Cookie。需要了解更多信息或随时更改您的Cookie首选项，请参阅我们的',
+    link: '《隐私政策》',
+    acceptAll: '全部接受',
+    rejectAll: '全部拒绝',
+    manage: '管理Cookie',
+    necessaryCookie: '必要Cookie',
+    necessaryCookieTip: '始终启用',
+    necessaryCookieDetail:
+      '这些Cookie是网站正常工作所必需的，不能在我们的系统中关闭。它们通常仅是为了响应您的服务请求而设置的，例如登录或填写表单。您可以将浏览器设置为阻止Cookie来拒绝这些Cookie，但网站的某些部分将无法正常工作。这些Cookie不存储任何个人身份信息。',
+    analyticalCookie: '统计分析Cookie',
+    analyticalCookieDetail:
+      '我们将根据您的同意使用和处理这些非必要Cookie。这些Cookie允许我们获得摘要统计数据，例如，统计访问量和访问者来源，便于我们改进我们的网站。',
+    saveSetting: '保存并接受',
+  },
 };

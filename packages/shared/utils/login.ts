@@ -29,7 +29,7 @@ export function getCookie(cname: string) {
 }
 
 // 全量删除cookie
-function deleteCookie(cname: string) {
+export function deleteCookie(cname: string) {
   const domain = location.hostname;
   const arr = domain.split('.');
   for (let i = arr.length - 1; i >= 0; i--) {
