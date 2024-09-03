@@ -1,6 +1,5 @@
 import { getPublicKey } from '../api/api-login';
-import JsEncrypt from 'jsencrypt';
-import { b64tohex } from './base64';
+import { sm2 } from 'sm-crypto-v2';
 import forge from 'node-forge';
 /**
  * @word 要加密的内容
@@ -21,9 +20,8 @@ export function rsaEncrypt(word: string, keyWord: string): string {
       })
     );
   }
-  const encrypt = new JsEncrypt();
-  encrypt.setPublicKey(keyWord);
-  return b64tohex(encrypt.encrypt(word) as string) || '';
+  const cipherMode = 1;
+  return sm2.doEncrypt(word, keyWord, cipherMode);
 }
 
 export function getRsaEncryptWord(
@@ -34,7 +32,7 @@ export function getRsaEncryptWord(
       community: import.meta.env?.VITE_COMMUNITY,
     };
     getPublicKey(param).then((res) => {
-      const publicKey = res?.data?.rsa?.publicKey || res?.data;
+      const publicKey = res?.data?.sm2?.publicKey || res?.data;
       if (publicKey) {
         const keyword = publicKey.includes('-----BEGIN PUBLIC KEY-----')
           ? publicKey.slice(27, -26)
