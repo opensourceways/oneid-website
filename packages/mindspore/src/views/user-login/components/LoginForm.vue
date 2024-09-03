@@ -309,7 +309,7 @@ const loginTabSelect = () => {
           {{ '、' }}
           <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
           {{ i18n.AND }}
-          <a :href="docsUrl" target="_blank">昇思大模型平台协议</a>
+          <a :href="docsUrl" target="_blank">《昇思大模型平台协议》</a>
         </span>
       </div>
     </el-form-item>

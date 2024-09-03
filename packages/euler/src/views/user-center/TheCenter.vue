@@ -3,6 +3,7 @@ import UserCenter from './UserCenter.vue';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import NotFound from '@/components/NotFound.vue';
+import CookieNotice from '@/components/CookieNotice.vue';
 import { getUserAuth, refreshInfo, showGuard } from 'shared/utils/login';
 import { useI18n } from 'shared/i18n';
 
@@ -24,6 +25,7 @@ const i18n = useI18n();
     </NotFound>
     <UserCenter v-else></UserCenter>
   </main>
+  <CookieNotice />
   <AppFooter />
 </template>
 
