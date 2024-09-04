@@ -209,7 +209,7 @@ export default {
   cookie: {
     title: 'openEuler社区重视您的隐私',
     desc: '我们在本网站上使用Cookie，包括第三方Cookie，以便网站正常运行和提升浏览体验。单击“全部接受”即表示您同意这些目的；单击“全部拒绝”即表示您拒绝非必要的Cookie；单击“管理Cookie”以选择接受或拒绝某些Cookie。需要了解更多信息或随时更改您的Cookie首选项，请参阅我们的',
-    link: '《隐私政策》',
+    link: '《关于Cookies》',
     acceptAll: '全部接受',
     rejectAll: '全部拒绝',
     manage: '管理Cookie',
