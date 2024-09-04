@@ -74,19 +74,12 @@ export function useCommonData() {
   return stores;
 }
 
-// cookie状态
-export const useCookieStatus = defineStore('cookieStatus', {
+export const useCookieStore = defineStore('cookie', {
   state: () => ({
     status: '0',
+    version: '20240830',
   }),
   getters: {
     isAllAgreed: (state) => state.status === '1',
   },
-});
-
-// 隐私版本
-export const usePrivacyVersion = defineStore('privacyVersion', {
-  state: () => ({
-    version: '20240530',
-  }),
 });
