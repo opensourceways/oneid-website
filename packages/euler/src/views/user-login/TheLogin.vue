@@ -121,7 +121,6 @@ const loginSuccess = (data: any) => {
 
 const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
-    community: import.meta.env?.VITE_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
     client_id: loginParams.value.client_id,

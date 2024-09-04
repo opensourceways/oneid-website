@@ -116,7 +116,6 @@ const nextStep = (formEl: FormInstance | undefined) => {
     if (valid) {
       const param = {
         client_id: loginParams.value.client_id,
-        community: import.meta.env?.VITE_COMMUNITY,
         account: form.account,
         code: form.code,
       };
@@ -133,8 +132,6 @@ const confirm = (formEl: FormInstance | undefined) => {
     if (valid) {
       const newPwd = await getRsaEncryptWord(form.password);
       const param = {
-        client_id: loginParams.value.client_id,
-        community: import.meta.env?.VITE_COMMUNITY,
         pwd_reset_token: resetToken.value,
         new_pwd: newPwd,
       };

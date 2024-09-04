@@ -161,7 +161,6 @@ const bindAccount = () => {
     accept_term: 0,
     account: form.account,
     code: form.code,
-    community: import.meta.env?.VITE_COMMUNITY,
     client_id: tParam.value.client_id,
   }
   accountLoginPost(param).then(() => {
