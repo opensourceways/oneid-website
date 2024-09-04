@@ -16,7 +16,7 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
           <span class="copyright">{{ i18n.FOOTER.COPY_RIGHT_OPENMIND }}</span>
           <br v-if="isPhone"/>
           <ODivider v-else direction="v" darker />
-          <OLink href="https://beian.miit.gov.cn/" target="_blank" color="normal">京ICP备2021034366号</OLink>
+          <OLink href="https://beian.miit.gov.cn/" target="_blank" color="normal">京ICP备2021034386号-70</OLink>
         </div>
         <div class="footer-right">
           <OLink :href="WEB_URL + '/terms-of-use'" target="_blank">{{ i18n.FOOTER.USER_SERVICE }}</OLink>
