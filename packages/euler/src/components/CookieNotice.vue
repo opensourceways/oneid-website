@@ -1,14 +1,8 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, computed } from 'vue';
 import { ElDialog, ElSwitch } from 'element-plus';
-import {
-  determiningType,
-} from 'shared/utils/utils';
-import {
-  getCookie,
-  setCookie,
-  deleteCookie,
-} from 'shared/utils/login';
+import { determiningType } from 'shared/utils/utils';
+import { getCookie, setCookie, deleteCookie } from 'shared/utils/login';
 import { useCommonData, useCookieStore } from 'shared/stores/common';
 import { useScreen } from 'shared/composables/useScreen';
 import { useI18n } from 'shared/i18n';
@@ -121,7 +115,7 @@ const acceptAll = () => {
   setCookie(
     COOKEY_KEY,
     `${COOKIE_AGREED_STATUS.ALL_AGREED}${cookieStore.version}`,
-    true,
+    true
   );
   toggleNoticeVisible(false);
   initSensor();
@@ -134,7 +128,7 @@ const rejectAll = () => {
   setCookie(
     COOKEY_KEY,
     `${COOKIE_AGREED_STATUS.NECCESSARY_AGREED}${cookieStore.version}`,
-    true,
+    true
   );
   toggleNoticeVisible(false);
 };
@@ -188,8 +182,7 @@ const goToOtherPage = (type: string) => {
           <p class="cookie-title">{{ i18n.cookie.title }}</p>
           <p class="cookie-desc">
             {{ i18n.cookie.desc }}
-            <a @click="goToOtherPage('cookies')">
-              {{ i18n.cookie.link }} </a
+            <a @click="goToOtherPage('cookies')"> {{ i18n.cookie.link }} </a
             >{{ isZh ? '。' : '.' }}
           </p>
         </div>
@@ -211,50 +204,46 @@ const goToOtherPage = (type: string) => {
         />
       </div>
     </div>
-    <client-only>
-      <ElDialog
-        v-model="isDlgVisible"
-        :width="lePadV ? '90%' : '50%'"
-        :title="i18n.cookie.manage"
-        destroy-on-close
-        :before-close="onDlgChange"
-      >
-        <div class="cookie-dlg-content">
-          <div class="content-item">
-            <div class="item-header">
-              <span class="item-title">{{ i18n.cookie.necessaryCookie }}</span>
-              <span class="item-extra">{{
-                i18n.cookie.necessaryCookieTip
-              }}</span>
-            </div>
-            <div class="item-detail">
-              {{ i18n.cookie.necessaryCookieDetail }}
-            </div>
+    <ElDialog
+      v-model="isDlgVisible"
+      :width="lePadV ? '90%' : '50%'"
+      :title="i18n.cookie.manage"
+      destroy-on-close
+      :before-close="onDlgChange"
+    >
+      <div class="cookie-dlg-content">
+        <div class="content-item">
+          <div class="item-header">
+            <span class="item-title">{{ i18n.cookie.necessaryCookie }}</span>
+            <span class="item-extra">{{ i18n.cookie.necessaryCookieTip }}</span>
           </div>
-          <div class="content-item">
-            <div class="item-header">
-              <span class="item-title">{{ i18n.cookie.analyticalCookie }}</span>
-              <span class="item-extra">
-                <ElSwitch v-model="analysisAllowed"></ElSwitch>
-              </span>
-            </div>
-            <div class="item-detail">
-              {{ i18n.cookie.analyticalCookieDetail }}
-            </div>
+          <div class="item-detail">
+            {{ i18n.cookie.necessaryCookieDetail }}
           </div>
         </div>
-        <template #footer>
-          <span class="dialog-footer">
-            <OButton type="outline" size="mini" @click="handleSave">{{
-              i18n.cookie.saveSetting
-            }}</OButton>
-            <OButton type="outline" size="mini" @click="handleAllowAll">
-              {{ i18n.cookie.acceptAll }}
-            </OButton>
-          </span>
-        </template>
-      </ElDialog>
-    </client-only>
+        <div class="content-item">
+          <div class="item-header">
+            <span class="item-title">{{ i18n.cookie.analyticalCookie }}</span>
+            <span class="item-extra">
+              <ElSwitch v-model="analysisAllowed"></ElSwitch>
+            </span>
+          </div>
+          <div class="item-detail">
+            {{ i18n.cookie.analyticalCookieDetail }}
+          </div>
+        </div>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <OButton type="outline" size="mini" @click="handleSave">{{
+            i18n.cookie.saveSetting
+          }}</OButton>
+          <OButton type="outline" size="mini" @click="handleAllowAll">
+            {{ i18n.cookie.acceptAll }}
+          </OButton>
+        </span>
+      </template>
+    </ElDialog>
   </div>
 </template>
 

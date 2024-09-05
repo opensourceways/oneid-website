@@ -102,6 +102,10 @@ export default {
         NAME: 'Legal Notice',
         URL: '/other/legal/',
       },
+      {
+        NAME: 'About Cookies',
+        URL: '/other/cookies/',
+      },
     ],
     RIGHT_LIST_GAUSS: [
       {
