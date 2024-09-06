@@ -26,7 +26,7 @@ const { lang, loginParams } = useCommonData();
 const loginForm = ref();
 
 // 三方登录
-const redirectUri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
+const redirectUri = `${location.origin}/login`;
 const threePartsLogin = (type: string) => {
   const url = `${import.meta.env?.VITE_LOGIN_USERAPI}/api/v3/signin-by-extidp`;
   const params = {
