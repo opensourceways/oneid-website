@@ -8,6 +8,7 @@ import IconPhone from '~icons/app/icon-phone.svg';
 import IconGithub from '~icons/app/icon-github.svg';
 import IconGitee from '~icons/app/icon-gitee.svg';
 import IconOpenAtom from '~icons/app/icon-openatom.svg';
+import IconWeChat from '~icons/app/icon-wechat.svg';
 import {
   AccountOperateKey,
   AllAccountDialogConfig,
@@ -65,6 +66,12 @@ const resetThreeAccountData = () => {
       key: 'openatom',
       icon: IconOpenAtom,
       label: 'OpenAtom',
+      value: '',
+    },
+    {
+      key: 'wechat',
+      icon: IconWeChat,
+      label: 'WeChat',
       value: '',
     },
   ];
@@ -311,6 +318,16 @@ const config: AllAccountDialogConfig = {
       unbindSocial(data.account_type);
     },
   },
+  unbind_wechat: {
+    key: 'unbind_wechat',
+    account_type: 'wechat',
+    field: 'change',
+    header: 'UNBIND_EMAIL',
+    content: 'SURE_UNBIND',
+    confirm: (data: BindAccountParams) => {
+      unbindSocial(data.account_type);
+    },
+  },
 };
 const showDialog = (str: string, key: string) => {
   if (!isSendCodeEmail(userInfo.value.email) && str === 'unbind') {
@@ -330,6 +347,7 @@ const bindSocial = (key: string) => {
       github: 'social_github',
       gitee: 'enterprise_gitee',
       openatom: 'enterprise_openatom',
+      wechat: 'social_wechat',
     };
     const findone = data.find((item: any) => item.name === obj[key]);
     if (findone) {
