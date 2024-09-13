@@ -9,7 +9,7 @@ import {
   setCookie,
   deleteCookie,
 } from 'shared/utils/login';
-import { useCommonData, useCookieStatus, usePrivacyVersion } from 'shared/stores/common';
+import { useCommonData, useCookieStore } from 'shared/stores/common';
 import { useScreen } from 'shared/composables/useScreen';
 import { useI18n } from 'shared/i18n';
 
@@ -21,8 +21,7 @@ const i18n = useI18n();
 const { lang } = useCommonData();
 const isZh = computed(() => (lang.value === 'zh' ? true : false));
 
-const cookieStatus = useCookieStatus();
-const privacyVersion = usePrivacyVersion();
+const cookieStore = useCookieStore();
 
 const route = useRoute();
 
@@ -68,7 +67,7 @@ const getUserCookieStatus = () => {
   const cookieStatusVal = cookieVal[0];
   const privacyVersionVal = cookieVal.slice(1);
 
-  if (privacyVersionVal !== privacyVersion.version) {
+  if (privacyVersionVal !== cookieStore.version) {
     return COOKIE_AGREED_STATUS.NOT_SIGNED;
   }
 
@@ -109,7 +108,7 @@ onMounted(() => {
   }
 
   if (isAllAgreed()) {
-    cookieStatus.status = COOKIE_AGREED_STATUS.ALL_AGREED;
+    cookieStore.status = COOKIE_AGREED_STATUS.ALL_AGREED;
     analysisAllowed.value = true;
     initSensor();
   }
@@ -117,11 +116,11 @@ onMounted(() => {
 
 // 用户同意所有cookie
 const acceptAll = () => {
-  cookieStatus.status = COOKIE_AGREED_STATUS.ALL_AGREED;
+  cookieStore.status = COOKIE_AGREED_STATUS.ALL_AGREED;
   deleteCookie(COOKEY_KEY);
   setCookie(
     COOKEY_KEY,
-    `${COOKIE_AGREED_STATUS.ALL_AGREED}${privacyVersion.version}`,
+    `${COOKIE_AGREED_STATUS.ALL_AGREED}${cookieStore.version}`,
     true,
   );
   toggleNoticeVisible(false);
@@ -130,11 +129,11 @@ const acceptAll = () => {
 
 // 用户拒绝所有cookie，即仅同意必要cookie
 const rejectAll = () => {
-  cookieStatus.status = COOKIE_AGREED_STATUS.NECCESSARY_AGREED;
+  cookieStore.status = COOKIE_AGREED_STATUS.NECCESSARY_AGREED;
   deleteCookie(COOKEY_KEY);
   setCookie(
     COOKEY_KEY,
-    `${COOKIE_AGREED_STATUS.NECCESSARY_AGREED}${privacyVersion.version}`,
+    `${COOKIE_AGREED_STATUS.NECCESSARY_AGREED}${cookieStore.version}`,
     true,
   );
   toggleNoticeVisible(false);
