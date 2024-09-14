@@ -26,6 +26,7 @@ export default {
   DELETE_ENTER_ERR: '请输入“delete”',
   DELETE_ACCOUNT_TIPS: '永久删除账号和所有数据，请谨慎操作',
   DELETE: '删除',
+  PAUSE: '、',
   BIND_SUCCESS: '绑定成功',
   UNBIND_SUCCESS: '解绑成功',
   MODIFY_FAILED: '修改失败',
