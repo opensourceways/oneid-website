@@ -27,6 +27,7 @@ export default {
   DELETE_ACCOUNT_TIPS:
     'Permanently delete the account and all data, please operate with caution:',
   DELETE: 'Delete',
+  PAUSE: ', ',
   BIND_SUCCESS: 'Bind successfully',
   UNBIND_SUCCESS: 'Unbind successfully',
   MODIFY_FAILED: 'Modify Failed',

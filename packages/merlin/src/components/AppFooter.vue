@@ -60,7 +60,7 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
   padding-right: var(--layout-content-padding);
 }
 
-.footer-left {
+.footer-content {
   a {
     color: var(--o-color-info3);
     @include hover {
