@@ -31,7 +31,7 @@ const windowOpener = ref();
 const threePartsLogin = (type: string) => {
   const url = `${import.meta.env?.VITE_LOGIN_USERPOOL}/api/v3/signin-by-extidp`;
   const params = {
-    client_id: loginParams.value.client_id,
+    client_id: '666810aa24d137e68f5fca18' || loginParams.value.client_id,
     response_type: loginParams.value.response_type,
     redirect_uri: redirectUri,
     scope: 'openid profile username email',
