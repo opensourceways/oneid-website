@@ -18,7 +18,7 @@ type STEP = 'PERFECT' | 'BINGDING'
 const i18n = useI18n()
 const showDialog = ref(false)
 const curStep = ref<STEP>('PERFECT')
-const formCopy = ref(null);
+const hasUsedTip = ref('');
 const { loginParams } = useCommonData();
 const doSubmit = (form: any) => {
   if (curStep.value === 'PERFECT') {
@@ -28,15 +28,12 @@ const doSubmit = (form: any) => {
   }
 }
 const doPerfectSubmit = (form: any) => {
-  formCopy.value = form
-  form.code
   const params = {
     account: form.phone,
     account_type: 'phone',
     code: form.code
   }
   bindAccount(params).then(res => {
-    // debugger
     const {code} = res.data
     if (code === 200) {
       form.code = ''
@@ -46,6 +43,7 @@ const doPerfectSubmit = (form: any) => {
         content: res.data.message,
       });
     } else {
+      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.phone)
       curStep.value = 'BINGDING'
       showDialog.value = true
     }
@@ -58,7 +56,6 @@ const doBindingSubmit = (form: any) => {
     code: form.code
   }
   mergeUser(params).then(res => {
-    // debugger
     const {code} = res.data
     if (code === 200) {
       form.code = ''
@@ -74,9 +71,7 @@ const doBindingSubmit = (form: any) => {
 }
 // 登录成功提示
 const doSuccess = () => {
-  // message.success({
-  //   content: i18n.value.LOGIN_SUCCESS,
-  // });
+
   setLogoutSession();
   haveLoggedIn();
 };
@@ -86,10 +81,7 @@ const doBinding = () => {
 const quit = () => {
   showDialog.value = false
 }
-// onMounted(() => {
-//   doPerfectSubmit({})
-//   doBindingSubmit({})
-// })
+
 </script>
 
 <template>
@@ -104,7 +96,7 @@ const quit = () => {
   </LoginTemplate>
   <ODialog v-model:visible="showDialog" size="small">
     <template #header>{{ i18n.HAS_REGISTER }}</template>
-    <div>{{ i18n.HAS_REGISTER_TIP.replace(/\$\{.*\}/g, formCopy.value.phone) }}</div>
+    <div>{{ hasUsedTip }}</div>
     <template #footer>
       <div class="foot-btn-wrap">
         <OButton color="primary" size="large" variant="solid" @click="doBinding">{{ i18n.QUIC_BINDING }}</OButton>

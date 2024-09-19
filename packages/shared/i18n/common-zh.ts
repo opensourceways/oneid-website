@@ -231,5 +231,5 @@ export default {
   HAS_REGISTER: '该手机号已注册',
   HAS_REGISTER_TIP: '您的手机 ${phone} 已注册了 Modelers，是否绑定？',
   QUIC_BINDING: '立即绑定',
-  QUIT: '取消'
+  QUIT: '取消',
 };
