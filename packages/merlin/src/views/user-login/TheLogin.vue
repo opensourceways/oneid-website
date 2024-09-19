@@ -54,7 +54,7 @@ const padUserinfo = reactive({
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = async (data: any): Promise<boolean> => {
-  const { username, oneidPrivacyAccepted = '', } = data || {};
+  const { username, phone_exist, oneidPrivacyAccepted = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
   const oneidPrivacyAccepted1 = await getPrivacyVersion();
   if (
@@ -65,6 +65,12 @@ const isNotPadUserinfo = async (data: any): Promise<boolean> => {
   } else if (!name) {
     padUserinfo.username = name;
     visible.value = true;
+    return false;
+  } else if (!phone_exist) {
+    router.push({
+      path: '/perfectInfo',
+      query: route.query,
+    });
     return false;
   }
   return true;
@@ -151,7 +157,6 @@ const verifySuccess = (data: any) => {
 
 const threePartLogin = (res: any) => {
   const { code, redirect_uri: redirect } = res;
-  debugger
   const param = {
     code: code,
     permission: 'sigRead',

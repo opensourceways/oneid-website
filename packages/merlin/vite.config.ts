@@ -42,7 +42,8 @@ export default defineConfig({
     }),
   ],
   server: {
-    host: '127.0.0.1',
+    host: 'localhost',
+    port: 9999,
     proxy: {
       // '^/oneid/': {
       //    target: 'http://127.0.0.1:3060',
