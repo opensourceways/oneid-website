@@ -225,4 +225,14 @@ export default {
       'We will use these cookies only with your consent. These cookies help us make improvements by collecting statistics such as the number of visits and traffic sources.',
     saveSetting: 'Save and Accept',
   },
+  PERFECT_USER_INFO: 'Perfect User Info',
+  PERFECT_USER_INFO_TIP: 'Welcome to Modelers, please perfect yourself info to get a better experience',
+  SUBMIT: 'Submit',
+  BINDING: 'Binding',
+  BINDING_CUR_ACCOUNT: 'Binding Current Account',
+  BINDING_CUR_ACCOUNT_TIP: 'You can pass through by this type after bing your current account',
+  HAS_REGISTER: 'Current phone had been registered',
+  HAS_REGISTER_TIP: 'Your current phone number ${phone} had registered Modelers，are you binding？',
+  QUIC_BINDING: 'Quick Binding',
+  QUIT: '取消'
 };

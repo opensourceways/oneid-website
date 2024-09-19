@@ -30,9 +30,11 @@ export default defineConfig({
     }),
   ],
   server: {
+    host: 'localhost',
+    port: 5173,
     proxy: {
       '/oneid/': {
-        target: 'https://openeuler-usercenter.test.osinfra.cn/',
+        target: 'https://a111openeuler-usercenter.test.osinfra.cn/',
         secure: false,
         changeOrigin: true,
       },

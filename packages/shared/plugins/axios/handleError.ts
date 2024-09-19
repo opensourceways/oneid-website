@@ -7,6 +7,8 @@ export default (err: AxiosError) => {
       err.code = '';
       err.message = '有response但没有response.status的情况';
     }
+    // console.error('err msg ', err.request)
+    // debugger
     err.code = String(response.status);
     switch (response && response.status) {
       case 200:

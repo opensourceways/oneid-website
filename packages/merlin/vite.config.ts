@@ -42,7 +42,14 @@ export default defineConfig({
     }),
   ],
   server: {
+    host: '127.0.0.1',
     proxy: {
+      // '^/oneid/': {
+      //    target: 'http://127.0.0.1:3060',
+      //    secure: false,
+      //    changeOrigin: false,
+      //    rewrite: path => path.replace(/^\/oneid\//g, '/mock/oneid/')
+      // },
       '/oneid/': {
         target: 'https://modelfoundry-oneid.test.osinfra.cn/',
         secure: false,

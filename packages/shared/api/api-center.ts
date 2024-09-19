@@ -196,3 +196,13 @@ export function updatePassword(params: any) {
     .post(url, params, getHeaderConfig())
     .then((res: AxiosResponse) => res.data);
 }
+
+/**
+ * 合并账号
+ */
+export function mergeUser(params: any) {
+  const url = '/oneid/merge/user'
+  return request
+    .post(url, params, getHeaderConfig())
+    .then((res: AxiosResponse) => res.data)
+}

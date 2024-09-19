@@ -151,6 +151,7 @@ const verifySuccess = (data: any) => {
 
 const threePartLogin = (res: any) => {
   const { code, redirect_uri: redirect } = res;
+  debugger
   const param = {
     code: code,
     permission: 'sigRead',

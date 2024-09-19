@@ -8,6 +8,7 @@ import { useCommon } from 'shared/stores/common';
 import { LoginParams } from 'shared/@types/interface';
 import { useMetaTitle } from 'shared/composables/useMetaTitle';
 import { isString } from '@opensig/opendesign';
+import ThePerfectUserInfo from '@/views/user-login/ThePerfectUserInfo.vue';
 export const routes = [
   {
     path: '/login',
@@ -34,6 +35,11 @@ export const routes = [
     name: 'resetPwd',
     component: TheResetPwd,
   },
+  {
+    path: '/perfectInfo',
+    name: 'perfectInfo',
+    component: ThePerfectUserInfo
+  }
 ];
 
 export const router = createRouter({

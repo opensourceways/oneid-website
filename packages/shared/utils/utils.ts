@@ -63,6 +63,7 @@ export function getUrlByParams(url: string, params: any): string {
     pre += `${next[0]}=${next[1]}`;
     return pre;
   }, '');
+  console.log('open win :', `${url}${encodeURIComponent(searh)}`)
   return `${url}${searh ? '?' : ''}${searh}`;
 }
 

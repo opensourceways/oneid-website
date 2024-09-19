@@ -10,7 +10,7 @@ import { useCommonData } from 'shared/stores/common';
 import { OIcon } from '@opensig/opendesign';
 import { ONLY_LOGIN_ID } from '@/shared/const';
 
-type TYPE = 'login' | 'register';
+type TYPE = 'login' | 'register' | 'perfectUserInfo';
 const props = defineProps({
   type: {
     type: String as PropType<TYPE>,
@@ -26,7 +26,7 @@ const { lang, loginParams } = useCommonData();
 const loginForm = ref();
 
 // 三方登录
-const redirectUri = `${location.origin}/login`;
+const redirectUri = 'https://modelfoundry.test.osinfra.cn/' || `${location.origin}/login`;
 const windowOpener = ref();
 const threePartsLogin = (type: string) => {
   const url = `${import.meta.env?.VITE_LOGIN_USERPOOL}/api/v3/signin-by-extidp`;
@@ -83,6 +83,7 @@ const icons = [
 ];
 
 const loginFun = (e: MessageEvent) => {
+  console.log('thirdpart login : ', e.data)
   const { type, response } = e.data;
   if (type !== 'authorization_response') {
     return;
@@ -123,6 +124,9 @@ const showFooter = computed(
   <ContentTemplate>
     <template #headerTitle>
       <slot name="headerTitle"> {{ i18n.ACCOUNT_LOGIN }} </slot>
+    </template>
+    <template #headerTitleTip>
+      <slot name="headerTitleTip"></slot>
     </template>
     <template #switch>
       <slot name="switch"></slot>
