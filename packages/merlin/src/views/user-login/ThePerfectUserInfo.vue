@@ -29,7 +29,7 @@ const doSubmit = (form: any) => {
 }
 const doPerfectSubmit = (form: any) => {
   const params = {
-    account: form.phone,
+    account: form.account,
     account_type: 'phone',
     code: form.code
   }
@@ -43,7 +43,7 @@ const doPerfectSubmit = (form: any) => {
         content: res.data.message,
       });
     } else {
-      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.phone)
+      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account)
       curStep.value = 'BINGDING'
       showDialog.value = true
     }
@@ -52,7 +52,7 @@ const doPerfectSubmit = (form: any) => {
 const doBindingSubmit = (form: any) => {
   const params = {
     client_id: loginParams.value.client_id,
-    account: form.phone,
+    account: form.account,
     code: form.code
   }
   mergeUser(params).then(res => {
