@@ -37,6 +37,7 @@ export default {
   BIND_EMAIL: 'Bind Email',
   EMAIL_CODE: 'Email Code',
   MODIFY_EMAIL: 'Modify Email',
+  MODIFY_EMAIL_TIP: '邮箱修改成功后需要重新登录',
   CURRENT_EMAIL: 'Email',
   CURRENT_EMAIL_CODE: 'Current Email Verification Code',
   NEW_EMAIL: 'New Email',
@@ -47,6 +48,7 @@ export default {
   SMS_CODE: 'SMS Code',
   ENTER_PHONE_CODE: 'Enter your phone verification code',
   MODIFY_PHONE: 'Modify Mobile Phone Number',
+  MODIFY_PHONE_TIP: '手机号修改成功后需要重新登录',
   CURRENT_PHONE: 'Phone',
   OLD_PHONE_CODE: 'Old Phone Verification Code',
   NEW_PHONE: 'New Phone Number',
@@ -234,5 +236,5 @@ export default {
   HAS_REGISTER: 'The phone number has been registered',
   HAS_REGISTER_TIP: 'Your phone number ${phone} has been registered，Would you like to bind it to your account？',
   QUIC_BINDING: 'Yes',
-  QUIT: 'Cancel',
+  BIND_MOBILE: '绑定手机',
 };

@@ -83,7 +83,6 @@ const icons = [
 ];
 
 const loginFun = (e: MessageEvent) => {
-  console.log('thirdpart login : ', e.data)
   const { type, response } = e.data;
   if (type !== 'authorization_response') {
     return;

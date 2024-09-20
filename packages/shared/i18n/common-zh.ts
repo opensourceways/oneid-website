@@ -36,6 +36,7 @@ export default {
   BIND_EMAIL: '绑定邮箱',
   EMAIL_CODE: '邮箱验证码',
   MODIFY_EMAIL: '修改邮箱',
+  MODIFY_EMAIL_TIP: '邮箱修改成功后需要重新登录',
   CURRENT_EMAIL: '当前邮箱',
   CURRENT_EMAIL_CODE: '当前邮箱验证码',
   NEW_EMAIL: '新邮箱',
@@ -46,6 +47,7 @@ export default {
   SMS_CODE: '短信验证码',
   ENTER_PHONE_CODE: '请输入短信中的验证码',
   MODIFY_PHONE: '修改手机号',
+  MODIFY_PHONE_TIP: '手机号修改成功后需要重新登录',
   CURRENT_PHONE: '当前手机号',
   OLD_PHONE_CODE: '旧手机号验证码',
   NEW_PHONE: '新手机号',
@@ -231,5 +233,5 @@ export default {
   HAS_REGISTER: '该手机号已注册',
   HAS_REGISTER_TIP: '您的手机 ${phone} 已注册了 Modelers，是否绑定？',
   QUIC_BINDING: '立即绑定',
-  QUIT: '取消',
+  BIND_MOBILE: '绑定手机',
 };

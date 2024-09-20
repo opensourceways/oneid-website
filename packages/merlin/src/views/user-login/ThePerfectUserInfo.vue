@@ -100,7 +100,7 @@ const quit = () => {
     <template #footer>
       <div class="foot-btn-wrap">
         <OButton color="primary" size="large" variant="solid" @click="doBinding">{{ i18n.QUIC_BINDING }}</OButton>
-        <OButton size="large" @click="quit" class="ml16">{{ i18n.QUIT }}</OButton>
+        <OButton size="large" @click="quit" class="ml16">{{ i18n.CANCEL }}</OButton>
       </div>
     </template>
   </ODialog>
