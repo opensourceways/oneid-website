@@ -51,6 +51,7 @@ const visible = ref(false);
 const padUserinfo = reactive({
   username: '',
 });
+const loginOrigin = ref('')
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = async (data: any): Promise<boolean> => {
@@ -66,7 +67,7 @@ const isNotPadUserinfo = async (data: any): Promise<boolean> => {
     padUserinfo.username = name;
     visible.value = true;
     return false;
-  } else if (!phone_exist) {
+  } else if (loginOrigin.value === 'THREE_PART' && !phone_exist) {
     console.log('in perfect')
     router.push({
       path: '/perfectInfo',
@@ -126,6 +127,7 @@ const login = async (form: any, captchaVerification?: string) => {
     param.code = form.code;
   }
   accountLoginPost(param, { $doException: true }).then((data: any) => {
+    loginOrigin.value = 'ACCOUNT'
     loginSuccess(data?.data);
   }).catch((err) => {
     message.danger({
@@ -165,6 +167,7 @@ const threePartLogin = (res: any) => {
     client_id: loginParams.value.client_id,
   };
   queryToken(param).then((data: any) => {
+    loginOrigin.value = 'THREE_PART';
     loginSuccess(data?.data);
   });
 };
