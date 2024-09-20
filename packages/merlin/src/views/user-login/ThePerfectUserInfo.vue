@@ -34,18 +34,22 @@ const doPerfectSubmit = (form: any) => {
     code: form.code
   }
   bindAccount(params).then(res => {
-    const {code} = res.data
+    const { code, msg } = res.data
     if (code === 200) {
       form.code = ''
       form.account = ''
       doSuccess()
-      message.success({
-        content: res.data.message,
-      });
-    } else {
+      // message.success({
+      //   content: res.data.message,
+      // });
+    } else if (msg?.code === 'E0003') {
+      form.code = ''
+      form.account = ''
       hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account)
       curStep.value = 'BINGDING'
       showDialog.value = true
+    } else {
+      logout()
     }
   });
 }
@@ -61,9 +65,9 @@ const doBindingSubmit = (form: any) => {
       form.code = ''
       form.account = ''
       doSuccess()
-      message.success({
-        content: res.data.message,
-      });
+      // message.success({
+      //   content: res.data.message,
+      // });
     } else {
       logout()
     }
@@ -92,7 +96,7 @@ const quit = () => {
     <template #headerTitleTip>
       {{ curStep === 'PERFECT' ? i18n.PERFECT_USER_INFO_TIPS : i18n.BINDING_CUR_ACCOUNT_TIP }}
     </template>
-    <template #btn>{{ curStep === 'PERFECT' ? i18n.SUBMIT : i18n.BINGDING }}</template>
+    <template #btn>{{ curStep === 'PERFECT' ? i18n.SUBMIT : i18n.BINDING }}</template>
   </LoginTemplate>
   <ODialog v-model:visible="showDialog" size="small">
     <template #header>{{ i18n.HAS_REGISTER }}</template>
