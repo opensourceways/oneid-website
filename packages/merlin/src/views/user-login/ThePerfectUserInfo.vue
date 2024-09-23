@@ -1,52 +1,49 @@
 <script setup lang="ts" >
-import { ref, provide, onMounted } from 'vue';
+import { ref, provide, onBeforeUnmount } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { ODialog, OButton, useMessage } from '@opensig/opendesign';
+import { ODialog, OButton } from '@opensig/opendesign';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { bindAccount, mergeUser } from 'shared/api/api-center';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { useCommonData } from 'shared/stores/common';
 import { logout } from 'shared/utils/login';
-
-import {
-  setLogoutSession,
-} from 'shared/utils/login';
-const message = useMessage();
-const code = ref('')
+import { setLogoutSession } from 'shared/utils/login';
+const code = ref('');
 provide('loginErr', code);
-type STEP = 'PERFECT' | 'BINGDING'
-const i18n = useI18n()
+type STEP = 'PERFECT' | 'BINGDING' | 'SUCCESS';
+const i18n = useI18n();
 const showDialog = ref(false)
-const curStep = ref<STEP>('PERFECT')
+const curStep = ref<STEP>('PERFECT');
 const hasUsedTip = ref('');
 const { loginParams } = useCommonData();
 const doSubmit = (form: any) => {
   if (curStep.value === 'PERFECT') {
-    doPerfectSubmit(form)
+    doPerfectSubmit(form);
   } else {
-    doBindingSubmit(form)
+    doBindingSubmit(form);
   }
-}
+};
 const doPerfectSubmit = (form: any) => {
   const params = {
     account: form.account,
     account_type: 'phone',
-    code: form.code
+    code: form.code,
   }
-  bindAccount(params).then(res => {
-    const { code, msg } = res.data
+  bindAccount(params).then( res => {
+    const { code, msg } = res.data;
     if (code === 200) {
-      form.code = ''
-      form.account = ''
-      doSuccess()
+      form.code = '';
+      form.account = '';
+      curStep.value = 'SUCCESS';
+      doSuccess(form.account);
     } else if (msg?.code === 'E0003') {
-      form.code = ''
-      form.account = ''
-      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account)
-      curStep.value = 'BINGDING'
-      showDialog.value = true
+      form.code = '';
+      form.account = '';
+      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account);
+      curStep.value = 'BINGDING';
+      showDialog.value = true;
     } else {
-      logout()
+      logout();
     }
   });
 }
@@ -54,32 +51,36 @@ const doBindingSubmit = (form: any) => {
   const params = {
     client_id: loginParams.value.client_id,
     account: form.account,
-    code: form.code
+    code: form.code,
   }
-  mergeUser(params).then(res => {
-    const {code} = res.data
+  mergeUser(params).then( res => {
+    const { code } = res.data;
     if (code === 200) {
-      form.code = ''
-      form.account = ''
-      doSuccess()
+      form.code = '';
+      form.account = '';
+      curStep.value = 'SUCCESS';
+      doSuccess(form.account);
     } else {
-      logout()
+      logout();
     }
   })
 }
 // 登录成功提示
-const doSuccess = () => {
-
+const doSuccess = (phone: string | number) => {
   setLogoutSession();
-  haveLoggedIn();
+  haveLoggedIn(phone);
 };
 const doBinding = () => {
-  showDialog.value = false
+  showDialog.value = false;
 }
 const quit = () => {
-  showDialog.value = false
+  showDialog.value = false;
 }
-
+onBeforeUnmount(() => {
+  if (curStep.value !== 'SUCCESS') {
+    logout();
+  }
+})
 </script>
 
 <template>
@@ -102,8 +103,7 @@ const quit = () => {
       </div>
     </template>
   </ODialog>
-
-  </template>
+</template>
 
 <style lang="scss" scoped>
 .foot-btn-wrap {

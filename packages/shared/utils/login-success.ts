@@ -18,7 +18,7 @@ function toHttps(url: string) {
   }
   return str;
 }
-export function haveLoggedIn() {
+export function haveLoggedIn(phone: undefined | string | number) {
   const { loginParams } = useCommonData();
   switch (loginParams.value.response_mode) {
     case 'query':
@@ -27,7 +27,7 @@ export function haveLoggedIn() {
         url.pathname = '/authorization'
         location.href = url.toString();
       } else {
-        getOidcUri(loginParams.value);
+        getOidcUri(loginParams.value, phone);
       }
       break;
     default:
@@ -35,13 +35,14 @@ export function haveLoggedIn() {
   }
 }
 
-export function getOidcUri(query: LoginParams) {
+export function getOidcUri(query: LoginParams, phone: undefined | string | number) {
   const param = {
     client_id: query.client_id,
     redirect_uri: query.redirect_uri,
     response_type: query.response_type,
     scope: query.scope,
     state: query.state,
+    phone: phone, // 三方登录场景需要传递手机号码
   };
   authorizeOidc(param)
     .then((data) => {
