@@ -34,7 +34,7 @@ const threePartsLogin = (type: string) => {
     client_id: loginParams.value.client_id,
     response_type: loginParams.value.response_type,
     redirect_uri: redirectUri,
-    scope: 'openid profile username email',
+    scope: 'openid profile username email phone',
     state: loginParams.value.state,
     nonce: loginParams.value.nonce,
     lang: lang.value === 'zh' ? 'zh-CN' : 'en-US',
