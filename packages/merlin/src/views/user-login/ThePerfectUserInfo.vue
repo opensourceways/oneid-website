@@ -39,9 +39,6 @@ const doPerfectSubmit = (form: any) => {
       form.code = ''
       form.account = ''
       doSuccess()
-      // message.success({
-      //   content: res.data.message,
-      // });
     } else if (msg?.code === 'E0003') {
       form.code = ''
       form.account = ''
@@ -65,9 +62,6 @@ const doBindingSubmit = (form: any) => {
       form.code = ''
       form.account = ''
       doSuccess()
-      // message.success({
-      //   content: res.data.message,
-      // });
     } else {
       logout()
     }
