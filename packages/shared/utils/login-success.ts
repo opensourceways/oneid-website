@@ -18,7 +18,7 @@ function toHttps(url: string) {
   }
   return str;
 }
-export function haveLoggedIn(phone: undefined | string | number) {
+export function haveLoggedIn(phone: string | number = '') {
   const { loginParams } = useCommonData();
   switch (loginParams.value.response_mode) {
     case 'query':
@@ -35,15 +35,18 @@ export function haveLoggedIn(phone: undefined | string | number) {
   }
 }
 
-export function getOidcUri(query: LoginParams, phone: undefined | string | number) {
-  const param = {
+export function getOidcUri(query: LoginParams, phone: string | number = '') {
+  let param = {
     client_id: query.client_id,
     redirect_uri: query.redirect_uri,
     response_type: query.response_type,
     scope: query.scope,
     state: query.state,
-    phone: phone, // 三方登录场景需要传递手机号码
   };
+  // 三方登录场景需要传递手机号码
+  if (phone) {
+    param = Object.assign({}, param, {phone})
+  }
   authorizeOidc(param)
     .then((data) => {
       if (data?.body) {
