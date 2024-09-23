@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LoginLanguage from 'shared/components/LoginLanguage.vue';
 import LoginCard from './LoginCard.vue';
 </script>
 <template>
@@ -18,6 +19,7 @@ import LoginCard from './LoginCard.vue';
       <slot name="switch"></slot>
     </div>
     <slot name="footer"></slot>
+    <LoginLanguage></LoginLanguage>
   </LoginCard>
 </template>
 <style lang="scss" scoped>

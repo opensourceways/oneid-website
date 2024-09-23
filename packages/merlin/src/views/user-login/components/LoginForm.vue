@@ -439,6 +439,7 @@ const goResetPwd = () => {
       </div>
     </OFormItem>
     <OFormItem>
+      <!-- 完善用户信息提交按钮，添加disabled-->
       <OButton v-if="type === 'perfectUserInfo'" id="e2e_login_submit" color="primary" variant="solid" size="large" class="login-btn" :disabled="!btnCanClick" @click="submit()">
         <slot name="btn"> {{ i18n.LOGIN }} </slot>
       </OButton>
