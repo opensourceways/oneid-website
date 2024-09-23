@@ -158,6 +158,11 @@ const responseInterceptorId = request.interceptors.response.use(
       // 无效token跳转登录
       if (err.code === '401') {
         tokenFailIndicateLogin();
+      } else if (err.code === '400') {
+        // 绑定三方账号和系统账号的手机号码，需要重新输入手机号
+        if (err.response?.data?.msg?.code === 'E0003') {
+          return Promise.resolve(err.response);
+        }
       }
     }
     // 没有response(没有状态码)的情况
