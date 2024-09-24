@@ -106,7 +106,10 @@ export function logout(
 // 跳转首页
 export function goToHome() {
   if (['/login', '/register', '/resetPwd', '/logout', '/authorization'].includes(location.pathname)) {
-    window.location.reload();
+    const uri = new URL(location.href)
+    uri.searchParams.delete('code');
+    uri.searchParams.delete('state');
+    window.location.href = uri.toString();
   } else {
     window.location.href = '/';
   }

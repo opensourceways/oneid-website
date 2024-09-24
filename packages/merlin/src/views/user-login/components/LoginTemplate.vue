@@ -43,6 +43,7 @@ const threePartsLogin = (type: string) => {
   const connIds: any = {
     Gitee: '658a93971008d6c7e0bc5bc0',
     GitHub: '658a836f19a1edc70c8398d6',
+    TCloud: '66b9840a49db0fa62b9296b8',
   };
   Object.assign(params, { ext_idp_conn_id: connIds[type] });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
@@ -75,6 +76,13 @@ const icons = [
   },
   {
     key: 'GitHub',
+    icon: IconGithub,
+    onClick: (type: string) => {
+      threePartsLogin(type);
+    },
+  },
+  {
+    key: 'TCloud',
     icon: IconGithub,
     onClick: (type: string) => {
       threePartsLogin(type);

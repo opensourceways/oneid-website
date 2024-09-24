@@ -12,7 +12,7 @@ import {
   setLogoutSession,
 } from 'shared/utils/login';
 import { OLink, useMessage, ODivider, OButton } from '@opensig/opendesign';
-import { onMounted, reactive, ref, provide } from 'vue';
+import { onMounted, reactive, ref, provide, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
@@ -173,10 +173,32 @@ const agreePrivacy = () => {
     }
   });
 }
+const haveCode = ref(false);
+watch(
+  () => route.query.code,
+  (code) => {
+    haveCode.value = Boolean(code);
+    if (haveCode.value) {
+      const uri = new URL(location.href)
+      uri.searchParams.delete('code');
+      uri.searchParams.delete('state');
+      const redirect_uri = uri.toString();
+      const param = {
+        code,
+        redirect_uri: decodeURIComponent(redirect_uri),
+      }
+      threePartLogin(param);
+    }
+  },
+  {
+    immediate: true,
+  }
+)
 const isphone = useTestIsPhone();
 </script>
 <template>
   <LoginTemplate
+    v-if="!haveCode"
     ref="loginTemplate"
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
