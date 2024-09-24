@@ -107,7 +107,7 @@ const verifySuccess = (data: any) => {
   // 完善用户信息添加的验证码逻辑，和注册验证码接口分开
   if (type.value === 'perfectUserInfo') {
     const param = {
-      account: form.phone,
+      account: form.account,
       channel: 'channel_bind_phone',
       captchaVerification: data.captchaVerification,
     };
