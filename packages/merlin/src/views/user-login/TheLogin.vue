@@ -68,7 +68,6 @@ const isNotPadUserinfo = async (data: any): Promise<boolean> => {
     visible.value = true;
     return false;
   } else if (loginOrigin.value === 'THREE_PART' && !phone_exist) {
-    console.log('in perfect')
     router.push({
       path: '/perfectInfo',
       query: route.query,

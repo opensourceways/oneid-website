@@ -1,7 +1,7 @@
 <script setup lang="ts" >
 import { ref, provide, onBeforeUnmount } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { ODialog, OButton } from '@opensig/opendesign';
+import { ODialog, OButton, useMessage } from '@opensig/opendesign';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { bindAccount, mergeUser } from 'shared/api/api-center';
 import { haveLoggedIn } from 'shared/utils/login-success';
@@ -16,6 +16,7 @@ const showDialog = ref(false)
 const curStep = ref<STEP>('PERFECT');
 const hasUsedTip = ref('');
 const { loginParams } = useCommonData();
+const message = useMessage();
 const doSubmit = (form: any) => {
   if (curStep.value === 'PERFECT') {
     doPerfectSubmit(form);
@@ -29,13 +30,13 @@ const doPerfectSubmit = (form: any) => {
     account_type: 'phone',
     code: form.code,
   }
-  bindAccount(params).then( res => {
-    const { code, msg } = res.data;
+  bindAccount(params).then(data => {
+    const { code, msg } = data;
     if (code === 200) {
+      doSuccess(form.account);
       form.code = '';
       form.account = '';
       curStep.value = 'SUCCESS';
-      doSuccess(form.account);
     } else if (msg?.code === 'E0003') {
       form.code = '';
       form.account = '';
@@ -53,13 +54,13 @@ const doBindingSubmit = (form: any) => {
     account: form.account,
     code: form.code,
   }
-  mergeUser(params).then( res => {
-    const { code } = res.data;
+  mergeUser(params).then(data => {
+    const { code } = data;
     if (code === 200) {
+      doSuccess(form.account);
       form.code = '';
       form.account = '';
       curStep.value = 'SUCCESS';
-      doSuccess(form.account);
     } else {
       logout();
     }
@@ -67,6 +68,9 @@ const doBindingSubmit = (form: any) => {
 }
 // 登录成功提示
 const doSuccess = (phone: string | number) => {
+  message.success({
+    content: i18n.value.LOGIN_SUCCESS,
+  });
   setLogoutSession();
   haveLoggedIn(phone);
 };
