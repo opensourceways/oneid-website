@@ -39,7 +39,7 @@ export const routes = [
     path: '/perfectInfo',
     name: 'perfectInfo',
     component: ThePerfectUserInfo
-  }
+    }
 ];
 
 export const router = createRouter({

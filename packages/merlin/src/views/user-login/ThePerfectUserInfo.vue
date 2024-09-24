@@ -3,12 +3,13 @@ import { ref, provide, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { ODialog, OButton, useMessage } from '@opensig/opendesign';
 import LoginTemplate from './components/LoginTemplate.vue';
-import { bindAccount, mergeUser } from 'shared/api/api-center';
+import { bindAccount, mergeUser, sendCode } from 'shared/api/api-center';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { useCommonData } from 'shared/stores/common';
 import { logout } from 'shared/utils/login';
 import { setLogoutSession } from 'shared/utils/login';
 import { saveUserAuth } from 'shared/utils/login';
+import { sendCodeCaptcha } from 'shared/api/api-login';
 const code = ref('');
 provide('loginErr', code);
 type STEP = 'PERFECT' | 'BINGDING' | 'SUCCESS';
@@ -84,23 +85,54 @@ const doBinding = () => {
 const quit = () => {
   showDialog.value = false;
 }
+// 监听页面卸载，刷新时清空cookie
 onMounted(() => {
   window.addEventListener('beforeunload', handleBeforeUnload);
 })
 onBeforeUnmount(() => {
+  if (curStep.value !== 'SUCCESS') {
+    saveUserAuth();
+    window.location.href = `${location.origin}/login${location.search}`;
+  }
   window.removeEventListener('beforeunload', handleBeforeUnload);
 })
 const handleBeforeUnload = () => {
-  console.log('in handleBeforeUnload');
   if (curStep.value !== 'SUCCESS') {
     saveUserAuth();
     window.location.href = `${location.origin}/login${location.search}`;
   }
 }
+// 发送验证码，完善用户信息和绑定用两个接口
+const doSendCode = (form: any, data: any) => {
+  if (curStep.value === 'PERFECT') {
+    const param = {
+      account: form.account,
+      channel: 'channel_bind_phone',
+      captchaVerification: data.captchaVerification,
+    };
+    sendCode(param).then(() => {
+      message.success({
+        content: i18n.value.SEND_SUCCESS,
+      });
+    });
+  } else if (curStep.value === 'BINGDING'){
+    const param = {
+      channel: 'CHANNEL_LOGIN',
+      account: form.account,
+      captchaVerification: data.captchaVerification,
+      client_id: loginParams.value.client_id,
+    };
+    sendCodeCaptcha(param).then(() => {
+      message.success({
+        content: i18n.value.SEND_SUCCESS,
+      });
+    });
+  }
+}
 </script>
 
 <template>
-  <LoginTemplate ref="logintemplate1" type="perfectUserInfo" @submit="doSubmit">
+  <LoginTemplate ref="logintemplate1" type="perfectUserInfo" @submit="doSubmit" @sendCode="doSendCode">
     <template #headerTitle>
       {{ curStep === 'PERFECT' ? i18n.PERFECT_USER_INFO : i18n.BINDING_CUR_ACCOUNT }}
     </template>

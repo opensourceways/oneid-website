@@ -18,7 +18,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['submit', 'threePartLogin']);
+const emit = defineEmits(['submit', 'threePartLogin', 'sendCode']);
 
 const { type } = toRefs(props);
 const i18n = useI18n();
@@ -106,6 +106,9 @@ const listenerThreePartsLogin = () => {
 const submit = (form: any) => {
   emit('submit', form);
 };
+const sendCode = (form: any, data: any) => {
+  emit('sendCode', form, data);
+}
 onMounted(() => {
   listenerThreePartsLogin();
 });
@@ -131,7 +134,7 @@ const showFooter = computed(
       <slot name="switch"></slot>
     </template>
     <template #body>
-      <LoginForm ref="loginForm" :type="type" @submit="submit">
+      <LoginForm ref="loginForm" :type="type" @submit="submit" @sendCode="sendCode">
         <template #btn>
           <slot name="btn"></slot>
         </template>

@@ -13,7 +13,6 @@ import {
 } from 'shared/utils/rules';
 import { useTestIsPhone } from 'shared/utils/helper';
 import { sendCodeCaptcha } from 'shared/api/api-login';
-import { sendCode } from 'shared/api/api-center';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from '@/components/LoginTabs.vue';
 import { useCommonData } from 'shared/stores/common';
@@ -64,7 +63,7 @@ const resetLoginErr = () => {
 
 const formRef = ref<InstanceType<typeof OForm>>();
 
-const emit = defineEmits(['submit', 'threePartLogin']);
+const emit = defineEmits(['submit', 'sendCode']);
 
 // 外部校验方法
 const validator = (fields?: string[] | string) => {
@@ -106,17 +105,8 @@ const getcode = (formEl: InstanceType<typeof OForm> | undefined) => {
 const verifySuccess = (data: any) => {
   // 完善用户信息添加的验证码逻辑，和注册验证码接口分开
   if (type.value === 'perfectUserInfo') {
-    const param = {
-      account: form.account,
-      channel: 'channel_bind_phone',
-      captchaVerification: data.captchaVerification,
-    };
-    sendCode(param).then(() => {
-      message.success({
-        content: i18n.value.SEND_SUCCESS,
-      });
-      disableCode.value = true;
-    });
+    emit('sendCode', form, data);
+    disableCode.value = true;
     return ;
   }
   // 其他验证码调用接口
