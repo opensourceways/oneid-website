@@ -31,7 +31,7 @@ export function checkLoginAccount(params: any) {
 }
 
 /**
- * 发送验证码
+ * 发送验证码 （绑定三方账号也用到这个接口）
  */
 export function sendCodeCaptcha(params: any) {
   const url = '/oneid/captcha/sendCode';

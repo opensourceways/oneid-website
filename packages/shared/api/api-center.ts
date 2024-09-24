@@ -42,7 +42,7 @@ export function modifyPhoto(params: any) {
 }
 
 /**
- * 发送验证码
+ * 发送验证码 （完善用户信息用到这个接口）
  */
 export function sendCode(params: any) {
   const url = '/oneid/sendcode';

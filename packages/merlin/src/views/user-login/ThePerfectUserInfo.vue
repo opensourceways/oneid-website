@@ -1,5 +1,5 @@
 <script setup lang="ts" >
-import { ref, provide, onBeforeUnmount } from 'vue';
+import { ref, provide, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { ODialog, OButton, useMessage } from '@opensig/opendesign';
 import LoginTemplate from './components/LoginTemplate.vue';
@@ -8,6 +8,7 @@ import { haveLoggedIn } from 'shared/utils/login-success';
 import { useCommonData } from 'shared/stores/common';
 import { logout } from 'shared/utils/login';
 import { setLogoutSession } from 'shared/utils/login';
+import { saveUserAuth } from 'shared/utils/login';
 const code = ref('');
 provide('loginErr', code);
 type STEP = 'PERFECT' | 'BINGDING' | 'SUCCESS';
@@ -44,7 +45,7 @@ const doPerfectSubmit = (form: any) => {
       curStep.value = 'BINGDING';
       showDialog.value = true;
     } else {
-      logout();
+      toLogout();
     }
   });
 }
@@ -62,9 +63,12 @@ const doBindingSubmit = (form: any) => {
       form.account = '';
       curStep.value = 'SUCCESS';
     } else {
-      logout();
+      toLogout();
     }
   })
+}
+const toLogout = () => {
+  logout(undefined, `${location.origin}/login${location.search}`)
 }
 // 登录成功提示
 const doSuccess = (phone: string | number) => {
@@ -80,11 +84,19 @@ const doBinding = () => {
 const quit = () => {
   showDialog.value = false;
 }
-onBeforeUnmount(() => {
-  if (curStep.value !== 'SUCCESS') {
-    logout();
-  }
+onMounted(() => {
+  window.addEventListener('beforeunload', handleBeforeUnload);
 })
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload);
+})
+const handleBeforeUnload = () => {
+  console.log('in handleBeforeUnload');
+  if (curStep.value !== 'SUCCESS') {
+    saveUserAuth();
+    window.location.href = `${location.origin}/login${location.search}`;
+  }
+}
 </script>
 
 <template>
