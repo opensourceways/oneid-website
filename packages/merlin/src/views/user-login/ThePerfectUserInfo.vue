@@ -26,6 +26,7 @@ const doSubmit = (form: any) => {
     doBindingSubmit(form);
   }
 };
+// 完善用户手机号提交
 const doPerfectSubmit = (form: any) => {
   const params = {
     account: form.account,
@@ -39,18 +40,16 @@ const doPerfectSubmit = (form: any) => {
       form.code = '';
       form.account = '';
       curStep.value = 'SUCCESS';
-    } else if (msg?.code === 'E0003') {
-      form.code = '';
-      form.account = '';
-      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account);
-      curStep.value = 'BINGDING';
-      showDialog.value = true;
+    } else if (code === 400 || msg?.code === 'E0003') {
+      // 自动绑定一次
+      doBindingSubmit(form, 'auto');
     } else {
       toLogout();
     }
   });
 }
-const doBindingSubmit = (form: any) => {
+// 绑定手机号提交
+const doBindingSubmit = (form: any, operateOrigin = 'manul') => {
   const params = {
     client_id: loginParams.value.client_id,
     account: form.account,
@@ -59,15 +58,22 @@ const doBindingSubmit = (form: any) => {
   mergeUser(params).then(data => {
     const { code } = data;
     if (code === 200) {
+      curStep.value = 'SUCCESS';
       doSuccess(form.account);
       form.code = '';
       form.account = '';
-      curStep.value = 'SUCCESS';
-    } else {
+    } else if (operateOrigin === 'auto') { // 自动绑定没有成功，在显示绑定页面让用户手动输入提交
+      curStep.value = 'BINGDING';
+      form.code = '';
+      form.account = '';
+      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account);
+      showDialog.value = true;
+    } else { // 绑定失败
       toLogout();
     }
   })
 }
+// 登出到登录页面
 const toLogout = () => {
   logout(undefined, `${location.origin}/login${location.search}`)
 }
@@ -124,7 +130,7 @@ const doSendCode = (form: any, data: any) => {
     };
     sendCodeCaptcha(param).then(() => {
       message.success({
-        content: i18n.value.SEND_SUCCESS,
+       content: i18n.value.SEND_SUCCESS,
       });
     });
   }
