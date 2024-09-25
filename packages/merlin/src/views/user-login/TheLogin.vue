@@ -67,7 +67,7 @@ const isNotPadUserinfo = async (data: any): Promise<boolean> => {
     padUserinfo.username = name;
     visible.value = true;
     return false;
-  } else if (loginOrigin.value === 'THREE_PART' && !phone_exist) {
+  } else if (loginOrigin.value === 'THREE_PART' && phone_exist === false) {
     router.push({
       path: '/perfectInfo',
       query: route.query,

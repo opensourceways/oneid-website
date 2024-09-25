@@ -14,11 +14,12 @@ const code = ref('');
 provide('loginErr', code);
 type STEP = 'PERFECT' | 'BINGDING' | 'SUCCESS';
 const i18n = useI18n();
-const showDialog = ref(false)
+const showDialog = ref(false);
 const curStep = ref<STEP>('PERFECT');
 const hasUsedTip = ref('');
 const { loginParams } = useCommonData();
 const message = useMessage();
+const copyForm = ref('');
 const doSubmit = (form: any) => {
   if (curStep.value === 'PERFECT') {
     doPerfectSubmit(form);
@@ -36,40 +37,35 @@ const doPerfectSubmit = (form: any) => {
   bindAccount(params).then(data => {
     const { code, msg } = data;
     if (code === 200) {
+      curStep.value = 'SUCCESS';
       doSuccess(form.account);
       form.code = '';
       form.account = '';
-      curStep.value = 'SUCCESS';
     } else if (code === 400 || msg?.code === 'E0003') {
-      // 自动绑定一次
-      doBindingSubmit(form, 'auto');
+      copyForm.value = form;
+      // 提示用户是否绑定
+      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account);
+      showDialog.value = true;
     } else {
       toLogout();
     }
   });
 }
 // 绑定手机号提交
-const doBindingSubmit = (form: any, operateOrigin = 'manul') => {
+const doBindingSubmit = (form: any) => {
   const params = {
     client_id: loginParams.value.client_id,
     account: form.account,
     code: form.code,
   }
-  mergeUser(params).then(data => {
-    const { code } = data;
-    if (code === 200) {
-      curStep.value = 'SUCCESS';
-      doSuccess(form.account);
-      form.code = '';
-      form.account = '';
-    } else if (operateOrigin === 'auto') { // 自动绑定没有成功，在显示绑定页面让用户手动输入提交
-      form.code = '';
-      form.account = '';
-      hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account);
-      showDialog.value = true;
-    } else { // 绑定失败
-      toLogout();
-    }
+  mergeUser(params).then(() => {
+    curStep.value = 'SUCCESS';
+    doSuccess(form.account);
+    form.code = '';
+    form.account = '';
+  }).catch(() => {
+    curStep.value = 'BINGDING';
+    form.code = '';
   })
 }
 // 登出到登录页面
@@ -85,12 +81,12 @@ const doSuccess = (phone: string | number) => {
   haveLoggedIn(phone);
 };
 const doBinding = () => {
-  curStep.value = 'BINGDING';
   showDialog.value = false;
+  // 自动绑定一次
+  doBindingSubmit(copyForm.value);
 }
 const quit = () => {
   showDialog.value = false;
-  toLogout();
 }
 // 监听页面卸载，刷新时清空cookie
 onMounted(() => {
