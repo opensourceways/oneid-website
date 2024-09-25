@@ -229,7 +229,8 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   <!-- <ODialog v-model:visible="modelValue" :actions="dlgAction" hideClose :maskClose="false"> -->
 <div class="perfect-info">
     <div class="perfect-info-head">
-        <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
+        <div class="head-logo"></div>
+        <div class="head-title">{{ i18n.ENTER_USERINFO }}</h5>
     </div>
     <OForm
     ref="formRef"
@@ -294,6 +295,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
         </div>
     </OFormItem>
     </OForm>
+    <div class="perfect-info-footer"></div>
  </div>
 <Verify
     v-if="modelValue"

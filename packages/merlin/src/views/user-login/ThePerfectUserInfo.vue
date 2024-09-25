@@ -63,7 +63,6 @@ const doBindingSubmit = (form: any, operateOrigin = 'manul') => {
       form.code = '';
       form.account = '';
     } else if (operateOrigin === 'auto') { // 自动绑定没有成功，在显示绑定页面让用户手动输入提交
-      curStep.value = 'BINGDING';
       form.code = '';
       form.account = '';
       hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(/\$\{.*?\}/g, form.account);
@@ -86,10 +85,12 @@ const doSuccess = (phone: string | number) => {
   haveLoggedIn(phone);
 };
 const doBinding = () => {
+  curStep.value = 'BINGDING';
   showDialog.value = false;
 }
 const quit = () => {
   showDialog.value = false;
+  toLogout();
 }
 // 监听页面卸载，刷新时清空cookie
 onMounted(() => {
