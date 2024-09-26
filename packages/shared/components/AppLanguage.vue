@@ -2,7 +2,7 @@
 import { ref, Ref, watch } from 'vue';
 
 import IconDown from '~icons/app/icon-chevron-down.svg';
-import { useCommonData } from '../stores/common';
+import { useCommon, useCommonData } from '../stores/common';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
@@ -15,6 +15,7 @@ const props = defineProps({
 });
 
 const router = useRouter();
+const { changeLang } = useCommon();
 const { lang } = useCommonData();
 
 // 选择语言;
@@ -31,6 +32,16 @@ const isMenu = ref(false);
 
 function chaneLanguage(newlang: string) {
   if (lang.value === newlang) return;
+  const { pathname } = window.location;
+  if (pathname.includes(`${lang.value}`)) {
+    // 原有的代码逻辑
+    changePathLang(newlang);
+  } else {
+    // 对search上的lang进行处理
+    changeSearchLang(newlang);
+  }
+}
+function changePathLang(newlang: string) {
   const { pathname, host, search } = window.location;
   const newHref = pathname.replace(`/${lang.value}/`, `/${newlang}/`);
   const RU = 'ru';
@@ -45,9 +56,17 @@ function chaneLanguage(newlang: string) {
     router.push(newHref + search);
   }
 }
+// 对search上的lang进行处理
+function changeSearchLang(newlang: string) {
+  changeLang(newlang);
+  // 改变url上的lang显示
+  const url = new URL(window.location.href);
+  url.searchParams.set('lang', newlang);
+  location.href = url.toString();
+}
 
 const mobileChaneLanguage = (newlang: string) => {
-  chaneLanguage(newlang);
+  chaneLanguage(newlang); 
   emits('language-click');
 };
 
