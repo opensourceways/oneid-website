@@ -145,6 +145,10 @@ watch(
     &.no-state {
       cursor: default;
     }
+    .rotate180 {
+      transition: transform 0.3s ease-in-out;
+      transform: rotateZ(-180deg);
+    }
   }
   &-list {
     position: absolute;
