@@ -20,7 +20,7 @@ const { lang } = useCommonData();
 
 // 选择语言;
 const langOptions = [
-  { id: 'zh', label: '中文' },
+  { id: 'zh', label: '简体中文' },
   { id: 'en', label: 'English' },
   { id: 'ru', label: 'Русский' },
 ];
@@ -106,9 +106,9 @@ watch(
   <div class="lang-menu" @mouseenter="showSub()" @mouseleave="hideSub()">
     <span class="lang-menu-link" :class="{ 'no-state': langList.length < 2 }">
       {{ lang === 'zh' ? '中文' : lang === 'ru' ? 'Русский' : 'English' }}
-      <OIcon v-if="langList.length > 1"><icon-down></icon-down></OIcon>
+      <OIcon v-if="langList.length > 1" class="ml4" :class="{'rotate180': isMenu}"><icon-down></icon-down></OIcon>
     </span>
-    <ul v-if="isMenu && langList.length > 1" class="lang-menu-list">
+    <ul v-show="true || isMenu && langList.length > 1" class="lang-menu-list">
       <li
         v-for="item in langList"
         :key="item.id"
@@ -148,20 +148,23 @@ watch(
   }
   &-list {
     position: absolute;
-    top: 80px;
-    left: -24px;
+    top: 68px;
+    left: -50px;
     background: var(--o-color-bg2);
     cursor: pointer;
     z-index: 999;
     box-shadow: var(--o-shadow-l1);
     min-width: 78px;
+    width: 144px;
+    padding: 8px 4px;
+    border-radius: 12px;
     .lang-item {
-      line-height: var(--o-line-height-h3);
+      line-height: var(--o-line-height-h8);
       text-align: center;
-      font-size: var(--o-font-size-text);
-      color: var(--o-color-text1);
+      font-size: var(--o-font-size-h8);
+      color: var(--o-color-bg8);
       border-bottom: 1px solid var(--o-color-division1);
-      padding: 0 var(--o-spacing-h5);
+      padding: var(--o-spacing-h9);
       &:last-child {
         border-bottom: 0 none;
       }
@@ -180,6 +183,9 @@ watch(
   @media screen and (max-width: 1100px) {
     display: none;
   }
+}
+.ml4 {
+  margin-left: 4px;
 }
 .mobile-change-language {
   display: none;
