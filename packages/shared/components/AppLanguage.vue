@@ -108,7 +108,7 @@ watch(
       {{ lang === 'zh' ? '中文' : lang === 'ru' ? 'Русский' : 'English' }}
       <OIcon v-if="langList.length > 1" class="ml4" :class="{'rotate180': isMenu}"><icon-down></icon-down></OIcon>
     </span>
-    <ul v-show="true || isMenu && langList.length > 1" class="lang-menu-list">
+    <ul v-show="isMenu && langList.length > 1" class="lang-menu-list">
       <li
         v-for="item in langList"
         :key="item.id"
