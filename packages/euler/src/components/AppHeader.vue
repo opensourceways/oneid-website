@@ -82,7 +82,10 @@ const goHome = () => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
   location.href = `${origin}/${lang.value}/`;
 };
-
+// 去消息中心，2024.9.26 张峻玮提的需求，只上到测试环境
+const goMessageCenter = () => {
+  location.href = 'https://message-center.test.osinfra.cn/';
+}
 // 判断移动端
 const isMobile = () => {
   if (testIsPhone()) {
@@ -166,6 +169,7 @@ watch(
           </div>
           <ul class="menu-list">
             <!-- <li @click="jumpToUserZone()">{{ i18n.common.USER_CENTER }}</li> -->
+            <li @click="goMessageCenter">{{ i18n.MESSAGE_CENTER }}</li>
             <li @click="logout()">{{ i18n.LOGOUT }}</li>
           </ul>
         </div>

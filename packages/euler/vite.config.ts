@@ -30,12 +30,20 @@ export default defineConfig({
     }),
   ],
   server: {
+    host: 'localhost',
+    port: 8080,
     proxy: {
       '/oneid/': {
-        target: 'https://openeuler-usercenter.test.osinfra.cn/',
+        target: 'http://localhost:3060/',
         secure: false,
         changeOrigin: true,
+        rewrite: path => path.replace(/^\/oneid\//g, '/mock/oneid/')
       },
+      // '/oneid/': {
+      //   target: 'https://openeuler-usercenter.test.osinfra.cn/',
+      //   secure: false,
+      //   changeOrigin: true,
+      // },
       '/openeuler/': {
         target: 'https://gitee.com/',
         secure: false,

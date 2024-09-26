@@ -226,4 +226,5 @@ export default {
       'We will use these cookies only with your consent. These cookies help us make improvements by collecting statistics such as the number of visits and traffic sources.',
     saveSetting: 'Save and Accept',
   },
+  MESSAGE_CENTER: 'Message Center',
 };
