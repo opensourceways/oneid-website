@@ -109,15 +109,16 @@ watch(
       <OIcon v-if="langList.length > 1" class="ml4" :class="{'rotate180': isMenu}"><icon-down></icon-down></OIcon>
     </span>
     <ul v-show="isMenu && langList.length > 1" class="lang-menu-list">
-      <li
-        v-for="item in langList"
-        :key="item.id"
-        class="lang-item"
-        :class="{ active: lang === item.id }"
-        @click="chaneLanguage(item.id)"
-      >
-        {{ item.label }}
-      </li>
+      <template v-for="item in langList" :key="item.id">
+        <li
+          class="lang-item"
+          :class="{ active: lang === item.id }"
+          @click="chaneLanguage(item.id)"
+        >
+          {{ item.label }}
+        </li>
+        <hr class="line"/>
+      </template>
     </ul>
   </div>
   <div class="mobile-change-language">
@@ -152,7 +153,7 @@ watch(
   }
   &-list {
     position: absolute;
-    top: 68px;
+    top: 66px;
     left: -50px;
     background: var(--o-color-bg2);
     cursor: pointer;
@@ -160,27 +161,35 @@ watch(
     box-shadow: var(--o-shadow-l1);
     min-width: 78px;
     width: 144px;
-    padding: 8px 4px;
-    border-radius: 12px;
+    padding: 4px;
+    border-radius: 8px;
     .lang-item {
       line-height: var(--o-line-height-h8);
       text-align: center;
       font-size: var(--o-font-size-h8);
       color: var(--o-color-bg8);
-      border-bottom: 1px solid var(--o-color-division1);
       padding: var(--o-spacing-h9);
       &:last-child {
         border-bottom: 0 none;
       }
-
       &:hover {
-        background: var(--o-color-brand1);
-        color: var(--o-color-white);
+        background-color: #edeff2;
+        border-radius: 4px;
+        color: rgba(0,0,0,0.8);
       }
       &.active {
         color: var(--o-color-brand1);
         background: none;
         cursor: default;
+      }
+    }
+    .line {
+      background-color: rgba(0, 0, 0, 0.1);
+      margin: 2px;
+      height: 1px;
+      border: none;
+      &:last-child {
+        display: none;
       }
     }
   }
