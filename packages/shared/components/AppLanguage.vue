@@ -153,7 +153,7 @@ watch(
   }
   &-list {
     position: absolute;
-    top: 66px;
+    top: 68px;
     left: -50px;
     background: var(--o-color-bg2);
     cursor: pointer;

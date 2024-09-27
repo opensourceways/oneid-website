@@ -52,13 +52,13 @@ const doPerfectSubmit = (form: any) => {
   });
 }
 // 绑定手机号提交
-const doBindingSubmit = (form: any) => {
+const doBindingSubmit = (form: any, doException = false) => {
   const params = {
     client_id: loginParams.value.client_id,
     account: form.account,
     code: form.code,
   }
-  mergeUser(params).then(() => {
+  mergeUser(params, { $doException: doException }).then(() => {
     curStep.value = 'SUCCESS';
     doSuccess(form.account);
     form.code = '';
@@ -82,8 +82,8 @@ const doSuccess = (phone: string | number) => {
 };
 const doBinding = () => {
   showDialog.value = false;
-  // 自动绑定一次
-  doBindingSubmit(copyForm.value);
+  // 自动绑定一次，不显示自动绑定的错误, 发生错误了在显示绑定页面
+  doBindingSubmit(copyForm.value, true);
 }
 const quit = () => {
   showDialog.value = false;

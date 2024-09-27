@@ -200,9 +200,9 @@ export function updatePassword(params: any) {
 /**
  * 合并账号
  */
-export function mergeUser(params: any) {
+export function mergeUser(params: any, config = {}) {
   const url = '/oneid/merge/user'
   return request
-    .post(url, params, getHeaderConfig())
+    .post(url, params, { ...config, ...getHeaderConfig()})
     .then((res: AxiosResponse) => res.data)
 }

@@ -197,9 +197,9 @@ const isphone = useTestIsPhone();
         </OButton>
       </template>
       <template v-else>
-        <OLink color="primary" hover-underline @click="goResetPwd()" class="place-holder">{{ i18n.FORGET_PWD }}</OLink>
-        {{ i18n.NO_ACCOUNT }}&nbsp;
         <OLink color="primary" hover-underline @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
+        <ODivider direction="v" />
+        <OLink color="primary" hover-underline @click="goResetPwd()">{{ i18n.FORGET_PWD }}</OLink>
       </template>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
