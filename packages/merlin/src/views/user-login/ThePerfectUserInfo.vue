@@ -140,7 +140,7 @@ const doSendCode = (form: any, data: any) => {
       {{ curStep === 'PERFECT' ? i18n.PERFECT_USER_INFO : i18n.BINDING_CUR_ACCOUNT }}
     </template>
     <template #headerTitleTip>
-      {{ curStep === 'PERFECT' ? i18n.PERFECT_USER_INFO_TIPS : i18n.BINDING_CUR_ACCOUNT_TIP }}
+      {{ curStep === 'PERFECT' ? i18n.PERFECT_USER_INFO_TIP : i18n.BINDING_CUR_ACCOUNT_TIP }}
     </template>
     <template #btn>{{ curStep === 'PERFECT' ? i18n.SUBMIT : i18n.BINDING }}</template>
   </LoginTemplate>
