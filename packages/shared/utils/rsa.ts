@@ -1,4 +1,5 @@
 import { getPublicKey } from '../api/api-login';
+import JsEncrypt from 'jsencrypt';
 import { b64tohex } from './base64';
 import forge from 'node-forge';
 /**
@@ -20,15 +21,9 @@ export function rsaEncrypt(word: string, keyWord: string): string {
       })
     );
   }
-  const key = `-----BEGIN PUBLIC KEY-----\n${keyWord}\n-----END PUBLIC KEY-----`;
-  const publicObj = forge.pki.publicKeyFromPem(key);
-  const bytes = publicObj.encrypt(word);
-  //转换成 bytes 对象之后输出不同类型的结果
-  return b64tohex(forge.util.encode64(bytes)); 
-
-  // const encrypt = new JsEncrypt();
-  // encrypt.setPublicKey(keyWord);
-  // return b64tohex(encrypt.encrypt(word) as string) || '';
+  const encrypt = new JsEncrypt();
+  encrypt.setPublicKey(keyWord);
+  return b64tohex(encrypt.encrypt(word) as string) || '';
 }
 
 export function getRsaEncryptWord(
