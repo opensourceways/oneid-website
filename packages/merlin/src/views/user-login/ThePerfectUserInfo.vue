@@ -144,9 +144,9 @@ const doSendCode = (form: any, data: any) => {
     </template>
     <template #btn>{{ curStep === 'PERFECT' ? i18n.SUBMIT : i18n.BINDING }}</template>
   </LoginTemplate>
-  <ODialog v-model:visible="showDialog" size="small">
-    <template #header>{{ i18n.HAS_REGISTER }}</template>
-    <div>{{ hasUsedTip }}</div>
+  <ODialog v-model:visible="showDialog" size="auto">
+    <template #header ><div class="center fs24">{{ i18n.HAS_REGISTER }}</div></template>
+    <div class="center fs16">{{ hasUsedTip }}</div>
     <template #footer>
       <div class="foot-btn-wrap">
         <OButton color="primary" size="large" variant="solid" @click="doBinding">{{ i18n.QUIC_BINDING }}</OButton>
@@ -157,6 +157,15 @@ const doSendCode = (form: any, data: any) => {
 </template>
 
 <style lang="scss" scoped>
+.center {
+  text-align: center;
+}
+.fs16 {
+  font-size: 16px;
+}
+.fs24{
+  font-size: 24px;
+}
 .foot-btn-wrap {
   display: flex;
   justify-content: center;

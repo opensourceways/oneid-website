@@ -81,6 +81,7 @@ export function logout(
   queryIDToken(param)
     .then((res: any) => {
       saveUserAuth();
+      // 登出时也跳转到authing登出
       if (['mindspore', 'openmind', 'openeuler'].includes(param.community)) {
         const appHost = res.data.client_identifier;
         const params = {
