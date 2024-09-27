@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-
+import AppLanguage from 'shared/components/AppLanguage.vue';
 import HeaderLogo from '@/components/HeaderLogo.vue';
-
+const langShow = ref(['zh', 'en'] as any);
 const headerLeft = ref(0);
 
 const onScroll = () => {
@@ -24,6 +24,7 @@ onUnmounted(() => {
       <div class="header-content">
         <!-- LOGO -->
         <HeaderLogo />
+        <AppLanguage :show="langShow" />
       </div>
     </div>
   </div>

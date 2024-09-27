@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IconGithub from '~icons/app/icon-github.svg';
 import IconGitee from '~icons/app/icon-gitee.svg';
-import IconOpenAtom from '~icons/app/icon-openatom.svg';
+import IconWeChat from '~icons/app/icon-wechat.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
 import { computed, onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
@@ -26,7 +26,7 @@ const { lang, loginParams } = useCommonData();
 const loginForm = ref();
 
 // 三方登录
-const redirectUri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
+const redirectUri = `${location.origin}/login`;
 const threePartsLogin = (type: string) => {
   const url = `${import.meta.env?.VITE_LOGIN_USERAPI}/api/v3/signin-by-extidp`;
   const params = {
@@ -42,6 +42,7 @@ const threePartsLogin = (type: string) => {
   const connIds: any = {
     Gitee: '6226d91103d81d8654673f1b',
     GitHub: '6226db30c8e30db1518cc4aa',
+    WeChat: '662605f0fd03c1fba569a6ce',
   };
   if (import.meta.env?.VITE_COOKIE_DOMAIN.includes('myopeninfra')) {
     connIds.Gitee = '6486ca4c5a8820be3da60942';
@@ -79,6 +80,13 @@ const icons = [
   {
     key: 'GitHub',
     icon: IconGithub,
+    onClick: (type: string) => {
+      threePartsLogin(type);
+    },
+  },
+  {
+    key: 'WeChat',
+    icon: IconWeChat,
     onClick: (type: string) => {
       threePartsLogin(type);
     },

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CountdownButton from '@/components/CountdownButton.vue';
-import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted, inject, watch } from 'vue';
+import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted, inject, watch, watchEffect } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { OInput, OButton, OCheckbox, OLink, useMessage, OForm, OFormItem } from '@opensig/opendesign';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
@@ -18,7 +18,7 @@ import LoginTabs from '@/components/LoginTabs.vue';
 import { useCommonData } from 'shared/stores/common';
 import { ONLY_LOGIN_ID } from '@/shared/const';
 
-type TYPE = 'login' | 'register';
+type TYPE = 'login' | 'register' | 'perfectUserInfo';
 const props = defineProps({
   type: {
     type: String as PropType<TYPE>,
@@ -63,7 +63,7 @@ const resetLoginErr = () => {
 
 const formRef = ref<InstanceType<typeof OForm>>();
 
-const emit = defineEmits(['submit', 'threePartLogin']);
+const emit = defineEmits(['submit', 'sendCode']);
 
 // 外部校验方法
 const validator = (fields?: string[] | string) => {
@@ -103,6 +103,13 @@ const getcode = (formEl: InstanceType<typeof OForm> | undefined) => {
 };
 
 const verifySuccess = (data: any) => {
+  // 完善用户信息添加的验证码逻辑，和注册验证码接口分开
+  if (type.value === 'perfectUserInfo') {
+    emit('sendCode', form, data);
+    disableCode.value = true;
+    return ;
+  }
+  // 其他验证码调用接口
   let channel = 'CHANNEL_REGISTER';
   if (type.value === 'login') {
     channel = 'CHANNEL_LOGIN';
@@ -284,6 +291,19 @@ const accountPlaceholder = computed(() => {
     return i18n.value.ENTER_YOUR_PHONE;
   }
 });
+const btnCanClick = ref(true)
+watchEffect(async() => {
+  const res = await formRef.value?.validate()
+  formRef.value?.clearValidate()
+  if (res?.length) {
+    // 有表单项，所有表单项都校验通过按钮才可点击；否则，不可点击
+    let r = res.every(v => !v)
+    btnCanClick.value = r
+  } else {
+    // 没有表单项，按钮可点击
+    btnCanClick.value = true
+  }
+})
 const loginTabSelect = () => {
   formRef.value?.resetFields();
   disableCode.value = true;
@@ -354,7 +374,7 @@ const goResetPwd = () => {
       />
     </OFormItem>
     <OFormItem
-      v-if="selectLoginType === 'code' || type === 'register'"
+      v-if="selectLoginType === 'code' || type === 'register' || type === 'perfectUserInfo'"
       field="code"
       :rules="codeRules"
     >
@@ -377,7 +397,7 @@ const goResetPwd = () => {
       </OInput>
     </OFormItem>
     <OFormItem
-      v-if="selectLoginType === 'password'"
+      v-if="selectLoginType === 'password' && type != 'perfectUserInfo'"
       field="password"
       :rules="type === 'register' ? passwordRules : loginPwdRules"
     >
@@ -426,7 +446,11 @@ const goResetPwd = () => {
       </div>
     </OFormItem>
     <OFormItem>
-      <OButton id="e2e_login_submit" color="primary" variant="solid" size="large" class="login-btn" @click="submit()">
+      <!-- 完善用户信息提交按钮，添加disabled-->
+      <OButton v-if="type === 'perfectUserInfo'" id="e2e_login_submit" color="primary" variant="solid" size="large" class="login-btn" :disabled="!btnCanClick" @click="submit()">
+        <slot name="btn"> {{ i18n.LOGIN }} </slot>
+      </OButton>
+      <OButton v-else id="e2e_login_submit" color="primary" variant="solid" size="large" class="login-btn" @click="submit()">
         <slot name="btn"> {{ i18n.LOGIN }} </slot>
       </OButton>
     </OFormItem>

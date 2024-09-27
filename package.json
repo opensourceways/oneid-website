@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "mock": "node mock/index.cjs ",
     "dev:euler": "pnpm --filter euler dev",
     "build:euler": "pnpm --filter euler build",
     "dev:gauss": "pnpm --filter gauss dev",
@@ -52,6 +53,8 @@
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
+    "express": "^4.21.0",
+    "fs": "0.0.1-security",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^3.0.3",

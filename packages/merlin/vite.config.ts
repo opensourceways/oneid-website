@@ -42,12 +42,20 @@ export default defineConfig({
     }),
   ],
   server: {
+    host: 'localhost',
+    port: 9999,
     proxy: {
-      '/oneid/': {
-        target: 'https://modelfoundry-oneid.test.osinfra.cn/',
-        secure: false,
-        changeOrigin: true,
+      '^/oneid/': {
+         target: 'http://127.0.0.1:3060',
+         secure: false,
+         changeOrigin: false,
+         rewrite: path => path.replace(/^\/oneid\//g, '/mock/oneid/')
       },
+      // '/oneid/': {
+      //   target: 'https://modelfoundry-oneid.test.osinfra.cn/',
+      //   secure: false,
+      //   changeOrigin: true,
+      // },
       '/statement/': {
         target: 'https://openmind.test.osinfra.cn/',
         secure: false,

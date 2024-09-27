@@ -51,10 +51,11 @@ const visible = ref(false);
 const padUserinfo = reactive({
   username: '',
 });
+const loginOrigin = ref('')
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = async (data: any): Promise<boolean> => {
-  const { username, oneidPrivacyAccepted = '', } = data || {};
+  const { username, phone_exist, oneidPrivacyAccepted = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
   const oneidPrivacyAccepted1 = await getPrivacyVersion();
   if (
@@ -65,6 +66,12 @@ const isNotPadUserinfo = async (data: any): Promise<boolean> => {
   } else if (!name) {
     padUserinfo.username = name;
     visible.value = true;
+    return false;
+  } else if (loginOrigin.value === 'THREE_PART' && phone_exist === false) {
+    router.push({
+      path: '/perfectInfo',
+      query: route.query,
+    });
     return false;
   }
   return true;
@@ -119,6 +126,7 @@ const login = async (form: any, captchaVerification?: string) => {
     param.code = form.code;
   }
   accountLoginPost(param, { $doException: true }).then((data: any) => {
+    loginOrigin.value = 'ACCOUNT'
     loginSuccess(data?.data);
   }).catch((err) => {
     message.danger({
@@ -158,6 +166,7 @@ const threePartLogin = (res: any) => {
     client_id: loginParams.value.client_id,
   };
   queryToken(param).then((data: any) => {
+    loginOrigin.value = 'THREE_PART';
     loginSuccess(data?.data);
   });
 };
@@ -220,5 +229,8 @@ const isphone = useTestIsPhone();
   width: 100%;
   justify-content: center;
   margin-top: 4px;
+}
+.place-holder {
+  flex: 1;
 }
 </style>

@@ -12,8 +12,9 @@ export type AccountOperateKey =
   | 'delete'
   | 'unbind_github'
   | 'unbind_gitee'
-  | 'unbind_openatom';
-type AccountType = 'email' | 'phone' | 'github' | 'gitee' | 'openatom';
+  | 'unbind_openatom'
+  | 'unbind_wechat';
+type AccountType = 'email' | 'phone' | 'github' | 'gitee' | 'openatom' | 'wechat';
 type AccountField = 'change' | 'verify';
 type Callback<T> = (data: T) => void;
 

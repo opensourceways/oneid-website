@@ -10,7 +10,7 @@ import { useCommonData } from 'shared/stores/common';
 import { OIcon } from '@opensig/opendesign';
 import { ONLY_LOGIN_ID } from '@/shared/const';
 
-type TYPE = 'login' | 'register';
+type TYPE = 'login' | 'register' | 'perfectUserInfo';
 const props = defineProps({
   type: {
     type: String as PropType<TYPE>,
@@ -18,7 +18,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['submit', 'threePartLogin']);
+const emit = defineEmits(['submit', 'threePartLogin', 'sendCode']);
 
 const { type } = toRefs(props);
 const i18n = useI18n();
@@ -34,7 +34,7 @@ const threePartsLogin = (type: string) => {
     client_id: loginParams.value.client_id,
     response_type: loginParams.value.response_type,
     redirect_uri: redirectUri,
-    scope: 'openid profile username email',
+    scope: 'openid profile username email phone',
     state: loginParams.value.state,
     nonce: loginParams.value.nonce,
     lang: lang.value === 'zh' ? 'zh-CN' : 'en-US',
@@ -106,6 +106,9 @@ const listenerThreePartsLogin = () => {
 const submit = (form: any) => {
   emit('submit', form);
 };
+const sendCode = (form: any, data: any) => {
+  emit('sendCode', form, data);
+}
 onMounted(() => {
   listenerThreePartsLogin();
 });
@@ -124,11 +127,14 @@ const showFooter = computed(
     <template #headerTitle>
       <slot name="headerTitle"> {{ i18n.ACCOUNT_LOGIN }} </slot>
     </template>
+    <template #headerTitleTip>
+      <slot name="headerTitleTip"></slot>
+    </template>
     <template #switch>
       <slot name="switch"></slot>
     </template>
     <template #body>
-      <LoginForm ref="loginForm" :type="type" @submit="submit">
+      <LoginForm ref="loginForm" :type="type" @submit="submit" @sendCode="sendCode">
         <template #btn>
           <slot name="btn"></slot>
         </template>

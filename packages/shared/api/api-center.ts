@@ -42,7 +42,7 @@ export function modifyPhoto(params: any) {
 }
 
 /**
- * 发送验证码
+ * 发送验证码 （完善用户信息用到这个接口）
  */
 export function sendCode(params: any) {
   const url = '/oneid/sendcode';
@@ -195,4 +195,14 @@ export function updatePassword(params: any) {
   return request
     .post(url, params, getHeaderConfig())
     .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 合并账号
+ */
+export function mergeUser(params: any, config = {}) {
+  const url = '/oneid/merge/user'
+  return request
+    .post(url, params, { ...config, ...getHeaderConfig()})
+    .then((res: AxiosResponse) => res.data)
 }
