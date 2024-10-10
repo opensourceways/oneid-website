@@ -225,6 +225,7 @@ export default {
       '我们将根据您的同意使用和处理这些非必要Cookie。这些Cookie允许我们获得摘要统计数据，例如，统计访问量和访问者来源，便于我们改进我们的网站。',
     saveSetting: '保存并接受',
   },
+  MESSAGE_CENTER: '消息中心',
   PERFECT_USER_INFO: '完善用户信息',
   PERFECT_USER_INFO_TIP: '欢迎加入Modelers, 为了更好的使用体验，请先完善你的个人信息',
   SUBMIT: '提交',
