@@ -82,7 +82,10 @@ const goHome = () => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
   location.href = `${origin}/${lang.value}/`;
 };
-
+// 跳转到消息中心
+const goMessageCenter = () => {
+  location.href = import.meta.env.VITE_OPENEULER_MESSAGE_CENTER;
+};
 // 判断移动端
 const isMobile = () => {
   if (testIsPhone()) {
@@ -166,6 +169,7 @@ watch(
           </div>
           <ul class="menu-list">
             <!-- <li @click="jumpToUserZone()">{{ i18n.common.USER_CENTER }}</li> -->
+            <li @click="goMessageCenter">{{ i18n.MESSAGE_CENTER }}</li>
             <li @click="logout()">{{ i18n.LOGOUT }}</li>
           </ul>
         </div>
