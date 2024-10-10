@@ -82,7 +82,7 @@ export function logout(
     .then((res: any) => {
       saveUserAuth();
       // 登出时也跳转到authing登出
-      if (['mindspore', 'openmind', 'openeuler'].includes(param.community)) {
+      if (['mindspore', 'openmind'].includes(param.community)) {
         const appHost = res.data.client_identifier;
         const params = {
           host: `https://${appHost || 'datastat'}.authing.cn`,
