@@ -408,6 +408,7 @@ watch(
     z-index: 999;
     box-shadow: var(--o-shadow-l1);
     min-width: 78px;
+    white-space: nowrap;
     li {
       line-height: var(--o-line-height-h3);
       text-align: center;

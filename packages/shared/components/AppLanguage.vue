@@ -104,7 +104,7 @@ watch(
 <template>
   <div class="lang-menu" @mouseenter="showSub()" @mouseleave="hideSub()">
     <span class="lang-menu-link" :class="{ 'no-state': langList.length < 2 }">
-      {{ lang === 'zh' ? '中文' : lang === 'ru' ? 'Русский' : 'English' }}
+      {{ lang === 'zh' ? '中文' : 'EN' }}
       <OIcon
         v-if="langList.length > 1"
         class="ml4"
