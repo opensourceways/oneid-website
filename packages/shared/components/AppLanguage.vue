@@ -20,9 +20,8 @@ const { lang } = useCommonData();
 
 // 选择语言;
 const langOptions = [
-  { id: 'zh', label: '简体中文' },
-  { id: 'en', label: 'English' },
-  { id: 'ru', label: 'Русский' },
+  { id: 'zh', label: '中文' },
+  { id: 'en', label: 'EN' },
 ];
 
 // 选择语言
@@ -66,7 +65,7 @@ function changeSearchLang(newlang: string) {
 }
 
 const mobileChaneLanguage = (newlang: string) => {
-  chaneLanguage(newlang); 
+  chaneLanguage(newlang);
   emits('language-click');
 };
 
@@ -106,7 +105,12 @@ watch(
   <div class="lang-menu" @mouseenter="showSub()" @mouseleave="hideSub()">
     <span class="lang-menu-link" :class="{ 'no-state': langList.length < 2 }">
       {{ lang === 'zh' ? '中文' : lang === 'ru' ? 'Русский' : 'English' }}
-      <OIcon v-if="langList.length > 1" class="ml4" :class="{'rotate180': isMenu}"><icon-down></icon-down></OIcon>
+      <OIcon
+        v-if="langList.length > 1"
+        class="ml4"
+        :class="{ rotate180: isMenu }"
+        ><icon-down></icon-down
+      ></OIcon>
     </span>
     <ul v-show="isMenu && langList.length > 1" class="lang-menu-list">
       <template v-for="item in langList" :key="item.id">
@@ -153,29 +157,31 @@ watch(
   }
   &-list {
     position: absolute;
-    top: 68px;
-    left: -50px;
+    top: 80px;
+    left: -20px;
     background: var(--o-color-bg2);
     cursor: pointer;
     z-index: 999;
     box-shadow: var(--o-shadow-l1);
     min-width: 78px;
-    width: 144px;
-    padding: 4px;
-    border-radius: 8px;
+    // width: 144px;
+    // padding: 4px;
+    // border-radius: 8px;
     .lang-item {
-      line-height: var(--o-line-height-h8);
+      line-height: var(--o-line-height-h3);
       text-align: center;
       font-size: var(--o-font-size-h8);
-      color: var(--o-color-bg8);
-      padding: var(--o-spacing-h9);
+      color: var(--o-color-text1);
+      padding: 0 var(--o-spacing-h5);
       &:last-child {
         border-bottom: 0 none;
       }
       &:hover {
-        background-color: #edeff2;
-        border-radius: 4px;
-        color: rgba(0,0,0,0.8);
+        background-color: var(--o-color-brand1);
+        color: var(--o-color-white);
+        // background-color: #edeff2;
+        // border-radius: 4px;
+        // color: rgba(0,0,0,0.8);
       }
       &.active {
         color: var(--o-color-brand1);
@@ -185,7 +191,7 @@ watch(
     }
     .line {
       background-color: rgba(0, 0, 0, 0.1);
-      margin: 2px;
+      // margin: 2px;
       height: 1px;
       border: none;
       &:last-child {
