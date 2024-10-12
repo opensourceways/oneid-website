@@ -81,13 +81,14 @@ const icons = [
       threePartsLogin(type);
     },
   },
-  {
-    key: 'TCloud',
-    icon: IconGithub,
-    onClick: (type: string) => {
-      threePartsLogin(type);
-    },
-  },
+  // 去掉tianyiyun登录这个入口
+  // {
+  //   key: 'TCloud',
+  //   icon: IconGithub,
+  //   onClick: (type: string) => {
+  //     threePartsLogin(type);
+  //   },
+  // },
 ];
 
 const loginFun = (e: MessageEvent) => {
