@@ -53,6 +53,17 @@ export function sendCode(params: any) {
 }
 
 /**
+ * 发送验证码, post方法
+ */
+export function sendCodePost(params: any) {
+  const url = '/oneid/sendcode';
+
+  return request
+    .post(url, params, { global: true, $ignoreLoading: true, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
  * 发送解绑验证码
  */
 export function sendUnbindCode(params: any) {
@@ -83,6 +94,35 @@ export function sendUnbindCode(params: any) {
 }
 
 /**
+ * 发送解绑验证码, post方法
+ */
+export function sendUnbindCodePost(params: any) {
+  const url = '/oneid/sendcode/unbind';
+  const param = {
+    account_type: params.account_type,
+    account: params.account,
+  };
+  if (params.community) {
+    Object.assign(param, {
+      community: params.community,
+      client_id: params.client_id,
+    });
+  }
+  if (params.captchaVerification) {
+    Object.assign(param, {
+      captchaVerification: params.captchaVerification,
+    });
+  }
+  return request
+    .post(url, param, {
+      global: true,
+      $ignoreLoading: true,
+      ...getHeaderConfig(),
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
  * 修改绑定邮箱或手机号
  */
 export function modifyAccount(params: any) {
@@ -90,6 +130,17 @@ export function modifyAccount(params: any) {
 
   return request
     .get(url, { global: true, params, $ignoreLoading: true, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 修改绑定邮箱或手机号, post方法
+ */
+export function modifyAccountPost(params: any) {
+  const url = '/oneid/update/account';
+
+  return request
+    .post(url, params, { global: true, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
@@ -120,6 +171,31 @@ export function bindAccount(params: any) {
 }
 
 /**
+ * 绑定手机号或者邮箱, post方法
+ */
+export function bindAccountPost(params: any) {
+  const url = '/oneid/bind/account';
+  const param = {
+    account_type: params.account_type,
+    account: params.account,
+    code: params.code,
+  };
+  if (params.community) {
+    Object.assign(param, {
+      community: params.community,
+      client_id: params.client_id,
+    });
+  }
+  return request
+    .post(url, param, {
+      global: true,
+      $ignoreLoading: true,
+      ...getHeaderConfig(),
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
  * 解绑手机号或者邮箱
  */
 export function unbindAccount(params: any) {
@@ -139,6 +215,31 @@ export function unbindAccount(params: any) {
     .get(url, {
       global: true,
       params: param,
+      $ignoreLoading: true,
+      ...getHeaderConfig(),
+    })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 解绑手机号或者邮箱, post方法
+ */
+export function unbindAccountPost(params: any) {
+  const url = '/oneid/unbind/account';
+  const param = {
+    account_type: params.account_type,
+    account: params.account,
+    code: params.code,
+  };
+  if (params.community) {
+    Object.assign(param, {
+      community: params.community,
+      client_id: params.client_id,
+    });
+  }
+  return request
+    .post(url, param, {
+      global: true,
       $ignoreLoading: true,
       ...getHeaderConfig(),
     })

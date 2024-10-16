@@ -14,7 +14,12 @@ import {
 } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
-import { bindAccount, modifyUser, sendCode } from '../api/api-center';
+import {
+  bindAccount,
+  modifyUser,
+  sendCode,
+  sendCodePost
+} from '../api/api-center';
 import { mergeMap, Observable, of, zip, map } from 'rxjs';
 
 const props = defineProps({
@@ -117,15 +122,25 @@ const verifySuccess = (data: any) => {
     param.account = form.phone;
     param.channel = 'channel_bind_phone';
   }
-  sendCode(param).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.SEND_SUCCESS,
+  // 欧拉送检，用post
+  if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+    sendCodePost(param).then(() => {
+      ElMessage.success({
+        showClose: true,
+        message: i18n.value.SEND_SUCCESS,
+      });
+      disableCode.value = true;
     });
-    disableCode.value = true;
-  });
+  } else {
+    sendCode(param).then(() => {
+      ElMessage.success({
+        showClose: true,
+        message: i18n.value.SEND_SUCCESS,
+      });
+      disableCode.value = true;
+    });
+  }
 };
-
 // 补全用户名
 const putUserName = () => {
   return new Observable((observer) => {

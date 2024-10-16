@@ -7,7 +7,7 @@ import {
 } from 'shared/@types/usercenter.interface';
 import { ElMessage, FormInstance } from 'element-plus';
 import { useCommonData } from 'shared/stores/common';
-import { sendCode } from 'shared/api/api-center';
+import { sendCodePost } from 'shared/api/api-center';
 import CountdownButton from 'shared/components/CountdownButton.vue';
 import { EMAIL_REG } from 'shared/const/common.const';
 import Verify from 'shared/verifition/Verify.vue';
@@ -32,7 +32,7 @@ const { userInfo } = useCommonData();
 // 发送验证码
 const sendCodeFuc = (data: QueryCodeParams) => {
   return new Promise((resolve, rejects) => {
-    sendCode(data)
+    sendCodePost(data)
       .then(() => {
         resolve(true);
       })

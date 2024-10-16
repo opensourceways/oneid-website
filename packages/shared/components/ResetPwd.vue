@@ -4,7 +4,12 @@ import { reactive, ref } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG, PHONE_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import { resetPwd, resetPwdVerify, sendCodeCaptcha } from '../api/api-login';
+import {
+  resetPwd,
+  resetPwdVerify,
+  sendCodeCaptcha,
+  sendCodeCaptchaPost
+} from '../api/api-login';
 import { formValidator, getPwdRules, getVerifyImgSize } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
@@ -101,13 +106,24 @@ const verifySuccess = (data: any) => {
     client_id: loginParams.value.client_id,
     community: import.meta.env?.VITE_COMMUNITY,
   };
-  sendCodeCaptcha(param).then(() => {
-    disableCode.value = true;
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.SEND_SUCCESS,
+  // 欧拉送检，用post接口
+  if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+    sendCodeCaptchaPost(param).then(() => {
+      disableCode.value = true;
+      ElMessage.success({
+        showClose: true,
+        message: i18n.value.SEND_SUCCESS,
+      });
     });
-  });
+  } else {
+    sendCodeCaptcha(param).then(() => {
+      disableCode.value = true;
+      ElMessage.success({
+        showClose: true,
+        message: i18n.value.SEND_SUCCESS,
+      });
+    });
+  }
 };
 // 获取到重置token
 const resetToken = ref('');

@@ -26,6 +26,17 @@ export function sendCodeCaptcha(params: any) {
 }
 
 /**
+ * 发送验证码, post方法
+ */
+export function sendCodeCaptchaPost(params: any) {
+  const url = '/oneid/captcha/sendCode';
+
+  return request
+    .post(url, params, { global: true, $ignoreLoading: true, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
  * 邮箱或者手机号注册
  */
 export function accountRegisterPost(params: any) {
