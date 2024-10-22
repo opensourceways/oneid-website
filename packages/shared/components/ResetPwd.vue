@@ -108,6 +108,7 @@ const verifySuccess = (data: any) => {
   };
   // 欧拉送检，用post接口
   if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+    delete param.community;
     sendCodeCaptchaPost(param).then(() => {
       disableCode.value = true;
       ElMessage.success({

@@ -78,7 +78,6 @@ const verifySuccess = (data: any) => {
     account: form.account,
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
-    community: import.meta.env?.VITE_COMMUNITY,
   };
   sendCodeCaptchaPost(param).then(() => {
     disableCode.value = true;
