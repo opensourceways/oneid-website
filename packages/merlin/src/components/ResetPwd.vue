@@ -165,8 +165,8 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
     }
   });
 };
-// 账户失焦，判断发送验证码按钮是否禁用
-const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
+// 判断发送验证码按钮是否禁用
+const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (!form.account) {
     disableCode.value = true;
   } else {
@@ -191,8 +191,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
           v-model="form.account"
           size="large"
           :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
-          @input="formRef?.resetFields('code')"
-          @blur="blurAccount(formRef)"
+          @input="formRef?.resetFields('code'), checkCodeCanClick(formRef)"
         />
       </OFormItem>
       <OFormItem field="code" :rules="codeRules">

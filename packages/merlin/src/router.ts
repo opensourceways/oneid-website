@@ -38,8 +38,8 @@ export const routes = [
   {
     path: '/perfectInfo',
     name: 'perfectInfo',
-    component: ThePerfectUserInfo
-    }
+    component: ThePerfectUserInfo,
+  },
 ];
 
 export const router = createRouter({
