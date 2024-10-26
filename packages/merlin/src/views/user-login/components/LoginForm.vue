@@ -29,7 +29,7 @@ const props = defineProps({
 const message = useMessage();
 const router = useRouter();
 const route = useRoute();
-const isphone = useTestIsPhone()
+const isphone = useTestIsPhone();
 
 // 登录失败输入框变红
 const loginErr: any = inject('loginErr');
@@ -52,14 +52,14 @@ watch(
   {
     deep: true,
   }
-)
+);
 // 重置登录失败输入框变红
 const resetLoginErr = () => {
   const inputs = document.getElementsByClassName('login-pwd-input-danger');
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].classList.remove('login-pwd-input-danger');
   }
-}
+};
 
 const formRef = ref<InstanceType<typeof OForm>>();
 
@@ -73,7 +73,7 @@ defineExpose({ validator });
 
 const doValidator = (fields?: string[] | string) => {
   formValidator(formRef.value, fields).subscribe();
-}
+};
 
 const { type } = toRefs(props);
 const i18n = useI18n();
@@ -107,7 +107,7 @@ const verifySuccess = (data: any) => {
   if (type.value === 'perfectUserInfo') {
     emit('sendCode', form, data);
     disableCode.value = true;
-    return ;
+    return;
   }
   // 其他验证码调用接口
   let channel = 'CHANNEL_REGISTER';
@@ -153,7 +153,7 @@ const validatorPwd: ValidatorT = (value: string) => {
     return {
       type: 'danger',
       message: useI18n().value.PWD_USERNAME_VAILD,
-    }
+    };
   }
 };
 // checkbox校验
@@ -177,7 +177,7 @@ const loginAccountRuless = ref([
         return {
           type: 'danger',
           message: useI18n().value.ACCOUNT_CONTAIN_CHARACTER,
-        }
+        };
       }
     },
     triggers: 'change',
@@ -236,7 +236,7 @@ const accountRules = computed(() => {
   } else {
     return phoneRules;
   }
-})
+});
 
 // 隐私声明校验
 const policyRules = reactive<RulesT[]>([
@@ -262,10 +262,11 @@ const changeAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (type.value === 'login') {
     formEl?.resetFields('password');
   }
+  checkCodeCanClick(formEl);
 };
 
-// 账户失焦，判断发送验证码按钮是否禁用
-const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
+// 判断发送验证码按钮是否禁用
+const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (!form.account) {
     disableCode.value = true;
   } else {
@@ -273,7 +274,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
       disableCode.value = !valid;
     });
   }
-  resetLoginErr()
+  resetLoginErr();
 };
 
 // 隐私政策、法律声明
@@ -291,19 +292,19 @@ const accountPlaceholder = computed(() => {
     return i18n.value.ENTER_YOUR_PHONE;
   }
 });
-const btnCanClick = ref(true)
-watchEffect(async() => {
-  const res = await formRef.value?.validate()
-  formRef.value?.clearValidate()
+const btnCanClick = ref(true);
+watchEffect(async () => {
+  const res = await formRef.value?.validate();
+  formRef.value?.clearValidate();
   if (res?.length) {
     // 有表单项，所有表单项都校验通过按钮才可点击；否则，不可点击
-    let r = res.every(v => !v)
-    btnCanClick.value = r
+    const r = res.every((v) => !v);
+    btnCanClick.value = r;
   } else {
     // 没有表单项，按钮可点击
-    btnCanClick.value = true
+    btnCanClick.value = true;
   }
-})
+});
 const loginTabSelect = () => {
   formRef.value?.resetFields();
   disableCode.value = true;
@@ -315,7 +316,7 @@ const enterSubmit = (e: { key: string; }) => {
   if (type.value === 'login' && e.key === 'Enter') {
     submit();
   }
-}
+};
 onMounted(() => {
   window.addEventListener('keydown', enterSubmit);
 });
@@ -370,7 +371,6 @@ const goResetPwd = () => {
         v-model.trim="form.account"
         :placeholder="accountPlaceholder"
         @input="changeAccount(formRef)"
-        @blur="blurAccount(formRef)"
       />
     </OFormItem>
     <OFormItem
