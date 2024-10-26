@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import LoginLanguage from 'shared/components/LoginLanguage.vue';
+</script>
 <template>
   <div class="all">
     <div class="main">
@@ -14,6 +16,7 @@
         <slot name="switch"></slot>
       </div>
       <slot name="footer"></slot>
+      <LoginLanguage></LoginLanguage>
     </div>
   </div>
 </template>
