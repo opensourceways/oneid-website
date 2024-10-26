@@ -11,3 +11,8 @@
     --o-color-kleinblue9: #d68bff;
     --o-color-kleinblue10: #e1abff;
 }
+
+:root.dark {
+  --el-disabled-bg-color: #262727;
+  --el-disabled-border-color: #414243;
+}
