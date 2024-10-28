@@ -143,7 +143,9 @@ const responseInterceptorId = request.interceptors.response.use(
     console.log('aoneCookies', aoneCookies);
     if (aoneCookies) {
       if (typeof aoneCookies === 'string') {
-        document.cookie = aoneCookies;
+        aoneCookies.split(', ').forEach((cookie) => {
+          document.cookie = cookie;
+        });
       } else if (Array.isArray(aoneCookies)) {
         aoneCookies.forEach((cookie) => {
           document.cookie = cookie;
