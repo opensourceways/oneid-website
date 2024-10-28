@@ -77,7 +77,7 @@ RUN touch /var/run/nginx.pid \
     && echo "umask 0027" >> /etc/bashrc \
     && echo "set +o history" >> /etc/bashrc \
     && sed -i "s|HISTSIZE=1000|HISTSIZE=0|" /etc/profile \
-    && sed -i "s|PASS_MAX_DAYS[ \t]*99999|PASS_MAX_DAYS 30|" /etc/login.defs \
+    && sed -i "s/PASS_MAX_DAYS.*/PASS_MAX_DAYS 30/" /etc/login.defs \
     && passwd -l $NGINX_USER \
     && yum clean all \
     && usermod -s /sbin/nologin sync \
