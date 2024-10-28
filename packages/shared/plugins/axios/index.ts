@@ -138,7 +138,17 @@ const responseInterceptorId = request.interceptors.response.use(
     if (config.url) {
       pendingPool.delete(config.url);
     }
-
+    // aone
+    const aoneCookies = response?.headers?.['aone-set-cookie'];
+    if (aoneCookies) {
+      if (typeof aoneCookies === 'string') {
+        document.cookie = aoneCookies;
+      } else if (Array.isArray(aoneCookies)) {
+        aoneCookies.forEach((cookie) => {
+          document.cookie = cookie;
+        });
+      }
+    }
     return Promise.resolve(response);
   },
   (err: any) => {
