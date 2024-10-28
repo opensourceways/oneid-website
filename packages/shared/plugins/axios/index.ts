@@ -140,6 +140,7 @@ const responseInterceptorId = request.interceptors.response.use(
     }
     // aone
     const aoneCookies = response?.headers?.['aone-set-cookie'];
+    console.log('aoneCookies', aoneCookies);
     if (aoneCookies) {
       if (typeof aoneCookies === 'string') {
         document.cookie = aoneCookies;
@@ -149,6 +150,7 @@ const responseInterceptorId = request.interceptors.response.use(
         });
       }
     }
+    console.log('documnet.cookie', document.cookie);
     return Promise.resolve(response);
   },
   (err: any) => {
