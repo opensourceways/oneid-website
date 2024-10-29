@@ -2,7 +2,7 @@
 import {
   accountLoginPost,
   queryToken,
-  checkLoginAccount,
+  checkLoginAccountPost,
 } from 'shared/api/api-login';
 import PadAccount from 'shared/components/PadAccount.vue';
 import AgreePrivacy from 'shared/components/AgreePrivacy.vue';
@@ -146,10 +146,9 @@ const formCopy = ref(null);
 const chenckLogin = (form: any) => {
   formCopy.value = form;
   const param = {
-    community: import.meta.env?.VITE_COMMUNITY,
     account: form.account,
   };
-  checkLoginAccount(param).then((data) => {
+  checkLoginAccountPost(param).then((data) => {
     if (data?.data?.need_captcha_verification) {
       verify.value.show();
     } else {

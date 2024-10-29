@@ -2,7 +2,6 @@ import { request } from '../plugins/axios';
 import type { AxiosResponse } from '../plugins/axios';
 import { getHeaderConfig } from './util';
 
-
 /**
  * 发送验证码
  */
@@ -11,6 +10,17 @@ export function checkLoginAccount(params: any) {
 
   return request
     .get(url, { global: true, $ignoreLoading: true, params, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 发送验证码, post方法
+ */
+export function checkLoginAccountPost(params: any) {
+  const url = '/oneid/captcha/checkLogin';
+
+  return request
+    .post(url, params, { global: true, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 
