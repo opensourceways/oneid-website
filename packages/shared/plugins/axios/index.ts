@@ -150,13 +150,19 @@ const responseInterceptorId = request.interceptors.response.use(
         aoneCookies = JSON.parse(aoneCookies);
       }
       if (typeof aoneCookies === 'string') {
-        aoneCookies.split(', ').forEach((cookie) => {
-          document.cookie = cookie;
-        });
+        console.log('is string', aoneCookies);
+        document.cookie = aoneCookies;
+        // aoneCookies.split(', ').forEach((cookie) => {
+        //   document.cookie = cookie;
+        // });
       } else if (Array.isArray(aoneCookies)) {
+        console.log('is array');
         aoneCookies.forEach((cookie) => {
+          console.log('one item', cookie);
           document.cookie = cookie;
         });
+      } else {
+        console.log('else type', console.log(Object.prototype.toString.call(aoneCookies)));
       }
     }
     console.log('documnet.cookie', document.cookie);
