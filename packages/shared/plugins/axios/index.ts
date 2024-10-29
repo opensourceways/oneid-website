@@ -139,9 +139,16 @@ const responseInterceptorId = request.interceptors.response.use(
       pendingPool.delete(config.url);
     }
     // aone
-    const aoneCookies = response?.headers?.['aone-set-cookie'];
+    let aoneCookies = response?.headers?.['aone-set-cookie'];
     console.log('aoneCookies', aoneCookies);
     if (aoneCookies) {
+      if (
+        typeof aoneCookies === 'string' &&
+        aoneCookies.includes('[') &&
+        aoneCookies.includes(']')
+      ) {
+        aoneCookies = JSON.parse(aoneCookies);
+      }
       if (typeof aoneCookies === 'string') {
         aoneCookies.split(', ').forEach((cookie) => {
           document.cookie = cookie;
