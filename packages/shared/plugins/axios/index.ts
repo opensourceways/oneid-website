@@ -10,7 +10,7 @@ import type {
 import handleError from './handleError';
 import setConfig from './setConfig';
 import { ElLoading, ElMessage } from 'element-plus';
-import { useMessage } from '@opensig/opendesign';
+import { isArray, useMessage } from '@opensig/opendesign';
 import { callBackErrMessage } from '../../utils/utils';
 import { getUserAuth, tokenFailIndicateLogin } from '../../utils/login';
 import { LoadingInstance } from 'element-plus/es/components/loading/src/loading';
@@ -139,32 +139,47 @@ const responseInterceptorId = request.interceptors.response.use(
       pendingPool.delete(config.url);
     }
     // aone
-    let aoneCookies = response?.headers?.['aone-set-cookie'];
-    console.log('aoneCookies', aoneCookies);
-    if (aoneCookies) {
-      if (
-        typeof aoneCookies === 'string' &&
-        aoneCookies.includes('[') &&
-        aoneCookies.includes(']')
-      ) {
-        aoneCookies = JSON.parse(aoneCookies);
-      }
-      if (typeof aoneCookies === 'string') {
-        console.log('is string', aoneCookies);
-        document.cookie = aoneCookies;
-        // aoneCookies.split(', ').forEach((cookie) => {
-        //   document.cookie = cookie;
-        // });
-      } else if (Array.isArray(aoneCookies)) {
-        console.log('is array');
-        aoneCookies.forEach((cookie) => {
-          console.log('one item', cookie);
-          document.cookie = cookie;
-        });
-      } else {
-        console.log('else type', console.log(Object.prototype.toString.call(aoneCookies)));
+    const aoneCookies = response?.headers?.['aone-set-cookie'];
+    console.log('aoneCookies', typeof aoneCookies, Object.prototype.toString.call(aoneCookies), aoneCookies);
+    if (typeof aoneCookies === 'string') {
+      console.log('is string');
+      try {
+        const list = JSON.parse(aoneCookies);
+        console.log('to array', list);
+        if (Array.isArray(list)) {
+          console.log('is array');
+          list.forEach((cookie) => {
+            console.log('one cookie', cookie);
+            document.cookie = cookie;
+          });
+        }
+      } catch (e) {
+        console.log('in catch', e);
       }
     }
+    console.log('document.cookie', document.cookie);
+    // console.log('aoneCookies', aoneCookies);
+    // if (aoneCookies) {
+    //   if (
+    //     typeof aoneCookies === 'string' &&
+    //     aoneCookies.includes('[') &&
+    //     aoneCookies.includes(']')
+    //   ) {
+    //     aoneCookies = JSON.parse(aoneCookies);
+    //   }
+    //   if (typeof aoneCookies === 'string') {
+    //     console.log('is string', aoneCookies);
+    //     document.cookie = aoneCookies;
+    //   } else if (Array.isArray(aoneCookies)) {
+    //     console.log('is array');
+    //     aoneCookies.forEach((cookie) => {
+    //       console.log('one item', cookie);
+    //       document.cookie = cookie;
+    //     });
+    //   } else {
+    //     console.log('else type', console.log(Object.prototype.toString.call(aoneCookies)));
+    //   }
+    // }
     console.log('documnet.cookie', document.cookie);
     return Promise.resolve(response);
   },
