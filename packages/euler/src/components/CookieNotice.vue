@@ -100,7 +100,6 @@ onMounted(() => {
   if (isNotSigned()) {
     toggleNoticeVisible(true);
   }
-  console.log('on Mounted');
   if (isAllAgreed()) {
     cookieStore.status = COOKIE_AGREED_STATUS.ALL_AGREED;
     analysisAllowed.value = true;
