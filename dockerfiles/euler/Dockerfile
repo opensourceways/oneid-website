@@ -35,6 +35,7 @@ RUN sed -i "s|repo.openeuler.org|mirrors.nju.edu.cn/openeuler|g" /etc/yum.repos.
     && sed -i '/metadata_expire/d' /etc/yum.repos.d/openEuler.repo \
     && yum update -y \
     && yum install -y findutils passwd shadow \
+    && yum install -y net-tools \
     && find /usr/share/nginx/www -type d -print0| xargs -0 chmod 500 \
     && find /usr/share/nginx/www -type f -print0| xargs -0 chmod 400
 
@@ -96,7 +97,6 @@ RUN chmod 500 /etc/nginx/monitor.sh \
     && chown nginx:nginx /etc/nginx/entrypoint.sh \
     && sed -i "/PATH=/d" /home/nginx/.bashrc \
     && source /home/nginx/.bashrc
-RUN yum install -y net-tools 
 
 EXPOSE 8080
 
