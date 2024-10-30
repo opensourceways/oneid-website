@@ -22,9 +22,7 @@ const agree = () => {
 <template>
   <LoginCard>
     <p style="margin-bottom: 24px">第三方应用请求获得以下权限</p>
-    <OCheckboxGroup
-      v-model="policy"
-    >
+    <OCheckboxGroup v-model="policy">
       <OCheckbox value="1">获取您的用户名、头像、手机号、邮箱、sig组</OCheckbox>
     </OCheckboxGroup>
     <div class="btns">
