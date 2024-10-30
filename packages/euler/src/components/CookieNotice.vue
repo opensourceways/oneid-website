@@ -130,7 +130,6 @@ const rejectAll = () => {
     `${COOKIE_AGREED_STATUS.NECCESSARY_AGREED}${cookieStore.version}`,
     true
   );
-  console.log('rejectAll');
   toggleNoticeVisible(false);
 };
 
