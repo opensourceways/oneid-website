@@ -8,7 +8,12 @@ import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
 import DeleteAgreeModal from 'shared/components/DeleteAgreeModal.vue';
 import DeletePrivacyModal from 'shared/components/DeletePrivacyModal.vue';
 import { ElMessage } from 'element-plus';
-import { saveUserAuth, useStoreData, refreshInfo, logout } from 'shared/utils/login';
+import { 
+  saveUserAuth,
+  useStoreData,
+  refreshInfo,
+  logout 
+} from 'shared/utils/login';
 import { useCommonData } from 'shared/stores/common';
 
 const i18n = useI18n();

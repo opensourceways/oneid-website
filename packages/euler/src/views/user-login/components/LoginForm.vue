@@ -204,10 +204,7 @@ const goToOtherPage = (type: string) => {
   const url = `${origin}/${lang.value}/other/${type}`;
   window.open(url, '_blank');
 };
-const hiddenRestrictedTipArr = [import.meta.env?.VITE_OPENEULER_APPID];
-const showRestrictedTip = computed(
-  () => !hiddenRestrictedTipArr.includes(loginParams.value.client_id)
-);
+
 const accountPlaceholder = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
     return i18n.value.ENTER_YOUR_ACCOUNT;
