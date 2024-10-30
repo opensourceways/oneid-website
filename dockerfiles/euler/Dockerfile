@@ -96,7 +96,7 @@ RUN chmod 500 /etc/nginx/monitor.sh \
     && chown nginx:nginx /etc/nginx/entrypoint.sh \
     && sed -i "/PATH=/d" /home/nginx/.bashrc \
     && source /home/nginx/.bashrc
-RUN yum install -y iputils 
+RUN yum install -y net-tools 
 
 EXPOSE 8080
 

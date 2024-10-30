@@ -105,6 +105,7 @@ onMounted(() => {
     analysisAllowed.value = true;
     initSensor();
   }
+  console.log('onMounted');
 });
 
 // 用户同意所有cookie
