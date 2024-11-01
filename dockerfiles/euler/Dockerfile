@@ -66,12 +66,12 @@ RUN touch /var/run/nginx.pid \
     && chown -R nginx:nginx /var/run/nginx.pid \
     && chmod 640 /var/run/nginx.pid \
     && chown -R nginx:nginx /etc/nginx \
-    && chmod 550 /etc/nginx \
+    && chmod 650 /etc/nginx \
     && chmod 550 /etc/nginx/geoip/ \
     && chmod 440 /etc/nginx/geoip/* \
     && chmod 550 /etc/nginx/modules \
     && chmod 440 /etc/nginx/modules/* \
-    && chmod 440 /etc/nginx/nginx.conf \
+    && chmod 640 /etc/nginx/nginx.conf \
     && chmod 440 /etc/nginx/mime.types \
     && rm -rf /usr/share/nginx/html/ \
     && rm -rf /usr/share/nginx/logs/ \
