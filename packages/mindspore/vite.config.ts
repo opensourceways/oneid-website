@@ -30,12 +30,6 @@ export default defineConfig({
     }),
   ],
   server: {
-    proxy: {
-      '/oneid/': {
-        target: 'https://xiheapi.osinfra.cn/',
-        secure: false,
-        changeOrigin: true,
-      },
-    },
+    proxy: {},
   },
 });

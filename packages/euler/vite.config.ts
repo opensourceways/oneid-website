@@ -29,17 +29,6 @@ export default defineConfig({
     }),
   ],
   server: {
-    proxy: {
-      '/oneid/': {
-        target: 'https://openeuler-usercenter.test.osinfra.cn/',
-        secure: false,
-        changeOrigin: true,
-      },
-      '/openeuler/': {
-        target: 'https://gitee.com/',
-        secure: false,
-        changeOrigin: true,
-      },
-    },
+    proxy: {},
   },
 });
