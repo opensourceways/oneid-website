@@ -66,7 +66,7 @@ RUN touch /var/run/nginx.pid \
     && chown -R nginx:nginx /var/run/nginx.pid \
     && chmod 640 /var/run/nginx.pid \
     && chown -R nginx:nginx /etc/nginx \
-    && chmod 650 /etc/nginx \
+    && chmod 750 /etc/nginx \
     && chmod 550 /etc/nginx/geoip/ \
     && chmod 440 /etc/nginx/geoip/* \
     && chmod 550 /etc/nginx/modules \
