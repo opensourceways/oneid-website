@@ -5,7 +5,6 @@ import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   envDir: './viteEnv',
   base: '/',

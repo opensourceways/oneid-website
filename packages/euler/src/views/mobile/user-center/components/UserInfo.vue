@@ -14,12 +14,6 @@ import { getUsernammeRules, maskUserInfo, getCompanyRules, getNicknammeRules, fo
 import MaskEye from 'shared/components/MaskEye.vue';
 const router = useRouter();
 const formRef1 = ref<FormInstance>();
-// const props = defineProps({
-//   userInfo: {
-//     type: Object,
-//     default: () => ({} as IObject),
-//   },
-// });
 const { userInfo } = useCommonData();
 const store = useCommon();
 

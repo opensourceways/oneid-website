@@ -165,7 +165,6 @@ watch(
             <p class="opt-name">{{ guardAuthClient.username }}</p>
           </div>
           <ul class="menu-list">
-            <!-- <li @click="jumpToUserZone()">{{ i18n.common.USER_CENTER }}</li> -->
             <li @click="logout()">{{ i18n.LOGOUT }}</li>
           </ul>
         </div>

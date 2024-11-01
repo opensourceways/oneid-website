@@ -89,7 +89,7 @@ const initSensor = () => {
   // 百度统计
   (function () {
     const hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?ab8d86daab9a8e98cf8faa239aefcd3c';
+    hm.src = import.meta.env?.VITE_OPENEULER_BAIDU_STATISTICS;
     const s = document.getElementsByTagName('HEAD')[0];
     s.appendChild(hm);
   })();
