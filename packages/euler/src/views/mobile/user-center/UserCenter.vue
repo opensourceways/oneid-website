@@ -6,7 +6,6 @@ import { onMounted, ref } from 'vue';
 import { useCommon } from 'shared/stores/common';
 const i18n = useI18n();
 const selected = ref('userinfo' as SelectTabKey);
-console.log('userCenter');
 // token传入
 const store = useCommon();
 
