@@ -17,7 +17,7 @@ delete_file() {
 while true;
 do
     sleep 20
-    RET=$(curl -sIL -w "%{http_code}\n" -o /dev/null $HOST)
+    RET=$(curl -s -w "%{http_code}\n" -o /dev/null $HOST)
     if [ $RET == "200" ]; then
         echo "website is up!!!" > /dev/stdout
         delete_file
