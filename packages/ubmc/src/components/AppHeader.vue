@@ -84,7 +84,7 @@ const goHome = () => {
 };
 // 跳转到消息中心
 const goMessageCenter = () => {
-  location.href = import.meta.env.VITE_OPENEULER_MESSAGE_CENTER;
+  location.href = import.meta.env.VITE_MESSAGE_CENTER;
 };
 // 判断移动端
 const isMobile = () => {

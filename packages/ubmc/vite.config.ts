@@ -32,17 +32,23 @@ export default defineConfig({
   server: {
     host: 'localhost',
     port: 5173,
+    open: true,
     proxy: {
       '/oneid/': {
-        target: 'https://openeuler-usercenter.test.osinfra.cn/',
+        target: 'http://localhost:3060/mock',
         secure: false,
         changeOrigin: true,
       },
-      '/openeuler/': {
-        target: 'https://gitee.com/',
-        secure: false,
-        changeOrigin: true,
-      },
+      // '/oneid/': {
+      //   target: 'https://openeuler-usercenter.test.osinfra.cn/',
+      //   secure: false,
+      //   changeOrigin: true,
+      // },
+      // '/openeuler/': {
+      //   target: 'https://gitee.com/',
+      //   secure: false,
+      //   changeOrigin: true,
+      // },
     },
   },
 });

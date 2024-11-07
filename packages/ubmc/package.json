@@ -1,10 +1,12 @@
 {
   "name": "ubmc",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build"
+    "dev": "vite --mode development",
+    "test": "vue-tsc --noEmit && vite build --mode test",
+    "beta": "vue-tsc --noEmit && vite build --mode beta",
+    "build": "vue-tsc --noEmit && vite build --mode production"
   },
   "dependencies": {
     "shared": "workspace:^",

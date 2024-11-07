@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import IconGithub from '~icons/app/icon-github.svg';
-import IconGitee from '~icons/app/icon-gitee.svg';
-import IconOpenAtom from '~icons/app/icon-openatom.svg';
+// import IconGithub from '~icons/app/icon-github.svg';
+// import IconGitee from '~icons/app/icon-gitee.svg';
+// import IconOpenAtom from '~icons/app/icon-openatom.svg';
+import IconGitCode from '~icons/app/icon-gitcode.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
 import { computed, onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
@@ -41,15 +42,16 @@ const threePartsLogin = (type: string) => {
     response_mode: 'web_message',
   };
   const connIds: any = {
-    Gitee: '6226d91103d81d8654673f1b',
-    GitHub: '6226db30c8e30db1518cc4aa',
-    OpenAtom: '6607b16cb5fd97506e8cde93',
+    // Gitee: '6226d91103d81d8654673f1b',
+    // GitHub: '6226db30c8e30db1518cc4aa',
+    // OpenAtom: '6607b16cb5fd97506e8cde93',
+    GitCode: '64accd110ef3612bff3b4b2d',
   };
   Object.assign(params, { ext_idp_conn_id: connIds[type] });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
     if (valid) {
       let width = 500;
-      let height = 700;
+      const height = 700;
       if (type === 'Gitee') {
         width = 1263;
       }
@@ -67,23 +69,30 @@ const threePartsLogin = (type: string) => {
 };
 
 const icons = [
+  // {
+  //   key: 'Gitee',
+  //   icon: IconGitee,
+  //   onClick: (type: string) => {
+  //     threePartsLogin(type);
+  //   },
+  // },
+  // {
+  //   key: 'GitHub',
+  //   icon: IconGithub,
+  //   onClick: (type: string) => {
+  //     threePartsLogin(type);
+  //   },
+  // },
+  // {
+  //   key: 'OpenAtom',
+  //   icon: IconOpenAtom,
+  //   onClick: (type: string) => {
+  //     threePartsLogin(type);
+  //   },
+  // },
   {
-    key: 'Gitee',
-    icon: IconGitee,
-    onClick: (type: string) => {
-      threePartsLogin(type);
-    },
-  },
-  {
-    key: 'GitHub',
-    icon: IconGithub,
-    onClick: (type: string) => {
-      threePartsLogin(type);
-    },
-  },
-  {
-    key: 'OpenAtom',
-    icon: IconOpenAtom,
+    key: 'GitCode',
+    icon: IconGitCode,
     onClick: (type: string) => {
       threePartsLogin(type);
     },
