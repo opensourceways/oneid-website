@@ -31,15 +31,21 @@ export default defineConfig({
   ],
   server: {
     host: 'localhost',
-    port: 5173,
+    port: 8080,
+    open: true,
     proxy: {
-      '/oneid/': {
-        target: 'https://openeuler-usercenter.test.osinfra.cn/',
-        secure: false,
-        changeOrigin: true,
-      },
-      '/openeuler/': {
-        target: 'https://gitee.com/',
+      // '/oneid/': {
+      //   target: 'https://openeuler-usercenter.test.osinfra.cn/',
+      //   secure: false,
+      //   changeOrigin: true,
+      // },
+      // '/openeuler/': {
+      //   target: 'https://gitee.com/',
+      //   secure: false,
+      //   changeOrigin: true,
+      // },
+      '/.*': {
+        target: 'http://localhost:3060/mock',
         secure: false,
         changeOrigin: true,
       },
