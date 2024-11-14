@@ -7,6 +7,7 @@
     "dev:euler": "pnpm --filter euler dev",
     "build:euler": "pnpm --filter euler build",
     "dev:gauss": "pnpm --filter gauss dev",
+    "test:gauss": "pnpm --filter gauss test",
     "build:gauss": "pnpm --filter gauss build",
     "dev:mindspore": "pnpm --filter mindspore dev",
     "build:mindspore": "pnpm --filter mindspore build",
