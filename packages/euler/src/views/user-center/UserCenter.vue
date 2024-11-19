@@ -42,6 +42,7 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .banner {
   width: 100%;
