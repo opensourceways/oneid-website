@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { getUserAuth, logout } from 'shared/utils/login';
+import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { validLoginUrl } from 'shared/utils/login-valid-url';
 const route = useRoute();
 onMounted(() => {
   validLoginUrl().then(() => {
@@ -10,12 +10,15 @@ onMounted(() => {
     if (redirectUri) {
       const { token } = getUserAuth();
       if (token) {
-        logout(undefined, redirectUri);
+        logout(
+          { },
+          redirectUri
+        );
       } else {
         location.href = redirectUri;
       }
     }
-  })
+  });
 });
 </script>
 <template>
