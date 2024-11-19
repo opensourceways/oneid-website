@@ -1,0 +1,54 @@
+@use '@/shared/style/mixin/screen.scss' as *;
+
+
+.tag-blue2 {
+  @include hover() {
+    background-color: rgba(2, 186, 216, 0.1) !important;
+  }
+  &.active {
+    background-color: rgba(2, 186, 216, 0.1);
+    border-color: #02bad8;
+  }
+}
+.tag-yellow1 {
+  @include hover() {
+    background-color: rgba(240, 113, 10, 0.1) !important;
+  }
+  &.active {
+    background-color: rgba(240, 113, 10, 0.1);
+    border-color: #f0710a;
+  }
+}
+
+.tag-purple1 {
+  @include hover() {
+    background-color: rgba(73, 101, 242, 0.1) !important;
+  }
+  &.active {
+    background-color: rgba(73, 101, 242, 0.1);
+    border-color: #4965f2;
+  }
+}
+
+.tag-green1 {
+  @include hover() {
+    background-color: rgba(11, 177, 81, 0.1) !important;
+  }
+  &.active {
+    background-color: rgba(11, 177, 81, 0.1);
+    border-color: #0bb151;
+  }
+}
+.tag-black1 {
+  color: var(--o-color-info2);
+}
+
+.tag-pink1 {
+  @include hover() {
+    background-color: rgb(199, 37, 212, 0.1) !important;
+  }
+  &.active {
+    background-color: rgb(199, 37, 212, 0.1);
+    border-color: #c725d4;
+  }
+}

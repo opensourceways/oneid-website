@@ -1,17 +1,15 @@
 <script setup lang="ts">
-// import IconGithub from '~icons/app/icon-github.svg';
-// import IconGitee from '~icons/app/icon-gitee.svg';
-// import IconOpenAtom from '~icons/app/icon-openatom.svg';
 import IconGitCode from '~icons/app/icon-gitcode.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
 import { computed, onMounted, onUnmounted, PropType, ref, toRefs } from 'vue';
 import { useI18n } from 'shared/i18n';
-import { getUrlByParams, isWeChat } from 'shared/utils/utils';
+import { getUrlByParams } from 'shared/utils/utils';
 import { useCommonData } from 'shared/stores/common';
+import { OIcon } from '@opensig/opendesign';
 import { ONLY_LOGIN_ID } from '@/shared/const';
 
-type TYPE = 'login' | 'register';
+type TYPE = 'login' | 'register' | 'perfectUserInfo';
 const props = defineProps({
   type: {
     type: String as PropType<TYPE>,
@@ -19,7 +17,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['submit', 'threePartLogin']);
+const emit = defineEmits(['submit', 'threePartLogin', 'sendCode']);
 
 const { type } = toRefs(props);
 const i18n = useI18n();
@@ -27,7 +25,7 @@ const { lang, loginParams } = useCommonData();
 const loginForm = ref();
 
 // 三方登录
-const redirectUri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
+const redirectUri = `${location.origin}/login`;
 const windowOpener = ref();
 const threePartsLogin = (type: string) => {
   const url = `${import.meta.env?.VITE_LOGIN_USERPOOL}/api/v3/signin-by-extidp`;
@@ -35,16 +33,13 @@ const threePartsLogin = (type: string) => {
     client_id: loginParams.value.client_id,
     response_type: loginParams.value.response_type,
     redirect_uri: redirectUri,
-    scope: 'openid profile username email street_address phone',
+    scope: 'openid profile username email phone',
     state: loginParams.value.state,
     nonce: loginParams.value.nonce,
     lang: lang.value === 'zh' ? 'zh-CN' : 'en-US',
     response_mode: 'web_message',
   };
   const connIds: any = {
-    // Gitee: '6226d91103d81d8654673f1b',
-    // GitHub: '6226db30c8e30db1518cc4aa',
-    // OpenAtom: '6607b16cb5fd97506e8cde93',
     GitCode: '64accd110ef3612bff3b4b2d',
   };
   Object.assign(params, { ext_idp_conn_id: connIds[type] });
@@ -69,27 +64,6 @@ const threePartsLogin = (type: string) => {
 };
 
 const icons = [
-  // {
-  //   key: 'Gitee',
-  //   icon: IconGitee,
-  //   onClick: (type: string) => {
-  //     threePartsLogin(type);
-  //   },
-  // },
-  // {
-  //   key: 'GitHub',
-  //   icon: IconGithub,
-  //   onClick: (type: string) => {
-  //     threePartsLogin(type);
-  //   },
-  // },
-  // {
-  //   key: 'OpenAtom',
-  //   icon: IconOpenAtom,
-  //   onClick: (type: string) => {
-  //     threePartsLogin(type);
-  //   },
-  // },
   {
     key: 'GitCode',
     icon: IconGitCode,
@@ -123,6 +97,9 @@ const listenerThreePartsLogin = () => {
 const submit = (form: any) => {
   emit('submit', form);
 };
+const sendCode = (form: any, data: any) => {
+  emit('sendCode', form, data);
+}
 onMounted(() => {
   listenerThreePartsLogin();
 });
@@ -133,8 +110,7 @@ onUnmounted(() => {
 const showFooter = computed(
   () =>
     type.value === 'login' &&
-    !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) &&
-    !isWeChat()
+    !(ONLY_LOGIN_ID as string[]).includes(loginParams.value.client_id as string)
 );
 </script>
 <template>
@@ -142,17 +118,20 @@ const showFooter = computed(
     <template #headerTitle>
       <slot name="headerTitle"> {{ i18n.ACCOUNT_LOGIN }} </slot>
     </template>
+    <template #headerTitleTip>
+      <slot name="headerTitleTip"></slot>
+    </template>
     <template #switch>
       <slot name="switch"></slot>
     </template>
     <template #body>
-      <LoginForm ref="loginForm" :type="type" @submit="submit">
+      <LoginForm ref="loginForm" :type="type" @submit="submit" @sendCode="sendCode">
         <template #btn>
           <slot name="btn"></slot>
         </template>
       </LoginForm>
     </template>
-    <template v-if="showFooter" #footer>
+    <template #footer v-if="showFooter">
       <div class="app-footer">
         <div class="divider">
           <div class="line"></div>
@@ -176,14 +155,14 @@ const showFooter = computed(
 </template>
 <style lang="scss" scoped>
 .gap {
-  margin-left: var(--o-spacing-h2);
+  margin-left: 40px;
 }
 .icon {
-  font-size: var(--o-font-size-h3);
+  font-size: 24px;
   cursor: pointer;
 }
 .app-footer {
-  padding-top: var(--o-spacing-h4);
+  padding-top: 24px;
   .divider {
     display: grid;
     grid-template-columns: auto max-content auto;
@@ -196,7 +175,7 @@ const showFooter = computed(
     .other {
       padding-left: var(--o-spacing-h5);
       padding-right: var(--o-spacing-h5);
-      font-size: var(--o-font-size-h8);
+      font-size: var(--o-font-size-tip);
       line-height: var(--o-line-height-h8);
       color: var(--o-color-text4);
     }

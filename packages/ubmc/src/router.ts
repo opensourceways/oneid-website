@@ -1,88 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import TheCenter from '@/views/user-center/TheCenter.vue';
 import TheLogin from '@/views/user-login/TheLogin.vue';
 import TheLogout from '@/views/user-login/TheLogout.vue';
 import TheRegister from '@/views/user-login/TheRegister.vue';
+import NotFound from '@/components/NotFound.vue';
 import TheResetPwd from '@/views/user-login/TheResetPwd.vue';
-import TheAuthorization from '@/views/user-login/TheAuthorization.vue';
-import NotFound from 'shared/components/NotFound.vue';
 import { useCommon } from 'shared/stores/common';
 import { LoginParams } from 'shared/@types/interface';
+import { useMetaTitle } from 'shared/composables/useMetaTitle';
+import { isString } from '@opensig/opendesign';
+import ThePerfectUserInfo from '@/views/user-login/ThePerfectUserInfo.vue';
 export const routes = [
-  {
-    path: '/',
-    redirect: 'zh/profile',
-  },
-  {
-    path: '/zh/profile',
-    name: 'zh-profile',
-    component: TheCenter,
-  },
-  {
-    path: '/zh/mobile/profile',
-    name: 'zh_mobile_profile',
-    component: () => {
-      return import('@/views/mobile/user-center/TheCenter.vue');
-    },
-  },
-  {
-    path: '/zh/mobile/profile/userinfo',
-    name: 'zh_mobile_profile_userInfo',
-    component: () => {
-      return import('@/views/mobile/user-center/components/UserInfo.vue');
-    },
-  },
-  {
-    path: '/zh/mobile/profile/binding',
-    name: 'zh_mobile_profile_binding',
-    component: () => {
-      return import('@/views/mobile/user-center/components/AccountBinding.vue');
-    },
-  },
-  {
-    path: '/zh/mobile/profile/security',
-    name: 'zh_mobile_profile_security',
-    component: () => {
-      return import(
-        '@/views/mobile/user-center/components/AccountSecurity.vue'
-      );
-    },
-  },
-  {
-    path: '/en/mobile/profile',
-    name: 'en_mobile_profile',
-    component: () => {
-      return import('@/views/mobile/user-center/TheCenter.vue');
-    },
-  },
-  {
-    path: '/en/mobile/profile/userinfo',
-    name: 'en_mobile_profile_userInfo',
-    component: () => {
-      return import('@/views/mobile/user-center/components/UserInfo.vue');
-    },
-  },
-  {
-    path: '/en/mobile/profile/binding',
-    name: 'en_mobile_profile_binding',
-    component: () => {
-      return import('@/views/mobile/user-center/components/AccountBinding.vue');
-    },
-  },
-  {
-    path: '/en/mobile/profile/security',
-    name: 'en_mobile_profile_security',
-    component: () => {
-      return import(
-        '@/views/mobile/user-center/components/AccountSecurity.vue'
-      );
-    },
-  },
-  {
-    path: '/en/profile',
-    name: 'en-profile',
-    component: TheCenter,
-  },
   {
     path: '/login',
     name: 'login',
@@ -109,9 +36,9 @@ export const routes = [
     component: TheResetPwd,
   },
   {
-    path: '/authorization',
-    name: 'authorization',
-    component: TheAuthorization,
+    path: '/perfectInfo',
+    name: 'perfectInfo',
+    component: ThePerfectUserInfo,
   },
 ];
 
@@ -122,21 +49,23 @@ export const router = createRouter({
 
 // 路由守卫，可在此处进行页面权限处理
 router.beforeEach((to, from, next) => {
-  const { changeLang, saveLoginParams, setSelectLoginType } = useCommon();
+  const { changeLang, saveLoginParams } = useCommon();
   if (to.path.startsWith('/en/') || to.query?.lang === 'en') {
     changeLang('en');
   } else if (to.path.startsWith('/zh/') || to.query?.lang === 'zh') {
     changeLang('zh');
   }
+
+  // 设置页面title
+  if (to.meta && isString(to.meta.title)) {
+    useMetaTitle(to.meta.title as string);
+  } else {
+    useMetaTitle(null);
+  }
   // 登录与注册需校验url参数
-  if (['/login', '/register', '/resetPwd', '/logout', '/authorization'].includes(to.path)) {
+  if (['/login', '/register', '/resetPwd', '/logout'].includes(to.path)) {
     if (to.query && to.query.redirect_uri) {
       saveLoginParams(to.query as unknown as LoginParams);
-    }
-  }
-  if (['/login'].includes(to.path)) {
-    if (to.query?.loginType) {
-      setSelectLoginType(to.query.loginType as 'password' | 'code');
     }
   }
   next();

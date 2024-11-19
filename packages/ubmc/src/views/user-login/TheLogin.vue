@@ -4,8 +4,6 @@ import {
   queryToken,
   checkLoginAccount,
 } from 'shared/api/api-login';
-import PadAccount from 'shared/components/PadAccount.vue';
-import AgreePrivacy from 'shared/components/AgreePrivacy.vue';
 import { useI18n } from 'shared/i18n';
 import {
   getLogoutSession,
@@ -13,22 +11,28 @@ import {
   logout,
   setLogoutSession,
 } from 'shared/utils/login';
-import { ElMessage } from 'element-plus';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { OLink, useMessage, ODivider, OButton } from '@opensig/opendesign';
+import { onMounted, reactive, ref, provide } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
-import Verify from 'shared/verifition/Verify.vue';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
-import { getVerifyImgSize } from 'shared/utils/utils';
-import { ONLY_LOGIN_ID } from '@/shared/const';
+import {
+  getVerifyImgSize,
+  callBackErrMessage,
+  getPrivacyVersion,
+} from 'shared/utils/utils';
+import { useTestIsPhone } from 'shared/utils/helper';
+import Verify from 'shared/verifition/Verify.vue';
+import PadAccount from '@/components/PadAccount.vue';
+import AgreePrivacy from '@/components/AgreePrivacy.vue';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
-const visible = ref(false);
-const privacyVisible = ref(false);
+const message = useMessage();
+
 const router = useRouter();
 const route = useRoute();
 const goRegister = () => {
@@ -45,54 +49,40 @@ const goResetPwd = () => {
 };
 const verify = ref();
 const { loginParams, selectLoginType } = useCommonData();
-
+const privacyVisible = ref(false);
+const visible = ref(false);
 // 控制补全框内容
 const padUserinfo = reactive({
   username: '',
-  emailExist: false,
-  phoneExist: false,
 });
+const loginOrigin = ref('');
 
 // 判断是否需要补全内容
-const isNotPadUserinfo = (data: any): boolean => {
-  const {
-    username,
-    email_exist: emailExist = false,
-    phone_exist: phoneExist = false,
-    email = '',
-    phone='',
-    oneidPrivacyAccepted = '',
-  } = data || {};
+const isNotPadUserinfo = async (data: any): Promise<boolean> => {
+  const { username, phone_exist, oneidPrivacyAccepted = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  let hasEmail = true;
-  let hasPhone = true;
-  if (route.query?.complementation) {
-    const complementation = route.query?.complementation;
-    if (complementation === 'phone') {
-      hasPhone = Boolean(phoneExist || phone)
-    } else if (complementation === 'email') {
-      hasEmail = Boolean(emailExist || email);
-    }
-  }
-  if (
-    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
-  ) {
+  const oneidPrivacyAccepted1 = await getPrivacyVersion();
+  if (oneidPrivacyAccepted !== oneidPrivacyAccepted1) {
     privacyVisible.value = true;
     return false;
-  } else if (!name || !hasEmail || !hasPhone) {
+  } else if (!name) {
     padUserinfo.username = name;
-    padUserinfo.emailExist = hasEmail;
-    padUserinfo.phoneExist = hasPhone;
     visible.value = true;
+    return false;
+  } else if (loginOrigin.value === 'THREE_PART' && phone_exist === false) {
+    router.push({
+      path: '/perfectInfo',
+      query: route.query,
+    });
     return false;
   }
   return true;
 };
 onMounted(() => {
   validLoginUrl().then(() => {
-    isLogined().then((bool) => {
+    isLogined({}).then(async (bool) => {
       if (bool) {
-        if (isNotPadUserinfo(bool)) {
+        if (await isNotPadUserinfo(bool)) {
           haveLoggedIn();
         }
       } else if (!getLogoutSession()) {
@@ -104,24 +94,25 @@ onMounted(() => {
 
 // 登录成功提示
 const doSuccess = () => {
-  ElMessage.success({
-    showClose: true,
-    message: i18n.value.LOGIN_SUCCESS,
+  message.success({
+    content: i18n.value.LOGIN_SUCCESS,
   });
   setLogoutSession();
   haveLoggedIn();
 };
 
 // 登录成功处理函数
-const loginSuccess = (data: any) => {
-  if (isNotPadUserinfo(data)) {
+const loginSuccess = async (data: any) => {
+  if (await isNotPadUserinfo(data)) {
     doSuccess();
   }
 };
 
+// 登录失败输入框变红
+const code = ref('');
+provide('loginErr', code);
 const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
-    community: import.meta.env?.VITE_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
     client_id: loginParams.value.client_id,
@@ -136,9 +127,17 @@ const login = async (form: any, captchaVerification?: string) => {
   } else {
     param.code = form.code;
   }
-  accountLoginPost(param).then((data: any) => {
-    loginSuccess(data?.data);
-  });
+  accountLoginPost(param, { $doException: true })
+    .then((data: any) => {
+      loginOrigin.value = 'ACCOUNT';
+      loginSuccess(data?.data);
+    })
+    .catch((err) => {
+      message.danger({
+        content: callBackErrMessage(err),
+      });
+      code.value = err.response.data.msg.code;
+    });
 };
 
 const formCopy = ref(null);
@@ -147,7 +146,6 @@ const formCopy = ref(null);
 const chenckLogin = (form: any) => {
   formCopy.value = form;
   const param = {
-    community: import.meta.env?.VITE_COMMUNITY,
     account: form.account,
   };
   checkLoginAccount(param).then((data) => {
@@ -168,35 +166,27 @@ const threePartLogin = (res: any) => {
   const param = {
     code: code,
     permission: 'sigRead',
-    community: import.meta.env?.VITE_COMMUNITY,
     redirect,
     client_id: loginParams.value.client_id,
   };
   queryToken(param).then((data: any) => {
+    loginOrigin.value = 'THREE_PART';
     loginSuccess(data?.data);
   });
 };
-
 const cancelPad = () => {
-  if (loginParams.value.response_mode === 'query' || !padUserinfo.username) {
-    logout();
-  } else {
-    doSuccess();
-  }
+  logout({}, location.href);
 };
-
 const agreePrivacy = () => {
-  isLogined().then((bool) => {
+  isLogined({}).then(async (bool) => {
     if (bool) {
-      if (isNotPadUserinfo(bool)) {
+      if (await isNotPadUserinfo(bool)) {
         haveLoggedIn();
       }
     }
   });
-}
-const showSwitch = computed(
-  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) && selectLoginType.value === 'password'
-);
+};
+const isphone = useTestIsPhone();
 </script>
 <template>
   <LoginTemplate
@@ -204,30 +194,44 @@ const showSwitch = computed(
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
   >
-    <template v-if="showSwitch" #switch>
-      <div style="flex: 1">
-        <a style="display: inline" @click="goResetPwd()">
-          {{ i18n.FORGET_PWD }}
-        </a>
-      </div>
-      {{ i18n.NO_ACCOUNT }}
-      &nbsp;
-      <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
+    <template #switch v-if="selectLoginType === 'password'">
+      <template v-if="isphone">
+        <OButton
+          color="primary"
+          variant="outline"
+          size="large"
+          class="login-btn"
+          @click="goRegister"
+        >
+          {{ i18n.REGISTER_NOW }}
+        </OButton>
+      </template>
+      <template v-else>
+        <div style="flex: 1">
+          <a style="display: inline" @click="goResetPwd()">
+            {{ i18n.FORGET_PWD }}
+          </a>
+        </div>
+        {{ i18n.NO_ACCOUNT }}
+        &nbsp;
+        <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
+      </template>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
+    <template #btn>
+      {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }}
+    </template>
   </LoginTemplate>
   <PadAccount
     v-model="visible"
     :username="padUserinfo.username"
-    :email-exist="padUserinfo.emailExist"
-    :phone-exist="padUserinfo.phoneExist"
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
   <AgreePrivacy
     v-model="privacyVisible"
     @success="agreePrivacy"
-    @cancel="logout"
+    @cancel="cancelPad"
   ></AgreePrivacy>
   <Verify
     ref="verify"
@@ -237,4 +241,13 @@ const showSwitch = computed(
     @success="verifySuccess"
   ></Verify>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.login-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+}
+.place-holder {
+  flex: 1;
+}
+</style>
