@@ -1,24 +1,10 @@
-<script setup lang="ts">
-import { useCommon, useCommonData } from 'shared/stores/common';
-
-import notFoundImgLight from '@/assets/404.png';
-import notFoundImgDark from '@/assets/404_dark.png';
-import { computed } from 'vue';
-const { lang } = useCommonData();
-const commonStore = useCommon();
-
-const notFoundImg = computed(() =>
-  commonStore.theme === 'light' ? notFoundImgLight : notFoundImgDark
-);
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="nofound">
-    <img class="nofound-img" :src="notFoundImg" alt="404" />
+    <img src="@/assets/empty.svg" class="nofound-img" />
     <p class="nofound-text">
-      <slot name="title">
-        {{ lang === 'zh' ? '暂无数据' : 'NotFound !' }}
-      </slot>
+      <slot name="title"> 回调地址redirect_uri不匹配 </slot>
     </p>
   </div>
 </template>
@@ -29,26 +15,23 @@ const notFoundImg = computed(() =>
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-size: var(--o-font-size-h6);
-  color: var(--o-color-text1);
-  padding: var(--o-spacing-h2) 0;
+  @include h4;
+  color: var(--o-color-info1);
+  height: inherit;
+  background-color: rgb(247, 247, 247);
   min-height: calc(100vh - 339px);
   .nofound-text {
     margin-top: var(--o-spacing-h5);
-    font-size: var(--o-font-size-h7);
   }
   .nofound-img {
     height: 300px;
   }
   @media screen and (max-width: 768px) {
-    padding-top: var(--o-spacing-h2);
-    font-size: var(--o-font-size-text);
     .nofound-img {
       max-height: 232px;
     }
     .nofound-text {
       margin-top: var(--o-spacing-h6);
-      font-size: var(--o-font-size-tip);
     }
   }
 }

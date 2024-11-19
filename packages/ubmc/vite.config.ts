@@ -17,6 +17,18 @@ export default defineConfig({
       '@/': `${path.resolve(__dirname, './src')}/`,
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+        @use "@/shared/style/mixin/screen.scss" as *;
+        @use "@/shared/style/mixin/font.scss" as *;
+        @use "@/shared/style/mixin/common.scss" as *;
+        @use "@/shared/style/mixin/repo-tag.scss" as *;
+        `,
+      },
+    },
+  },
   plugins: [
     vue(),
     vueJsx({}),
@@ -35,7 +47,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/oneid/': {
-        target: 'http://localhost:3060/mock',
+        target: 'http://localhost:7060/mock',
         secure: false,
         changeOrigin: true,
       },

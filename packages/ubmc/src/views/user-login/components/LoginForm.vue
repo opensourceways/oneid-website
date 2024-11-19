@@ -1,24 +1,45 @@
 <script setup lang="ts">
-import CountdownButton from 'shared/components/CountdownButton.vue';
-import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
-import { computed, PropType, reactive, ref, toRefs, watch } from 'vue';
+import CountdownButton from '@/components/CountdownButton.vue';
+import {
+  PropType,
+  reactive,
+  ref,
+  toRefs,
+  computed,
+  onMounted,
+  onUnmounted,
+  inject,
+  watch,
+  watchEffect,
+} from 'vue';
 import { useI18n } from 'shared/i18n';
 import {
+  OInput,
+  OButton,
+  OCheckbox,
+  OLink,
+  useMessage,
+  OForm,
+  OFormItem,
+} from '@opensig/opendesign';
+import { ValidatorT } from '@opensig/opendesign/lib/form/types';
+import { getVerifyImgSize } from 'shared/utils/utils';
+import {
+  getUsernammeRules,
+  validatorEmpty,
+  getPwdRules,
+  validatorPhone,
   formValidator,
-  doValidatorForm,
-  asyncBlur,
-  getVerifyImgSize,
-} from 'shared/utils/utils';
+  getCodeRules,
+  validatorEmail,
+} from 'shared/utils/rules';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from 'shared/components/LoginTabs.vue';
-import PwdInput from 'shared/components/PwdInput.vue';
-import { getPwdRules, getUsernammeRules } from 'shared/utils/utils';
-import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
 import { ONLY_LOGIN_ID } from '@/shared/const';
 
-type TYPE = 'login' | 'register';
+type TYPE = 'login' | 'register' | 'perfectUserInfo';
 const props = defineProps({
   type: {
     type: String as PropType<TYPE>,
@@ -26,9 +47,41 @@ const props = defineProps({
   },
 });
 
-const formRef = ref<FormInstance>();
+const message = useMessage();
 
-const emit = defineEmits(['submit']);
+// 登录失败输入框变红
+const loginErr: any = inject('loginErr');
+watch(
+  () => loginErr,
+  (val) => {
+    if (val.value) {
+      if (val.value === 'E00052') {
+        const inputs = document.getElementsByClassName('login-pwd-input');
+        inputs[0].classList.add('login-pwd-input-danger');
+        inputs[1].classList.add('login-pwd-input-danger');
+      }
+      if (val.value === 'E0002') {
+        const inputs = document.getElementsByClassName('login-code-input');
+        inputs[0].classList.add('o-input-danger');
+      }
+      loginErr.value = '';
+    }
+  },
+  {
+    deep: true,
+  }
+);
+// 重置登录失败输入框变红
+const resetLoginErr = () => {
+  const inputs = document.getElementsByClassName('login-pwd-input-danger');
+  for (let i = 0; i < inputs.length; i++) {
+    inputs[i].classList.remove('login-pwd-input-danger');
+  }
+};
+
+const formRef = ref<InstanceType<typeof OForm>>();
+
+const emit = defineEmits(['submit', 'sendCode']);
 
 // 外部校验方法
 const validator = (fields?: string[] | string) => {
@@ -36,26 +89,27 @@ const validator = (fields?: string[] | string) => {
 };
 defineExpose({ validator });
 
+const doValidator = (fields?: string[] | string) => {
+  formValidator(formRef.value, fields).subscribe();
+};
+
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams, selectLoginType } = useCommonData();
-
 // 表单值
 const form = reactive({
   username: '',
   account: '',
   code: '',
-  password: '',
   policy: [],
+  password: '',
 } as any);
 
 // 验证码限制重发
-const disableCode = ref(false);
-// 验证码限制输入
-const disableCodeInput = ref(true);
+const disableCode = ref(true);
 const verify = ref();
 // 获取验证码
-const getcode = (formEl: FormInstance | undefined) => {
+const getcode = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (!formEl) return;
   formValidator(formEl, 'account').subscribe((valid) => {
     if (valid) {
@@ -67,6 +121,13 @@ const getcode = (formEl: FormInstance | undefined) => {
 };
 
 const verifySuccess = (data: any) => {
+  // 完善用户信息添加的验证码逻辑，和注册验证码接口分开
+  if (type.value === 'perfectUserInfo') {
+    emit('sendCode', form, data);
+    disableCode.value = true;
+    return;
+  }
+  // 其他验证码调用接口
   let channel = 'CHANNEL_REGISTER';
   if (type.value === 'login') {
     channel = 'CHANNEL_LOGIN';
@@ -78,49 +139,26 @@ const verifySuccess = (data: any) => {
     account: form.account,
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
-    community: import.meta.env?.VITE_COMMUNITY,
   };
   sendCodeCaptcha(param).then(() => {
     disableCode.value = true;
-    disableCodeInput.value = false;
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.SEND_SUCCESS,
+    message.success({
+      content: i18n.value.SEND_SUCCESS,
     });
   });
 };
 
-const changeCheckBox = (formEl: FormInstance | undefined) => {
+const changeCheckBox = () => {
   if (form.policy.length) {
     form.policy = [];
   } else {
     form.policy.push('1');
   }
-  doValidatorForm(formEl, 'policy');
-};
-
-// 手机或邮箱合法校验
-const validatorAccount = (rule: any, value: any, callback: any) => {
-  if (value) {
-    if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
-        callback();
-      } else {
-        callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
-      }
-  }
-};
-
-// checkbox校验
-const validatorCheckbox = (rule: any, value: any, callback: any) => {
-  if (!value || !value.length) {
-    callback(i18n.value.PLEASE_CHECK_PRIVACY);
-  } else {
-    callback();
-  }
+  doValidator('policy');
 };
 
 // 校验密码不能包含用户名及其逆序
-const validatorPwd = (rule: any, value: any, callback: any) => {
+const validatorPwd: ValidatorT = (value: string) => {
   if (
     value &&
     ((form.username &&
@@ -130,53 +168,104 @@ const validatorPwd = (rule: any, value: any, callback: any) => {
         (value.includes(form.account) ||
           value.includes(form.account.split('').reverse().join('')))))
   ) {
-    callback(i18n.value.PWD_USERNAME_VAILD);
-  } else {
-    callback();
+    return {
+      type: 'danger',
+      message: useI18n().value.PWD_USERNAME_VAILD,
+    };
+  }
+};
+// checkbox校验
+const validatorCheckbox: ValidatorT = (value: Array<string>) => {
+  if (!value || !value.length) {
+    return {
+      type: 'danger',
+      message: useI18n().value.PLEASE_CHECK_PRIVACY,
+    };
   }
 };
 
-// 空值校验
-const requiredRules: FormItemRule[] = [
+const loginAccountRuless = [
   {
-    required: true,
-    message: i18n.value.NOT_EMPTY,
-    trigger: 'blur',
+    validator: validatorEmpty('ENTER_YOUR_ACCOUNT'),
+    triggers: 'change',
+  },
+  {
+    validator: (value: string) => {
+      if (value && value.length < 3) {
+        return {
+          type: 'danger',
+          message: useI18n().value.ACCOUNT_CONTAIN_CHARACTER,
+        };
+      }
+    },
+    triggers: 'change',
   },
 ];
-const rules = ref(requiredRules);
 
 // 用户名校验
-const userNameRules = reactive<FormItemRule[]>(getUsernammeRules());
-const passwordRules = ref<FormItemRule[]>([
-  ...requiredRules,
+const userNameRules = getUsernammeRules();
+const codeRules = getCodeRules();
+const loginPwdRules = [
+  {
+    validator: validatorEmpty('INTER_PWD'),
+    triggers: 'change',
+  },
+];
+const passwordRules = [
+  {
+    validator: validatorEmpty('INTER_PWD'),
+    triggers: 'change',
+  },
   ...getPwdRules(),
   {
     validator: validatorPwd,
-    trigger: ['change', 'blur'],
+    triggers: 'change',
   },
-]);
+];
 
 // 账户校验
-const accountRules = reactive<FormItemRule[]>([
-  ...requiredRules,
+const phoneRules = [
   {
-    validator: validatorAccount,
-    trigger: 'blur',
+    validator: validatorEmpty('ENTER_YOUR_PHONE'),
+    triggers: 'change',
   },
-]);
+  {
+    validator: validatorPhone,
+    triggers: 'change',
+  },
+];
+// 账户校验
+const emailRules = [
+  {
+    validator: validatorEmpty('ENTER_YOUR_EMAIL'),
+    triggers: 'change',
+  },
+  {
+    validator: validatorEmail,
+    triggers: 'change',
+  },
+];
+
+const accountRules = computed(() => {
+  if (type.value === 'login' && selectLoginType.value === 'password') {
+    return loginAccountRuless;
+  } else if (!showSwitch.value) {
+    return emailRules;
+  } else {
+    return phoneRules;
+  }
+});
 
 // 隐私声明校验
-const policyRules = reactive<FormItemRule[]>([
+const policyRules = [
   {
     validator: validatorCheckbox,
-    trigger: 'change',
+    triggers: 'change',
   },
-]);
+];
 
-const submit = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formValidator(formEl).subscribe((valid) => {
+const submit = () => {
+  formValidator(formRef.value).subscribe((valid) => {
     if (valid) {
       emit('submit', form);
     } else {
@@ -185,47 +274,79 @@ const submit = (formEl: FormInstance | undefined) => {
   });
 };
 
-const blur = (formEl: FormInstance | undefined, field: string) => {
-  if (type.value === 'register') {
-    asyncBlur(formEl, field);
-  }
-};
-
 // 改变账户值，重置code或pwd
-const changeAccount = (formEl: FormInstance | undefined) => {
+const changeAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   formEl?.resetFields('code');
   if (type.value === 'login') {
     formEl?.resetFields('password');
   }
+  checkCodeCanClick(formEl);
+};
+
+// 判断发送验证码按钮是否禁用
+const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
+  if (!form.account) {
+    disableCode.value = true;
+  } else {
+    formValidator(formEl, 'account').subscribe((valid) => {
+      disableCode.value = !valid;
+    });
+  }
+  resetLoginErr();
 };
 
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
-  const url = `${origin}/${lang.value}/other/${type}`;
+  const url = `${origin}/${type}/`;
   window.open(url, '_blank');
 };
-const hiddenRestrictedTipArr = [import.meta.env?.VITE_OPENEULER_APPID];
-const showRestrictedTip = computed(
-  () => !hiddenRestrictedTipArr.includes(loginParams.value.client_id)
-);
 const accountPlaceholder = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
     return i18n.value.ENTER_YOUR_ACCOUNT;
+  } else if (!showSwitch.value) {
+    return i18n.value.ENTER_YOUR_EMAIL;
   } else {
-    return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
+    return i18n.value.ENTER_YOUR_PHONE;
+  }
+});
+const btnCanClick = ref(false);
+
+watchEffect(async () => {
+  const res = await formRef.value?.validate();
+  formRef.value?.clearValidate();
+  if (res?.length) {
+    // 有表单项，所有表单项都校验通过按钮才可点击；否则，不可点击
+    const r = res.every((v) => !v);
+    btnCanClick.value = r;
+  } else {
+    // 没有表单项，按钮可点击
+    btnCanClick.value = true;
   }
 });
 const loginTabSelect = () => {
   formRef.value?.resetFields();
-  disableCode.value = false;
-  disableCodeInput.value = true;
+  disableCode.value = true;
+  resetLoginErr();
 };
+
+// 键盘回车登录
+const enterSubmit = (e: { key: string }) => {
+  if (type.value === 'login' && e.key === 'Enter') {
+    submit();
+  }
+};
+onMounted(() => {
+  window.addEventListener('keydown', enterSubmit);
+});
+onUnmounted(() => {
+  window.removeEventListener('keydown', enterSubmit);
+});
 const showSwitch = ref(true);
 watch(
   () => loginParams.value.client_id,
   () => {
-    showSwitch.value = !ONLY_LOGIN_ID.includes(
+    showSwitch.value = !(ONLY_LOGIN_ID as string[]).includes(
       loginParams.value.client_id as string
     );
     if (!showSwitch.value) {
@@ -238,95 +359,152 @@ watch(
 );
 </script>
 <template>
+  <!-- 密码和验证码的切换 -->
   <LoginTabs
     v-if="showSwitch"
     v-model="selectLoginType"
     :type="type"
+    class="login-tab"
     @select="loginTabSelect"
   ></LoginTabs>
-  <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
-    <el-form-item
+  <OForm
+    id="login-formss"
+    ref="formRef"
+    label-width="0"
+    :model="form"
+    class="form"
+    style="max-width: 460px"
+  >
+    <!-- 用户名 -->
+    <OFormItem
       v-if="type === 'register'"
-      prop="username"
+      field="username"
       :rules="userNameRules"
     >
       <OInput
         v-model.trim="form.username"
+        size="large"
         :placeholder="i18n.ENTER_USERNAME"
-        @blur="blur(formRef, 'username')"
+        @change="formValidator(formRef, 'username')"
       />
-    </el-form-item>
-    <el-form-item
-      prop="account"
-      :rules="
-        type === 'login' && selectLoginType === 'password'
-          ? rules
-          : accountRules
-      "
-    >
+    </OFormItem>
+    <!-- 账号： 手机号、邮箱 -->
+    <OFormItem field="account" :rules="accountRules">
       <OInput
+        id="e2e_login_account"
         v-model.trim="form.account"
+        class="login-pwd-input"
+        size="large"
+        :title="accountPlaceholder"
         :placeholder="accountPlaceholder"
-        @blur="blur(formRef, 'account')"
         @input="changeAccount(formRef)"
       />
-    </el-form-item>
-    <el-form-item
-      v-if="selectLoginType === 'code' || type === 'register'"
-      prop="code"
-      :rules="rules"
+    </OFormItem>
+    <!-- 验证码 -->
+    <OFormItem
+      v-if="
+        selectLoginType === 'code' ||
+        type === 'register' ||
+        type === 'perfectUserInfo'
+      "
+      field="code"
+      :rules="codeRules"
     >
-      <div class="code">
-        <OInput
-          v-model.trim="form.code"
-          :placeholder="i18n.ENTER_RECEIVED_CODE"
-          :disabled="type === 'register' ? false : disableCodeInput"
-          maxlength="6"
-        />
-        <CountdownButton
-          v-model="disableCode"
-          class="btn"
-          size="small"
-          @click="getcode(formRef)"
-        />
-      </div>
-    </el-form-item>
-    <el-form-item
-      v-if="selectLoginType === 'password'"
-      prop="password"
-      :rules="type === 'register' ? passwordRules : rules"
+      <OInput
+        v-model.trim="form.code"
+        :clearable="false"
+        size="large"
+        :placeholder="i18n.ENTER_RECEIVED_CODE"
+        class="login-code-input"
+        maxlength="6"
+        @change="formValidator(formRef, 'code')"
+      >
+        <template #suffix>
+          <CountdownButton
+            v-model="disableCode"
+            color="primary"
+            size="small"
+            @click="getcode(formRef)"
+          />
+        </template>
+      </OInput>
+    </OFormItem>
+    <!-- 密码 -->
+    <OFormItem
+      v-if="selectLoginType === 'password' && type != 'perfectUserInfo'"
+      field="password"
+      :rules="type === 'register' ? passwordRules : loginPwdRules"
     >
-      <PwdInput
+      <OInput
+        id="e2e_login_password"
         v-model="form.password"
+        class="login-pwd-input"
+        size="large"
+        type="password"
         :placeholder="i18n.INTER_PWD"
-        :show-password="type === 'register'"
+        @blur="resetLoginErr"
+        @change="formValidator(formRef, 'password')"
       />
-    </el-form-item>
-    <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
+    </OFormItem>
+    <!-- 隐私政策和法律文件 -->
+    <OFormItem v-if="type === 'register'" field="policy" :rules="policyRules">
       <div class="checkbox">
-        <OCheckboxGroup
+        <OCheckbox
           v-model="form.policy"
-          @change="doValidatorForm(formRef, 'policy')"
+          value="1"
+          @change="doValidator('policy')"
         >
-          <OCheckbox value="1"></OCheckbox>
-        </OCheckboxGroup>
+        </OCheckbox>
         <span>
-          <span class="cursor" @click="changeCheckBox(formRef)">
+          <span class="cursor" @click="changeCheckBox()">
             {{ i18n.READ_ADN_AGREE }}
           </span>
-          <span>&nbsp;</span>
-          <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
-          {{ i18n.AND }}
-          <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
+          <OLink
+            color="primary"
+            hover-underline
+            @click="goToOtherPage('privacy')"
+            >{{ i18n.PRIVACY_POLICY }}</OLink
+          >
+          <span>{{
+            lang === 'zh' ? i18n.AND : '&nbsp;' + i18n.AND + '&nbsp;'
+          }}</span>
+          <OLink
+            color="primary"
+            hover-underline
+            @click="goToOtherPage('legal')"
+            >{{ i18n.LEGAL_NOTICE }}</OLink
+          >
         </span>
       </div>
-    </el-form-item>
-    <el-form-item>
-      <OButton type="primary" class="login-btn" @click="submit(formRef)">
-        <slot name="btn"> {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }} </slot>
+    </OFormItem>
+    <OFormItem>
+      <!-- 完善用户信息提交按钮，添加disabled-->
+      <OButton
+        v-if="type === 'perfectUserInfo'"
+        id="e2e_login_submit"
+        color="primary"
+        variant="solid"
+        size="large"
+        class="login-btn"
+        :disabled="!btnCanClick"
+        @click="submit()"
+      >
+        <slot name="btn"> {{ i18n.LOGIN }} </slot>
       </OButton>
-    </el-form-item>
-  </el-form>
+      <OButton
+        v-else
+        id="e2e_login_submit"
+        color="primary"
+        :disabled="!btnCanClick"
+        variant="solid"
+        size="large"
+        class="login-btn"
+        @click="submit()"
+      >
+        <slot name="btn"> {{ i18n.LOGIN }} </slot>
+      </OButton>
+    </OFormItem>
+  </OForm>
   <Verify
     ref="verify"
     mode="pop"
@@ -336,17 +514,11 @@ watch(
   ></Verify>
 </template>
 <style lang="scss" scoped>
-.code {
-  display: grid;
-  grid-template-columns: auto max-content;
+.o-input {
   width: 100%;
-  grid-gap: var(--o-spacing-h9);
 }
 .cursor {
   cursor: pointer;
-}
-.btn {
-  height: 38px;
 }
 .login-btn {
   width: 100%;
@@ -356,20 +528,41 @@ watch(
   display: grid;
   grid-template-columns: auto auto;
   align-items: start;
-  color: var(--o-color-text1);
-  font-size: var(--o-font-size-text);
-  line-height: var(--o-line-height-text);
+  color: var(--o-color-info1);
+  font-size: 14px;
+  line-height: 22px;
   .o-checkbox-group {
     padding-top: 3px;
   }
 }
-:deep(.el-form-item.is-error .el-input__wrapper) {
-  box-shadow: 0 0 0 1px var(--o-color-error1) inset;
+.login-tab {
+  margin-bottom: 24px;
+  position: relative;
+  font-size: var(--o-font-size-h6);
+  line-height: 28px;
+  :deep(.tab) {
+    padding-bottom: 17px;
+    height: auto;
+  }
 }
-.el-form-item {
-  margin-bottom: 28px;
-  @media (max-width: 1100px) {
-    margin-bottom: 40px;
+.form {
+  --form-label-main-gap: 0;
+  .o-form-item:last-child {
+    margin-bottom: 12px;
+  }
+  .o-form-item-danger {
+    margin-bottom: 0 !important;
+  }
+}
+.login-pwd-input-danger {
+  --input-bd-color: var(--o-color-danger1);
+  --input-bd-color-hover: var(--o-color-danger2);
+  --input-bd-color-focus: var(--o-color-danger3);
+  --input-bd-color-disabled: var(--o-color-danger4);
+}
+.o-form.reset-danger {
+  :deep(.type-danger) {
+    visibility: hidden;
   }
 }
 </style>

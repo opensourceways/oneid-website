@@ -14,7 +14,6 @@ export function validLoginUrl(query?: LoginParams) {
         community: import.meta.env?.VITE_COMMUNITY,
       })
     };
-    console.log('community', import.meta.env?.VITE_COMMUNITY);
     appVerify(param)
       .then(() => {
         resolve(true);

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ResetPwd from 'shared/components/ResetPwd.vue';
+import ResetPwd from '@/components/ResetPwd.vue';
 import LoginCard from './components/LoginCard.vue';
 </script>
 
