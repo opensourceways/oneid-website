@@ -78,6 +78,7 @@ RUN touch /var/run/nginx.pid \
     && echo "set +o history" >> /etc/bashrc \
     && sed -i "s|HISTSIZE=1000|HISTSIZE=0|" /etc/profile \
     && sed -i "s/PASS_MAX_DAYS.*/PASS_MAX_DAYS 30/" /etc/login.defs \
+    && echo "ALWAYS_SET_PATH yes" >> /etc/login.defs \
     && passwd -l $NGINX_USER \
     && yum clean all \
     && usermod -s /sbin/nologin sync \
@@ -87,6 +88,7 @@ RUN touch /var/run/nginx.pid \
     && rm -rf /usr/bin/gdb* \
     && rm -rf /usr/share/gdb \
     && rm -rf /usr/share/gcc-10.3.1 \
+    && rm -f /usr/lib64/python3.9/pdb.py \
     && yum remove gdb-gdbserver findutils passwd shadow -y
 
 COPY ./deploy/monitor.sh ./deploy/entrypoint.sh /etc/nginx/

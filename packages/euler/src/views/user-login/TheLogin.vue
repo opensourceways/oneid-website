@@ -60,7 +60,7 @@ const isNotPadUserinfo = (data: any): boolean => {
     email_exist: emailExist = false,
     phone_exist: phoneExist = false,
     email = '',
-    phone='',
+    phone = '',
     oneidPrivacyAccepted = '',
   } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
@@ -69,14 +69,12 @@ const isNotPadUserinfo = (data: any): boolean => {
   if (route.query?.complementation) {
     const complementation = route.query?.complementation;
     if (complementation === 'phone') {
-      hasPhone = Boolean(phoneExist || phone)
+      hasPhone = Boolean(phoneExist || phone);
     } else if (complementation === 'email') {
       hasEmail = Boolean(emailExist || email);
     }
   }
-  if (
-    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
-  ) {
+  if (oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED) {
     privacyVisible.value = true;
     return false;
   } else if (!name || !hasEmail || !hasPhone) {
@@ -191,9 +189,11 @@ const agreePrivacy = () => {
       }
     }
   });
-}
+};
 const showSwitch = computed(
-  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) && selectLoginType.value === 'password'
+  () =>
+    !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) &&
+    selectLoginType.value === 'password'
 );
 </script>
 <template>
