@@ -10,7 +10,6 @@ import {
   onUnmounted,
   inject,
   watch,
-  watchEffect,
 } from 'vue';
 import { useI18n } from 'shared/i18n';
 import {
@@ -22,16 +21,15 @@ import {
   OForm,
   OFormItem,
 } from '@opensig/opendesign';
-import { ValidatorT } from '@opensig/opendesign/lib/form/types';
+import { FieldResultT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 import { getVerifyImgSize } from 'shared/utils/utils';
 import {
   getUsernammeRules,
   validatorEmpty,
   getPwdRules,
-  validatorPhone,
+  validatorEmailPhone,
   formValidator,
   getCodeRules,
-  validatorEmail,
 } from 'shared/utils/rules';
 import { sendCodeCaptcha } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
@@ -89,10 +87,10 @@ const validator = (fields?: string[] | string) => {
 };
 defineExpose({ validator });
 
-const doValidator = (fields?: string[] | string) => {
-  formValidator(formRef.value, fields).subscribe();
+const doValidator = async (field: fieldT) => {
+  const res = await formRef.value?.validate(field) || [];
+  checkFields(field, res);
 };
-
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams, selectLoginType } = useCommonData();
@@ -223,25 +221,14 @@ const passwordRules = [
   },
 ];
 
-// 账户校验
-const phoneRules = [
-  {
-    validator: validatorEmpty('ENTER_YOUR_PHONE'),
-    triggers: 'change',
-  },
-  {
-    validator: validatorPhone,
-    triggers: 'change',
-  },
-];
-// 账户校验
-const emailRules = [
+// 邮箱或手机号合法校验
+const emailPhoneRules = [
   {
     validator: validatorEmpty('ENTER_YOUR_EMAIL'),
     triggers: 'change',
   },
   {
-    validator: validatorEmail,
+    validator: validatorEmailPhone,
     triggers: 'change',
   },
 ];
@@ -249,10 +236,8 @@ const emailRules = [
 const accountRules = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
     return loginAccountRuless;
-  } else if (!showSwitch.value) {
-    return emailRules;
   } else {
-    return phoneRules;
+    return emailPhoneRules;
   }
 });
 
@@ -277,8 +262,10 @@ const submit = () => {
 // 改变账户值，重置code或pwd
 const changeAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   formEl?.resetFields('code');
+  checkFields('code');
   if (type.value === 'login') {
     formEl?.resetFields('password');
+    checkFields('password');
   }
   checkCodeCanClick(formEl);
 };
@@ -304,26 +291,93 @@ const goToOtherPage = (type: string) => {
 const accountPlaceholder = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
     return i18n.value.ENTER_YOUR_ACCOUNT;
-  } else if (!showSwitch.value) {
-    return i18n.value.ENTER_YOUR_EMAIL;
   } else {
-    return i18n.value.ENTER_YOUR_PHONE;
+    return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
   }
 });
-const btnCanClick = ref(false);
 
-watchEffect(async () => {
-  const res = await formRef.value?.validate();
-  formRef.value?.clearValidate();
-  if (res?.length) {
-    // 有表单项，所有表单项都校验通过按钮才可点击；否则，不可点击
-    const r = res.every((v) => !v);
-    btnCanClick.value = r;
+// ----------------------------------------------------- 计算按钮是否可点击 ----------------------------
+const btnCanClick = ref(false);
+type fieldT = 'account' | 'password' | 'code' | 'username' | 'policy';
+type fieldObjectT = {
+  username?: boolean;
+  account?: boolean;
+  code?: boolean;
+  password?: boolean;
+  policy?: boolean;
+};
+const ruleFields = computed<fieldObjectT>(() => {
+  if (props.type === 'login') {
+    if (selectLoginType.value === 'password') {
+      return {
+        account: false,
+        password: false,
+      };
+    } else if (selectLoginType.value === 'code') {
+      return {
+        account: false,
+        code: false,
+      };
+    } else {
+      return {};
+    }
+  } else if (props.type === 'register') {
+    if (selectLoginType.value === 'password') {
+      return {
+        username: false,
+        account: false,
+        code: false,
+        password: false,
+        policy: false,
+      };
+    } else if (selectLoginType.value === 'code') {
+      return {
+        username: false,
+        account: false,
+        code: false,
+        policy: false,
+      };
+    } else {
+      return {};
+    }
+  } else if (props.type === 'perfectUserInfo') {
+    return {
+      account: false,
+      code: false,
+    };
   } else {
-    // 没有表单项，按钮可点击
-    btnCanClick.value = true;
+    return {};
   }
 });
+watch(() => ruleFields.value, () => btnCanClick.value = false)
+// valids为空 表示重置
+const checkFields = (field: fieldT, valids?: FieldResultT[]) => {
+  if (!valids) {
+    if (ruleFields.value.hasOwnProperty(field)) {
+      ruleFields.value[field] = false;
+    } else {
+      return;
+    }
+  } else {
+    if (ruleFields.value.hasOwnProperty(field)) {
+      ruleFields.value[field] = valids.every((one) => !one);
+    } else {
+      return;
+    }
+  }
+  const values = Object.values(ruleFields.value);
+  btnCanClick.value = values.every((one) => one);
+};
+// 清空输入校验
+const clearValidate = (field: fieldT) => {
+  formRef.value?.clearValidate(field);
+  if (field === 'code' && form.code?.length >= 6) {
+    doValidator('code');
+  }
+  if (field === 'password' && form.password?.length >= 8) {
+    doValidator('password');
+  }
+};
 const loginTabSelect = () => {
   formRef.value?.resetFields();
   disableCode.value = true;
@@ -385,7 +439,8 @@ watch(
         v-model.trim="form.username"
         size="large"
         :placeholder="i18n.ENTER_USERNAME"
-        @change="formValidator(formRef, 'username')"
+        @input="clearValidate('username')"
+        @change="doValidator('username')"
       />
     </OFormItem>
     <!-- 账号： 手机号、邮箱 -->
@@ -397,7 +452,8 @@ watch(
         size="large"
         :title="accountPlaceholder"
         :placeholder="accountPlaceholder"
-        @input="changeAccount(formRef)"
+        @input="clearValidate('account')"
+        @change="doValidator('account'), changeAccount(formRef)"
       />
     </OFormItem>
     <!-- 验证码 -->
@@ -417,7 +473,8 @@ watch(
         :placeholder="i18n.ENTER_RECEIVED_CODE"
         class="login-code-input"
         maxlength="6"
-        @change="formValidator(formRef, 'code')"
+        @blur="doValidator('code')"
+        @input="clearValidate('code')"
       >
         <template #suffix>
           <CountdownButton
@@ -442,8 +499,8 @@ watch(
         size="large"
         type="password"
         :placeholder="i18n.INTER_PWD"
-        @blur="resetLoginErr"
-        @change="formValidator(formRef, 'password')"
+        @input="clearValidate('password')"
+        @change="doValidator('password')"
       />
     </OFormItem>
     <!-- 隐私政策和法律文件 -->

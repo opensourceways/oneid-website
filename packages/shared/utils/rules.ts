@@ -1,8 +1,6 @@
 import { RulesT, ValidatorResultT, ValidatorT } from "@opensig/opendesign/lib/form/types";
 import { useI18n } from '../i18n';
 import {
-  COMPANYNAME_REG,
-  NICKNAME_REG,
   EMAIL_REG,
   PHONE_REG,
   PWD_REG,
@@ -46,6 +44,16 @@ export const validatorEmail: ValidatorT = (value: string) => {
     return {
       type: 'danger',
       message: useI18n().value.ENTER_VAILD_EMAIL,
+    };
+  }
+};
+
+// 邮箱或手机号校验
+export const validatorEmailPhone: ValidatorT = (value: string) => {
+  if (value && (!EMAIL_REG.test(value) && !PHONE_REG.test(value))) {
+    return {
+      type: 'danger',
+      message: useI18n().value.ENTER_VAILD_EMAIL_OR_PHONE,
     };
   }
 };

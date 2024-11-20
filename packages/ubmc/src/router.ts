@@ -6,8 +6,6 @@ import NotFound from '@/components/NotFound.vue';
 import TheResetPwd from '@/views/user-login/TheResetPwd.vue';
 import { useCommon } from 'shared/stores/common';
 import { LoginParams } from 'shared/@types/interface';
-import { useMetaTitle } from 'shared/composables/useMetaTitle';
-import { isString } from '@opensig/opendesign';
 import ThePerfectUserInfo from '@/views/user-login/ThePerfectUserInfo.vue';
 export const routes = [
   {
@@ -56,12 +54,6 @@ router.beforeEach((to, from, next) => {
     changeLang('zh');
   }
 
-  // 设置页面title
-  if (to.meta && isString(to.meta.title)) {
-    useMetaTitle(to.meta.title as string);
-  } else {
-    useMetaTitle(null);
-  }
   // 登录与注册需校验url参数
   if (['/login', '/register', '/resetPwd', '/logout'].includes(to.path)) {
     if (to.query && to.query.redirect_uri) {
