@@ -258,6 +258,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
       <OFormItem v-if="!username" field="username" :rules="userNameRules">
         <OInput
           v-model.trim="form.username"
+          size="large"
           :placeholder="i18n.ENTER_USERNAME"
         />
       </OFormItem>

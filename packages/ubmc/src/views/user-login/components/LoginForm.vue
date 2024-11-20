@@ -361,7 +361,7 @@ watch(
 <template>
   <!-- 密码和验证码的切换 -->
   <LoginTabs
-    v-if="showSwitch"
+    v-if="showSwitch && type !== 'perfectUserInfo'"
     v-model="selectLoginType"
     :type="type"
     class="login-tab"

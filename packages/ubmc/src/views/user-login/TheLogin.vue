@@ -11,7 +11,7 @@ import {
   logout,
   setLogoutSession,
 } from 'shared/utils/login';
-import { OLink, useMessage, ODivider, OButton } from '@opensig/opendesign';
+import { useMessage, OButton } from '@opensig/opendesign';
 import { onMounted, reactive, ref, provide } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
