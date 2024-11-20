@@ -40,7 +40,7 @@ const threePartsLogin = (type: string) => {
     response_mode: 'web_message',
   };
   const connIds: any = {
-    GitCode: '64accd110ef3612bff3b4b2d',
+    GitCode: '672dadfc33ccd39e77706f75',
   };
   Object.assign(params, { ext_idp_conn_id: connIds[type] });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
