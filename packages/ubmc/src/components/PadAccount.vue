@@ -6,9 +6,9 @@ import {
   OInput,
   useMessage,
   ODialog,
-  DialogActionT,
   OForm,
   OFormItem,
+  OButton,
 } from '@opensig/opendesign';
 import { RulesT } from '@opensig/opendesign/lib/form/types';
 import { getVerifyImgSize } from 'shared/utils/utils';
@@ -21,7 +21,6 @@ import {
   getCodeRules,
 } from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
-import { useCommonData } from 'shared/stores/common';
 import { bindAccount, modifyUser, sendCode } from 'shared/api/api-center';
 import { mergeMap, Observable, of, zip, map } from 'rxjs';
 
@@ -47,7 +46,6 @@ const props = defineProps({
 });
 const { modelValue, username, emailExist, phoneExist } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
-const { loginParams } = useCommonData();
 const i18n = useI18n();
 const message = useMessage();
 
@@ -180,8 +178,8 @@ const doSuccess = () => {
   close();
 };
 
-const putUser = (formEl: InstanceType<typeof OForm> | undefined) => {
-  if (!formEl) return;
+const putUser = () => {
+  const formEl = formRef.value;
   formValidator(formEl)
     .pipe(
       mergeMap((bool) => {
@@ -204,29 +202,7 @@ const cancelPad = () => {
   emit('cancel');
   close();
 };
-const dlgAction: DialogActionT[] = [
-  {
-    id: 'cancel',
-    label:
-      loginParams.value.response_mode === 'query' || !username.value
-        ? i18n.value.LOGOUT
-        : i18n.value.CANCEL,
-    size: 'large',
-    variant: 'outline',
-    onClick: () => {
-      cancelPad();
-    },
-  },
-  {
-    id: 'ok',
-    label: i18n.value.CONFIRM,
-    variant: 'outline',
-    size: 'large',
-    onClick: () => {
-      putUser(formRef.value);
-    },
-  },
-];
+
 // 账户失焦，判断发送验证码按钮是否禁用
 const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (!form.account) {
@@ -241,12 +217,13 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
 <template>
   <ODialog
     v-model:visible="modelValue"
-    :actions="dlgAction"
     hideClose
+    class="dialog"
+    :style="{ '--dlg-padding-body-top': '28px', '--dlg-body-padding': '58px', '--dlg-padding-body-bottom': '0', '--dlg-width': '480px' }"
     :maskClose="false"
   >
     <template #header>
-      <h5 class="header">{{ i18n.ENTER_USERINFO }}</h5>
+      <div class="header">{{ i18n.ENTER_USERINFO }}</div>
     </template>
     <OForm
       ref="formRef"
@@ -312,6 +289,12 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
         </div>
       </OFormItem>
     </OForm>
+    <template #footer>
+      <div class="footer">
+        <OButton size="large" color="primary" class="btn mr24" @click="cancelPad">{{ i18n.LOGOUT }}</OButton>
+        <OButton size="large" color="primary" class="btn primary" @click="putUser">{{ i18n.CONFIRM }}</OButton>
+      </div>
+    </template>
   </ODialog>
   <Verify
     v-if="modelValue"
@@ -323,6 +306,29 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   ></Verify>
 </template>
 <style lang="scss" scoped>
+.dialog {
+  :deep(.header) {
+    font-size: var(--o-font_size-h2);
+    line-height: 32px;
+  }
+  .footer {
+    text-align: center;
+    .primary {
+      color: white;
+      background-color: var(--o-color-primary1);
+    }
+    .btn {
+      &:hover {
+        color: inherit;
+        background-color: inherit;
+      }
+    }
+  }
+  .mr24 {
+    margin-right: 24px;
+  }
+}
+
 .o-input {
   width: 100%;
 }
