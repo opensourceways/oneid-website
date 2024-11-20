@@ -156,7 +156,7 @@ const doSendCode = (form: any, data: any) => {
     <template #headerTitleTip>
       {{
         curStep === 'PERFECT'
-          ? i18n.PERFECT_USER_INFO_TIP
+          ? i18n.PERFECT_USER_INFO_TIP?.replace('Modelers', 'OpenUBMC')
           : i18n.BINDING_CUR_ACCOUNT_TIP
       }}
     </template>
