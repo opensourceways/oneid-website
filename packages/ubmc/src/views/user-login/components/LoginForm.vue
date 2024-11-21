@@ -220,13 +220,17 @@ const passwordRules = [
     triggers: 'change',
   },
 ];
-
+// 空值校验
+const requiredRules = [
+  {
+    required: true,
+    message: i18n.value.NOT_EMPTY,
+    trigger: 'blur',
+  },
+];
 // 邮箱或手机号合法校验
 const emailPhoneRules = [
-  {
-    validator: validatorEmpty('ENTER_YOUR_EMAIL'),
-    triggers: 'change',
-  },
+  ...requiredRules,
   {
     validator: validatorEmailPhone,
     triggers: 'change',
@@ -277,9 +281,9 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
   } else {
     formValidator(formEl, 'account').subscribe((valid) => {
       disableCode.value = !valid;
+      clearValidate('account');
     });
   }
-  resetLoginErr();
 };
 
 // 隐私政策、法律声明
@@ -452,8 +456,8 @@ watch(
         size="large"
         :title="accountPlaceholder"
         :placeholder="accountPlaceholder"
-        @input="clearValidate('account')"
-        @change="doValidator('account'), changeAccount(formRef)"
+        @input="changeAccount(formRef)"
+        @change="doValidator('account')"
       />
     </OFormItem>
     <!-- 验证码 -->
