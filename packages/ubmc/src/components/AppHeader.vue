@@ -32,7 +32,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .app-header {
-  min-width: 1200px;
+  min-width: 336px;
   color: var(--o-color-info1);
   background-color: rgba(var(--o-mixedgray-1));
 }

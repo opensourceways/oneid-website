@@ -20,11 +20,11 @@ import AppFooter from '@/components/AppFooter.vue';
   -moz-osx-font-smoothing: grayscale;
   --layout-header-height: 64px;
   --layout-header-zIndex: 101;
-  --layout-header-max-width: 1440px;
-  --layout-header-padding: 12px;
+  --layout-header-max-width: 100%;
+  --layout-header-padding: 64px;
 
-  --layout-content-max-width: 1440px;
-  --layout-content-padding: 12px;
+  --layout-content-max-width: 100%;
+  --layout-content-padding: 64px;
 
   --layout-footer-height: 80px;
 
@@ -38,10 +38,10 @@ import AppFooter from '@/components/AppFooter.vue';
 
   @include respond-to('<=laptop') {
     --layout-header-max-width: 100%;
-    --layout-header-padding: 5%;
+    --layout-header-padding: 64px;
 
     --layout-content-max-width: 100%;
-    --layout-content-padding: 5%;
+    --layout-content-padding: 64px;
   }
 
   @include respond-to('<=pad') {
