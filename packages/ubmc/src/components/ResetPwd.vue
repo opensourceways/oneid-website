@@ -1,12 +1,27 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import { reactive, ref } from 'vue';
-import { OInput, OButton, useMessage, OForm, OFormItem } from '@opensig/opendesign';
+import {
+  OInput,
+  OButton,
+  useMessage,
+  OForm,
+  OFormItem,
+} from '@opensig/opendesign';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import { resetPwd, resetPwdVerify, sendCodeCaptcha } from 'shared/api/api-login';
+import {
+  resetPwd,
+  resetPwdVerify,
+  sendCodeCaptcha,
+} from 'shared/api/api-login';
 import { getVerifyImgSize } from 'shared/utils/utils';
-import { getPwdRules, validatorEmpty, formValidator, getCodeRules } from 'shared/utils/rules';
+import {
+  getPwdRules,
+  validatorEmpty,
+  formValidator,
+  getCodeRules,
+} from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
 import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
@@ -185,7 +200,7 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
     class="form"
     @submit.prevent=""
   >
-    <span v-if="!resetToken">
+    <template v-if="!resetToken">
       <OFormItem field="account" :rules="accountRules">
         <OInput
           v-model="form.account"
@@ -195,7 +210,12 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
         />
       </OFormItem>
       <OFormItem field="code" :rules="codeRules">
-        <OInput v-model="form.code" size="large" :placeholder="i18n.ENTER_RECEIVED_CODE" maxlength="6">
+        <OInput
+          v-model="form.code"
+          size="large"
+          :placeholder="i18n.ENTER_RECEIVED_CODE"
+          maxlength="6"
+        >
           <template #suffix>
             <CountdownButton
               v-model="disableCode"
@@ -206,8 +226,8 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
           </template>
         </OInput>
       </OFormItem>
-    </span>
-    <span v-else>
+    </template>
+    <template v-else>
       <OFormItem field="password" :rules="passwordRules">
         <OInput
           v-model="form.password"
@@ -224,23 +244,36 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
           type="password"
         />
       </OFormItem>
-    </span>
+      <OFormItem class="password-tip">
+        <div class="password-tip">
+          <div class="title mb12">密码需要满足以下需求</div>
+          <div class="tips mb12">8到20个字符</div>
+          <div class="tips">必须包含英文、数字与特殊字符</div>
+        </div>
+      </OFormItem>
+    </template>
   </OForm>
   <div class="footer">
-    <OButton size="large" color="primary" @click="goLogin">
+    <OButton
+      v-if="resetToken"
+      size="large"
+      color="primary"
+      variant="solid"
+      @click="confirm(formRef)"
+    >
+      {{ i18n.CONFIRM }}
+    </OButton>
+    <OButton size="large" color="primary" variant="outline" @click="goLogin">
       {{ i18n.RETURN_LOGIN }}
     </OButton>
     <OButton
       v-if="!resetToken"
       size="large"
       color="primary"
-      variant="outline"
+      variant="solid"
       @click="nextStep(formRef)"
     >
       {{ i18n.NEXT_STEP }}
-    </OButton>
-    <OButton v-else size="large" color="primary" @click="confirm(formRef)">
-      {{ i18n.CONFIRM }}
     </OButton>
   </div>
   <Verify
@@ -256,24 +289,42 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
   width: 100%;
 }
 .header {
-  @include h1;
   font-weight: 600;
-  color: var(--o-color-info1);
+  color: var(--o-color-black);
+  font-size: var(--o-font_size-h2);
   text-align: center;
   padding-bottom: 24px;
+  line-height: 32px;
 }
 .footer {
   display: flex;
   justify-content: center;
   column-gap: var(--o-spacing-h5);
+  margin-top: 58px;
 }
 .form {
   --form-label-main-gap: 0;
+  min-height: 220px;
   .o-form-item:last-child {
     margin-bottom: 32px;
   }
   .o-form-item-danger {
     margin-bottom: 0 !important;
+  }
+  :deep(.password-tip) {
+    .title {
+      font-size: var(--o-font_size-text1);
+      line-height: 24px;
+      color: var(--o-color-black);
+    }
+    .tips {
+      font-size: var(--o-font_size-tip1);
+      line-height: 22px;
+      color: var(--o-color-info3);
+    }
+    .mb12 {
+      margin-bottom: 12px;
+    }
   }
 }
 </style>
