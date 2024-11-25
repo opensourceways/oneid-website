@@ -83,7 +83,7 @@ export default {
     COPY_RIGHT_GAUSS: '版权所有 ©  openGauss 2024 保留一切权利',
     COPY_RIGHT_MINDSPORE: '版权所有 © 2024 MindSpore 保留一切权利',
     COPY_RIGHT_OPENMIND: '版权所有 © 2024 魔乐社区 保留一切权利',
-    COPY_RIGHT_OPENUBMC: '版权所有 © 2024 OpenUBMC 保留一切权利',
+    COPY_RIGHT_OPENUBMC: '版权所有 © 2024 openUBMC 保留一切权利',
     PRIVACY_POLICY: '隐私政策',
     LEGAL_NOTICE: '法律声明',
     ABOUT_COOKIE: '关于cookies',

@@ -182,7 +182,7 @@ importers:
         version: link:../shared
       unplugin-icons:
         specifier: ^0.18.2
-        version: 0.18.5(@vue/compiler-sfc@3.4.38)(vue-template-compiler@2.7.16)
+        version: 0.18.5(@vue/compiler-sfc@3.5.12)(vue-template-compiler@2.7.16)
 
 packages:
 
