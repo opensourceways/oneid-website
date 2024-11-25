@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import {reactive, ref, toRefs, watch } from 'vue';
-import { OScroller, OCheckbox, ODialog, OLink, OForm, OFormItem, OButton } from '@opensig/opendesign';
+import { OCheckbox, ODialog, OLink, OForm, OFormItem, OButton } from '@opensig/opendesign';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 import {
   formValidator,
@@ -24,7 +24,6 @@ const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
 const i18n = useI18n();
 const formRef = ref<InstanceType<typeof OForm>>();
-const scroller = ref();
 
 // 表单值
 const form = reactive({
