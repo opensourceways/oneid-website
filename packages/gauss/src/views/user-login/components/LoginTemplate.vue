@@ -16,6 +16,16 @@ const props = defineProps({
     default: 'login',
   },
 });
+// 和环境变量里三方登录的type类型对应
+type ThreeLoginTypeT = 'Github' | 'Gitee';
+type threeLoginIconMapT = {
+  Github?: any;
+  Gitee?: any;
+};
+const threeLoginIconMap: threeLoginIconMapT = {
+  Github: IconGithub,
+  Gitee: IconGitee,
+};
 
 const loginForm = ref();
 const emit = defineEmits(['submit']);
@@ -30,22 +40,7 @@ const submit = (form: any) => {
 const redirectUri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
 const windowOpener = ref();
 
-type CONNIDST = {
-  [k: string]: string;
-};
-let connIds: CONNIDST = {};
-// 非生产环境
-if (import.meta.env.MODE !== 'production') {
-  connIds = {
-    Gitee: '6226d91103d81d8654673f1b',
-    GitHub: '6226db30c8e30db1518cc4aa',
-  };
-} else { // 生产环境
-  connIds = {
-    Gitee: '5fc70eea30534d3e8d64cce46fb0403d',
-  };
-}
-const threePartsLogin = (type: string) => {
+const threePartsLogin = (item: ICONS_OBJ_T) => {
   const url = `${import.meta.env?.VITE_LOGIN_USERPOOL}/api/v3/signin-by-extidp`;
   const params = {
     client_id: loginParams.value.client_id,
@@ -58,12 +53,12 @@ const threePartsLogin = (type: string) => {
     response_mode: 'web_message',
   };
 
-  Object.assign(params, { ext_idp_conn_id: connIds[type] });
+  Object.assign(params, { ext_idp_conn_id: item.id });
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
     if (valid) {
       let width = 500;
       const height = 700;
-      if (type === 'Gitee') {
+      if (item.key === 'Gitee') {
         width = 1263;
       }
       windowOpener.value = window.open(
@@ -80,40 +75,27 @@ const threePartsLogin = (type: string) => {
 };
 
 type ICONS_OBJ_T = {
-  key: string;
+  key: ThreeLoginTypeT;
+  id: string;
   icon: any;
-  onClick: (k: string) => void;
+  onClick: (obj: ICONS_OBJ_T) => void;
 };
-let icons = [] as ICONS_OBJ_T[];
-// 非生产环境
-if (import.meta.env.MODE !== 'production') {
-  icons = [
-    {
-      key: 'Gitee',
-      icon: IconGitee,
-      onClick: (type: string) => {
-        threePartsLogin(type);
+const threeLoginTypes =
+  import.meta.env?.VITE_THREE_LOGIN_TYPE?.split(',') ||
+  ([] as ThreeLoginTypeT[]);
+const threeLoginIds = import.meta.env?.VITE_THREE_LOGIN_ID?.split(',') || [];
+const icons: ICONS_OBJ_T[] = threeLoginTypes.map(
+  (one: ThreeLoginTypeT, index: number) => {
+    return {
+      key: one,
+      icon: threeLoginIconMap[one],
+      id: threeLoginIds[index],
+      onClick: (obj: ICONS_OBJ_T) => {
+        threePartsLogin(obj);
       },
-    },
-    {
-      key: 'GitHub',
-      icon: IconGithub,
-      onClick: (type: string) => {
-        threePartsLogin(type);
-      },
-    },
-  ];
-} else { // 生成环境
-  icons = [
-    {
-      key: 'Gitee',
-      icon: IconGitee,
-      onClick: (type: string) => {
-        threePartsLogin(type);
-      },
-    },
-  ];
-}
+    };
+  }
+);
 
 const showFooter = computed(
   () =>
@@ -148,7 +130,7 @@ const showFooter = computed(
           <div
             v-for="(item, index) in icons"
             :key="item.key"
-            @click="item.onClick(item.key)"
+            @click="item.onClick(item)"
           >
             <OIcon class="icon" :class="{ gap: index }">
               <component :is="item.icon"></component>
