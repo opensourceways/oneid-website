@@ -84,7 +84,7 @@ export default {
     COPY_RIGHT_GAUSS: 'Copyright © openGauss 2024. All rights reserved.',
     COPY_RIGHT_MINDSPORE: 'Copyright © 2024 MindSpore. All rights reserved.',
     COPY_RIGHT_OPENMIND: 'Copyright © 2024 Modelers. All rights reserved.',
-    COPY_RIGHT_OPENUBMC: 'Copyright © 2024 OpenUBMC. All rights reserved.',
+    COPY_RIGHT_OPENUBMC: 'Copyright © 2024 openUBMC. All rights reserved.',
     PRIVACY_POLICY: 'Privacy Policy',
     LEGAL_NOTICE: 'Legal Notice',
     ABOUT_COOKIE: 'About cookies',

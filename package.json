@@ -17,7 +17,6 @@
     "build:merlin": "pnpm --filter merlin build",
     "dev:ubmc": "pnpm --filter ubmc dev",
     "test:ubmc": "pnpm --filter ubmc test",
-    "beta:ubmc": "pnpm --filter ubmc beta",
     "build:ubmc": "pnpm --filter ubmc build",
     "build": "pnpm build:euler & pnpm build:gauss",
     "preview": "vite preview",

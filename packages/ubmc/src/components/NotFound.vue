@@ -1,10 +1,35 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useCommon, useCommonData } from 'shared/stores/common';
+
+import notFoundImgLight from 'shared/assets/404.png';
+import notFoundImgDark from 'shared/assets/404_dark.png';
+import notFoundImgLigitGauss from 'shared/assets/gauss-404.png';
+import notFoundImgDarkGauss from 'shared/assets/gauss-404-dark.png';
+import { computed } from 'vue';
+const { lang } = useCommonData();
+const commonStore = useCommon();
+
+const notFoundImg = computed(() => {
+  if (import.meta.env?.VITE_COMMUNITY === 'opengauss') {
+    return commonStore.theme === 'light'
+      ? notFoundImgLigitGauss
+      : notFoundImgDarkGauss;
+  }
+  return commonStore.theme === 'light' ? notFoundImgLight : notFoundImgDark;
+});
+</script>
 
 <template>
   <div class="nofound">
-    <img src="@/assets/empty.svg" class="nofound-img" />
+    <img class="nofound-img" :src="notFoundImg" alt="404" />
     <p class="nofound-text">
-      <slot name="title"> 回调地址redirect_uri不匹配 </slot>
+      <slot name="title">
+        {{
+          lang === 'zh'
+            ? '回调地址redirect_uri不匹配'
+            : 'The callback address redirect_uri does not match'
+        }}
+      </slot>
     </p>
   </div>
 </template>
@@ -15,23 +40,24 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  @include h4;
-  color: var(--o-color-info1);
-  height: inherit;
-  background-color: rgb(247, 247, 247);
-  min-height: calc(100vh - 339px);
+  font-size: var(--o-font-size-h6);
+  color: var(--o-color-text1);
+  height: var(--layout-content-min-height);
   .nofound-text {
     margin-top: var(--o-spacing-h5);
+    font-size: var(--o-font-size-h7);
   }
   .nofound-img {
     height: 300px;
   }
   @media screen and (max-width: 768px) {
+    font-size: var(--o-font-size-text);
     .nofound-img {
       max-height: 232px;
     }
     .nofound-text {
       margin-top: var(--o-spacing-h6);
+      font-size: var(--o-font-size-tip);
     }
   }
 }

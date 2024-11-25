@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, Ref, ref, toRefs, useAttrs, watch } from 'vue';
+import { onUnmounted, ref, toRefs, useAttrs, watch } from 'vue';
 import { useI18n, useI18nStr } from 'shared/i18n';
 import { OLink } from '@opensig/opendesign';
 

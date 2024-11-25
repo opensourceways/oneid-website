@@ -76,7 +76,7 @@ import AppFooter from '@/components/AppFooter.vue';
 .o-scroller {
   padding-top: var(--layout-header-height);
   height: 100vh;
-  background: url(./assets/login-bg.png) no-repeat left;
+  background: url(./assets/login-background.png) no-repeat left;
   background-size: cover;
   --scrollbar-height: calc(100vh - var(--layout-header-height) * 2 - 10px);
   :deep(.o-scroller-container) {
@@ -86,11 +86,9 @@ import AppFooter from '@/components/AppFooter.vue';
 
 .ly-main {
   min-height: var(--layout-content-min-height);
-  // background-color: var(--o-color-fill1);
 }
 
 .ly-footer {
   height: var(--layout-footer-height);
-  // background-color: var(--o-color-fill1);
 }
 </style>
