@@ -30,11 +30,17 @@ export default defineConfig({
     }),
   ],
   server: {
-    host: '127.0.0.1',
+    host: 'localhost',
     port: 5500,
+    open: true,
     proxy: {
+      // '/oneid/': {
+      //   target: 'https://omapi-revision.test.osinfra.cn/',
+      //   secure: false,
+      //   changeOrigin: true,
+      // },
       '/oneid/': {
-        target: 'https://omapi-revision.test.osinfra.cn/',
+        target: 'http://localhost:7060/mock',
         secure: false,
         changeOrigin: true,
       },

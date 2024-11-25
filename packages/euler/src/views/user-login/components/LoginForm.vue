@@ -103,10 +103,10 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
 const validatorAccount = (rule: any, value: any, callback: any) => {
   if (value) {
     if (EMAIL_REG.test(value) || PHONE_REG.test(value)) {
-        callback();
-      } else {
-        callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
-      }
+      callback();
+    } else {
+      callback(i18n.value.ENTER_VAILD_EMAIL_OR_PHONE);
+    }
   }
 };
 
@@ -320,7 +320,9 @@ watch(
     </el-form-item>
     <el-form-item>
       <OButton type="primary" class="login-btn" @click="submit(formRef)">
-        <slot name="btn"> {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }} </slot>
+        <slot name="btn">
+          {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }}
+        </slot>
       </OButton>
     </el-form-item>
   </el-form>

@@ -1,4 +1,5 @@
 .markdown {
+  --o-color-table: var(--o-color-border2);
   width: calc(100% - 80px);
   max-width: 1416px;
   min-height: calc(100vh - 443px);
@@ -10,7 +11,6 @@
   & > *:first-child {
     margin-top: 0 !important;
   }
-  --o-color-table: var(--o-color-border2);
   @media (max-width: 1439px) {
     width: calc(100% - 48px);
   }
