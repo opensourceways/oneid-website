@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@opensig/open-analytics':
+        specifier: 0.0.9
+        version: 0.0.9
       '@opensig/opendesign':
         specifier: 0.0.68
         version: 0.0.68(vue@3.3.13(typescript@5.2.2))
@@ -527,6 +530,9 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@opensig/open-analytics@0.0.9':
+    resolution: {integrity: sha512-D+4VWxgBc1ABsQjWEjWfBfoBQ4PQbc1lNZeEYpQXkTJLLFcj6nSa+LwcYZFXtZdGz9dzOhhbwRwXv66WFw2qJw==}
 
   '@opensig/opendesign@0.0.68':
     resolution: {integrity: sha512-eWiZTVWEGSsM/BuWWNJKFiYl6NnGVONjKlIYT7ja6BMd0aLfIBKV4ElhfYrnT21lzygnFbLW5ompRPdT24t2tQ==}
@@ -2536,6 +2542,10 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  ua-parser-js@1.0.39:
+    resolution: {integrity: sha512-k24RCVWlEcjkdOxYmVJgeD/0a1TiSpqLg+ZalVGV9lsnr4yqu0w7tX/x2xX6G4zpkgQnRf89lxuZ1wsbjXM8lw==}
+    hasBin: true
+
   uc.micro@1.0.6:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
 
@@ -2632,6 +2642,10 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
+
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
@@ -2712,6 +2726,9 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  web-vitals@4.2.4:
+    resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
 
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
@@ -3108,6 +3125,12 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@opensig/open-analytics@0.0.9':
+    dependencies:
+      ua-parser-js: 1.0.39
+      uuid: 10.0.0
+      web-vitals: 4.2.4
 
   '@opensig/opendesign@0.0.68(vue@3.3.13(typescript@5.2.2))':
     dependencies:
@@ -5365,6 +5388,8 @@ snapshots:
 
   typescript@5.2.2: {}
 
+  ua-parser-js@1.0.39: {}
+
   uc.micro@1.0.6: {}
 
   ufo@1.5.4: {}
@@ -5480,6 +5505,8 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
+  uuid@10.0.0: {}
+
   vary@1.1.2: {}
 
   vite-plugin-svg-icons@2.0.1(vite@4.5.5(@types/node@18.19.64)(sass@1.62.0)):
@@ -5557,6 +5584,8 @@ snapshots:
       '@vue/shared': 3.3.13
     optionalDependencies:
       typescript: 5.2.2
+
+  web-vitals@4.2.4: {}
 
   webpack-virtual-modules@0.6.2: {}
 

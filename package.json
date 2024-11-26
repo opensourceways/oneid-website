@@ -21,6 +21,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@opensig/open-analytics": "0.0.9",
     "@opensig/opendesign": "0.0.68",
     "@types/node-forge": "^1.3.3",
     "@vueuse/core": "^11.0.1",
