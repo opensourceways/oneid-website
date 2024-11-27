@@ -219,7 +219,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
     v-model:visible="modelValue"
     hideClose
     class="dialog"
-    :style="{ '--dlg-padding-body-top': '28px', '--dlg-body-padding': '58px', '--dlg-padding-body-bottom': '0', '--dlg-width': '480px' }"
+    :style="{ '--dlg-body-padding': '58px', '--dlg-padding-body-bottom': '0', '--dlg-width': '480px' }"
     :maskClose="false"
   >
     <template #header>
@@ -242,6 +242,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
       <OFormItem v-if="!phoneExist" prop="phone" :rules="phoneRules">
         <OInput
           v-model.trim="form.phone"
+          size="large"
           :placeholder="i18n.ENTER_YOUR_PHONE"
           @blur="blurAccount(formRef)"
         />
@@ -250,6 +251,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
         <div class="code">
           <OInput
             v-model.trim="form.code"
+            size="large"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
             maxlength="6"
           >
@@ -267,6 +269,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
       <OFormItem v-if="!emailExist" prop="email" :rules="emailRules">
         <OInput
           v-model.trim="form.email"
+          size="large"
           :placeholder="i18n.ENTER_YOUR_EMAIL"
         />
       </OFormItem>
@@ -274,6 +277,7 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
         <div class="code">
           <OInput
             v-model.trim="form.code"
+            size="large"
             :placeholder="i18n.ENTER_RECEIVED_CODE"
             maxlength="6"
           >
@@ -307,17 +311,19 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
 </template>
 <style lang="scss" scoped>
 .dialog {
-  :deep(.header) {
+  .header {
     font-size: var(--o-font_size-h2);
     line-height: 32px;
+    color: #000;
   }
   .footer {
     text-align: center;
-    .primary {
+    .btn.primary {
       color: white;
       background-color: var(--o-color-primary1);
     }
     .btn {
+      color: var(--o-color-primary1);
       &:hover {
         color: inherit;
         background-color: inherit;
@@ -345,6 +351,9 @@ const blurAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
   }
   .o-form-item-danger {
     margin-bottom: 0 !important;
+  }
+  :deep(.o-input-large) {
+    --input-padding: 0 16px;
   }
 }
 </style>
