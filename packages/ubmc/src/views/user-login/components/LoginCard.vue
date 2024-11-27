@@ -20,19 +20,17 @@ import logo from '@/assets/logo.png';
   min-height: inherit;
   display: flex;
   align-items: center;
-  // background-color: var(--o-color-fill1);
   padding-top: 16px;
   padding-bottom: 16px;
   .card {
     width: 480px;
     margin: 0 auto;
     border-radius: 8px;
-    padding: 26px 80px 36px;
+    padding: 26px 80px 24px;
     background-color: var(--o-color-fill2);
     box-shadow: var(--o-shadow-1);
     @include respond-to('phone') {
       padding: 24px;
-      background-color: var(--o-color-fill1);
       box-shadow: none;
       height: calc(var(--layout-content-min-height) - 32px);
       display: flex;

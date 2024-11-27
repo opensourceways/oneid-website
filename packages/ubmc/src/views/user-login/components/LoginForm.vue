@@ -28,6 +28,7 @@ import {
   validatorEmpty,
   getPwdRules,
   validatorEmailPhone,
+  validatorPhone,
   formValidator,
   getCodeRules,
 } from 'shared/utils/rules';
@@ -87,10 +88,12 @@ const validator = (fields?: string[] | string) => {
 };
 defineExpose({ validator });
 
-const doValidator = async (field: fieldT) => {
-  const res = await formRef.value?.validate(field) || [];
-  checkFields(field, res);
+const doValidator = (fields?: string[] | string) => {
+  formValidator(formRef.value, fields).subscribe((valid) => {
+    checkFields(fields as fieldT, valid as boolean);
+  });
 };
+
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams, selectLoginType } = useCommonData();
@@ -228,6 +231,17 @@ const requiredRules = [
     trigger: 'blur',
   },
 ];
+// 手机号校验
+const phoneRules = [
+  {
+    validator: validatorEmpty('ENTER_YOUR_PHONE'),
+    triggers: 'change',
+  },
+  {
+    validator: validatorPhone,
+    triggers: 'change',
+  },
+];
 // 邮箱或手机号合法校验
 const emailPhoneRules = [
   ...requiredRules,
@@ -240,6 +254,8 @@ const emailPhoneRules = [
 const accountRules = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
     return loginAccountRuless;
+  } else if (type.value === 'perfectUserInfo') {
+    return phoneRules;
   } else {
     return emailPhoneRules;
   }
@@ -295,6 +311,8 @@ const goToOtherPage = (type: string) => {
 const accountPlaceholder = computed(() => {
   if (type.value === 'login' && selectLoginType.value === 'password') {
     return i18n.value.ENTER_YOUR_ACCOUNT;
+  } else if (type.value === 'perfectUserInfo') {
+    return i18n.value.ENTER_YOUR_PHONE;
   } else {
     return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
   }
@@ -355,8 +373,8 @@ const ruleFields = computed<fieldObjectT>(() => {
 });
 watch(() => ruleFields.value, () => btnCanClick.value = false)
 // valids为空 表示重置
-const checkFields = (field: fieldT, valids?: FieldResultT[]) => {
-  if (!valids) {
+const checkFields = (field: fieldT, valids?: boolean) => {
+  if (valids === undefined) {
     if (ruleFields.value.hasOwnProperty(field)) {
       ruleFields.value[field] = false;
     } else {
@@ -364,7 +382,7 @@ const checkFields = (field: fieldT, valids?: FieldResultT[]) => {
     }
   } else {
     if (ruleFields.value.hasOwnProperty(field)) {
-      ruleFields.value[field] = valids.every((one) => !one);
+      ruleFields.value[field] = valids;
     } else {
       return;
     }
@@ -601,9 +619,26 @@ watch(
   position: relative;
   font-size: var(--o-font-size-h6);
   line-height: 28px;
+  column-gap: var(--o-spacing-h3);
+  :deep(.tab.selected) {
+    border-bottom: none;
+    color: var(--o-color-brand1);
+    &::after {
+      content: ' ';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0px;
+      border: 1px solid var(--o-color-brand1);
+      border-radius: 2px;
+    }
+  }
   :deep(.tab) {
     padding-bottom: 17px;
+    position: relative;
     height: auto;
+    color: rgba(0, 0, 0, 0.8);
   }
 }
 .form {

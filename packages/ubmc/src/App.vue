@@ -86,6 +86,12 @@ import AppFooter from '@/components/AppFooter.vue';
 
 .ly-main {
   min-height: var(--layout-content-min-height);
+  :deep(.o-input-large) {
+    --input-padding: 0 16px;
+  }
+  :deep(.o-link-primary) {
+    --link-color-disabled: rgba(64, 142, 255, 0.4);
+  }
 }
 
 .ly-footer {
