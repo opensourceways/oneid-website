@@ -463,6 +463,7 @@ watch(
         :placeholder="i18n.ENTER_USERNAME"
         @input="clearValidate('username')"
         @change="doValidator('username')"
+        @blur="doValidator('username')"
       />
     </OFormItem>
     <!-- 账号： 手机号、邮箱 -->
@@ -476,6 +477,7 @@ watch(
         :placeholder="accountPlaceholder"
         @input="changeAccount(formRef)"
         @change="doValidator('account')"
+        @blur="doValidator('account')"
       />
     </OFormItem>
     <!-- 验证码 -->
