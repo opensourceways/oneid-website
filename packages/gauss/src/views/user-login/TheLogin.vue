@@ -7,6 +7,7 @@ import { ElMessage } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
+import AgreePrivacy from 'shared/components/AgreePrivacy.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import Verify from 'shared/verifition/Verify.vue';
@@ -21,6 +22,7 @@ const { loginParams, selectLoginType } = useCommonData();
 const router = useRouter();
 const route = useRoute();
 const visible = ref(false);
+const privacyVisible = ref(false);
 const goRegister = () => {
   router.push({
     path: '/register',
@@ -40,9 +42,14 @@ const padUserinfo = reactive({
 });
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  const { username, company } = data || {};
+  const { username, company, oneidPrivacyAccepted = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  if (!name || !company) {
+  if (
+    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
+  ) {
+    privacyVisible.value = true;
+    return false;
+  } else if (!name || !company) {
     padUserinfo.username = name;
     padUserinfo.companyExist = Boolean(company);
     visible.value = true;
@@ -50,6 +57,43 @@ const isNotPadUserinfo = (data: any): boolean => {
   }
   return true;
 };
+
+// // 判断是否需要补全内容
+// const isNotPadUserinfo = (data: any): boolean => {
+//   const {
+//     username,
+//     email_exist: emailExist = false,
+//     phone_exist: phoneExist = false,
+//     email = '',
+//     phone='',
+//     oneidPrivacyAccepted = '',
+//   } = data || {};
+//   const name = !username || username.startsWith('oauth2_') ? '' : username;
+//   let hasEmail = true;
+//   let hasPhone = true;
+//   if (route.query?.complementation) {
+//     const complementation = route.query?.complementation;
+//     if (complementation === 'phone') {
+//       hasPhone = Boolean(phoneExist || phone)
+//     } else if (complementation === 'email') {
+//       hasEmail = Boolean(emailExist || email);
+//     }
+//   }
+//   if (
+//     oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
+//   ) {
+//     privacyVisible.value = true;
+//     return false;
+//   } else if (!name || !hasEmail || !hasPhone) {
+//     padUserinfo.username = name;
+//     padUserinfo.emailExist = hasEmail;
+//     padUserinfo.phoneExist = hasPhone;
+//     visible.value = true;
+//     return false;
+//   }
+//   return true;
+// };
+
 onMounted(() => {
   validLoginUrl().then(() => {
     isLogined(getCommunityParams(true)).then((bool) => {
@@ -126,6 +170,15 @@ const showSwitch = computed(
 const cancelPad = () => {
   logout(getCommunityParams(true), location.href);
 };
+const agreePrivacy = () => {
+  isLogined().then((bool) => {
+    if (bool) {
+      if (isNotPadUserinfo(bool)) {
+        haveLoggedIn();
+      }
+    }
+  });
+};
 </script>
 <template>
   <LoginTemplate ref="loginTemplate" @submit="chenckLogin">
@@ -155,5 +208,10 @@ const cancelPad = () => {
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
+  <AgreePrivacy
+    v-model="privacyVisible"
+    @success="agreePrivacy"
+    @cancel="logout"
+  ></AgreePrivacy>
 </template>
 <style lang="scss" scoped></style>

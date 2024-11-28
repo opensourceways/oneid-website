@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'shared/i18n';
 import ContentBox from './ContentBox.vue';
 import { deleteAccount } from 'shared/api/api-center';
 import ModifyPwd from 'shared/components/ModifyPwd.vue';
 import DeleteAccountModal from 'shared/components/DeleteAccountModal.vue';
-import { ElMessage, FormInstance } from 'element-plus';
+import DeletePrivacyModal from 'shared/components/DeletePrivacyModal.vue';
+import { ElMessage } from 'element-plus';
 import { saveUserAuth } from 'shared/utils/login';
 import { getCommunityParams } from '@/shared/utils';
+import { useStoreData, logout } from 'shared/utils/login';
+import { useCommonData } from 'shared/stores/common';
 
 const i18n = useI18n();
+const { lang } = useCommonData();
+const { guardAuthClient } = useStoreData();
 // 控制弹窗显示
 const vilible = ref(false);
 
@@ -28,6 +33,14 @@ const confirm = () => {
   });
 };
 const pwdVilible = ref(false);
+
+// 隐私政策、法律声明
+const privacyVilible = ref(false);
+const goToOtherPage = (type: string) => {
+  const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
+  const url = `${origin}/${lang.value}/other/${type}`;
+  window.open(url, '_blank');
+};
 </script>
 <template>
   <ContentBox>
@@ -42,6 +55,20 @@ const pwdVilible = ref(false);
       <OButton size="small" class="btn gap" @click="pwdVilible = true">{{
         i18n.FORGET_PWD
       }}</OButton>
+      <template v-if="guardAuthClient.oneidPrivacyAccepted">
+        <div class="tips">
+          <div class="tips-title">{{ i18n.CANCEL_SIGN }}</div>
+          <div class="tips-content">
+            {{ i18n.CANCEL_SIGN_OF }}
+            <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
+            {{ i18n.AND }}
+            <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
+          </div>
+        </div>
+        <OButton size="small" class="btn gap" @click="privacyVilible = true">
+          {{ i18n.CANCEL_SIGN }}
+        </OButton>
+      </template>
       <div class="tips red">
         <div class="tips-title">{{ i18n.DELETE_ACCOUNT }}</div>
         <div class="tips-content">{{ i18n.DELETE_ACCOUNT_TIPS }}</div>
@@ -52,6 +79,10 @@ const pwdVilible = ref(false);
     </template>
   </ContentBox>
   <DeleteAccountModal v-model="vilible" @submit="confirm"></DeleteAccountModal>
+  <DeletePrivacyModal
+    v-model="privacyVilible"
+    @submit="logout()"
+  ></DeletePrivacyModal>
   <ModifyPwd v-model="pwdVilible"></ModifyPwd>
 </template>
 <style lang="scss" scoped>

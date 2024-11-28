@@ -44,8 +44,8 @@ export default defineConfig({
       //   secure: false,
       //   changeOrigin: true,
       // },
-      '/.*': {
-        target: 'http://localhost:3060/mock',
+      '/oneid/': {
+        target: 'http://localhost:7060/mock',
         secure: false,
         changeOrigin: true,
       },
