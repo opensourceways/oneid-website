@@ -246,9 +246,9 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
       </OFormItem>
       <OFormItem class="password-tip">
         <div class="password-tip">
-          <div class="title mb12">密码需要满足以下需求</div>
-          <div class="tips mb12">8到20个字符</div>
-          <div class="tips">必须包含英文、数字与特殊字符</div>
+          <div class="title mb12">{{ i18n.PASSWORD_TIP }}</div>
+          <div class="tips mb12">{{ i18n.PASSWORD_LENGTH }}</div>
+          <div class="tips">{{ i18n.PASSWORD_CONTENT }}</div>
         </div>
       </OFormItem>
     </template>

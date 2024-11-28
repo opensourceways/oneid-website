@@ -30,8 +30,9 @@ import AppFooter from '@/components/AppFooter.vue';
 
   --layout-content-min-height: calc(100vh - var(--layout-header-height) - var(--layout-footer-height));
 
-  --o-color-brand1: #408eff;
-  --o-color-primary1: #408eff;
+  --o-color-brand1: #418cff;
+  --o-color-primary1: #418cff;
+  --o-color-primary2: #67a3ff;
   --o-color-link1: var(--o-color-brand1);
   --btn-color: var(--o-color-brand1);
   --btn-bd-color: var(--o-color-brand1);

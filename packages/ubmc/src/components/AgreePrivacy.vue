@@ -35,7 +35,7 @@ const validatorCheckbox: ValidatorT = (value: Array<string>) => {
   if (!value || !value.length) {
     return {
       type: 'danger',
-      message: useI18n().value.PLEASE_CHECK_PRIVACY,
+      message: useI18n().value.PLEASE_CHECK_PRIVACY_VALID,
     };
   }
 };
