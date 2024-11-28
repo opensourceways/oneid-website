@@ -184,7 +184,7 @@ const responseInterceptorId = request.interceptors.response.use(
       }
       const notReportErrorMsgs = ['token expires'];
       if (!notReportErrorMsgs.includes((err.response?.data as any)?.message)) {
-        if (!import.meta.env?.VITE_IS_OPENMERLIN) {
+        if (!import.meta.env?.VITE_IS_OPENMERLIN && !import.meta.env?.VITE_IS_OPENUBMC) {
           ElMessage.error({
             showClose: true,
             message: _msg,

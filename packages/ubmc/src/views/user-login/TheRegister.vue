@@ -47,7 +47,9 @@ const register = async (form: any) => {
     <template #switch>
       <label>{{ i18n.HAVE_ACCOUNT }}</label>
       &nbsp;
-      <OLink color="primary" hover-underline @click="goLogin">{{ i18n.RETURN_LOGIN }}</OLink>
+      <OLink color="primary" hover-underline @click="goLogin">{{
+        i18n.RETURN_LOGIN
+      }}</OLink>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_REGISTER }} </template>
     <template #btn> {{ i18n.REGISTER }} </template>
