@@ -321,7 +321,7 @@ watch(
       <PwdInput
         v-model="form.password"
         :placeholder="i18n.INTER_PWD"
-        :show-password="type === 'register'"
+        :show-password="true"
       />
     </el-form-item>
     <el-form-item prop="policy" :rules="policyRules">
