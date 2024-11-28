@@ -72,9 +72,19 @@ const validator = (fields?: string[] | string) => {
 defineExpose({ validator });
 
 const doValidator = (fields?: string[] | string) => {
-  formValidator(formRef.value, fields).subscribe();
+  formValidator(formRef.value, fields).subscribe((valid) => {
+    if (fields === 'code') {
+      checkFields('code', valid as boolean);
+    }
+  });
 };
-
+// 清空输入校验
+const clearValidate = (field: fieldT) => {
+  formRef.value?.clearValidate(field);
+  if (field === 'code' && form.code?.length >= 6) {
+    doValidator('code');
+  }
+};
 const { type } = toRefs(props);
 const i18n = useI18n();
 const { lang, loginParams, selectLoginType } = useCommonData();
@@ -272,6 +282,7 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
   } else {
     formValidator(formEl, 'account').subscribe((valid) => {
       disableCode.value = !valid;
+      checkFields('account', valid as boolean);
     });
   }
   resetLoginErr();
@@ -292,19 +303,37 @@ const accountPlaceholder = computed(() => {
     return i18n.value.ENTER_YOUR_PHONE;
   }
 });
-const btnCanClick = ref(true);
-watchEffect(async () => {
-  const res = await formRef.value?.validate();
-  formRef.value?.clearValidate();
-  if (res?.length) {
-    // 有表单项，所有表单项都校验通过按钮才可点击；否则，不可点击
-    const r = res.every((v) => !v);
-    btnCanClick.value = r;
+// -------------------------------------- 完善用户信息按钮是否可点击 ----------------------------
+const btnCanClick = ref(false);
+type fieldT = 'account' | 'code';
+type fieldObjectT = {
+  account?: boolean;
+  code?: boolean;
+};
+const ruleFields = computed<fieldObjectT>(() => {
+  if (props.type === 'perfectUserInfo') {
+    return {
+      account: false,
+      code: false,
+    };
   } else {
-    // 没有表单项，按钮可点击
-    btnCanClick.value = true;
+    return {};
   }
 });
+watch(() => ruleFields.value, () => btnCanClick.value = false);
+const checkFields = (field: fieldT, valid: boolean) => {
+  if (props.type !== 'perfectUserInfo') {
+    return;
+  }
+  if (ruleFields.value.hasOwnProperty(field)) {
+    ruleFields.value[field] = valid;
+  } else {
+    return;
+  }
+  const values = Object.values(ruleFields.value);
+  btnCanClick.value = values.every((one) => one);
+};
+
 const loginTabSelect = () => {
   formRef.value?.resetFields();
   disableCode.value = true;
@@ -385,6 +414,8 @@ const goResetPwd = () => {
         :placeholder="i18n.ENTER_RECEIVED_CODE"
         class="login-code-input"
         maxlength="6"
+        @blur="doValidator('code')"
+        @input="clearValidate('code')"
       >
         <template #suffix>
           <CountdownButton
