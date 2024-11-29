@@ -59,8 +59,10 @@ const register = async (form: any) => {
     goLogin();
     // 分析埋点
     if (route.query?.[SOURCE_FLAG]) {
-      enableOA();
-      oa.report('utm', () => ({ source: route.query[SOURCE_FLAG] }));
+      try {
+        enableOA();
+        oa.report('utm', () => ({ source: route.query[SOURCE_FLAG] }));
+      } catch (e) {}
     }
   });
 };
