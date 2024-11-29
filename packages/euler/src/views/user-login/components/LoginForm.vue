@@ -248,6 +248,7 @@ watch(
     >
       <OInput
         v-model.trim="form.username"
+        autocomplete="off"
         :placeholder="i18n.ENTER_USERNAME"
         @blur="blur(formRef, 'username')"
       />
@@ -262,6 +263,7 @@ watch(
     >
       <OInput
         v-model.trim="form.account"
+        autocomplete="off"
         :placeholder="accountPlaceholder"
         @blur="blur(formRef, 'account')"
         @input="changeAccount(formRef)"
