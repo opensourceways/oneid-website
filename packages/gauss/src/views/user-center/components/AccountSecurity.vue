@@ -33,7 +33,9 @@ const confirm = () => {
   });
 };
 const pwdVilible = ref(false);
-
+const doLogout = () => {
+  logout(getCommunityParams(true));
+};
 // 隐私政策、法律声明
 const privacyVilible = ref(false);
 const goToOtherPage = (type: string) => {
@@ -81,7 +83,7 @@ const goToOtherPage = (type: string) => {
   <DeleteAccountModal v-model="vilible" @submit="confirm"></DeleteAccountModal>
   <DeletePrivacyModal
     v-model="privacyVilible"
-    @submit="logout()"
+    @submit="doLogout"
   ></DeletePrivacyModal>
   <ModifyPwd v-model="pwdVilible"></ModifyPwd>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { accountLoginPost, checkLoginAccount } from 'shared/api/api-login';
+import { accountLoginPost, queryToken, checkLoginAccount } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import { isLogined, logout } from 'shared/utils/login';
 import { getCommunityParams } from '@/shared/utils';
@@ -44,9 +44,7 @@ const padUserinfo = reactive({
 const isNotPadUserinfo = (data: any): boolean => {
   const { username, company, oneidPrivacyAccepted = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  if (
-    oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
-  ) {
+  if (oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED) {
     privacyVisible.value = true;
     return false;
   } else if (!name || !company) {
@@ -57,42 +55,6 @@ const isNotPadUserinfo = (data: any): boolean => {
   }
   return true;
 };
-
-// // 判断是否需要补全内容
-// const isNotPadUserinfo = (data: any): boolean => {
-//   const {
-//     username,
-//     email_exist: emailExist = false,
-//     phone_exist: phoneExist = false,
-//     email = '',
-//     phone='',
-//     oneidPrivacyAccepted = '',
-//   } = data || {};
-//   const name = !username || username.startsWith('oauth2_') ? '' : username;
-//   let hasEmail = true;
-//   let hasPhone = true;
-//   if (route.query?.complementation) {
-//     const complementation = route.query?.complementation;
-//     if (complementation === 'phone') {
-//       hasPhone = Boolean(phoneExist || phone)
-//     } else if (complementation === 'email') {
-//       hasEmail = Boolean(emailExist || email);
-//     }
-//   }
-//   if (
-//     oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED
-//   ) {
-//     privacyVisible.value = true;
-//     return false;
-//   } else if (!name || !hasEmail || !hasPhone) {
-//     padUserinfo.username = name;
-//     padUserinfo.emailExist = hasEmail;
-//     padUserinfo.phoneExist = hasPhone;
-//     visible.value = true;
-//     return false;
-//   }
-//   return true;
-// };
 
 onMounted(() => {
   validLoginUrl().then(() => {
@@ -127,6 +89,7 @@ const login = async (form: any, captchaVerification?: string) => {
     ...getCommunityParams(true),
     account: form.account,
     accept_term: 0,
+    oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
   };
   if (captchaVerification) {
     param.captchaVerification = captchaVerification;
@@ -165,13 +128,30 @@ const verifySuccess = (data: any) => {
   login(formCopy.value, data.captchaVerification);
 };
 const showSwitch = computed(
-  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) && selectLoginType.value === 'password'
+  () =>
+    !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) &&
+    selectLoginType.value === 'password'
 );
+
+const threePartLogin = (res: any) => {
+  const { code, redirect_uri: redirect } = res;
+  const param = {
+    code: code,
+    permission: 'sigRead',
+    community: import.meta.env?.VITE_COMMUNITY,
+    redirect,
+    client_id: loginParams.value.client_id,
+  };
+  queryToken(param).then((data: any) => {
+    loginSuccess(data?.data);
+  });
+};
+
 const cancelPad = () => {
   logout(getCommunityParams(true), location.href);
 };
 const agreePrivacy = () => {
-  isLogined().then((bool) => {
+  isLogined(getCommunityParams(true)).then((bool) => {
     if (bool) {
       if (isNotPadUserinfo(bool)) {
         haveLoggedIn();
@@ -181,7 +161,7 @@ const agreePrivacy = () => {
 };
 </script>
 <template>
-  <LoginTemplate ref="loginTemplate" @submit="chenckLogin">
+  <LoginTemplate ref="loginTemplate" @submit="chenckLogin" @three-part-login="threePartLogin">
     <template v-if="showSwitch" #switch>
       <div style="flex: 1">
         <a style="display: inline" @click="goResetPwd()">
@@ -211,7 +191,7 @@ const agreePrivacy = () => {
   <AgreePrivacy
     v-model="privacyVisible"
     @success="agreePrivacy"
-    @cancel="logout"
+    @cancel="cancelPad"
   ></AgreePrivacy>
 </template>
 <style lang="scss" scoped></style>

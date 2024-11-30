@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from '../i18n';
-import { formValidator, getFitWidth } from '../utils/utils';
+import { formValidator, getFitWidth, getCommunityParams } from '../utils/utils';
 import { reactive, ref, toRefs } from 'vue';
 import { ElMessage, FormInstance } from 'element-plus';
 import { modifyUser } from '../api/api-center';
@@ -20,14 +20,25 @@ const deleteAgree = () => {
   const param = {
     oneidPrivacyAccepted: 'revoked',
   };
-  modifyUser(param).then(() => {
-    ElMessage.success({
-      showClose: true,
-      message: i18n.value.DELETE_SUCCESS,
+  if (import.meta.env?.VITE_COMMUNITY === 'opengauss') {
+    modifyUser(param, getCommunityParams(true)).then(() => {
+      ElMessage.success({
+        showClose: true,
+        message: i18n.value.DELETE_SUCCESS,
+      });
+      close();
+      emit('submit');
     });
-    close();
-    emit('submit');
-  });
+  } else {
+    modifyUser(param).then(() => {
+      ElMessage.success({
+        showClose: true,
+        message: i18n.value.DELETE_SUCCESS,
+      });
+      close();
+      emit('submit');
+    });
+  }
 };
 
 const submit = (formEl: FormInstance | undefined) => {
