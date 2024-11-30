@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { onMounted, reactive, ref } from 'vue';
-import { bindByThirdparty, loginByThirdparty, registerByThirdparty } from '../api/api-thirdparty';
+import {
+  bindByThirdparty,
+  loginByThirdparty,
+  registerByThirdparty,
+} from '../api/api-thirdparty';
 import {
   getSessionStorage,
   asyncBlur,
@@ -157,26 +161,31 @@ const register = () => {
 };
 
 const bindAccount = () => {
-  const param = {
+  let param = {
     accept_term: 0,
     account: form.account,
     code: form.code,
     community: import.meta.env?.VITE_COMMUNITY,
     client_id: tParam.value.client_id,
+  };
+  if (import.meta.env.VITE_COMMUNITY === 'opengauss') {
+    param = Object.assign({}, param, {
+      oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
+    });
   }
   accountLoginPost(param).then(() => {
     bindAccountSuccess();
   });
-}
+};
 const bindAccountSuccess = () => {
   const bindParams = {
     bind_token: bindToken.value,
     state: route.query.state as string,
-  }
+  };
   bindByThirdparty(bindParams).then(() => {
     loginSuccess();
-  })
-}
+  });
+};
 </script>
 <template>
   <div v-if="bindToken && !isBind" class="third-login">

@@ -158,7 +158,7 @@ const responseInterceptorId = request.interceptors.response.use(
       // 无效token跳转登录
       if (err.code === '401') {
         tokenFailIndicateLogin();
-      } else if (err.code === '400') {
+      } else if (err.code === '400' && import.meta.env.VITE_COMMUNITY === 'openmind') {
         // 绑定三方账号和系统账号的手机号码，需要重新输入手机号
         if (err.response?.data?.msg?.code === 'E0003') {
           return Promise.resolve(err.response);
