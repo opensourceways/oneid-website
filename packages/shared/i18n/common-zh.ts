@@ -147,6 +147,7 @@ export default {
   ENTER_VAILD_EMAIL_OR_PHONE: '请输入正确的邮箱或手机号',
   ACCOUNT_NOT_EXIST: '账号不存在',
   PLEASE_CHECK_PRIVACY: '请勾选隐私声明',
+  PLEASE_CHECK_PRIVACY_VALID: '请勾选隐私政策与法律声明',
   PLEASE_DRAG_SLIDER: '请拖动滑块完成人机校验',
   ENTER_YOUR_PHONE: '请输入您的手机号',
   ENTER_YOUR_EMAIL: '请输入您的邮箱地址',

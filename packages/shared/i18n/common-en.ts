@@ -147,6 +147,7 @@ export default {
   ENTER_VAILD_EMAIL_OR_PHONE: 'Invalid email address or mobile number.',
   ACCOUNT_NOT_EXIST: 'Account not found',
   PLEASE_CHECK_PRIVACY: 'Please read the privacy statement',
+  PLEASE_CHECK_PRIVACY_VALID: 'Please check the privacy policy and legal statement',
   PLEASE_DRAG_SLIDER: 'Slide for verification',
   ENTER_YOUR_PHONE: 'Mobile number',
   ENTER_YOUR_EMAIL: 'Email address',
