@@ -10,6 +10,7 @@ import {
   onUnmounted,
   inject,
   watch,
+  nextTick,
 } from 'vue';
 import { useI18n } from 'shared/i18n';
 import {
@@ -21,7 +22,7 @@ import {
   OForm,
   OFormItem,
 } from '@opensig/opendesign';
-import { FieldResultT, ValidatorT } from '@opensig/opendesign/lib/form/types';
+import { ValidatorT } from '@opensig/opendesign/lib/form/types';
 import { getVerifyImgSize } from 'shared/utils/utils';
 import {
   getUsernammeRules,
@@ -296,6 +297,7 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
     disableCode.value = true;
   } else {
     formValidator(formEl, 'account').subscribe((valid) => {
+      checkFields('account', valid as boolean);
       disableCode.value = !valid;
       clearValidate('account');
     });
@@ -371,7 +373,16 @@ const ruleFields = computed<fieldObjectT>(() => {
     return {};
   }
 });
-watch(() => ruleFields.value, () => btnCanClick.value = false)
+watch(
+  () => ruleFields.value,
+  () => {
+    nextTick(() => {
+      setAutoCompleteOff();
+      formRef.value?.resetFields();
+      btnCanClick.value = false;
+    });
+  }
+);
 // valids为空 表示重置
 const checkFields = (field: fieldT, valids?: boolean) => {
   if (valids === undefined) {
@@ -414,6 +425,13 @@ const enterSubmit = (e: { key: string }) => {
 };
 onMounted(() => {
   window.addEventListener('keydown', enterSubmit);
+  window.onload = function () {
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach((input) => {
+      input.focus();
+      input.blur();
+    });
+  };
 });
 onUnmounted(() => {
   window.removeEventListener('keydown', enterSubmit);
@@ -433,6 +451,14 @@ watch(
     immediate: true,
   }
 );
+// 设置input输入框禁止浏览器自动填充
+const setAutoCompleteOff = () => {
+  const inputDoms = document.getElementsByClassName('o_input-input');
+  const inputs = Array.from(inputDoms);
+  inputs?.forEach((item) => {
+    (item as HTMLInputElement).autocomplete = 'off';
+  });
+};
 </script>
 <template>
   <!-- 密码和验证码的切换 -->
