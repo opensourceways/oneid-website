@@ -60,7 +60,7 @@ export function getUserAuth() {
 
 function getLogoutUrl(param: { host: string, idToken: string, redirectUri: string }) {
   const { host, idToken, redirectUri } = param;
-  return `${host}/oidc/session/end?id_token_hint=${idToken}&post_logout_redirect_uri=${redirectUri}`
+  return `${host}/oidc/session/end?id_token_hint=${idToken}&post_logout_redirect_uri=${redirectUri}`;
 }
 
 // 退出登录
