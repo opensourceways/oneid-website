@@ -235,7 +235,7 @@ const confirm = (formEl: FormInstance | undefined) => {
       <span v-if="!resetToken">
         <el-form-item prop="account" :rules="accountRules">
           <a v-if="useAccount" @click="changeAccount">{{
-            useAccount === 'email' ? i18n.USE_PHONE : i18n.USE_EMAIL
+            useAccount === 'email' ? i18n.USE_EMAIL : i18n.USE_PHONE
           }}</a>
           <OInput
             v-model="form.account"
