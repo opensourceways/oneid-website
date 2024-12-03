@@ -300,7 +300,7 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
   display: flex;
   justify-content: center;
   column-gap: var(--o-spacing-h5);
-  margin-top: 58px;
+  margin-top: 71px;
 }
 .form {
   --form-label-main-gap: 0;

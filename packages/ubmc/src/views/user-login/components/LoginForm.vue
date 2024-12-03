@@ -425,13 +425,7 @@ const enterSubmit = (e: { key: string }) => {
 };
 onMounted(() => {
   window.addEventListener('keydown', enterSubmit);
-  window.onload = function () {
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach((input) => {
-      input.focus();
-      input.blur();
-    });
-  };
+  setAutoCompleteOff();
 });
 onUnmounted(() => {
   window.removeEventListener('keydown', enterSubmit);
@@ -457,6 +451,9 @@ const setAutoCompleteOff = () => {
   const inputs = Array.from(inputDoms);
   inputs?.forEach((item) => {
     (item as HTMLInputElement).autocomplete = 'off';
+    if ((item as HTMLInputElement).type === 'password') {
+      (item as HTMLInputElement).autocomplete = 'new-password';
+    }
   });
 };
 </script>
@@ -554,7 +551,7 @@ const setAutoCompleteOff = () => {
       />
     </OFormItem>
     <!-- 隐私政策和法律文件 -->
-    <OFormItem v-if="type === 'register'" field="policy" :rules="policyRules">
+    <OFormItem v-if="type === 'register'" field="policy" :rules="policyRules" class="form-item-checkbox">
       <div class="checkbox">
         <OCheckbox
           v-model="form.policy"
@@ -631,11 +628,18 @@ const setAutoCompleteOff = () => {
   width: 100%;
   justify-content: center;
 }
+.form-item-checkbox :deep(.o-form-item-main-wrap) {
+  min-height: 22px;
+  .o-checkbox-input-wrap {
+    --checkbox-text-height: 22px;
+    --checkbox-input-wrap-size: 22px;
+  }
+}
 .checkbox {
   display: grid;
   grid-template-columns: auto auto;
   align-items: start;
-  color: var(--o-color-info1);
+  color: rgba(0, 0, 0, 0.8);
   font-size: 14px;
   line-height: 22px;
   .o-checkbox-group {
@@ -666,7 +670,7 @@ const setAutoCompleteOff = () => {
     padding-bottom: 17px;
     position: relative;
     height: auto;
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, 0.80);
   }
 }
 .form {
