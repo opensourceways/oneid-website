@@ -128,7 +128,6 @@ watch(
         >
           {{ item.label }}
         </li>
-        <hr class="line"/>
       </template>
     </ul>
   </div>
@@ -175,8 +174,7 @@ watch(
     padding: 4px;
     border-radius: 8px;
     .lang-item {
-      line-height: var(--o-line-height-h3);
-      text-align: center;
+      line-height: var(--o-line-height-h4);
       font-size: var(--o-font-size-h8);
       color: var(--o-color-text1);
       padding: 0 var(--o-spacing-h5);
@@ -190,17 +188,8 @@ watch(
       }
       &.active {
         color: var(--o-color-brand1);
-        background: none;
+        background: #e7edf6;
         cursor: default;
-      }
-    }
-    .line {
-      background-color: rgba(0, 0, 0, 0.1);
-      margin: 2px;
-      height: 1px;
-      border: none;
-      &:last-child {
-        display: none;
       }
     }
   }

@@ -28,9 +28,9 @@ import LoginCard from './LoginCard.vue';
 
   .header-title {
     @include h2;
-    font-weight: 600;
     text-align: center;
-    color: var(--o-color-info1);
+    color: var(--o-color-text1);
+    font-weight: Medium;
   }
   .header-title-tip {
     // margin-top: 12px;
@@ -43,7 +43,7 @@ import LoginCard from './LoginCard.vue';
   }
 }
 .app-body {
-  padding-top: 24px;
+  padding-top: 18px;
 }
 .switch {
   display: flex;
@@ -51,6 +51,7 @@ import LoginCard from './LoginCard.vue';
   align-items: center;
   font-size: 14px;
   line-height: 22px;
+  color: var(--o-color-info3);
   height: 22px;
   :deep(label) {
     opacity: 0.6;

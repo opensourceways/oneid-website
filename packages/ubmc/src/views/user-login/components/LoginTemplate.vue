@@ -176,8 +176,8 @@ const showFooter = computed(
       padding-left: var(--o-spacing-h5);
       padding-right: var(--o-spacing-h5);
       font-size: var(--o-font-size-tip);
-      line-height: var(--o-line-height-h8);
-      color: var(--o-color-text4);
+      line-height: var(--o-line-height-tip);
+      color: var(--o-color-info3);
     }
   }
   .three-parts {

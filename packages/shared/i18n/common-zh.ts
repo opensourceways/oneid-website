@@ -169,6 +169,7 @@ export default {
   LEGAL_NOTICE: '《法律声明》',
   USER_SERVICE: '《用户服务协议》',
   THREE_PART_LOGIN: '第三方账号登录',
+  THREE_LOGIN: '第三方登录',
   ACCOUNT_CONTAIN_CHARACTER: '账号长度不少于3个字符',
   CONTAIN_CHARACTER: '长度必须为3到20个字符',
   USERNAME_CONTAIN_CHARACTER: '长度必须为3到40个字符',

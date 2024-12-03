@@ -49,9 +49,17 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
   padding-right: var(--layout-content-padding);
 }
 
-.footer-content {
+.footer-left {
   a {
     color: var(--o-color-info3);
+    @include hover {
+      color: var(--o-color-info1);
+    }
+  }
+}
+.footer-right {
+  a {
+    color: var(--o-color-info2);
     @include hover {
       color: var(--o-color-info1);
     }

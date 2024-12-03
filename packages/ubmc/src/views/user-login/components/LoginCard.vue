@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.svg';
 </script>
 
 <template>
@@ -26,7 +26,7 @@ import logo from '@/assets/logo.png';
     width: 480px;
     margin: 0 auto;
     border-radius: 8px;
-    padding: 26px 80px 24px;
+    padding: 27px 80px 24px;
     background-color: var(--o-color-fill2);
     box-shadow: var(--o-shadow-1);
     @include respond-to('phone') {

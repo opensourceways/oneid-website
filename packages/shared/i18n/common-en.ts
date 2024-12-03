@@ -169,6 +169,7 @@ export default {
   LEGAL_NOTICE: 'Legal Notice',
   USER_SERVICE: 'Terms of Use',
   THREE_PART_LOGIN: 'Use Third-Party Account',
+  THREE_LOGIN: 'Third party login',
   ACCOUNT_CONTAIN_CHARACTER: 'Cannot be less than 3 characters.',
   CONTAIN_CHARACTER: 'Contain 3 to 20 characters.',
   USERNAME_CONTAIN_CHARACTER: 'Contain 3 to 40 characters.',
