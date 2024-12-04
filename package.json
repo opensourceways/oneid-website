@@ -12,6 +12,7 @@
     "dev:mindspore": "pnpm --filter mindspore dev",
     "build:mindspore": "pnpm --filter mindspore build",
     "dev:merlin": "pnpm --filter merlin dev",
+    "test:merlin": "pnpm --filter merlin test",
     "build:merlin": "pnpm --filter merlin build",
     "build": "pnpm build:euler & pnpm build:gauss",
     "preview": "vite preview",
