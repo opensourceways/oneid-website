@@ -31,8 +31,13 @@ export default defineConfig({
   ],
   server: {
     proxy: {
+      // '/oneid/': {
+      //   target: 'https://xiheapi.osinfra.cn/',
+      //   secure: false,
+      //   changeOrigin: true,
+      // },
       '/oneid/': {
-        target: 'https://xiheapi.osinfra.cn/',
+        target: 'http://localhost:7060/mock',
         secure: false,
         changeOrigin: true,
       },

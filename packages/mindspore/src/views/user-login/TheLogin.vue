@@ -23,23 +23,21 @@ import { getVerifyImgSize } from 'shared/utils/utils';
 import Verify from 'shared/verifition/Verify.vue';
 import PadAccount from 'shared/components/PadAccount.vue';
 import { ONLY_LOGIN_ID } from '@/shared/const';
+import AgreePrivacy from '@/components/AgreePrivacy.vue';
+import { getCommunityParams } from 'shared/utils/utils';
 
 const i18n = useI18n();
 const loginTemplate = ref<any>(null);
 const router = useRouter();
 const route = useRoute();
+const privacyVisible = ref(false);
 const goRegister = () => {
   router.push({
     path: '/register',
     query: route.query,
   });
 };
-const goResetPwd = () => {
-  router.push({
-    path: '/resetPwd',
-    query: route.query,
-  });
-};
+
 const { loginParams } = useCommonData();
 
 const visible = ref(false);
@@ -50,9 +48,12 @@ const padUserinfo = reactive({
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  const { username } = data || {};
+  const { username, oneidPrivacyAccepted = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  if (!name) {
+  if (oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED) {
+    privacyVisible.value = true;
+    return false;
+  } else if (!name) {
     padUserinfo.username = name;
     visible.value = true;
     return false;
@@ -106,6 +107,7 @@ const login = async (form: any, captchaVerification?: string) => {
     param.password = password;
   } else {
     param.code = form.code;
+    param.oneidPrivacyAccepted = import.meta.env?.VITE_ONEID_PRIVACYACCEPTED;
   }
   accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);
@@ -148,8 +150,17 @@ const threePartLogin = (res: any) => {
     loginSuccess(data?.data);
   });
 };
+const agreePrivacy = () => {
+  isLogined(getCommunityParams(true)).then((bool) => {
+    if (bool) {
+      if (isNotPadUserinfo(bool)) {
+        haveLoggedIn();
+      }
+    }
+  });
+};
 const cancelPad = () => {
-  logout();
+  logout(getCommunityParams(true), location.href);
 };
 const onlyLogin = computed(
   () => ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
@@ -182,5 +193,10 @@ const onlyLogin = computed(
     :img-size="getVerifyImgSize()"
     @success="verifySuccess"
   ></Verify>
+  <AgreePrivacy
+    v-model="privacyVisible"
+    @success="agreePrivacy"
+    @cancel="cancelPad"
+  ></AgreePrivacy>
 </template>
 <style lang="scss" scoped></style>

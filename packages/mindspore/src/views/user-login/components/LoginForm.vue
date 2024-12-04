@@ -41,7 +41,7 @@ defineExpose({ validator });
 
 const { type } = toRefs(props);
 const i18n = useI18n();
-const { lang, loginParams } = useCommonData();
+const { loginParams } = useCommonData();
 // 表单值
 const form = reactive({
   username: '',
@@ -227,11 +227,6 @@ const accountPlaceholder = computed(() => {
     return i18n.value.ENTER_YOUR_EMAIL_OR_PHONE;
   }
 });
-const loginTabSelect = () => {
-  formRef.value?.resetFields();
-  disableCode.value = false;
-  disableCodeInput.value = true;
-};
 </script>
 <template>
   <el-form ref="formRef" label-width="0" :model="form" style="max-width: 460px">
