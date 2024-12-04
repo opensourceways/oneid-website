@@ -7,7 +7,7 @@ import { ElMessage } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
-import AgreePrivacy from 'shared/components/AgreePrivacy.vue';
+import AgreePrivacy from '@/components/AgreePrivacy.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import Verify from 'shared/verifition/Verify.vue';
@@ -40,6 +40,7 @@ const padUserinfo = reactive({
   username: '',
   companyExist: true,
 });
+
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
   const { username, company, oneidPrivacyAccepted = '' } = data || {};
