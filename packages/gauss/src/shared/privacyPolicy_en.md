@@ -1,12 +1,4 @@
----
-title: 'Privacy Policy'
----
-
-<div class='markdown markdown-statement'>
-
 # Privacy Policy
-
-<hr/>
 
 The openGauss Community understands the importance of your privacy and fully respects it. <u>**Please read this openGauss Community Privacy Statement ("Statement") carefully before you submit your personal data to us**</u>. If you have any questions about how we process your personal data, please feel free to contact us. Unless otherwise specified, "we" and "us" in this Statement refers to the **openGauss** Community.
 
@@ -116,4 +108,3 @@ Last updated: **December 5, 2024**
 
 Privacy policy version: **v20241205**
 
-</div>
