@@ -3,11 +3,12 @@ import IconGithub from '~icons/app/icon-github.svg';
 import IconGitee from '~icons/app/icon-gitee.svg';
 import ContentTemplate from './ContentTemplate.vue';
 import LoginForm from './LoginForm.vue';
-import { PropType, ref, toRefs, computed } from 'vue';
-import { getUrlByParams, isWeChat } from 'shared/utils/utils';
+import { PropType, ref, toRefs, computed, onMounted, onUnmounted } from 'vue';
+import { getUrlByParams, isWeChat, setSessionStorage } from 'shared/utils/utils';
 import { useCommonData } from 'shared/stores/common';
 import { useI18n } from 'shared/i18n';
 import { ONLY_LOGIN_ID } from '@/shared/const';
+import { haveLoggedIn } from 'shared/utils/login-success';
 
 type TYPE = 'login' | 'register';
 const props = defineProps({
@@ -32,28 +33,21 @@ const emit = defineEmits(['submit']);
 
 const { type } = toRefs(props);
 const i18n = useI18n();
-const { lang, loginParams } = useCommonData();
+const { loginParams } = useCommonData();
 const submit = (form: any) => {
   emit('submit', form);
 };
 // 三方登录
-const redirectUri = `${import.meta.env.VITE_LOGIN_ORIGIN}/login`;
 const windowOpener = ref();
 
 const threePartsLogin = (item: ICONS_OBJ_T) => {
-  const url = `${import.meta.env?.VITE_LOGIN_USERPOOL}/api/v3/signin-by-extidp`;
+  const url = `/oneid/third-party/authorize`;
   const params = {
     client_id: loginParams.value.client_id,
-    response_type: loginParams.value.response_type,
-    redirect_uri: redirectUri,
-    scope: 'openid profile username email street_address phone',
-    state: loginParams.value.state,
-    nonce: loginParams.value.nonce,
-    lang: lang.value === 'zh' ? 'zh-CN' : 'en-US',
-    response_mode: 'web_message',
+    connection_id: item.id,
+    t: new Date().getTime(),
   };
-
-  Object.assign(params, { ext_idp_conn_id: item.id });
+  setSessionStorage('TP_PARAM', JSON.stringify(params));
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
     if (valid) {
       let width = 500;
@@ -103,6 +97,28 @@ const showFooter = computed(
     !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) &&
     !isWeChat()
 );
+
+const loginFun = (e: MessageEvent) => {
+  const { type, response } = e.data;
+  if (type !== 'authorization_response') {
+    return;
+  }
+  if (response === 'success') {
+    windowOpener.value?.close();
+    haveLoggedIn();
+  }
+};
+// 监听三方登录结果
+const listenerThreePartsLogin = () => {
+  window.addEventListener('message', loginFun);
+};
+onMounted(() => {
+  listenerThreePartsLogin();
+});
+onUnmounted(() => {
+  // 移除监听
+  window.removeEventListener('message', loginFun);
+});
 </script>
 <template>
   <ContentTemplate>

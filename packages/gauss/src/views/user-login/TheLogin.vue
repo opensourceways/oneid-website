@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { accountLoginPost, checkLoginAccount } from 'shared/api/api-login';
+import { accountLoginPost, queryToken, checkLoginAccount } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import { isLogined, logout } from 'shared/utils/login';
 import { getCommunityParams } from '@/shared/utils';
@@ -7,6 +7,7 @@ import { ElMessage } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
+import AgreePrivacy from '@/components/AgreePrivacy.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import Verify from 'shared/verifition/Verify.vue';
@@ -21,6 +22,7 @@ const { loginParams, selectLoginType } = useCommonData();
 const router = useRouter();
 const route = useRoute();
 const visible = ref(false);
+const privacyVisible = ref(false);
 const goRegister = () => {
   router.push({
     path: '/register',
@@ -38,11 +40,15 @@ const padUserinfo = reactive({
   username: '',
   companyExist: true,
 });
+
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
-  const { username, company } = data || {};
+  const { username, company, oneidPrivacyAccepted = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
-  if (!name || !company) {
+  if (oneidPrivacyAccepted !== import.meta.env?.VITE_ONEID_PRIVACYACCEPTED) {
+    privacyVisible.value = true;
+    return false;
+  } else if (!name || !company) {
     padUserinfo.username = name;
     padUserinfo.companyExist = Boolean(company);
     visible.value = true;
@@ -50,6 +56,7 @@ const isNotPadUserinfo = (data: any): boolean => {
   }
   return true;
 };
+
 onMounted(() => {
   validLoginUrl().then(() => {
     isLogined(getCommunityParams(true)).then((bool) => {
@@ -83,6 +90,7 @@ const login = async (form: any, captchaVerification?: string) => {
     ...getCommunityParams(true),
     account: form.account,
     accept_term: 0,
+    oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
   };
   if (captchaVerification) {
     param.captchaVerification = captchaVerification;
@@ -121,14 +129,40 @@ const verifySuccess = (data: any) => {
   login(formCopy.value, data.captchaVerification);
 };
 const showSwitch = computed(
-  () => !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) && selectLoginType.value === 'password'
+  () =>
+    !ONLY_LOGIN_ID.includes(loginParams.value.client_id as string) &&
+    selectLoginType.value === 'password'
 );
+
+const threePartLogin = (res: any) => {
+  const { code, redirect_uri: redirect } = res;
+  const param = {
+    code: code,
+    permission: 'sigRead',
+    community: import.meta.env?.VITE_COMMUNITY,
+    redirect,
+    client_id: loginParams.value.client_id,
+  };
+  queryToken(param).then((data: any) => {
+    loginSuccess(data?.data);
+  });
+};
+
 const cancelPad = () => {
   logout(getCommunityParams(true), location.href);
 };
+const agreePrivacy = () => {
+  isLogined(getCommunityParams(true)).then((bool) => {
+    if (bool) {
+      if (isNotPadUserinfo(bool)) {
+        haveLoggedIn();
+      }
+    }
+  });
+};
 </script>
 <template>
-  <LoginTemplate ref="loginTemplate" @submit="chenckLogin">
+  <LoginTemplate ref="loginTemplate" @submit="chenckLogin" @three-part-login="threePartLogin">
     <template v-if="showSwitch" #switch>
       <div style="flex: 1">
         <a style="display: inline" @click="goResetPwd()">
@@ -155,5 +189,10 @@ const cancelPad = () => {
     @success="doSuccess"
     @cancel="cancelPad"
   ></PadAccount>
+  <AgreePrivacy
+    v-model="privacyVisible"
+    @success="agreePrivacy"
+    @cancel="cancelPad"
+  ></AgreePrivacy>
 </template>
 <style lang="scss" scoped></style>
