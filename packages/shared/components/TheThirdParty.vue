@@ -173,6 +173,9 @@ const bindAccount = () => {
       oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
     });
   }
+  if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+    delete param.community;
+  }
   accountLoginPost(param).then(() => {
     bindAccountSuccess();
   });

@@ -4,7 +4,7 @@ import { reactive, ref } from 'vue';
 import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
 import { EMAIL_REG, PHONE_REG } from '../const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import { resetPwd, resetPwdVerify, sendCodeCaptcha } from '../api/api-login';
+import { resetPwd, resetPwdVerify, sendCodeCaptcha, sendCodeCaptchaPost } from '../api/api-login';
 import { formValidator, getPwdRules, getVerifyImgSize } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
@@ -101,7 +101,13 @@ const verifySuccess = (data: any) => {
     client_id: loginParams.value.client_id,
     community: import.meta.env?.VITE_COMMUNITY,
   };
-  sendCodeCaptcha(param).then(() => {
+  // 欧拉，用post接口
+  let sendCaptchaApi = sendCodeCaptcha;
+  if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+    delete param.community;
+    sendCaptchaApi = sendCodeCaptchaPost;
+  }
+  sendCaptchaApi(param).then(() => {
     disableCode.value = true;
     ElMessage.success({
       showClose: true,
@@ -120,6 +126,9 @@ const nextStep = (formEl: FormInstance | undefined) => {
         account: form.account,
         code: form.code,
       };
+      if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+        delete param.community;
+      }
       resetPwdVerify(param).then((res) => {
         resetToken.value = res.data;
       });
@@ -138,6 +147,10 @@ const confirm = (formEl: FormInstance | undefined) => {
         pwd_reset_token: resetToken.value,
         new_pwd: newPwd,
       };
+      if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+        delete param.community;
+        delete param.client_id;
+      }
       resetPwd(param)
         .then(() => {
           ElMessage.success({

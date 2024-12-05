@@ -2,7 +2,7 @@
 import {
   accountLoginPost,
   queryToken,
-  checkLoginAccount,
+  checkLoginAccountPost,
 } from 'shared/api/api-login';
 import PadAccount from 'shared/components/PadAccount.vue';
 import AgreePrivacy from 'shared/components/AgreePrivacy.vue';
@@ -52,7 +52,6 @@ const padUserinfo = reactive({
   emailExist: false,
   phoneExist: false,
 });
-
 // 判断是否需要补全内容
 const isNotPadUserinfo = (data: any): boolean => {
   const {
@@ -135,6 +134,7 @@ const login = async (form: any, captchaVerification?: string) => {
     param.password = password;
   } else {
     param.code = form.code;
+    param.oneidPrivacyAccepted = import.meta.env?.VITE_ONEID_PRIVACYACCEPTED;
   }
   accountLoginPost(param).then((data: any) => {
     loginSuccess(data?.data);
@@ -147,10 +147,9 @@ const formCopy = ref(null);
 const chenckLogin = (form: any) => {
   formCopy.value = form;
   const param = {
-    community: import.meta.env?.VITE_COMMUNITY,
     account: form.account,
   };
-  checkLoginAccount(param).then((data) => {
+  checkLoginAccountPost(param).then((data) => {
     if (data?.data?.need_captcha_verification) {
       verify.value.show();
     } else {

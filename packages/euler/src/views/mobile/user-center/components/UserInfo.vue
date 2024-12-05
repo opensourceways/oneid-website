@@ -4,7 +4,7 @@ import { useI18n, useI18nStr } from 'shared/i18n';
 import ContentBox from './ContentBox.vue';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import { modifyUser } from 'shared/api/api-center';
-import { ElMessage, FormInstance, FormItemRule } from 'element-plus';
+import { ElMessage, FormInstance } from 'element-plus';
 import { Observable } from 'rxjs';
 import { IObject } from 'shared/@types/interface';
 import AppHeader from '@/components/AppHeader.vue';
@@ -14,12 +14,6 @@ import { getUsernammeRules, maskUserInfo, getCompanyRules, getNicknammeRules, fo
 import MaskEye from 'shared/components/MaskEye.vue';
 const router = useRouter();
 const formRef1 = ref<FormInstance>();
-const props = defineProps({
-  userInfo: {
-    type: Object,
-    default: () => ({} as IObject),
-  },
-});
 const { userInfo } = useCommonData();
 const store = useCommon();
 

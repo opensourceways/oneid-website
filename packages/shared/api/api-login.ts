@@ -31,6 +31,17 @@ export function checkLoginAccount(params: any) {
 }
 
 /**
+ * 发送验证码, post方法
+ */
+export function checkLoginAccountPost(params: any) {
+  const url = '/oneid/captcha/checkLogin';
+
+  return request
+    .post(url, params, { global: true, $ignoreLoading: true, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
  * 发送验证码 （绑定三方账号也用到这个接口）
  */
 export function sendCodeCaptcha(params: any) {
@@ -38,6 +49,17 @@ export function sendCodeCaptcha(params: any) {
 
   return request
     .get(url, { global: true, $ignoreLoading: true, params, ...getHeaderConfig() })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 发送验证码, post方法
+ */
+export function sendCodeCaptchaPost(params: any) {
+  const url = '/oneid/captcha/sendCode';
+
+  return request
+    .post(url, params, { global: true, $ignoreLoading: true, ...getHeaderConfig() })
     .then((res: AxiosResponse) => res.data);
 }
 

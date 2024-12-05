@@ -16,10 +16,10 @@ import {
 } from 'shared/@types/usercenter.interface';
 import { useCommon, useCommonData } from 'shared/stores/common';
 import {
-  bindAccount,
-  modifyAccount,
-  sendUnbindCode,
-  unbindAccount,
+  bindAccountPost,
+  modifyAccountPost,
+  sendUnbindCodePost,
+  unbindAccountPost,
   linkAccount,
   unlinkAccount,
 } from 'shared/api/api-center';
@@ -100,7 +100,7 @@ const vilible = ref(false);
 
 // 修改绑定邮箱或手机号
 const modifyAccountFuc = (data: any) => {
-  (isSendCodeEmail(data?.oldaccount) ? modifyAccount : bindAccount)(data).then(
+  (isSendCodeEmail(data?.oldaccount) ? modifyAccountPost : bindAccountPost)(data).then(
     () => {
       ElMessage.success({
         showClose: true,
@@ -114,7 +114,7 @@ const modifyAccountFuc = (data: any) => {
 
 // 绑定手机号或者邮箱
 const bindAccountFuc = (data: BindAccountParams) => {
-  bindAccount(data).then(() => {
+  bindAccountPost(data).then(() => {
     ElMessage.success({
       showClose: true,
       message: i18n.value.BIND_SUCCESS,
@@ -126,7 +126,7 @@ const bindAccountFuc = (data: BindAccountParams) => {
 
 // 解绑手机号或者邮箱
 const unbindAccountFuc = (data: BindAccountParams) => {
-  unbindAccount(data).then(() => {
+  unbindAccountPost(data).then(() => {
     ElMessage.success({
       showClose: true,
       message: i18n.value.UNBIND_SUCCESS,
@@ -139,7 +139,7 @@ const unbindAccountFuc = (data: BindAccountParams) => {
 // 发送验证码
 const sendCodeFuc = (data: QueryCodeParams) => {
   return new Promise((resolve, rejects) => {
-    sendUnbindCode(data)
+    sendUnbindCodePost(data)
       .then(() => {
         resolve(true);
       })

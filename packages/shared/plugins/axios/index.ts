@@ -115,6 +115,10 @@ const requestInterceptorId = request.interceptors.request.use(
       };
       Object.assign(config?.headers as any, to);
     }
+    // 删除community参数
+    if (config.params?.community === 'openeuler') {
+      config.params.community = undefined;
+    }
     return config;
   },
   (err: AxiosError) => {

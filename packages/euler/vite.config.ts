@@ -7,7 +7,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  envDir: './viteEnv',
+  envDir: './env',
   base: '/',
   build: {
     outDir: path.resolve(__dirname, '../../dist/euler'),
@@ -39,11 +39,11 @@ export default defineConfig({
       //   secure: false,
       //   changeOrigin: true,
       // },
-      // '/openeuler/': {
-      //   target: 'https://gitee.com/',
-      //   secure: false,
-      //   changeOrigin: true,
-      // },
+      '/openeuler/': {
+        target: 'https://gitee.com/',
+        secure: false,
+        changeOrigin: true,
+      },
       '/oneid/': {
         target: 'http://localhost:7060/mock',
         secure: false,
