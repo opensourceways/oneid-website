@@ -38,9 +38,11 @@ const doLogout = () => {
 };
 // 隐私政策、法律声明
 const privacyVilible = ref(false);
+
+// 隐私政策、法律声明  opengauss
 const goToOtherPage = (type: string) => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
-  const url = `${origin}/${lang.value}/other/${type}`;
+  const url = `${origin}/${lang.value}/${type}/`;
   window.open(url, '_blank');
 };
 </script>
@@ -62,7 +64,7 @@ const goToOtherPage = (type: string) => {
           <div class="tips-title">{{ i18n.CANCEL_SIGN }}</div>
           <div class="tips-content">
             {{ i18n.CANCEL_SIGN_OF }}
-            <a @click="goToOtherPage('privacy')">{{ i18n.PRIVACY_POLICY }}</a>
+            <a @click="goToOtherPage('privacyPolicy')">{{ i18n.PRIVACY_POLICY }}</a>
             {{ i18n.AND }}
             <a @click="goToOtherPage('legal')">{{ i18n.LEGAL_NOTICE }}</a>
           </div>
