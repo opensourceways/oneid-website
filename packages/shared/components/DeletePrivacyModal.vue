@@ -74,11 +74,31 @@ const close = () => {
   emit('update:modelValue', false);
   formRef.value?.resetFields();
 };
-// 隐私政策、法律声明
-const { lang } = useCommonData();
 const goToOtherPage = (type: string) => {
+  if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+    goToOtherPageEuler(type);
+  } else if (import.meta.env?.VITE_COMMUNITY === 'opengauss') {
+    if (type === 'privacy') {
+      goToOtherPageGauss('privacyPolicy');
+    } else {
+      goToOtherPageGauss(type);
+    }
+  } else {
+    return;
+  }
+};
+// 隐私政策、法律声明  openeuler
+const { lang } = useCommonData();
+const goToOtherPageEuler = (type: string) => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
   const url = `${origin}/${lang.value}/other/${type}`;
+  window.open(url, '_blank');
+};
+
+// 隐私政策、法律声明  opengauss
+const goToOtherPageGauss = (type: string) => {
+  const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
+  const url = `${origin}/${lang.value}/${type}/`;
   window.open(url, '_blank');
 };
 </script>
