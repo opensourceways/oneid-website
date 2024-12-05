@@ -1,12 +1,6 @@
----
-title: 'Legal Notice'
----
 
-<div class='markdown markdown-statement' >
+# Legal Notice
 
-<h1>Legal Notice</h1>
-
----
 
 This legal notice contains legal policies for the openGauss Community. These policies govern this website and project releases hosted by the openGauss Community.
 
@@ -48,4 +42,3 @@ The contents on this website are provided for your convenience only. The openGau
 
 Access and all related activities on or through this website shall be governed by, construed, and interpreted in accordance with the laws of the People's Republic of China. You agree that any dispute between the parties arising out of or in connection with this legal notice or your access and all related activities on or through this website shall be governed by a court with jurisdiction in Shenzhen, Guangdong Province of the People's Republic of China.
 
-</div>
