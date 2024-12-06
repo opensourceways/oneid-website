@@ -19,7 +19,11 @@ import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
-import { getVerifyImgSize, callBackErrMessage, getPrivacyVersion } from 'shared/utils/utils';
+import {
+  getVerifyImgSize,
+  callBackErrMessage,
+  getPrivacyVersion,
+} from 'shared/utils/utils';
 import { useTestIsPhone } from 'shared/utils/helper';
 import Verify from 'shared/verifition/Verify.vue';
 import PadAccount from '@/components/PadAccount.vue';
@@ -51,16 +55,14 @@ const visible = ref(false);
 const padUserinfo = reactive({
   username: '',
 });
-const loginOrigin = ref('')
+const loginOrigin = ref('');
 
 // 判断是否需要补全内容
 const isNotPadUserinfo = async (data: any): Promise<boolean> => {
   const { username, phone_exist, oneidPrivacyAccepted = '' } = data || {};
   const name = !username || username.startsWith('oauth2_') ? '' : username;
   const oneidPrivacyAccepted1 = await getPrivacyVersion();
-  if (
-    oneidPrivacyAccepted !== oneidPrivacyAccepted1
-  ) {
+  if (oneidPrivacyAccepted !== oneidPrivacyAccepted1) {
     privacyVisible.value = true;
     return false;
   } else if (!name) {
@@ -107,7 +109,7 @@ const loginSuccess = async (data: any) => {
 };
 
 // 登录失败输入框变红
-const code = ref('')
+const code = ref('');
 provide('loginErr', code);
 const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
@@ -125,15 +127,17 @@ const login = async (form: any, captchaVerification?: string) => {
   } else {
     param.code = form.code;
   }
-  accountLoginPost(param, { $doException: true }).then((data: any) => {
-    loginOrigin.value = 'ACCOUNT'
-    loginSuccess(data?.data);
-  }).catch((err) => {
-    message.danger({
-      content: callBackErrMessage(err),
+  accountLoginPost(param, { $doException: true })
+    .then((data: any) => {
+      loginOrigin.value = 'ACCOUNT';
+      loginSuccess(data?.data);
+    })
+    .catch((err) => {
+      message.danger({
+        content: callBackErrMessage(err),
+      });
+      code.value = err.response.data.msg.code;
     });
-    code.value = err.response.data.msg.code;
-  });
 };
 
 const formCopy = ref(null);
@@ -181,7 +185,7 @@ const agreePrivacy = () => {
       }
     }
   });
-}
+};
 const isphone = useTestIsPhone();
 </script>
 <template>
@@ -192,18 +196,30 @@ const isphone = useTestIsPhone();
   >
     <template #switch v-if="selectLoginType === 'password'">
       <template v-if="isphone">
-        <OButton color="primary" variant="outline" size="large" class="login-btn" @click="goRegister">
+        <OButton
+          color="primary"
+          variant="outline"
+          size="large"
+          class="login-btn"
+          @click="goRegister"
+        >
           {{ i18n.REGISTER_NOW }}
         </OButton>
       </template>
       <template v-else>
-        <OLink color="primary" hover-underline @click="goRegister">{{ i18n.REGISTER_NOW }}</OLink>
+        <OLink color="primary" hover-underline @click="goRegister">{{
+          i18n.REGISTER_NOW
+        }}</OLink>
         <ODivider direction="v" />
-        <OLink color="primary" hover-underline @click="goResetPwd()">{{ i18n.FORGET_PWD }}</OLink>
+        <OLink color="primary" hover-underline @click="goResetPwd()">{{
+          i18n.FORGET_PWD
+        }}</OLink>
       </template>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
-    <template #btn> {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }} </template>
+    <template #btn>
+      {{ selectLoginType === 'code' ? i18n.LOGIN_REGISTER : i18n.LOGIN }}
+    </template>
   </LoginTemplate>
   <PadAccount
     v-model="visible"

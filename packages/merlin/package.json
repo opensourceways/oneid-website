@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "test": "vue-tsc --noEmit && vite --mode=test build",
     "build": "vue-tsc --noEmit && vite build"
   },
   "dependencies": {

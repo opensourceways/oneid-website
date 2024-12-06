@@ -16,11 +16,11 @@ export const useCommon = defineStore('common', () => {
     client_id: import.meta.env?.VITE_OPENEULER_APPID,
     redirect_uri: `${import.meta.env.VITE_OPENEULER_WEBSITE}/`,
     response_type: 'code',
-    scope: 'openid profile',
-    state: 6223573296,
+    scope: import.meta.env?.VITE_RESPONSE_SCOPE ?? 'openid profile',
+    state: import.meta.env?.VITE_RESPONSE_STATE ?? 6223573296,
     nonce: 1831288,
     lang: 'zh',
-    response_mode: 'none',
+    response_mode: import.meta.env?.VITE_RESPONSE_MODE ?? 'none',
   });
 
   const saveLoginParams = (obj: LoginParams) => {
