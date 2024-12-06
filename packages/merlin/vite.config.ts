@@ -7,7 +7,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  envDir: './env',
+  envDir: './viteEnv',
   base: '/',
   build: {
     outDir: path.resolve(__dirname, '../../dist/merlin'),
