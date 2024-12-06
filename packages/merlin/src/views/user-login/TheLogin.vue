@@ -56,7 +56,6 @@ const padUserinfo = reactive({
   username: '',
 });
 const loginOrigin = ref('');
-
 // 判断是否需要补全内容
 const isNotPadUserinfo = async (data: any): Promise<boolean> => {
   const { username, phone_exist, oneidPrivacyAccepted = '' } = data || {};
