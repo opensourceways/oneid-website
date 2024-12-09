@@ -17,7 +17,7 @@ import { useRoute, useRouter } from 'vue-router';
 import LoginTemplate from './components/LoginTemplate.vue';
 import { haveLoggedIn } from 'shared/utils/login-success';
 import { validLoginUrl } from 'shared/utils/login-valid-url';
-import { useCommonData } from 'shared/stores/common';
+import { useCommonData, useCommon } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import {
   getVerifyImgSize,
@@ -48,9 +48,13 @@ const goResetPwd = () => {
   });
 };
 const verify = ref();
+const { setSelectLoginType } = useCommon();
+// 默认验证码登录
+setSelectLoginType('code');
 const { loginParams, selectLoginType } = useCommonData();
 const privacyVisible = ref(false);
 const visible = ref(false);
+
 // 控制补全框内容
 const padUserinfo = reactive({
   username: '',
