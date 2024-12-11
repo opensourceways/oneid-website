@@ -9,7 +9,7 @@ ENV MY_ENV_VARIABLE ${ENV_FLAG}
 
 RUN npm install pnpm -g
 RUN pnpm install
-RUN if [ "$MY_ENV_VARIABLE" != "test" ]; then echo "in production build"; pnpm build:mindspore; else echo "in test build"; pnpm test:mindspore; fi
+RUN if [ "$MY_ENV_VARIABLE" != "test" ]; then echo "in production build"; pnpm build:ubmc; else echo "in test build"; pnpm test:ubmc; fi
 
 FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.24.0-22.03-lts-sp1 as NginxBuilder
 
