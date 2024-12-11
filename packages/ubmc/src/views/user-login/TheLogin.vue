@@ -156,7 +156,6 @@ const chenckLogin = (form: any) => {
     }
   });
 };
-
 const verifySuccess = (data: any) => {
   login(formCopy.value, data.captchaVerification);
 };
