@@ -51,7 +51,6 @@ const verify = ref();
 const { loginParams, selectLoginType } = useCommonData();
 const privacyVisible = ref(false);
 const visible = ref(false);
-
 // 控制补全框内容
 const padUserinfo = reactive({
   username: '',
