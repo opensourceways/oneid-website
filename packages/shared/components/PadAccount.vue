@@ -14,7 +14,7 @@ import {
 } from '../utils/utils';
 import Verify from '../verifition/Verify.vue';
 import { useCommonData } from '../stores/common';
-import { bindAccount, modifyUser, sendCode } from '../api/api-center';
+import { bindAccount, modifyUser, sendCode, sendCodePost } from '../api/api-center';
 import { mergeMap, Observable, of, zip, map } from 'rxjs';
 
 const props = defineProps({
@@ -117,7 +117,8 @@ const verifySuccess = (data: any) => {
     param.account = form.phone;
     param.channel = 'channel_bind_phone';
   }
-  sendCode(param).then(() => {
+  const sendCodeApi = import.meta.env?.VITE_COMMUNITY === 'openeuler' ? sendCodePost : sendCode;
+  sendCodeApi(param).then(() => {
     ElMessage.success({
       showClose: true,
       message: i18n.value.SEND_SUCCESS,

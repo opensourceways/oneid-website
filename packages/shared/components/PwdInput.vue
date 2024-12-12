@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useAttrs } from 'vue';
+import { ref, shallowRef, useAttrs } from 'vue';
 import IconEyeClose from '~icons/app/icon-eyeclose.svg';
 import IconEyeOpen from '~icons/app/icon-eyeopen.svg';
 
@@ -12,7 +12,7 @@ defineProps({
 
 const attrs = useAttrs();
 const inputType = ref('password');
-const iconCom = ref(IconEyeClose);
+const iconCom = shallowRef(IconEyeClose);
 const openEye = () => {
   inputType.value = 'text';
   iconCom.value = IconEyeOpen;

@@ -121,7 +121,7 @@ watch(
         >
           {{ item.label }}
         </li>
-        <hr class="line"/>
+        <hr class="line" />
       </template>
     </ul>
   </div>
@@ -164,9 +164,6 @@ watch(
     z-index: 999;
     box-shadow: var(--o-shadow-l1);
     min-width: 78px;
-    // width: 144px;
-    // padding: 4px;
-    // border-radius: 8px;
     .lang-item {
       line-height: var(--o-line-height-h3);
       text-align: center;
@@ -179,9 +176,6 @@ watch(
       &:hover {
         background-color: var(--o-color-brand1);
         color: var(--o-color-white);
-        // background-color: #edeff2;
-        // border-radius: 4px;
-        // color: rgba(0,0,0,0.8);
       }
       &.active {
         color: var(--o-color-brand1);
@@ -191,7 +185,6 @@ watch(
     }
     .line {
       background-color: rgba(0, 0, 0, 0.1);
-      // margin: 2px;
       height: 1px;
       border: none;
       &:last-child {

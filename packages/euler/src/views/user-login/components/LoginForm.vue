@@ -9,7 +9,7 @@ import {
   asyncBlur,
   getVerifyImgSize,
 } from 'shared/utils/utils';
-import { sendCodeCaptcha } from 'shared/api/api-login';
+import { sendCodeCaptchaPost } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from 'shared/components/LoginTabs.vue';
 import PwdInput from 'shared/components/PwdInput.vue';
@@ -78,9 +78,8 @@ const verifySuccess = (data: any) => {
     account: form.account,
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
-    community: import.meta.env?.VITE_COMMUNITY,
   };
-  sendCodeCaptcha(param).then(() => {
+  sendCodeCaptchaPost(param).then(() => {
     disableCode.value = true;
     disableCodeInput.value = false;
     ElMessage.success({
@@ -299,7 +298,7 @@ watch(
         :show-password="true"
       />
     </el-form-item>
-    <el-form-item v-if="type === 'register'" prop="policy" :rules="policyRules">
+    <el-form-item v-if="type === 'register' || selectLoginType === 'code'" prop="policy" :rules="policyRules">
       <div class="checkbox">
         <OCheckboxGroup
           v-model="form.policy"

@@ -2,7 +2,7 @@ function getCookie(key) {
   const name = `${encodeURIComponent(key)}=`;
   const decodedCookies = decodeURIComponent(document.cookie);
   const cookies = decodedCookies.split('; ');
-  for (let cookie of cookies) {
+  for (const cookie of cookies) {
     if (cookie.startsWith(name)) {
       return cookie.substring(name.length);
     }

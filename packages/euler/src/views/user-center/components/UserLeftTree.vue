@@ -99,7 +99,7 @@ const upload: UploadRequestHandler = (data: UploadRequestOptions) => {
         v-for="item in tabData"
         :key="item.key"
         class="user-tab-item"
-        :class="{ selected: modelValue === item.key }"
+        :class="{ selected: props.modelValue === item.key }"
         @click="selectTab(item.key)"
       >
         <OIcon class="icon"> <component :is="item.icon"></component> </OIcon>

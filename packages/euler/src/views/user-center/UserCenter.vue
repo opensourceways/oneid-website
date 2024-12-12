@@ -11,12 +11,6 @@ import { useCommon } from 'shared/stores/common';
 type ComponentKey<T = any> = {
   [key in SelectTabKey]: T;
 };
-const props = defineProps({
-  token: {
-    type: String,
-    default: '',
-  },
-});
 
 const componentSelected: ComponentKey = {
   userinfo: UserInfo,

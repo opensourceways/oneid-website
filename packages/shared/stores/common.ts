@@ -38,7 +38,7 @@ export const useCommon = defineStore('common', () => {
   // 修改成功后都应刷新用户信息
   const userInfo = ref({} as IObject);
   const initUserInfo = (
-    param = { community: import.meta.env?.VITE_COMMUNITY || 'openeuler' }
+    param = { community: import.meta.env?.VITE_COMMUNITY }
   ) => {
     queryUser(param).then((data) => {
       userInfo.value = data?.data || {};
