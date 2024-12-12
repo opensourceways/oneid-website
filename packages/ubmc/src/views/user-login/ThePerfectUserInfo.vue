@@ -27,6 +27,7 @@ const doSubmit = (form: any) => {
     doBindingSubmit(form);
   }
 };
+
 // 完善用户手机号提交
 const doPerfectSubmit = (form: any) => {
   const params = {
