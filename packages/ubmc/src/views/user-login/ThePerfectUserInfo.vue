@@ -27,6 +27,7 @@ const doSubmit = (form: any) => {
     doBindingSubmit(form);
   }
 };
+
 // 完善用户手机号提交
 const doPerfectSubmit = (form: any) => {
   const params = {
@@ -45,9 +46,9 @@ const doPerfectSubmit = (form: any) => {
       copyForm.value = form;
       // 提示用户是否绑定
       hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(
-        /\$\{.*?\}/g,
+        /\$\{phone\}/g,
         form.account
-      );
+      ).replace('Modelers', 'openUBMC');
       showDialog.value = true;
     } else {
       toLogout();
@@ -73,6 +74,7 @@ const doBindingSubmit = (form: any, doException = false) => {
       form.code = '';
     });
 };
+
 // 登出到登录页面
 const toLogout = () => {
   logout(undefined, `${location.origin}/login${location.search}`);
@@ -154,11 +156,13 @@ const doSendCode = (form: any, data: any) => {
       }}
     </template>
     <template #headerTitleTip>
-      {{
-        curStep === 'PERFECT'
-          ? i18n.PERFECT_USER_INFO_TIP?.replace('Modelers', 'openUBMC')
-          : i18n.BINDING_CUR_ACCOUNT_TIP
-      }}
+      <div class="header-title-tip">
+        {{
+          curStep === 'PERFECT'
+            ? i18n.PERFECT_USER_INFO_TIP?.replace('Modelers', 'openUBMC')
+            : i18n.BINDING_CUR_ACCOUNT_TIP
+        }}
+      </div>
     </template>
     <template #btn>{{
       curStep === 'PERFECT' ? i18n.SUBMIT : i18n.BINDING
@@ -203,5 +207,14 @@ const doSendCode = (form: any, data: any) => {
   .ml16 {
     margin-left: 16px;
   }
+}
+.header-title-tip {
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgba(0,0,0,0.60);
+  letter-spacing: 0;
+  line-height: 22px;
+  font-family: PingFangSc;
+  font-weight: Regular;
 }
 </style>
