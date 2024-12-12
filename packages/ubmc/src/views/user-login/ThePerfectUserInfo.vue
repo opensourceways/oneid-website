@@ -73,6 +73,7 @@ const doBindingSubmit = (form: any, doException = false) => {
       form.code = '';
     });
 };
+
 // 登出到登录页面
 const toLogout = () => {
   logout(undefined, `${location.origin}/login${location.search}`);
