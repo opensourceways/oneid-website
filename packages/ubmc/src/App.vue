@@ -3,6 +3,7 @@ import { OScroller } from '@opensig/opendesign';
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 </script>
+
 <template>
   <AppHeader class="ly-header" />
   <OScroller show-type="hover">
