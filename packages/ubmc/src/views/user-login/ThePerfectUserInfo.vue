@@ -45,9 +45,9 @@ const doPerfectSubmit = (form: any) => {
       copyForm.value = form;
       // 提示用户是否绑定
       hasUsedTip.value = i18n.value.HAS_REGISTER_TIP?.replace(
-        /\$\{.*?\}/g,
+        /\$\{phone\}/g,
         form.account
-      );
+      ).replace('Modelers', 'openUBMC');
       showDialog.value = true;
     } else {
       toLogout();
