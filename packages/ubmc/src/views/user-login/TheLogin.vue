@@ -83,7 +83,7 @@ onMounted(() => {
     isLogined({}).then(async (bool) => {
       if (bool) {
         if (await isNotPadUserinfo(bool)) {
-          haveLoggedIn();
+          // haveLoggedIn();
         }
       } else if (!getLogoutSession()) {
         setLogoutSession(true);

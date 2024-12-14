@@ -7,9 +7,7 @@ import LoginCard from './LoginCard.vue';
       <div class="header-title">
         <slot name="headerTitle"></slot>
       </div>
-      <div class="header-title-tip">
-        <slot name="headerTitleTip"></slot>
-      </div>
+      <slot name="headerTitleTip"></slot>
     </div>
     <div class="app-body">
       <slot name="body"></slot>
@@ -21,7 +19,6 @@ import LoginCard from './LoginCard.vue';
   </LoginCard>
 </template>
 <style lang="scss" scoped>
-
 .app-header {
   display: flex;
   flex-direction: column;
@@ -31,15 +28,6 @@ import LoginCard from './LoginCard.vue';
     text-align: center;
     color: var(--o-color-text1);
     font-weight: Medium;
-  }
-  .header-title-tip {
-    // margin-top: 12px;
-    font-size: 14px;
-    color: rgba(0,0,0,0.60);
-    letter-spacing: 0;
-    line-height: 22px;
-    font-family: PingFangSc;
-    font-weight: Regular;
   }
 }
 .app-body {

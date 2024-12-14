@@ -156,11 +156,13 @@ const doSendCode = (form: any, data: any) => {
       }}
     </template>
     <template #headerTitleTip>
-      {{
-        curStep === 'PERFECT'
-          ? i18n.PERFECT_USER_INFO_TIP?.replace('Modelers', 'openUBMC')
-          : i18n.BINDING_CUR_ACCOUNT_TIP
-      }}
+      <div class="header-title-tip">
+        {{
+          curStep === 'PERFECT'
+            ? i18n.PERFECT_USER_INFO_TIP?.replace('Modelers', 'openUBMC')
+            : i18n.BINDING_CUR_ACCOUNT_TIP
+        }}
+      </div>
     </template>
     <template #btn>{{
       curStep === 'PERFECT' ? i18n.SUBMIT : i18n.BINDING
@@ -205,5 +207,14 @@ const doSendCode = (form: any, data: any) => {
   .ml16 {
     margin-left: 16px;
   }
+}
+.header-title-tip {
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgba(0,0,0,0.60);
+  letter-spacing: 0;
+  line-height: 22px;
+  font-family: PingFangSc;
+  font-weight: Regular;
 }
 </style>
