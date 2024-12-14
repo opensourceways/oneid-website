@@ -1,8 +1,6 @@
 import { RulesT, ValidatorResultT, ValidatorT } from "@opensig/opendesign/lib/form/types";
 import { useI18n } from '../i18n';
 import {
-  COMPANYNAME_REG,
-  NICKNAME_REG,
   EMAIL_REG,
   PHONE_REG,
   PWD_REG,

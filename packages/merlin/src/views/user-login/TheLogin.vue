@@ -2,7 +2,7 @@
 import {
   accountLoginPost,
   queryToken,
-  checkLoginAccount,
+  checkLoginAccountPost,
 } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import {
@@ -119,7 +119,6 @@ const login = async (form: any, captchaVerification?: string) => {
     permission: 'sigRead',
     account: form.account,
     client_id: loginParams.value.client_id,
-    accept_term: 0,
   };
   if (captchaVerification) {
     param.captchaVerification = captchaVerification;
@@ -151,7 +150,7 @@ const chenckLogin = (form: any) => {
   const param = {
     account: form.account,
   };
-  checkLoginAccount(param).then((data) => {
+  checkLoginAccountPost(param).then((data) => {
     if (data?.data?.need_captcha_verification) {
       verify.value.show();
     } else {

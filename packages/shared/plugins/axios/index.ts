@@ -115,8 +115,10 @@ const requestInterceptorId = request.interceptors.request.use(
       };
       Object.assign(config?.headers as any, to);
     }
+    // 已合入送检修改的社区
+    const checkedCommunity = ['openeuler', 'openmind'];
     // 删除community参数
-    if (config.params?.community === 'openeuler') {
+    if (checkedCommunity.includes(config.params?.community)) {
       config.params.community = undefined;
     }
     return config;

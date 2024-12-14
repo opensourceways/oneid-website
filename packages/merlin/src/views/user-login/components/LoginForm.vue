@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CountdownButton from '@/components/CountdownButton.vue';
-import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted, inject, watch, watchEffect } from 'vue';
+import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted, inject, watch } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { OInput, OButton, OCheckbox, OLink, useMessage, OForm, OFormItem } from '@opensig/opendesign';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
@@ -12,7 +12,7 @@ import {
   getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator, getCodeRules, validatorEmail,
 } from 'shared/utils/rules';
 import { useTestIsPhone } from 'shared/utils/helper';
-import { sendCodeCaptcha } from 'shared/api/api-login';
+import { sendCodeCaptchaPost } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from '@/components/LoginTabs.vue';
 import { useCommonData } from 'shared/stores/common';
@@ -132,7 +132,7 @@ const verifySuccess = (data: any) => {
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
   };
-  sendCodeCaptcha(param).then(() => {
+  sendCodeCaptchaPost(param).then(() => {
     disableCode.value = true;
     message.success({
       content: i18n.value.SEND_SUCCESS,
@@ -452,9 +452,9 @@ const goResetPwd = () => {
       <OLink 
         v-if="isphone && selectLoginType === 'password'"
         class="login-tab  login-tab-right" 
-        color="primary" 
-        size="small" 
-        hover-underline 
+        color="primary"
+        size="small"
+        hover-underline
         @click="goResetPwd()"
       >{{ i18n.FORGET_PWD }}</OLink>
     </div>

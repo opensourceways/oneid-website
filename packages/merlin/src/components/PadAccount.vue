@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
 import { reactive, ref, toRefs } from 'vue';
-import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import CountdownButton from './CountdownButton.vue';
 import { OInput, useMessage, ODialog, DialogActionT, OForm, OFormItem } from '@opensig/opendesign';
-import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
+import { RulesT } from '@opensig/opendesign/lib/form/types';
 import {
   getVerifyImgSize,
 } from 'shared/utils/utils';
@@ -13,7 +12,7 @@ import {
 } from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
 import { useCommonData } from 'shared/stores/common';
-import { bindAccount, modifyUser, sendCode } from 'shared/api/api-center';
+import { bindAccount, modifyUser, sendCodePost } from 'shared/api/api-center';
 import { mergeMap, Observable, of, zip, map } from 'rxjs';
 
 const props = defineProps({
@@ -101,7 +100,7 @@ const verifySuccess = (data: any) => {
     param.account = form.phone;
     param.channel = 'channel_bind_phone';
   }
-  sendCode(param).then(() => {
+  sendCodePost(param).then(() => {
     message.success({
       content: i18n.value.SEND_SUCCESS,
     });

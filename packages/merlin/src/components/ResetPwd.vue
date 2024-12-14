@@ -4,7 +4,7 @@ import { reactive, ref } from 'vue';
 import { OInput, OButton, useMessage, OForm, OFormItem } from '@opensig/opendesign';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import CountdownButton from './CountdownButton.vue';
-import { resetPwd, resetPwdVerify, sendCodeCaptcha } from 'shared/api/api-login';
+import { resetPwd, resetPwdVerify, sendCodeCaptchaPost } from 'shared/api/api-login';
 import { getVerifyImgSize } from 'shared/utils/utils';
 import { getPwdRules, validatorEmpty, formValidator, getCodeRules } from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
@@ -109,7 +109,7 @@ const verifySuccess = (data: any) => {
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
   };
-  sendCodeCaptcha(param).then(() => {
+  sendCodeCaptchaPost(param).then(() => {
     disableCode.value = true;
     message.success({
       content: i18n.value.SEND_SUCCESS,
@@ -141,7 +141,6 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
     if (valid) {
       const newPwd = await getRsaEncryptWord(form.password);
       const param = {
-        client_id: loginParams.value.client_id,
         pwd_reset_token: resetToken.value,
         new_pwd: newPwd,
       };

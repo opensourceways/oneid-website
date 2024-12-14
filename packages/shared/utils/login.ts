@@ -190,7 +190,7 @@ export function refreshInfo(
 export function isLogined(
   param: any = { community: import.meta.env?.VITE_COMMUNITY || 'openeuler' }
 ) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const { token } = getUserAuth();
     if (token) {
       const query = param.community === 'opengauss' ? refreshUser : queryCourse;
