@@ -24,7 +24,6 @@ const register = async (form: any) => {
     account: form.account,
     code: form.code,
     client_id: loginParams.value.client_id,
-    community: import.meta.env?.VITE_COMMUNITY,
     accept_term: 0,
   };
   if (form.password) {

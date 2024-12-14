@@ -11,6 +11,7 @@
     "test:gauss": "pnpm --filter gauss test",
     "build:gauss": "pnpm --filter gauss build",
     "dev:mindspore": "pnpm --filter mindspore dev",
+    "test:mindspore": "pnpm --filter mindspore test",
     "build:mindspore": "pnpm --filter mindspore build",
     "dev:merlin": "pnpm --filter merlin dev",
     "test:merlin": "pnpm --filter merlin test",

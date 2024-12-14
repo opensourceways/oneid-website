@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "test": "vue-tsc --noEmit && vite build --mode test",
     "build": "vue-tsc --noEmit && vite build"
   },
   "dependencies": {
-    "shared": "workspace:^",
-    "unplugin-icons": "^0.18.2"
+    "shared": "workspace:^"
   }
 }

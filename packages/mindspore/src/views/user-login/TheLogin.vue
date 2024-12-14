@@ -2,7 +2,7 @@
 import {
   accountLoginPost,
   queryToken,
-  checkLoginAccount,
+  checkLoginAccountPost,
 } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import {
@@ -93,11 +93,9 @@ const loginSuccess = (data: any) => {
 
 const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
-    community: import.meta.env?.VITE_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
     client_id: loginParams.value.client_id,
-    accept_term: 0,
   };
   if (captchaVerification) {
     param.captchaVerification = captchaVerification;
@@ -121,10 +119,9 @@ const formCopy = ref(null);
 const chenckLogin = (form: any) => {
   formCopy.value = form;
   const param = {
-    community: import.meta.env?.VITE_COMMUNITY,
     account: form.account,
   };
-  checkLoginAccount(param).then((data) => {
+  checkLoginAccountPost(param).then((data) => {
     if (data?.data?.need_captcha_verification) {
       verify.value.show();
     } else {

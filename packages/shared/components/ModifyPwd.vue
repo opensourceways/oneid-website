@@ -128,7 +128,8 @@ const getcode = (formEl: FormInstance | undefined) => {
     }
   });
 };
-
+// 已合入送检修改的社区
+const checkedCommunity = ['openeuler', 'mindspore'];
 const verifySuccess = (data: any) => {
   const param = {
     channel: 'channel_reset_password',
@@ -137,9 +138,8 @@ const verifySuccess = (data: any) => {
     client_id: loginParams.value.client_id,
     community: import.meta.env?.VITE_COMMUNITY,
   };
-  // 欧拉，用post接口
   let sendCaptchaApi = sendCodeCaptcha;
-  if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+  if (checkedCommunity.includes(import.meta.env?.VITE_COMMUNITY)) {
     delete param.community;
     sendCaptchaApi = sendCodeCaptchaPost;
   }
@@ -162,7 +162,7 @@ const nextStep = (formEl: FormInstance | undefined) => {
         account: form.account,
         code: form.code,
       };
-      if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+      if (checkedCommunity.includes(import.meta.env?.VITE_COMMUNITY)) {
         delete param.community;
       }
       resetPwdVerify(param).then((res) => {
@@ -191,7 +191,7 @@ const confirm = (formEl: FormInstance | undefined) => {
         pwd_reset_token: resetToken.value,
         new_pwd: newPwd,
       };
-      if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+      if (checkedCommunity.includes(import.meta.env?.VITE_COMMUNITY)) {
         delete param.community;
         delete param.client_id;
       }

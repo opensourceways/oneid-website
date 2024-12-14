@@ -107,6 +107,8 @@ const getcode = (formEl: FormInstance | undefined, field: string) => {
     }
   });
 };
+// 已合入送检修改的社区
+const checkedCommunity = ['openeuler', 'mindspore'];
 const verifySuccess = (data: any) => {
   const param = {
     account: form.email,
@@ -117,7 +119,7 @@ const verifySuccess = (data: any) => {
     param.account = form.phone;
     param.channel = 'channel_bind_phone';
   }
-  const sendCodeApi = import.meta.env?.VITE_COMMUNITY === 'openeuler' ? sendCodePost : sendCode;
+  const sendCodeApi = checkedCommunity.includes(import.meta.env?.VITE_COMMUNITY) ? sendCodePost : sendCode;
   sendCodeApi(param).then(() => {
     ElMessage.success({
       showClose: true,

@@ -11,9 +11,8 @@ import {
   getPwdRules,
   getUsernammeRules,
 } from 'shared/utils/utils';
-import { sendCodeCaptcha } from 'shared/api/api-login';
+import { sendCodeCaptchaPost } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
-import LoginTabs from 'shared/components/LoginTabs.vue';
 import PwdInput from 'shared/components/PwdInput.vue';
 import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import { useCommonData } from 'shared/stores/common';
@@ -80,9 +79,8 @@ const verifySuccess = (data: any) => {
     account: form.account,
     captchaVerification: data.captchaVerification,
     client_id: loginParams.value.client_id,
-    community: import.meta.env?.VITE_COMMUNITY,
   };
-  sendCodeCaptcha(param).then(() => {
+  sendCodeCaptchaPost(param).then(() => {
     disableCode.value = true;
     disableCodeInput.value = false;
     ElMessage.success({
