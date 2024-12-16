@@ -37,7 +37,7 @@ const WEB_URL = import.meta.env.VITE_OPENEULER_WEBSITE;
           <ODivider v-else direction="v" darker />
           <OLink :href="WEB_URL + '/changelog'" target="_blank">{{ i18n.FOOTER.CHANGElOG }}</OLink>
           <ODivider direction="v" darker />
-          <OLink :href="WEB_URL + '/api/swagger/index.html'" target="_blank">{{ i18n.FOOTER.API }}</OLink>
+          <OLink :href="WEB_URL + '/api-reference'" target="_blank">{{ i18n.FOOTER.API }}</OLink>
         </div>
       </div>
     </div>
