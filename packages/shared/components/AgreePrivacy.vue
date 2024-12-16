@@ -28,7 +28,11 @@ const form = reactive({
 // checkbox校验
 const validatorCheckbox = (rule: any, value: any, callback: any) => {
   if (!value || !value.length) {
-    callback(i18n.value.PLEASE_CHECK_PRIVACY);
+    if (import.meta.env.VITE_COMMUNITY === 'openubmc') {
+      callback(i18n.value.PLEASE_CHECK_PRIVACY_VALID);
+    } else {
+      callback(i18n.value.PLEASE_CHECK_PRIVACY);
+    }
   } else {
     callback();
   }
