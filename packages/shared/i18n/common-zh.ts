@@ -247,4 +247,7 @@ export default {
   HAS_REGISTER_TIP: '您的手机 ${phone} 已注册了 Modelers，是否绑定？',
   QUIC_BINDING: '立即绑定',
   BIND_MOBILE: '绑定手机',
+  LOGIN_AGAIN: '重新登录',
+  LOGIN_REDIRECT_URI_ERROR: '登录认证失败，请检查网络等信息后重试。',
+  LOGOUT_REDIRECT_URI_ERROR: '账号退出失败，请重试。',
 };

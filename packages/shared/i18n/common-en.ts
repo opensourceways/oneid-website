@@ -250,4 +250,7 @@ export default {
   HAS_REGISTER_TIP: 'Your phone number ${phone} has been registered，Would you like to bind it to your account？',
   QUIC_BINDING: 'Yes',
   BIND_MOBILE: '绑定手机',
+  LOGIN_AGAIN: 'Login again',
+  LOGIN_REDIRECT_URI_ERROR: 'Login authentication failed, please check network and other information and try again.',
+  LOGOUT_REDIRECT_URI_ERROR: 'Account logout failed, please try again.',
 };
