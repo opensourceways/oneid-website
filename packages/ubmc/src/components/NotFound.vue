@@ -1,20 +1,13 @@
 <script setup lang="ts">
 import { useCommon, useCommonData } from 'shared/stores/common';
 
-import notFoundImgLight from 'shared/assets/404.png';
-import notFoundImgDark from 'shared/assets/404_dark.png';
-import notFoundImgLigitGauss from 'shared/assets/gauss-404.png';
-import notFoundImgDarkGauss from 'shared/assets/gauss-404-dark.png';
+import notFoundImgLight from '@/assets/404.png';
+import notFoundImgDark from '@/assets/404.png';
 import { computed } from 'vue';
 const { lang } = useCommonData();
 const commonStore = useCommon();
 
 const notFoundImg = computed(() => {
-  if (import.meta.env?.VITE_COMMUNITY === 'opengauss') {
-    return commonStore.theme === 'light'
-      ? notFoundImgLigitGauss
-      : notFoundImgDarkGauss;
-  }
   return commonStore.theme === 'light' ? notFoundImgLight : notFoundImgDark;
 });
 </script>
@@ -46,6 +39,7 @@ const notFoundImg = computed(() => {
   .nofound-text {
     margin-top: var(--o-spacing-h5);
     font-size: var(--o-font-size-h7);
+    opacity: 0.8;
   }
   .nofound-img {
     height: 300px;
