@@ -19,7 +19,7 @@ export default (err: AxiosError) => {
         err.message = '未授权，请重新登录(401)';
         break;
       case 403:
-        err.message = '拒绝访问(403)';
+        err.message = '访问被阻止，可能是网络拦截或防火墙设置问题。请检查您的网络配置(403)';
         break;
       case 404:
         err.message = '请求出错(404)';
