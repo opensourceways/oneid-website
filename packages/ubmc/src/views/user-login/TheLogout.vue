@@ -4,6 +4,7 @@ import { validLoginUrl } from 'shared/utils/login-valid-url';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
+sessionStorage.setItem('pageFrom', 'logout');
 onMounted(() => {
   validLoginUrl().then(() => {
     const redirectUri = route.query.redirect_uri as string;

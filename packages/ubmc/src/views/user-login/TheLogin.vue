@@ -78,6 +78,7 @@ const isNotPadUserinfo = async (data: any): Promise<boolean> => {
   }
   return true;
 };
+sessionStorage.setItem('pageFrom', 'login');
 onMounted(() => {
   validLoginUrl().then(() => {
     isLogined({}).then(async (bool) => {
