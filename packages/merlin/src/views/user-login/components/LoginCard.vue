@@ -36,6 +36,7 @@ import logo from '@/assets/logo.svg';
       background-color: var(--o-color-fill1);
       box-shadow: none;
       height: calc(var(--layout-content-min-height) - 32px);
+      min-height: fit-content;
       display: flex;
       flex-direction: column;
     }
