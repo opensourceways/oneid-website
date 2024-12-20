@@ -52,7 +52,7 @@ const threePartsLogin = (type: string) => {
   loginForm.value?.validator('policy').subscribe((valid: boolean) => {
     if (valid) {
       let width = 500;
-      let height = 700;
+      const height = 700;
       if (type === 'Gitee') {
         width = 1263;
       }

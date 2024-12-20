@@ -18,7 +18,7 @@
     "build:merlin": "pnpm --filter merlin build",
     "build": "pnpm build:euler & pnpm build:gauss",
     "preview": "vite preview",
-    "lint": "eslint \"src/**/*.{js,ts,vue,jsx,tsx}\"",
+    "lint": "eslint \"packages/mindspore/src/**/*.{js,ts,vue,jsx,tsx}\"",
     "fix": "eslint --fix \"src/**/*.{js,ts,vue,jsx,tsx}\"",
     "lint:components": "eslint \"opendesign/**/*.{js,ts,vue,jsx,tsx}\"",
     "prepare": "husky install"

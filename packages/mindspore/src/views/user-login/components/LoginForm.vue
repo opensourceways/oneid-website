@@ -99,8 +99,8 @@ const changeCheckBox = (formEl: FormInstance | undefined) => {
   doValidatorForm(formEl, 'policy');
 };
 
-const onlyLogin = computed(
-  () => ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+const onlyLogin = computed(() =>
+  ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
 );
 
 // 手机或邮箱合法校验

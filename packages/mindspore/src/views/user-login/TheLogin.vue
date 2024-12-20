@@ -159,8 +159,8 @@ const agreePrivacy = () => {
 const cancelPad = () => {
   logout(getCommunityParams(true), location.href);
 };
-const onlyLogin = computed(
-  () => ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+const onlyLogin = computed(() =>
+  ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
 );
 </script>
 <template>
@@ -169,13 +169,15 @@ const onlyLogin = computed(
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
   >
-    <template #switch v-if="false">
+    <template v-if="false" #switch>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
-    <template #btn> {{ onlyLogin ? i18n.LOGIN : i18n.LOGIN_REGISTER }} </template>
+    <template #btn>
+      {{ onlyLogin ? i18n.LOGIN : i18n.LOGIN_REGISTER }}
+    </template>
   </LoginTemplate>
   <PadAccount
     v-model="visible"
