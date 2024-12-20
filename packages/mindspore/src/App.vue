@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCommon } from 'shared/stores/common';
 const { saveLoginParams } = useCommon();
+
 // 设置全局的默认client_id
 saveLoginParams({ client_id: import.meta.env?.VITE_OPENEULER_APPID });
 </script>

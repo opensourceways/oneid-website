@@ -125,7 +125,7 @@ const login = () => {
       client_id: tParam.value.client_id,
     };
     loginByThirdparty(route.params.id as string, param)
-      .then((data) => {
+      .then(() => {
         loginSuccess();
       })
       .catch((err) => {
@@ -159,7 +159,8 @@ const register = () => {
     loginSuccess();
   });
 };
-
+// 已合入送检修改的社区
+const checkedCommunity = ['openeuler', 'mindspore'];
 const bindAccount = () => {
   let param = {
     accept_term: 0,
@@ -173,7 +174,7 @@ const bindAccount = () => {
       oneidPrivacyAccepted: import.meta.env?.VITE_ONEID_PRIVACYACCEPTED,
     });
   }
-  if (import.meta.env?.VITE_COMMUNITY === 'openeuler') {
+  if (checkedCommunity.includes(import.meta.env?.VITE_COMMUNITY)) {
     delete param.community;
   }
   accountLoginPost(param).then(() => {

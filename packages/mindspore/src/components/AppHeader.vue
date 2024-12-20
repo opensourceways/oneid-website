@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, onUnmounted, watch } from 'vue';
-import { useCommon, useCommonData } from 'shared/stores/common';
+import { onMounted, ref, onUnmounted, watch } from 'vue';
+import { useCommonData } from 'shared/stores/common';
 import { useI18n } from 'shared/i18n';
 import {
   showGuard,
@@ -9,12 +9,7 @@ import {
   getUserAuth,
   refreshInfo,
 } from 'shared/utils/login';
-import AppTheme from 'shared/components/AppTheme.vue';
 import AppLanguage from 'shared/components/AppLanguage.vue';
-
-import logoLight from '@/assets/logo.svg';
-import logoDark from '@/assets/logo_dark.svg';
-
 import IconCancel from '~icons/app/icon-cancel.svg';
 import IconMenu from '~icons/app/icon-menu.svg';
 import IconLogin from '~icons/app/icon-login.svg';
@@ -37,14 +32,9 @@ const { guardAuthClient } = useStoreData();
 
 const { lang } = useCommonData();
 const i18n = useI18n();
-const commonStore = useCommon();
 const documentElement = document.documentElement;
 
 const toBody = ref(false);
-
-const logo = computed(() =>
-  commonStore.theme === 'light' ? logoLight : logoDark
-);
 
 // 移动菜单事件
 const mobileMenuIcon = ref(false);
@@ -75,12 +65,6 @@ onMounted(() => {
 onUnmounted(() => {
   toBody.value = false;
 });
-
-// 返回首页
-const goHome = () => {
-  const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
-  location.href = `${origin}/${lang.value}/`;
-};
 
 // 判断移动端
 const isMobile = () => {

@@ -122,8 +122,8 @@ const cancelPad = () => {
     align-center
   >
     <el-scrollbar height="400px">
-      <div class="markdown-content" v-dompurify-html="privacyData"></div>
-      <div class="markdown-content" v-dompurify-html="legalData"></div>
+      <div v-dompurify-html="privacyData" class="markdown-content"></div>
+      <div v-dompurify-html="legalData" class="markdown-content"></div>
     </el-scrollbar>
     <el-form
       ref="formRef"

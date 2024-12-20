@@ -5,9 +5,8 @@ import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  envDir: './viteEnv',
+  envDir: './env',
   base: '/',
   build: {
     outDir: path.resolve(__dirname, '../../dist/mindspore'),
@@ -31,11 +30,6 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      // '/oneid/': {
-      //   target: 'https://xiheapi.osinfra.cn/',
-      //   secure: false,
-      //   changeOrigin: true,
-      // },
       '/oneid/': {
         target: 'http://localhost:7060/mock',
         secure: false,

@@ -2,7 +2,7 @@
 import {
   accountLoginPost,
   queryToken,
-  checkLoginAccount,
+  checkLoginAccountPost,
 } from 'shared/api/api-login';
 import { useI18n } from 'shared/i18n';
 import {
@@ -93,11 +93,9 @@ const loginSuccess = (data: any) => {
 
 const login = async (form: any, captchaVerification?: string) => {
   const param: any = {
-    community: import.meta.env?.VITE_COMMUNITY,
     permission: 'sigRead',
     account: form.account,
     client_id: loginParams.value.client_id,
-    accept_term: 0,
   };
   if (captchaVerification) {
     param.captchaVerification = captchaVerification;
@@ -121,10 +119,9 @@ const formCopy = ref(null);
 const chenckLogin = (form: any) => {
   formCopy.value = form;
   const param = {
-    community: import.meta.env?.VITE_COMMUNITY,
     account: form.account,
   };
-  checkLoginAccount(param).then((data) => {
+  checkLoginAccountPost(param).then((data) => {
     if (data?.data?.need_captcha_verification) {
       verify.value.show();
     } else {
@@ -162,8 +159,8 @@ const agreePrivacy = () => {
 const cancelPad = () => {
   logout(getCommunityParams(true), location.href);
 };
-const onlyLogin = computed(
-  () => ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
+const onlyLogin = computed(() =>
+  ONLY_LOGIN_ID.includes(loginParams.value.client_id as string)
 );
 </script>
 <template>
@@ -172,13 +169,15 @@ const onlyLogin = computed(
     @submit="chenckLogin"
     @three-part-login="threePartLogin"
   >
-    <template #switch v-if="false">
+    <template v-if="false" #switch>
       {{ i18n.NO_ACCOUNT }}
       &nbsp;
       <a @click="goRegister">{{ i18n.REGISTER_NOW }}</a>
     </template>
     <template #headerTitle> {{ i18n.ACCOUNT_LOGIN }} </template>
-    <template #btn> {{ onlyLogin ? i18n.LOGIN : i18n.LOGIN_REGISTER }} </template>
+    <template #btn>
+      {{ onlyLogin ? i18n.LOGIN : i18n.LOGIN_REGISTER }}
+    </template>
   </LoginTemplate>
   <PadAccount
     v-model="visible"
