@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'shared/i18n';
-import {reactive, ref, toRefs, watch } from 'vue';
+import { reactive, ref, toRefs, watch } from 'vue';
 import { OCheckbox, ODialog, OLink, OForm, OFormItem, OButton } from '@opensig/opendesign';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
-import {
-  formValidator,
-} from 'shared/utils/rules';
+import { formValidator } from 'shared/utils/rules';
 import { useMarkdown } from 'shared/utils/useMarkdown';
 import { modifyUser } from 'shared/api/api-center';
 import { getPrivacyDocs } from 'shared/api/api-docs';
