@@ -6,10 +6,9 @@ import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
 import { formValidator } from 'shared/utils/rules';
 import { useMarkdown } from 'shared/utils/useMarkdown';
 import { modifyUser } from 'shared/api/api-center';
-import { getPrivacyDocs } from 'shared/api/api-docs';
-import { useCommonData } from 'shared/stores/common';
 import { getPrivacyVersion } from 'shared/utils/utils';
-
+import privacy from '../shared/file/privacy-policy.md?raw';
+import legal from '../shared/file/legal-notice.md?raw';
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -17,7 +16,6 @@ const props = defineProps({
   },
 });
 
-const { lang } = useCommonData();
 const { modelValue } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'cancel', 'success']);
 const i18n = useI18n();
@@ -51,11 +49,8 @@ watch(
   () => props.modelValue,
   (val) => {
     if (val) {
-      const arr = lang.value === 'zh' ? ['privacy.md', 'legal.md'] : ['privacy_en.md', 'legal_en.md'];
-      Promise.all(arr.map((item) => getPrivacyDocs(item))).then((res) => {
-        privacyData.value = useMarkdown().mkit(res[0]);
-        legalData.value = useMarkdown().mkit(res[1]);
-      });
+      privacyData.value = useMarkdown().mkit(privacy);
+      legalData.value = useMarkdown().mkit(legal);
     }
   },
   { immediate: true }
