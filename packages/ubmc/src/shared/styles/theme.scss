@@ -1,0 +1,20 @@
+:root {
+    --o-color-kleinblue1: rgb(148, 148, 148);
+    --o-color-kleinblue2: rgb(110, 110, 110);
+    --o-color-kleinblue3: rgb(79, 79, 79);
+    --o-color-kleinblue4: rgb(18, 18, 18);
+    --o-color-kleinblue5: rgb(36, 36, 36);
+    --o-color-kleinblue6: rgb(18, 18, 18);
+    --o-color-kleinblue7: rgb(18, 18, 18);
+    --o-color-kleinblue8: rgb(48, 48, 48);
+    --o-color-kleinblue9: rgb(0, 0, 0);
+    --o-color-kleinblue10: rgb(214, 214, 214);
+
+    --o-color-brand1: #418cff;
+    --o-color-info1: #418cff;
+    --o-color-primary1: #418cff;
+    --o-color-primary2: #67a3ff;
+    --o-color-primary3: #418cff;
+    --o-color-brand1: var(--o-color-primary1);
+    --input-padding: 0 16px;
+}

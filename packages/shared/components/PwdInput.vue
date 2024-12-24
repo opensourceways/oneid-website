@@ -24,7 +24,7 @@ const closeEye = () => {
 </script>
 
 <template>
-  <OInput v-bind="attrs" :type="inputType">
+  <OInput v-bind="attrs" :type="inputType" autocomplete="new-password">
     <template #suffix>
       <OIcon
         v-if="showPassword && attrs.modelValue"

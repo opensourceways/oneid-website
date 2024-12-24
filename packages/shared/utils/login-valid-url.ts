@@ -13,7 +13,7 @@ export function validLoginUrl(query?: LoginParams) {
       Object.assign(param,{
         community: import.meta.env?.VITE_COMMUNITY,
       })
-    }
+    };
     appVerify(param)
       .then(() => {
         resolve(true);
