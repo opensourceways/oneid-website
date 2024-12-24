@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CountdownButton from '@/components/CountdownButton.vue';
-import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted, inject, watch, watchEffect } from 'vue';
+import { PropType, reactive, ref, toRefs, computed, onMounted, onUnmounted, inject, watch } from 'vue';
 import { useI18n } from 'shared/i18n';
 import { OInput, OButton, OCheckbox, OLink, useMessage, OForm, OFormItem } from '@opensig/opendesign';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
@@ -9,7 +9,7 @@ import {
 } from 'shared/utils/utils';
 import { useRoute, useRouter } from 'vue-router';
 import {
-  getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator, getCodeRules, validatorEmail,
+  getUsernammeRules, validatorEmpty, getPwdRules, validatorPhone, formValidator, getCodeRules, getCodeRulesNormal, validatorEmail,
 } from 'shared/utils/rules';
 import { useTestIsPhone } from 'shared/utils/helper';
 import { sendCodeCaptcha } from 'shared/api/api-login';
@@ -17,6 +17,7 @@ import Verify from 'shared/verifition/Verify.vue';
 import LoginTabs from '@/components/LoginTabs.vue';
 import { useCommonData } from 'shared/stores/common';
 import { ONLY_LOGIN_ID } from '@/shared/const';
+import { CODE_CAN_USE_REG } from 'shared/const/common.const';
 
 type TYPE = 'login' | 'register' | 'perfectUserInfo';
 const props = defineProps({
@@ -196,7 +197,10 @@ const loginAccountRuless = ref([
 
 // 用户名校验
 const userNameRules = reactive<RulesT[]>(getUsernammeRules());
+// 点击按钮时校验
 const codeRules = reactive<RulesT[]>(getCodeRules());
+// 非点击按钮时校验
+const codeRulesNormal = getCodeRulesNormal();
 const loginPwdRules = reactive<RulesT[]>([
   {
     validator: validatorEmpty('INTER_PWD'),
@@ -256,8 +260,12 @@ const policyRules = reactive<RulesT[]>([
   },
 ]);
 
+// 用于识别用哪种code的校验方法
+const clickOperateBtn = ref(false);
 const submit = () => {
+  clickOperateBtn.value = true;
   formValidator(formRef.value).subscribe((valid) => {
+    clickOperateBtn.value = false;
     if (valid) {
       emit('submit', form);
     } else {
@@ -266,13 +274,25 @@ const submit = () => {
   });
 };
 
+let domeElement = document.querySelector('#codeInput input');
 // 改变账户值，重置code或pwd
 const changeAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
-  formEl?.resetFields('code');
+  if (!domeElement) {
+    domeElement = document.querySelector('#codeInput input');
+  }
   if (type.value === 'login') {
     formEl?.resetFields('password');
   }
-  checkCodeCanClick(formEl);
+  formValidator(formEl, 'account').subscribe((valid) => {
+    disableCode.value = !valid;
+    // 不加异步延时，触发失焦无效
+    setTimeout(() => {
+      // 如果禁用发送验证码，主动对验证码输入框失焦一次，因为点击发送验证码按钮时会触发聚焦
+      if (disableCode.value) {
+        (domeElement as HTMLInputElement)?.blur();
+      }
+    }, 0);
+  });
 };
 
 // 判断发送验证码按钮是否禁用
@@ -280,14 +300,34 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
   if (!form.account) {
     disableCode.value = true;
   } else {
+    disableCode.value = !CODE_CAN_USE_REG.test(form.account);
     formValidator(formEl, 'account').subscribe((valid) => {
-      disableCode.value = !valid;
       checkFields('account', valid as boolean);
+      clearValidate('account');
     });
   }
-  resetLoginErr();
+  formRef.value?.resetFields('code');
+  clearValidate('code');
 };
-
+// 记录是否是用户主动点击按钮
+let clickSendCodeBtn = false;
+const codeFocus = () => {
+  // 如果是点击发送验证码区域联代触发的点击事件，直接返回。是主动点击验证码输入框 才聚焦
+  if (clickSendCodeBtn) {
+    return;
+  }
+  if (!domeElement) {
+    domeElement = document.querySelector('#codeInput input');
+  }
+  if (!domeElement) {
+    domeElement = document.querySelector('#codeInput input');
+  }
+  (domeElement as HTMLInputElement)?.focus();
+};
+// 设置是否手动点击按钮
+const setClickBtn = (b: boolean) => {
+  clickSendCodeBtn = b;
+};
 // 隐私政策、法律声明
 const goToOtherPage = (type: string) => {
   const origin = import.meta.env.VITE_OPENEULER_WEBSITE;
@@ -399,29 +439,32 @@ const goResetPwd = () => {
         :title="accountPlaceholder"
         v-model.trim="form.account"
         :placeholder="accountPlaceholder"
-        @input="changeAccount(formRef)"
+        @input="checkCodeCanClick(formRef)"
+        @blur="changeAccount(formRef)"
       />
     </OFormItem>
     <OFormItem
       v-if="selectLoginType === 'code' || type === 'register' || type === 'perfectUserInfo'"
       field="code"
-      :rules="codeRules"
+      :rules="clickOperateBtn ? codeRules : codeRulesNormal"
     >
       <OInput
+        id="codeInput"
         :clearable="false"
         size="large"
         v-model.trim="form.code"
         :placeholder="i18n.ENTER_RECEIVED_CODE"
         class="login-code-input"
         maxlength="6"
-        @blur="doValidator('code')"
         @input="clearValidate('code')"
+        @click="codeFocus"
       >
         <template #suffix>
           <CountdownButton
             v-model="disableCode"
             color="primary"
             @click="getcode(formRef)"
+            @setClickBtn="setClickBtn"
             size="small"
           />
         </template>

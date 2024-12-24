@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, Ref, ref, toRefs, useAttrs, watch } from 'vue';
+import { onUnmounted, ref, toRefs, useAttrs, watch } from 'vue';
 import { useI18n, useI18nStr } from 'shared/i18n';
 import { OLink } from '@opensig/opendesign';
 
@@ -12,7 +12,7 @@ const props = defineProps({
   },
 });
 const { modelValue } = toRefs(props);
-const emit = defineEmits(['update:modelValue', 'click']);
+const emit = defineEmits(['update:modelValue', 'click', 'setClickBtn']);
 const num = ref(0);
 let timer: NodeJS.Timeout;
 let stopwatch: () => void;
@@ -25,7 +25,7 @@ const limitedToResend = () => {
       num.value--;
     } else {
       num.value = 0;
-      emit('update:modelValue', false);
+      // emit('update:modelValue', false);
       clearInterval(timer);
       stopwatch();
     }
@@ -37,21 +37,27 @@ onUnmounted(() => {
 });
 
 const clickBtn = () => {
-  if (!modelValue.value) {
-    stopwatch = watch(
-      () => modelValue.value,
-      (value) => {
-        if (value && !num.value) {
-          limitedToResend();
+  // 手动点击发送验证码按钮
+  emit('setClickBtn', true);
+  // modelValue是异步计算得到的，这里等待一段时间后在用modelValue的值
+  setTimeout(() => {
+    if (!modelValue.value) {
+      stopwatch = watch(
+        () => modelValue.value,
+        (value) => {
+          if (value && !num.value) {
+            limitedToResend();
+          }
         }
-      }
-    );
-    emit('click');
-  }
+      );
+      emit('click');
+    }
+    emit('setClickBtn', false);
+  }, 10);
 };
 </script>
 <template>
-  <OLink v-bind="attrs" :disabled="Boolean(num) || modelValue" @click="clickBtn">{{
+  <OLink v-bind="attrs" :disabled="Boolean(num) || modelValue" @click.stop="clickBtn">{{
     num ? useI18nStr('TRY_AGAIN', [num]).value : i18n.SEN_CODE
   }}</OLink>
 </template>

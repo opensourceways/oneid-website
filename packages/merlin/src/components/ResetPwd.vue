@@ -6,12 +6,13 @@ import { EMAIL_REG, PHONE_REG } from 'shared/const/common.const';
 import CountdownButton from './CountdownButton.vue';
 import { resetPwd, resetPwdVerify, sendCodeCaptcha } from 'shared/api/api-login';
 import { getVerifyImgSize } from 'shared/utils/utils';
-import { getPwdRules, validatorEmpty, formValidator, getCodeRules } from 'shared/utils/rules';
+import { getPwdRules, validatorEmpty, formValidator, getCodeRules, getCodeRulesNormal } from 'shared/utils/rules';
 import Verify from 'shared/verifition/Verify.vue';
 import { useCommonData } from 'shared/stores/common';
 import { getRsaEncryptWord } from 'shared/utils/rsa';
 import { useRoute, useRouter } from 'vue-router';
 import { RulesT, ValidatorT } from '@opensig/opendesign/lib/form/types';
+import { CODE_CAN_USE_REG } from 'shared/const/common.const';
 
 const { loginParams } = useCommonData();
 const i18n = useI18n();
@@ -35,7 +36,11 @@ const form = reactive({
   confirmPwd: '',
 } as any);
 
-const codeRules = reactive<RulesT[]>(getCodeRules());
+// 点击按钮时校验
+const codeRules = getCodeRules();
+// 非点击按钮时校验
+const codeRulesNormal = getCodeRulesNormal();
+
 // 手机或邮箱合法校验
 const validatorAccount: ValidatorT = (value: string) => {
   if (value) {
@@ -116,11 +121,18 @@ const verifySuccess = (data: any) => {
     });
   });
 };
+// 用于识别用哪种code的校验方法
+const clickOperateBtn = ref(false);
 // 获取到重置token
 const resetToken = ref('');
 const nextStep = (formEl: InstanceType<typeof OForm> | undefined) => {
-  if (!formEl) return;
+  clickOperateBtn.value = true;
+  if (!formEl) {
+    clickOperateBtn.value = false;
+    return;
+  }
   formValidator(formEl).subscribe((valid) => {
+    clickOperateBtn.value = false;
     if (valid) {
       const param = {
         client_id: loginParams.value.client_id,
@@ -165,15 +177,59 @@ const confirm = (formEl: InstanceType<typeof OForm> | undefined) => {
     }
   });
 };
+
+let domeElement = document.querySelector('#codeInput input');
+// 改变账户值，重置code或pwd
+const changeAccount = (formEl: InstanceType<typeof OForm> | undefined) => {
+  if (!domeElement) {
+    domeElement = document.querySelector('#codeInput input');
+  }
+  formValidator(formEl, 'account').subscribe((valid) => {
+    disableCode.value = !valid;
+    // 不加异步延时，触发失焦无效
+    setTimeout(() => {
+      // 如果禁用发送验证码，主动对验证码输入框失焦一次，因为点击发送验证码按钮时会触发聚焦
+      if (disableCode.value) {
+        (domeElement as HTMLInputElement)?.blur();
+      }
+    }, 0);
+  });
+};
+
 // 判断发送验证码按钮是否禁用
-const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
+const checkCodeCanClick = () => {
   if (!form.account) {
     disableCode.value = true;
   } else {
-    formValidator(formEl, 'account').subscribe((valid) => {
-      disableCode.value = !valid;
-    });
+    disableCode.value = !CODE_CAN_USE_REG.test(form.account);
   }
+  clearValidate('account');
+  formRef.value?.resetFields('code');
+  clearValidate('code');
+};
+// 记录是否是用户主动点击按钮
+let clickSendCodeBtn = false;
+const codeFocus = () => {
+  // 如果是点击发送验证码区域联代触发的点击事件，直接返回。是主动点击验证码输入框 才聚焦
+  if (clickSendCodeBtn) {
+    return;
+  }
+  if (!domeElement) {
+    domeElement = document.querySelector('#codeInput input');
+  }
+  if (!domeElement) {
+    domeElement = document.querySelector('#codeInput input');
+  }
+  (domeElement as HTMLInputElement)?.focus();
+};
+// 清空输入校验
+type fieldT = 'account' | 'code';
+const clearValidate = (field: fieldT) => {
+  formRef.value?.clearValidate(field);
+};
+// 设置是否手动点击按钮
+const setClickBtn = (b: boolean) => {
+  clickSendCodeBtn = b;
 };
 </script>
 <template>
@@ -191,16 +247,18 @@ const checkCodeCanClick = (formEl: InstanceType<typeof OForm> | undefined) => {
           v-model="form.account"
           size="large"
           :placeholder="i18n.ENTER_YOUR_EMAIL_OR_PHONE"
-          @input="formRef?.resetFields('code'), checkCodeCanClick(formRef)"
+          @input="checkCodeCanClick()"
+          @blur="changeAccount(formRef)"
         />
       </OFormItem>
-      <OFormItem field="code" :rules="codeRules">
-        <OInput v-model="form.code" size="large" :placeholder="i18n.ENTER_RECEIVED_CODE" maxlength="6">
+      <OFormItem field="code" :rules="clickOperateBtn ? codeRules : codeRulesNormal">
+        <OInput id="codeInput" v-model="form.code" size="large" :placeholder="i18n.ENTER_RECEIVED_CODE" maxlength="6" @input="clearValidate('code')" @click="codeFocus">
           <template #suffix>
             <CountdownButton
               v-model="disableCode"
               color="primary"
               @click="getcode(formRef)"
+              @setClickBtn="setClickBtn"
               size="small"
             />
           </template>

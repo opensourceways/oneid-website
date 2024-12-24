@@ -19,3 +19,6 @@ export const PWD_REG =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@%^\-_=+[{}\]:,./?])[\w!@%^\-_=+[{}\]:,./?]{8,20}$/;
 
 export const PWD_REPEAT_REG = /^(?!.*((.)\2{2})).+$/;
+
+// 同华为云验证码按钮是否可点击使用，merlin使用
+export const CODE_CAN_USE_REG = /^\+?[0-9]/;

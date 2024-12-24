@@ -174,8 +174,24 @@ export const getCodeRules = ():RulesT[] => {
       triggers: 'change',
     },
   ];
-}
+};
 
+// 验证码校验, 非提交时校验，merlin使用
+export const getCodeRulesNormal = ():RulesT[] => {
+  return [
+    {
+      validator: (value: string) => {
+        if (value && !CODE_REG.test(value)) {
+          return {
+            type: 'danger',
+            message: useI18n().value.ENTER_SIX_CODE,
+          };
+        }
+      },
+      triggers: 'change',
+    },
+  ];
+};
 
 // 表单校验方法
 export const formValidator = (formEl: InstanceType<typeof OForm> | undefined, field?: string | string[]) => {
