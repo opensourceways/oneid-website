@@ -11,6 +11,7 @@ import {
 } from 'shared/utils/utils';
 import { sendCodeCaptchaPost } from 'shared/api/api-login';
 import Verify from 'shared/verifition/Verify.vue';
+import SignPrivacyStatement from './SignPrivacy.vue';
 import LoginTabs from 'shared/components/LoginTabs.vue';
 import PwdInput from 'shared/components/PwdInput.vue';
 import { getPwdRules, getUsernammeRules } from 'shared/utils/utils';
@@ -65,6 +66,9 @@ const getcode = (formEl: FormInstance | undefined) => {
     }
   });
 };
+
+// 签署隐私声明
+const signPrivacy = ref();
 
 const verifySuccess = (data: any) => {
   let channel = 'CHANNEL_REGISTER';
@@ -179,6 +183,9 @@ const submit = (formEl: FormInstance | undefined) => {
     if (valid) {
       emit('submit', form);
     } else {
+      if (!form.policy[0]) {
+        signPrivacy.value.show();
+      }
       return false;
     }
   });
@@ -332,6 +339,10 @@ watch(
     :img-size="getVerifyImgSize()"
     @success="verifySuccess"
   ></Verify>
+  <SignPrivacyStatement
+    ref="signPrivacy"
+    @success="changeCheckBox(formRef),submit(formRef)"
+  ></SignPrivacyStatement>
 </template>
 <style lang="scss" scoped>
 .code {

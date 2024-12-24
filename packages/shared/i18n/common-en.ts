@@ -243,4 +243,6 @@ export default {
   HAS_REGISTER_TIP: 'Your phone number ${phone} has been registered，Would you like to bind it to your account？',
   QUIC_BINDING: 'Yes',
   BIND_MOBILE: '绑定手机',
+  SIGN_PRIVACY_STATEMENT: 'Sign the privacy statement',
+  PLEASE_AGREE_FIRST: 'Please agree first'
 };

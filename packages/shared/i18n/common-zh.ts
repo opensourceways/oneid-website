@@ -240,4 +240,6 @@ export default {
   HAS_REGISTER_TIP: '您的手机 ${phone} 已注册了 Modelers，是否绑定？',
   QUIC_BINDING: '立即绑定',
   BIND_MOBILE: '绑定手机',
+  SIGN_PRIVACY_STATEMENT: '签署隐私声明',
+  PLEASE_AGREE_FIRST: '请先同意'
 };
