@@ -45,12 +45,22 @@ const policyRules = reactive<RulesT[]>([
 const privacyData = ref('');
 const legalData = ref('');
 
+// 对markdown文件里的a标签统一添加target=_blank
+const setTargetBlank = () => {
+  // 延迟执行，不延迟加不上
+  setTimeout(() => {
+    document.querySelectorAll('.markdown-body a[href^="http"]').forEach((link) => {
+      link.setAttribute('target', '_blank');
+    })
+  }, 1000)
+}
 watch(
   () => props.modelValue,
   (val) => {
     if (val) {
-      privacyData.value = useMarkdown().mkit(privacy);
-      legalData.value = useMarkdown().mkit(legal);
+      privacyData.value = useMarkdown().mkit(privacy.replace(/\{\{\s*VITE_OPENEULER_WEBSITE\s*\}\}/g, import.meta.env.VITE_OPENEULER_WEBSITE));
+      legalData.value = useMarkdown().mkit(legal.replace(/\{\{\s*VITE_OPENEULER_WEBSITE\s*\}\}/g, import.meta.env.VITE_OPENEULER_WEBSITE));
+      setTargetBlank();
     }
   },
   { immediate: true }
@@ -96,7 +106,8 @@ const cancelPad = () => {
 const scroll = (id: string) => {
   const div = document.querySelector('.privacy-dialog .o-scroller-container');
   div?.scrollTo({ top: (document.getElementById(id)?.offsetTop || 0) - 50, behavior: 'smooth' });
-} 
+}
+
 </script>
 <template>
   <ODialog v-model:visible="modelValue" hideClose :maskClose="false" size="large" main-class="privacy-dialog">

@@ -50,7 +50,7 @@ openUBMC社区（下文简称“我们”）深知您的隐私对您的重要性
 
 （2）您可以通过自行修改浏览器设置的方式拒绝或管理Cookie。openUBMC 社区的某些服务可能必须使用 Cookie，禁用 Cookie 可能会影响您使用这些服务的全部或部分功能。
 
-其他具体的Cookie信息，请参考[《关于Cookies》](/cookies/)。
+其他具体的Cookie信息，请参考[《关于Cookies》]({{VITE_OPENEULER_WEBSITE}}/cookies/)。
 
 ## 3.我们如何共享您的个人信息
 
